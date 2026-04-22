@@ -266,7 +266,25 @@ export default function GuestProfileDialog({
                 </div>
               </section>
 
-              {/* Staff notes */}
+              {/* Loyalty */}
+              <section>
+                <h3 className="text-sm font-semibold mb-2 flex items-center gap-2"><Star className="h-4 w-4 text-secondary" /> Treueprogramm</h3>
+                <div className="rounded-lg border p-3 text-sm space-y-2 bg-secondary/5">
+                  <div className="flex items-center justify-between">
+                    <Badge className="bg-secondary text-secondary-foreground">
+                      <Star className="h-3 w-3 mr-1" /> {isRegular ? `Stammgast – ${stats.total} Aufenthalte` : `Neugast – ${stats.total}/3`}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground">Nächster Bonus: 10% Rabatt ab 5. Aufenthalt</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-muted overflow-hidden">
+                    <div className="h-full bg-secondary transition-all" style={{ width: `${Math.min(100, (stats.total / 5) * 100)}%` }} />
+                  </div>
+                  <div className="text-xs text-muted-foreground pt-1">
+                    🎁 Geburtstag hinterlegt → Automatischer 20€ Gutschein wird jährlich versendet
+                  </div>
+                </div>
+              </section>
+
               <section>
                 <h3 className="text-sm font-semibold mb-2 flex items-center gap-2"><Pencil className="h-4 w-4 text-secondary" /> Interne Notizen</h3>
                 <Textarea

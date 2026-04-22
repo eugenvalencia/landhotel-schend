@@ -8,6 +8,11 @@ import OverviewTab from "@/components/dashboard/OverviewTab";
 import CalendarTab from "@/components/dashboard/CalendarTab";
 import BookingsTab from "@/components/dashboard/BookingsTab";
 import GuestsTab from "@/components/dashboard/GuestsTab";
+import ReviewsTab from "@/components/dashboard/ReviewsTab";
+import AnalyticsTab from "@/components/dashboard/AnalyticsTab";
+import PricingTab from "@/components/dashboard/PricingTab";
+import HousekeepingTab from "@/components/dashboard/HousekeepingTab";
+import ChannelManagerTab from "@/components/dashboard/ChannelManagerTab";
 
 
 export default function Dashboard() {
@@ -40,12 +45,22 @@ export default function Dashboard() {
                 <TabsTrigger value="calendar">Kalender</TabsTrigger>
                 <TabsTrigger value="bookings">Buchungen</TabsTrigger>
                 <TabsTrigger value="guests">Gäste</TabsTrigger>
+                <TabsTrigger value="housekeeping">Reinigung</TabsTrigger>
+                <TabsTrigger value="reviews">Bewertungen</TabsTrigger>
+                <TabsTrigger value="channels">Channel Manager</TabsTrigger>
+                <TabsTrigger value="pricing">Preismanagement</TabsTrigger>
+                <TabsTrigger value="analytics">Analytics</TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value="overview"><OverviewTab /></TabsContent>
             <TabsContent value="calendar"><CalendarTab /></TabsContent>
             <TabsContent value="bookings"><BookingsTab /></TabsContent>
             <TabsContent value="guests"><GuestsTab /></TabsContent>
+            <TabsContent value="housekeeping"><HousekeepingTab /></TabsContent>
+            <TabsContent value="reviews"><ReviewsTab /></TabsContent>
+            <TabsContent value="channels"><ChannelManagerTab /></TabsContent>
+            <TabsContent value="pricing"><PricingTab /></TabsContent>
+            <TabsContent value="analytics"><AnalyticsTab /></TabsContent>
           </Tabs>
         </main>
       </div>

@@ -9,7 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight, Plus, Mail, Pencil, Ban, X, BedDouble, Users, Phone, CalendarDays, CreditCard, StickyNote } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Mail, Pencil, Ban, X, BedDouble, Users, Phone, CalendarDays, CreditCard, StickyNote, FileText } from "lucide-react";
+import InvoiceDialog from "./InvoiceDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -105,7 +106,7 @@ export default function CalendarTab() {
   const [staffNotes, setStaffNotes] = useState("");
   const [savingNotes, setSavingNotes] = useState(false);
   const [confirmCancel, setConfirmCancel] = useState(false);
-
+  const [invoiceOpen, setInvoiceOpen] = useState(false);
 
   const loadAll = async () => {
     const [{ data: r }, { data: b }] = await Promise.all([
@@ -716,6 +717,11 @@ export default function CalendarTab() {
                         <Mail className="h-4 w-4" /> E-Mail erneut senden
                       </Button>
                     )}
+                    {!isIntern && (
+                      <Button variant="outline" size="sm" onClick={() => setInvoiceOpen(true)}>
+                        <FileText className="h-4 w-4" /> Rechnung erstellen
+                      </Button>
+                    )}
                     {selected.payment_status !== "cancelled" && (
                       <Button variant="destructive" size="sm" onClick={() => setConfirmCancel(true)}>
                         <Ban className="h-4 w-4" /> Stornieren
@@ -731,6 +737,15 @@ export default function CalendarTab() {
           )}
         </DialogContent>
       </Dialog>
+
+      {selected && (
+        <InvoiceDialog
+          open={invoiceOpen}
+          onOpenChange={setInvoiceOpen}
+          booking={selected}
+          room={room}
+        />
+      )}
 
       <AlertDialog open={confirmCancel} onOpenChange={setConfirmCancel}>
         <AlertDialogContent>

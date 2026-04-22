@@ -75,6 +75,7 @@ export default function SiteHeader() {
               {item.label}
             </button>
           ))}
+          <LanguageSwitcher />
           <Button asChild size="sm" className="ml-2">
             <Link to="/booking">Jetzt buchen</Link>
           </Button>
@@ -108,5 +109,32 @@ export default function SiteHeader() {
         </div>
       )}
     </header>
+  );
+}
+
+function LanguageSwitcher() {
+  const [lang, setLang] = useState("DE");
+  const langs = [
+    { code: "DE", flag: "🇩🇪" },
+    { code: "EN", flag: "🇬🇧" },
+    { code: "ES", flag: "🇪🇸" },
+    { code: "FR", flag: "🇫🇷" },
+  ];
+  return (
+    <div className="ml-2 flex items-center gap-0.5 rounded-md border bg-background p-0.5">
+      {langs.map((l) => (
+        <button
+          key={l.code}
+          onClick={() => setLang(l.code)}
+          className={cn(
+            "px-1.5 py-1 text-xs rounded transition-colors",
+            lang === l.code ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+          )}
+          aria-label={l.code}
+        >
+          <span className="mr-1">{l.flag}</span>{l.code}
+        </button>
+      ))}
+    </div>
   );
 }

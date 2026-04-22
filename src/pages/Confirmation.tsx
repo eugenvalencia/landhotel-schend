@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CheckCircle2, Hotel } from "lucide-react";
+import { CheckCircle2, Hotel, MessageCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -175,6 +175,29 @@ export default function Confirmation() {
                   <span className="text-sm font-bold tracking-wide">LANDHOTEL SCHEND</span>
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground">Ihr Familienhotel im Immerath | Vulkaneifel</p>
+              </div>
+            </div>
+          </div>
+
+          {/* WhatsApp simulation */}
+          <div className="mx-auto max-w-4xl">
+            <div className="rounded-lg border bg-card p-4 sm:p-5 shadow-card">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="h-8 w-8 rounded-full bg-success/10 flex items-center justify-center">
+                  <MessageCircle className="h-4 w-4 text-success" />
+                </div>
+                <div className="flex-1">
+                  <div className="text-sm font-semibold">WhatsApp-Benachrichtigung gesendet ✓</div>
+                  <div className="text-xs text-muted-foreground">An {booking.guestPhone || "+49 …"} · vor wenigen Sekunden</div>
+                </div>
+              </div>
+              <div className="rounded-2xl rounded-tl-sm bg-success/10 border border-success/20 p-3 text-sm">
+                <p className="font-semibold mb-1">Landhotel Schend</p>
+                <p>
+                  Hallo {booking.guestName.split(" ")[0]}, Ihre Buchung <span className="font-mono">{displayBookingNumber}</span> wurde bestätigt.
+                  Check-in: {formatDate(booking.checkIn)} ab 15:00 Uhr. Wir freuen uns auf Sie! 🏔️
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">— Landhotel Schend, Vulkaneifel</p>
               </div>
             </div>
           </div>

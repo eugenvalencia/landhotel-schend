@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import {
   CalendarIcon, Hotel, ArrowLeft, CheckCircle2, CreditCard, Lock,
-  Landmark, ClipboardList, ChevronDown, Loader2,
+  Landmark, ClipboardList, ChevronDown, Loader2, Star,
 } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -66,6 +66,7 @@ export default function Booking() {
   const [persons, setPersons] = useState<number>(2);
   const [extrasOpen, setExtrasOpen] = useState(false);
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
+  const [selectedUpsells, setSelectedUpsells] = useState<string[]>([]);
   const [guest, setGuest] = useState({ name: "", email: "", phone: "" });
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -97,6 +98,20 @@ export default function Booking() {
       .then(({ data }) => setExtras((data as any) ?? []));
   }, [roomIdParam]);
 
+  const UPSELLS = useMemo(() => [
+    { id: "ups-suite", name: "Suite-Upgrade", price: 30, perNight: true, desc: "Upgrade in eine Suite (sofern verfügbar)" },
+    { id: "ups-romantik", name: "Romantik-Paket", price: 25, perNight: false, desc: "Wein, Rosen & Pralinen im Zimmer" },
+    { id: "ups-fruehstueck", name: "Frühstück nachrüsten", price: 12, perNight: true, desc: "Pro Person & Nacht – regional & frisch" },
+  ], []);
+
+  const upsellTotal = useMemo(() => {
+    return selectedUpsells.reduce((sum, id) => {
+      const u = UPSELLS.find((x) => x.id === id);
+      if (!u) return sum;
+      return sum + (u.perNight ? u.price * Math.max(nights, 1) * (u.id === "ups-fruehstueck" ? persons : 1) : u.price);
+    }, 0);
+  }, [selectedUpsells, UPSELLS, nights, persons]);
+
   const extrasTotal = useMemo(() => {
     return selectedExtras.reduce((sum, id) => {
       const e = extras.find((x) => x.id === id);
@@ -106,7 +121,7 @@ export default function Booking() {
   }, [selectedExtras, extras, nights]);
 
   const roomTotal = room ? room.price_per_night * nights : 0;
-  const grandTotal = roomTotal + extrasTotal;
+  const grandTotal = roomTotal + extrasTotal + upsellTotal;
 
   const canSubmit = room && checkIn && checkOut && nights > 0 &&
     guestSchema.safeParse(guest).success;
@@ -365,7 +380,37 @@ export default function Booking() {
             )}
           </Card>
 
-          {/* SECTION 3: GUEST */}
+          {/* UPSELLS */}
+          <Card className="shadow-card border-secondary/30">
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Star className="h-5 w-5 text-secondary" /> Upgrades & Pakete
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {UPSELLS.map((u) => {
+                const checked = selectedUpsells.includes(u.id);
+                const lineTotal = u.perNight ? u.price * Math.max(nights, 1) * (u.id === "ups-fruehstueck" ? persons : 1) : u.price;
+                return (
+                  <div key={u.id} className={cn("flex items-center justify-between gap-3 rounded-lg border p-3", checked && "bg-secondary/5 border-secondary")}>
+                    <div className="min-w-0">
+                      <p className="font-medium text-sm">{u.name} <span className="text-secondary font-semibold">+{u.price}€{u.perNight ? "/N" : ""}</span></p>
+                      <p className="text-xs text-muted-foreground">{u.desc}</p>
+                    </div>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant={checked ? "default" : "outline"}
+                      onClick={() => setSelectedUpsells((prev) => checked ? prev.filter((x) => x !== u.id) : [...prev, u.id])}
+                    >
+                      {checked ? `✓ ${eur(lineTotal)}` : "Hinzufügen"}
+                    </Button>
+                  </div>
+                );
+              })}
+            </CardContent>
+          </Card>
+
           <Card className="shadow-card">
             <CardHeader>
               <CardTitle className="text-lg">3. Ihre Daten</CardTitle>
@@ -516,6 +561,17 @@ export default function Booking() {
                         <div key={id} className="flex justify-between text-muted-foreground">
                           <span>{e.name}</span>
                           <span>{eur(lineTotal)}</span>
+                        </div>
+                      );
+                    })}
+                    {selectedUpsells.map((id) => {
+                      const u = UPSELLS.find((x) => x.id === id);
+                      if (!u) return null;
+                      const lineTotal = u.perNight ? u.price * Math.max(nights, 1) * (u.id === "ups-fruehstueck" ? persons : 1) : u.price;
+                      return (
+                        <div key={id} className="flex justify-between text-secondary">
+                          <span>{u.name}</span>
+                          <span>+{eur(lineTotal)}</span>
                         </div>
                       );
                     })}
