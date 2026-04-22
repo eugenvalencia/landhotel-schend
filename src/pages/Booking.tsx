@@ -110,8 +110,12 @@ export default function Booking() {
     guestSchema.safeParse(guest).success;
 
   const handlePayment = async () => {
-    if (!room || !checkIn || !checkOut) {
-      toast.error("Bitte Reisedaten vervollständigen");
+    if (!room) {
+      toast.error("Bitte wählen Sie ein Zimmer");
+      return;
+    }
+    if (!checkIn || !checkOut || nights <= 0) {
+      toast.error("Bitte Check-in und Check-out auswählen");
       return;
     }
     const g = guestSchema.safeParse(guest);
@@ -153,15 +157,17 @@ export default function Booking() {
         .select()
         .single();
       if (bErr) throw bErr;
+      if (!b?.booking_number) throw new Error("Buchungsnummer fehlt");
 
       const remainingMs = 2000 - (Date.now() - startedAt);
       if (remainingMs > 0) {
         await new Promise((resolve) => setTimeout(resolve, remainingMs));
       }
-      navigate(`/confirmation/${b!.booking_number}`);
+      toast.success("Buchung bestätigt!");
+      navigate(`/confirmation/${b.booking_number}`);
     } catch (e: any) {
-      toast.error("Buchung fehlgeschlagen: " + (e.message ?? "Unbekannt"));
-    } finally {
+      console.error("Booking failed:", e);
+      toast.error("Buchung fehlgeschlagen: " + (e?.message ?? "Unbekannter Fehler"));
       setSubmitting(false);
     }
   };
