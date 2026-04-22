@@ -26,6 +26,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/rooms/:id" element={<RoomDetail />} />
           <Route path="/booking" element={<Booking />} />
+          <Route path="/booking-confirmation" element={<Confirmation />} />
           <Route path="/confirmation/:bookingNumber" element={<Confirmation />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
