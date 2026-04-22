@@ -416,12 +416,13 @@ export default function Booking() {
                 size="lg"
                 className="w-full text-base"
               >
+                <Lock className="h-4 w-4" />
                 {submitting
                   ? "Wird verarbeitet..."
-                  : `${eur(grandTotal || 0)} jetzt bezahlen →`}
+                  : `${eur(grandTotal || 0)} jetzt bezahlen`}
               </Button>
-              <p className="text-xs text-muted-foreground text-center flex items-center justify-center gap-1.5">
-                <Lock className="h-3.5 w-3.5" /> Sichere Zahlung · SSL verschlüsselt · Sofortige Bestätigung
+              <p className="text-xs text-muted-foreground text-center">
+                SSL-verschlüsselt · Sofortige Bestätigung · Keine versteckten Gebühren
               </p>
             </CardContent>
           </Card>
