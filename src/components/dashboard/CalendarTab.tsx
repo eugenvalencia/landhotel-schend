@@ -367,10 +367,14 @@ export default function CalendarTab() {
                 KW {isoWeek(days[0])}
               </div>
             )}
-            <table className="w-full text-xs">
+            <table
+              className="w-full text-xs select-none"
+              onMouseUp={finishDrag}
+              onMouseLeave={() => { if (dragStart) finishDrag(); }}
+            >
               <thead className="bg-muted">
                 <tr>
-                  <th className="sticky left-0 bg-muted z-10 text-left font-medium p-2 min-w-[120px] border-b border-r">Zimmer</th>
+                  <th className="sticky left-0 bg-muted z-10 text-left font-medium p-2 min-w-[200px] border-b border-r">Zimmer</th>
                   {days.map((d) => (
                     <th key={d.toISOString()} className={cn("font-medium p-1 text-center border-b", view === "day" ? "min-w-[420px]" : view === "week" ? "min-w-[110px]" : "min-w-[36px]", (d.getDay() === 0 || d.getDay() === 6) && "bg-accent/40")}>
                       <div className="text-[10px] text-muted-foreground uppercase">{d.toLocaleDateString("de-DE", { weekday: "short" }).slice(0, 2)}</div>
@@ -382,23 +386,42 @@ export default function CalendarTab() {
               <tbody>
                 {rooms.map((r) => (
                   <tr key={r.id}>
-                    <td className="sticky left-0 bg-card z-10 p-2 font-medium border-b border-r whitespace-nowrap">{r.name}</td>
+                    <td className="sticky left-0 bg-card z-10 p-2 font-medium border-b border-r whitespace-nowrap">
+                      <div>Zimmer {r.room_number}</div>
+                      {r.room_type && <div className="text-[10px] text-muted-foreground font-normal">{r.room_type}</div>}
+                    </td>
                     {days.map((d) => {
                       const s = cellState(r.id, d);
+                      const dragHL = isInDrag(r.id, d);
                       const cls =
-                        s.type === "free" ? "bg-[hsl(var(--cal-free))]" :
-                        s.type === "online" ? "bg-[hsl(var(--cal-paid))] hover:brightness-95 cursor-pointer" :
+                        s.type === "free" ? cn("bg-[hsl(var(--cal-free))] hover:brightness-95 cursor-pointer", dragHL && "bg-secondary/40") :
+                        s.type === "online" ? "bg-[hsl(var(--cal-paid))] hover:brightness-95 cursor-pointer text-primary-foreground" :
                         "bg-[hsl(var(--cal-intern))] hover:brightness-95 cursor-pointer";
+                      const showLabel = !!s.booking && (
+                        view === "day" || view === "week" ||
+                        toISODate(d) === s.booking.check_in
+                      );
                       return (
                         <td
                           key={d.toISOString()}
-                          className={cn("border-b border-r/50 text-center align-middle transition", view === "day" ? "h-12" : "h-9", cls)}
-                          title={s.booking ? `${s.booking.guest_name} (${formatDateShort(s.booking.check_in)}–${formatDateShort(s.booking.check_out)})` : "Frei"}
-                          onClick={() => s.booking && setSelected(s.booking)}
+                          className={cn("border-b border-r/50 text-center align-middle transition px-1", view === "day" ? "h-12" : "h-9", cls)}
+                          title={s.booking ? `${s.booking.guest_name} · Zimmer ${r.room_number} (${formatDateShort(s.booking.check_in)}–${formatDateShort(s.booking.check_out)})` : `Frei · Klicken zum Buchen`}
+                          onMouseDown={() => {
+                            if (s.booking) return;
+                            setDragStart({ roomId: r.id, date: d });
+                            setDragEnd(d);
+                          }}
+                          onMouseEnter={() => {
+                            if (dragStart && dragStart.roomId === r.id) setDragEnd(d);
+                          }}
+                          onClick={() => {
+                            if (s.booking) setSelected(s.booking);
+                          }}
                         >
-                          {s.booking && (view === "day" || view === "week") && (
-                            <span className="text-[11px] font-medium text-foreground/80 px-1 truncate">
-                              {s.booking.guest_name}
+                          {showLabel && s.booking && (
+                            <span className="text-[10px] font-medium truncate block leading-tight">
+                              {s.booking.guest_name.split(" ").map((p, i, a) => i === a.length - 1 || a.length === 1 ? p : `${p[0]}.`).join(" ")}
+                              <span className="opacity-75"> #{r.room_number}</span>
                             </span>
                           )}
                         </td>
