@@ -364,6 +364,29 @@ export default function Booking() {
                   </Select>
                 </div>
               )}
+              {room && availabilityWindows.length > 0 && (
+                <div className="rounded-lg border bg-muted/30 p-3 text-xs space-y-1.5">
+                  <div className="font-semibold text-sm flex items-center gap-2">
+                    <CalendarIcon className="h-4 w-4 text-secondary" />
+                    Zimmer {room.room_number} – nächste Zeiträume
+                  </div>
+                  {availabilityWindows.map((w, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      {w.available ? (
+                        <CheckCircle className="h-3.5 w-3.5 text-success shrink-0" />
+                      ) : (
+                        <AlertCircle className="h-3.5 w-3.5 text-destructive shrink-0" />
+                      )}
+                      <span className="text-muted-foreground">
+                        {format(w.from, "dd.MM.", { locale: de })} – {format(w.to, "dd.MM.", { locale: de })}:
+                      </span>
+                      <span className={cn("font-medium", w.available ? "text-success" : "text-destructive")}>
+                        {w.available ? "Verfügbar" : "Belegt"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <Label>Check-in</Label>
@@ -382,10 +405,20 @@ export default function Booking() {
                           setCheckIn(d);
                           if (d && checkOut && checkOut <= d) setCheckOut(undefined);
                         }}
-                        disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                        disabled={(d) =>
+                          d < new Date(new Date().setHours(0, 0, 0, 0)) || isDateBlocked(d)
+                        }
+                        modifiers={{ booked: (d) => isDateBlocked(d) }}
+                        modifiersClassNames={{
+                          booked: "line-through text-destructive/60 bg-destructive/10",
+                        }}
                         locale={de}
                         className={cn("p-3 pointer-events-auto")}
                       />
+                      <div className="px-3 pb-3 text-[11px] text-muted-foreground flex items-center gap-3">
+                        <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-destructive/40" /> Belegt</span>
+                        <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-success" /> Verfügbar</span>
+                      </div>
                     </PopoverContent>
                   </Popover>
                 </div>
@@ -403,10 +436,21 @@ export default function Booking() {
                         mode="single"
                         selected={checkOut}
                         onSelect={setCheckOut}
-                        disabled={(d) => !checkIn || d <= checkIn}
+                        disabled={(d) => {
+                          if (!checkIn) return true;
+                          if (d <= checkIn) return true;
+                          // Block any checkout date past the next booking's start
+                          if (maxCheckout && d > maxCheckout) return true;
+                          return false;
+                        }}
                         locale={de}
                         className={cn("p-3 pointer-events-auto")}
                       />
+                      {maxCheckout && (
+                        <div className="px-3 pb-3 text-[11px] text-muted-foreground">
+                          Spätester Check-out: {format(maxCheckout, "dd.MM.yyyy", { locale: de })}
+                        </div>
+                      )}
                     </PopoverContent>
                   </Popover>
                 </div>
