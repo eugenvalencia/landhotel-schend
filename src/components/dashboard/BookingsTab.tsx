@@ -134,7 +134,14 @@ export default function BookingsTab() {
               {filtered.map((b) => (
                 <TableRow key={b.id}>
                   <TableCell className="font-mono text-xs">{b.booking_number}</TableCell>
-                  <TableCell>{b.guest_name}</TableCell>
+                  <TableCell>
+                    <button
+                      onClick={() => setProfileGuest({ name: b.guest_name, email: b.guest_email })}
+                      className="hover:text-secondary hover:underline transition-colors text-left"
+                    >
+                      {b.guest_name}
+                    </button>
+                  </TableCell>
                   <TableCell>{roomMap[b.room_id] ?? "—"}</TableCell>
                   <TableCell>{formatDate(b.check_in)}</TableCell>
                   <TableCell>{formatDate(b.check_out)}</TableCell>
