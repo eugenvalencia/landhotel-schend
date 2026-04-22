@@ -60,7 +60,7 @@ export default function SiteFooter() {
           </div>
         </div>
         <div className="container mx-auto px-4 pb-4 text-center text-xs text-primary-foreground/60">
-          Website erstellt von{" "}
+          Powered by{" "}
           <a
             href="https://www.conexadigital.eu"
             target="_blank"

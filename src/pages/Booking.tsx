@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import {
   CalendarIcon, Hotel, ArrowLeft, CheckCircle2, CreditCard, Lock,
-  Landmark, ClipboardList, ChevronDown, Loader2, Star,
+  Landmark, ClipboardList, ChevronDown, Loader2, Star, AlertCircle, CheckCircle,
 } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -70,11 +70,79 @@ export default function Booking() {
   const [guest, setGuest] = useState({ name: "", email: "", phone: "" });
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [roomBookings, setRoomBookings] = useState<Array<{ check_in: string; check_out: string }>>([]);
+  const [allBookings, setAllBookings] = useState<Array<{ room_id: string; check_in: string; check_out: string }>>([]);
 
   const nights = useMemo(
     () => (checkIn && checkOut ? nightsBetween(checkIn, checkOut) : 0),
     [checkIn, checkOut]
   );
+
+  // Build a Set of ISO date strings that are blocked for the selected room
+  // A booking from check_in -> check_out blocks [check_in, check_out) — checkout day is free
+  const blockedDates = useMemo(() => {
+    const set = new Set<string>();
+    roomBookings.forEach((b) => {
+      const start = new Date(b.check_in);
+      const end = new Date(b.check_out);
+      for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+        set.add(toISODate(d));
+      }
+    });
+    return set;
+  }, [roomBookings]);
+
+  const isDateBlocked = (d: Date) => blockedDates.has(toISODate(d));
+
+  // Earliest forced check-out: first blocked date strictly after the chosen check-in
+  const maxCheckout = useMemo(() => {
+    if (!checkIn) return undefined;
+    const sorted = [...blockedDates].sort();
+    const inIso = toISODate(checkIn);
+    for (const iso of sorted) {
+      if (iso > inIso) return new Date(iso);
+    }
+    return undefined;
+  }, [checkIn, blockedDates]);
+
+  // Upcoming availability windows (next ~90 days) for info panel
+  const availabilityWindows = useMemo(() => {
+    if (!room) return [];
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const windows: Array<{ from: Date; to: Date; available: boolean }> = [];
+    let current: { from: Date; available: boolean } | null = null;
+    for (let i = 0; i < 90; i++) {
+      const d = new Date(today); d.setDate(today.getDate() + i);
+      const blocked = blockedDates.has(toISODate(d));
+      const avail = !blocked;
+      if (!current) {
+        current = { from: new Date(d), available: avail };
+      } else if (current.available !== avail) {
+        const to = new Date(d); to.setDate(d.getDate() - 1);
+        windows.push({ from: current.from, to, available: current.available });
+        current = { from: new Date(d), available: avail };
+      }
+    }
+    if (current) {
+      const last = new Date(today); last.setDate(today.getDate() + 89);
+      windows.push({ from: current.from, to: last, available: current.available });
+    }
+    return windows.slice(0, 4);
+  }, [room, blockedDates]);
+
+  // Suggest an alternative room when the selected dates are not available
+  const alternativeRoom = useMemo(() => {
+    if (!room || !checkIn || !checkOut) return null;
+    const inIso = toISODate(checkIn);
+    const outIso = toISODate(checkOut);
+    const conflict = (roomId: string) =>
+      allBookings.some((b) => b.room_id === roomId && b.check_in < outIso && b.check_out > inIso);
+    if (!conflict(room.id)) return null;
+    const candidate = rooms.find(
+      (r) => r.id !== room.id && r.room_type === room.room_type && !conflict(r.id)
+    );
+    return candidate ?? rooms.find((r) => r.id !== room.id && !conflict(r.id)) ?? null;
+  }, [room, rooms, checkIn, checkOut, allBookings]);
 
   useEffect(() => {
     supabase
@@ -96,7 +164,36 @@ export default function Booking() {
       .eq("active", true)
       .order("sort_order")
       .then(({ data }) => setExtras((data as any) ?? []));
+    supabase
+      .from("bookings")
+      .select("room_id,check_in,check_out,payment_status")
+      .neq("payment_status", "cancelled")
+      .then(({ data }) => setAllBookings((data as any[]) ?? []));
   }, [roomIdParam]);
+
+  // Refresh per-room bookings whenever the selected room changes
+  useEffect(() => {
+    if (!room) { setRoomBookings([]); return; }
+    setRoomBookings(
+      allBookings
+        .filter((b) => b.room_id === room.id)
+        .map((b) => ({ check_in: b.check_in, check_out: b.check_out }))
+    );
+    // Reset chosen dates if they conflict with newly loaded room
+    if (checkIn && checkOut) {
+      const inIso = toISODate(checkIn);
+      const outIso = toISODate(checkOut);
+      const conflict = allBookings.some(
+        (b) => b.room_id === room.id && b.check_in < outIso && b.check_out > inIso
+      );
+      if (conflict) {
+        setCheckIn(undefined);
+        setCheckOut(undefined);
+        toast.info("Die zuvor gewählten Daten sind für dieses Zimmer nicht verfügbar.");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [room?.id, allBookings]);
 
   const UPSELLS = useMemo(() => [
     { id: "ups-suite", name: "Suite-Upgrade", price: 30, perNight: true, desc: "Upgrade in eine Suite (sofern verfügbar)" },
@@ -267,6 +364,29 @@ export default function Booking() {
                   </Select>
                 </div>
               )}
+              {room && availabilityWindows.length > 0 && (
+                <div className="rounded-lg border bg-muted/30 p-3 text-xs space-y-1.5">
+                  <div className="font-semibold text-sm flex items-center gap-2">
+                    <CalendarIcon className="h-4 w-4 text-secondary" />
+                    Zimmer {room.room_number} – nächste Zeiträume
+                  </div>
+                  {availabilityWindows.map((w, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      {w.available ? (
+                        <CheckCircle className="h-3.5 w-3.5 text-success shrink-0" />
+                      ) : (
+                        <AlertCircle className="h-3.5 w-3.5 text-destructive shrink-0" />
+                      )}
+                      <span className="text-muted-foreground">
+                        {format(w.from, "dd.MM.", { locale: de })} – {format(w.to, "dd.MM.", { locale: de })}:
+                      </span>
+                      <span className={cn("font-medium", w.available ? "text-success" : "text-destructive")}>
+                        {w.available ? "Verfügbar" : "Belegt"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <Label>Check-in</Label>
@@ -285,10 +405,20 @@ export default function Booking() {
                           setCheckIn(d);
                           if (d && checkOut && checkOut <= d) setCheckOut(undefined);
                         }}
-                        disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                        disabled={(d) =>
+                          d < new Date(new Date().setHours(0, 0, 0, 0)) || isDateBlocked(d)
+                        }
+                        modifiers={{ booked: (d) => isDateBlocked(d) }}
+                        modifiersClassNames={{
+                          booked: "line-through text-destructive/60 bg-destructive/10",
+                        }}
                         locale={de}
                         className={cn("p-3 pointer-events-auto")}
                       />
+                      <div className="px-3 pb-3 text-[11px] text-muted-foreground flex items-center gap-3">
+                        <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-destructive/40" /> Belegt</span>
+                        <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-success" /> Verfügbar</span>
+                      </div>
                     </PopoverContent>
                   </Popover>
                 </div>
@@ -306,10 +436,21 @@ export default function Booking() {
                         mode="single"
                         selected={checkOut}
                         onSelect={setCheckOut}
-                        disabled={(d) => !checkIn || d <= checkIn}
+                        disabled={(d) => {
+                          if (!checkIn) return true;
+                          if (d <= checkIn) return true;
+                          // Block any checkout date past the next booking's start
+                          if (maxCheckout && d > maxCheckout) return true;
+                          return false;
+                        }}
                         locale={de}
                         className={cn("p-3 pointer-events-auto")}
                       />
+                      {maxCheckout && (
+                        <div className="px-3 pb-3 text-[11px] text-muted-foreground">
+                          Spätester Check-out: {format(maxCheckout, "dd.MM.yyyy", { locale: de })}
+                        </div>
+                      )}
                     </PopoverContent>
                   </Popover>
                 </div>
@@ -331,6 +472,29 @@ export default function Booking() {
                 <div className="rounded-lg bg-accent p-3 text-sm flex justify-between">
                   <span className="text-muted-foreground">{nights} {nights === 1 ? "Nacht" : "Nächte"} × {eur(room.price_per_night)}</span>
                   <span className="font-semibold">{eur(roomTotal)}</span>
+                </div>
+              )}
+              {alternativeRoom && (
+                <div className="rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm space-y-2">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-semibold text-destructive">
+                        {room?.name} ist in diesem Zeitraum belegt.
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Alternative: Zimmer {alternativeRoom.room_number} ({alternativeRoom.room_type}) – {eur(alternativeRoom.price_per_night)}/Nacht
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setRoom(alternativeRoom)}
+                  >
+                    Zu Zimmer {alternativeRoom.room_number} wechseln
+                  </Button>
                 </div>
               )}
             </CardContent>
