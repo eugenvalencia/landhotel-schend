@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
-  Hotel, CalendarCheck, Phone, Mail, MapPin, Star,
+  Hotel, CalendarCheck, Phone, Star,
   ParkingCircle, Bike, Waves, UtensilsCrossed, BedDouble, Wifi, Coffee, Trophy,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -214,33 +214,6 @@ const Index = () => {
 
       {/* REVIEWS */}
       <ReviewsSection />
-
-      {/* CONTACT */}
-      <section className="gradient-hero text-primary-foreground">
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">Kontakt & Anfahrt</h2>
-          <p className="opacity-90 mb-8">Wir freuen uns auf Ihren Besuch in der Vulkaneifel.</p>
-          <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            <a href="tel:+4965731306" className="flex flex-col items-center gap-2 hover:opacity-90">
-              <Phone className="h-6 w-6" />
-              <span className="font-medium">+49 6573 306</span>
-            </a>
-            <a href="mailto:info@landhaus-schend.de" className="flex flex-col items-center gap-2 hover:opacity-90 break-all">
-              <Mail className="h-6 w-6" />
-              <span className="font-medium">info@landhaus-schend.de</span>
-            </a>
-            <div className="flex flex-col items-center gap-2">
-              <MapPin className="h-6 w-6" />
-              <span className="font-medium">54552 Immerath<br />Vulkaneifel</span>
-            </div>
-          </div>
-          <div className="mt-10">
-            <Button asChild size="lg" variant="secondary">
-              <Link to="/booking"><CalendarCheck className="h-5 w-5" /> Jetzt buchen</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
 
       {/* LOCATION / MAP */}
       <LocationSection />
