@@ -1,24 +1,34 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Hotel, CalendarCheck, Phone, Mail, MapPin, Star,
   Bike, Waves, UtensilsCrossed, BedDouble, Wifi, Car, Coffee, Trophy,
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { eur } from "@/lib/format";
 
-const HERO = "https://landhaus-schend.de/pics/01_startseite/b0_1.jpg";
+const HERO = "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600";
 const HERO_ALT = [
-  "https://landhaus-schend.de/pics/01_startseite/b0_2.jpg",
-  "https://landhaus-schend.de/pics/01_startseite/b0_3.jpg",
+  "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1600",
 ];
-const ROOM_PHOTOS = [
-  "https://landhaus-schend.de/pics/02_zimmer/b2_1_d.jpg",
-  "https://landhaus-schend.de/pics/02_zimmer/b2_2_d.jpg",
-];
-const RESTAURANT = "https://landhaus-schend.de/pics/03_gastronomie/b3_1.jpg";
+const ROOM_TYPE_PHOTO: Record<string, string> = {
+  "Einzelzimmer": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800",
+  "Doppelzimmer Standard": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800",
+  "Doppelzimmer Komfort": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800",
+  "Familienzimmer": "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800",
+  "Junior Suite": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800",
+  "Suite": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800",
+  "Eifel-Suite": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800",
+};
+const RESTAURANT = "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800";
 const GALLERY = [
-  "https://landhaus-schend.de/pics/06_galerie/b6_1.jpg",
-  "https://landhaus-schend.de/pics/06_galerie/b6_2.jpg",
-  "https://landhaus-schend.de/pics/06_galerie/b6_3.jpg",
+  "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+  "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=600",
+  "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600",
+  "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600",
+  "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600",
+  "https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?w=600",
 ];
 
 const USPS = [
@@ -32,16 +42,40 @@ const USPS = [
   { icon: Trophy, text: "Booking.com 8.5 · Tripadvisor #1" },
 ];
 
-const ROOM_CATEGORIES = [
-  { name: "Einzelzimmer", desc: "Gemütliches Einzelzimmer mit Blick auf die Vulkaneifel", price: "ab 65 €", photo: ROOM_PHOTOS[0] },
-  { name: "Doppelzimmer Standard", desc: "Komfortables Doppelzimmer mit Doppelbett und Balkon", price: "ab 95 €", photo: ROOM_PHOTOS[0] },
-  { name: "Doppelzimmer Komfort", desc: "Geräumiges Zimmer mit zwei Einzelbetten und Terrasse", price: "ab 105 €", photo: ROOM_PHOTOS[1] },
-  { name: "Familienzimmer", desc: "Großes Familienzimmer für bis zu 4 Personen", price: "ab 145 €", photo: ROOM_PHOTOS[1] },
-  { name: "Junior Suite", desc: "Elegante Junior Suite mit Kingsize-Bett", price: "ab 165 €", photo: ROOM_PHOTOS[0] },
-  { name: "Eifel-Suite", desc: "Unsere schönste Suite mit Wohnbereich und Panoramablick", price: "ab 195 €", photo: ROOM_PHOTOS[1] },
-];
+const TYPE_DESCRIPTIONS: Record<string, string> = {
+  "Einzelzimmer": "Gemütliches Einzelzimmer mit Blick auf die Vulkaneifel",
+  "Doppelzimmer Standard": "Komfortables Doppelzimmer mit Doppelbett und Balkon",
+  "Doppelzimmer Komfort": "Geräumiges Zimmer mit zwei Einzelbetten und Terrasse",
+  "Familienzimmer": "Großes Familienzimmer für bis zu 4 Personen",
+  "Junior Suite": "Elegante Junior Suite mit Kingsize-Bett",
+  "Suite": "Unsere schönste Suite mit Wohnbereich und Panoramablick",
+  "Eifel-Suite": "Unsere schönste Suite mit Wohnbereich und Panoramablick",
+};
+
+type RoomCategory = { id: string; name: string; type: string; price: number };
 
 const Index = () => {
+  const [categories, setCategories] = useState<RoomCategory[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("rooms")
+      .select("id, name, room_type, price_per_night")
+      .eq("status", "aktiv")
+      .order("price_per_night")
+      .then(({ data }) => {
+        if (!data) return;
+        const seen = new Set<string>();
+        const cats: RoomCategory[] = [];
+        for (const r of data as any[]) {
+          if (seen.has(r.room_type)) continue;
+          seen.add(r.room_type);
+          cats.push({ id: r.id, name: r.room_type, type: r.room_type, price: Number(r.price_per_night) });
+        }
+        setCategories(cats);
+      });
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       {/* NAV */}
@@ -105,19 +139,27 @@ const Index = () => {
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ROOM_CATEGORIES.map((r) => (
-            <div key={r.name} className="rounded-xl overflow-hidden bg-card border shadow-card hover:shadow-elevated transition-shadow">
+          {categories.map((r) => (
+            <Link
+              key={r.id}
+              to={`/rooms/${r.id}`}
+              className="group rounded-xl overflow-hidden bg-card border shadow-card hover:shadow-elevated transition-shadow"
+            >
               <div className="aspect-[4/3] overflow-hidden">
-                <img src={r.photo} alt={r.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                <img
+                  src={ROOM_TYPE_PHOTO[r.type] ?? HERO}
+                  alt={r.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
               </div>
               <div className="p-5">
                 <div className="flex items-start justify-between gap-2 mb-1">
                   <h3 className="font-semibold text-lg">{r.name}</h3>
-                  <span className="text-sm font-semibold text-secondary">{r.price}</span>
+                  <span className="text-sm font-semibold text-secondary">ab {eur(r.price)}</span>
                 </div>
-                <p className="text-sm text-muted-foreground">{r.desc}</p>
+                <p className="text-sm text-muted-foreground">{TYPE_DESCRIPTIONS[r.type] ?? ""}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
         <div className="text-center mt-10">
@@ -155,7 +197,7 @@ const Index = () => {
           <h2 className="text-3xl md:text-4xl font-bold">Eindrücke aus der Vulkaneifel</h2>
         </div>
         <div className="grid md:grid-cols-3 gap-4">
-          {[...GALLERY, ...HERO_ALT].slice(0, 3).map((src) => (
+          {GALLERY.map((src) => (
             <div key={src} className="aspect-[4/3] rounded-xl overflow-hidden shadow-card">
               <img src={src} alt="Landhotel Schend Eindruck" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
             </div>
