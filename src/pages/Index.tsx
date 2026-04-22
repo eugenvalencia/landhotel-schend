@@ -3,41 +3,22 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Hotel, CalendarCheck, Phone, Mail, MapPin, Star,
-  Bike, Waves, UtensilsCrossed, BedDouble, Wifi, Car, Coffee, Trophy,
+  ParkingCircle, Bike, Waves, UtensilsCrossed, BedDouble, Wifi, Coffee, Trophy,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { eur } from "@/lib/format";
-
-const HERO = "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600";
-const HERO_ALT = [
-  "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1600",
-];
-const ROOM_TYPE_PHOTO: Record<string, string> = {
-  "Einzelzimmer": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800",
-  "Doppelzimmer Standard": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800",
-  "Doppelzimmer Komfort": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800",
-  "Familienzimmer": "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800",
-  "Junior Suite": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800",
-  "Suite": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800",
-  "Eifel-Suite": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800",
-};
-const RESTAURANT = "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800";
-const GALLERY = [
-  "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
-  "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=600",
-  "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600",
-  "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600",
-  "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600",
-  "https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?w=600",
-];
+import { HotelImage } from "@/components/HotelImage";
+import {
+  SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_GALLERY, photoForRoomType,
+} from "@/lib/photos";
 
 const USPS = [
-  { icon: Bike, text: "Kostenlose Motorrad-Garage" },
+  { icon: ParkingCircle, text: "Kostenlose Parkplätze — videoüberwacht" },
+  { icon: Bike, text: "Motorrad-Parkplätze vorhanden — videoüberwacht" },
   { icon: Waves, text: "Sauna & Wellness" },
   { icon: UtensilsCrossed, text: "Hauseigenes Restaurant" },
   { icon: BedDouble, text: "21 Zimmer mit Balkon/Terrasse" },
   { icon: Wifi, text: "Kostenloses WLAN" },
-  { icon: Car, text: "Kostenloser Parkplatz" },
   { icon: Coffee, text: "Großes Frühstücksbuffet" },
   { icon: Trophy, text: "Booking.com 8.5 · Tripadvisor #1" },
 ];
@@ -56,6 +37,15 @@ type RoomCategory = { id: string; name: string; type: string; price: number };
 
 const Index = () => {
   const [categories, setCategories] = useState<RoomCategory[]>([]);
+  const [heroIdx, setHeroIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(
+      () => setHeroIdx((i) => (i + 1) % SCHEND_HEROES.length),
+      6000,
+    );
+    return () => clearInterval(t);
+  }, []);
 
   useEffect(() => {
     supabase
@@ -98,7 +88,16 @@ const Index = () => {
 
       {/* HERO */}
       <section className="relative min-h-[80vh] flex items-center text-primary-foreground overflow-hidden">
-        <img src={HERO} alt="Landhotel Schend in der Vulkaneifel" className="absolute inset-0 w-full h-full object-cover" />
+        {SCHEND_HEROES.map((src, i) => (
+          <HotelImage
+            key={src}
+            src={src}
+            alt="Landhotel Schend in der Vulkaneifel"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              i === heroIdx ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ))}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/50 to-primary/80" />
         <div className="container mx-auto px-4 py-24 relative z-10 text-center">
           <p className="uppercase tracking-[0.2em] text-sm opacity-90 mb-4">Ihr Urlaubsdomizil in der Vulkaneifel</p>
@@ -146,8 +145,8 @@ const Index = () => {
               className="group rounded-xl overflow-hidden bg-card border shadow-card hover:shadow-elevated transition-shadow"
             >
               <div className="aspect-[4/3] overflow-hidden">
-                <img
-                  src={ROOM_TYPE_PHOTO[r.type] ?? HERO}
+                <HotelImage
+                  src={photoForRoomType(r.type)}
                   alt={r.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -172,8 +171,8 @@ const Index = () => {
       {/* RESTAURANT */}
       <section className="bg-muted">
         <div className="container mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
-          <div className="rounded-xl overflow-hidden shadow-elevated order-last md:order-first">
-            <img src={RESTAURANT} alt="Landhaus Restaurant & Terrasse" className="w-full h-full object-cover aspect-[4/3]" />
+          <div className="rounded-xl overflow-hidden shadow-elevated order-last md:order-first aspect-[4/3]">
+            <HotelImage src={SCHEND_RESTAURANT} alt="Landhaus Restaurant & Terrasse" className="w-full h-full object-cover" />
           </div>
           <div>
             <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Kulinarik</p>
@@ -197,9 +196,9 @@ const Index = () => {
           <h2 className="text-3xl md:text-4xl font-bold">Eindrücke aus der Vulkaneifel</h2>
         </div>
         <div className="grid md:grid-cols-3 gap-4">
-          {GALLERY.map((src) => (
+          {SCHEND_GALLERY.map((src) => (
             <div key={src} className="aspect-[4/3] rounded-xl overflow-hidden shadow-card">
-              <img src={src} alt="Landhotel Schend Eindruck" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+              <HotelImage src={src} alt="Landhotel Schend Eindruck" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
             </div>
           ))}
         </div>
