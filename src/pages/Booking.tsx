@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AmenityIcon } from "@/components/AmenityIcon";
 import { eur, nightsBetween, toISODate } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -406,13 +407,91 @@ export default function Booking() {
               </div>
               <div className="flex gap-2 pt-2">
                 <Button variant="outline" onClick={() => setStep("extras")}>Zurück</Button>
-                <Button onClick={handleConfirmGuest} className="flex-1">Weiter zur Zahlung</Button>
+                <Button onClick={handleConfirmGuest} className="flex-1">Weiter zur Übersicht</Button>
               </div>
             </CardContent>
           </Card>
         )}
 
-        {/* STEP 5: PAYMENT */}
+        {/* STEP 5: SUMMARY */}
+        {step === "summary" && selectedRoom && checkIn && checkOut && (
+          <Card className="shadow-card">
+            <CardHeader>
+              <CardTitle>Buchungsübersicht</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-3">
+                <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Ihre Buchung</h3>
+                <div className="grid sm:grid-cols-2 gap-y-2 gap-x-4 text-sm">
+                  <div className="text-muted-foreground">Zimmer</div>
+                  <div className="font-medium">Nr. {selectedRoom.room_number} · {selectedRoom.name}</div>
+                  <div className="text-muted-foreground">Zimmertyp</div>
+                  <div className="font-medium">{selectedRoom.room_type}</div>
+                  <div className="text-muted-foreground">Check-in</div>
+                  <div className="font-medium">{format(checkIn, "PPP", { locale: de })}</div>
+                  <div className="text-muted-foreground">Check-out</div>
+                  <div className="font-medium">{format(checkOut, "PPP", { locale: de })}</div>
+                  <div className="text-muted-foreground">Aufenthalt</div>
+                  <div className="font-medium">{nights} {nights === 1 ? "Nacht" : "Nächte"}</div>
+                  <div className="text-muted-foreground">Personen</div>
+                  <div className="font-medium">bis zu {selectedRoom.max_persons}</div>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-2">
+                <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">Preisaufschlüsselung</h3>
+                <div className="flex justify-between text-sm">
+                  <span>Zimmer ({nights} {nights === 1 ? "Nacht" : "Nächte"} × {eur(selectedRoom.price_per_night)}/Nacht)</span>
+                  <span className="font-medium">{eur(roomTotal)}</span>
+                </div>
+                {selectedExtras.map((id) => {
+                  const e = extras.find((x) => x.id === id);
+                  if (!e) return null;
+                  const lineTotal = e.per_night ? e.price * nights : e.price;
+                  return (
+                    <div key={id} className="flex justify-between text-sm">
+                      <span>
+                        {e.name}
+                        {e.per_night ? ` (${nights} ${nights === 1 ? "Nacht" : "Nächte"} × ${eur(e.price)})` : ""}
+                      </span>
+                      <span className="font-medium">{eur(lineTotal)}</span>
+                    </div>
+                  );
+                })}
+                <Separator className="my-3" />
+                <div className="flex justify-between text-lg font-bold">
+                  <span>Gesamt</span>
+                  <span>{eur(grandTotal)}</span>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-3">
+                <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Ihre Kontaktdaten</h3>
+                <div className="grid sm:grid-cols-2 gap-y-2 gap-x-4 text-sm">
+                  <div className="text-muted-foreground">Name</div>
+                  <div className="font-medium">{guest.name}</div>
+                  <div className="text-muted-foreground">E-Mail</div>
+                  <div className="font-medium break-all">{guest.email}</div>
+                  <div className="text-muted-foreground">Telefon</div>
+                  <div className="font-medium">{guest.phone}</div>
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <Button variant="outline" onClick={() => setStep("guest")}>Zurück</Button>
+                <Button onClick={() => setStep("payment")} className="flex-1" size="lg">
+                  Jetzt bezahlen →
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* STEP 6: PAYMENT */}
         {step === "payment" && selectedRoom && (
           <Card className="shadow-card">
             <CardHeader>
@@ -421,34 +500,57 @@ export default function Booking() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
-              <div className="rounded-lg bg-accent p-4 text-sm space-y-1">
-                <p><strong>{selectedRoom.name}</strong> · {nights} Nächte</p>
-                <p className="text-muted-foreground">{guest.name} · {guest.email}</p>
-                <p className="text-lg font-semibold pt-2">{eur(grandTotal)}</p>
+              <div className="rounded-lg bg-accent p-3 text-sm flex flex-wrap items-center justify-between gap-2">
+                <span>
+                  <strong>Zimmer {selectedRoom.room_number}</strong> · {nights} {nights === 1 ? "Nacht" : "Nächte"}
+                </span>
+                <span className="font-semibold">{eur(grandTotal)} Gesamt</span>
               </div>
-              <div className="rounded-lg border p-4 space-y-3 bg-card">
-                <p className="text-xs uppercase tracking-wider text-muted-foreground">Test-Zahlungsdaten</p>
-                <div>
-                  <Label>Kartennummer</Label>
-                  <Input defaultValue="4242 4242 4242 4242" className="mt-1.5 font-mono" readOnly />
-                </div>
-                <div className="grid grid-cols-2 gap-3">
+
+              <Tabs defaultValue="card" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="card">Kreditkarte</TabsTrigger>
+                  <TabsTrigger value="sepa">SEPA-Lastschrift</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="card" className="rounded-lg border p-4 space-y-3 bg-card mt-4">
                   <div>
-                    <Label>Gültig bis</Label>
-                    <Input defaultValue="12 / 28" className="mt-1.5 font-mono" readOnly />
+                    <Label>Kartennummer</Label>
+                    <Input defaultValue="4242 4242 4242 4242" className="mt-1.5 font-mono" readOnly />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Label>Gültig bis</Label>
+                      <Input defaultValue="12 / 28" className="mt-1.5 font-mono" readOnly />
+                    </div>
+                    <div>
+                      <Label>CVC</Label>
+                      <Input defaultValue="123" className="mt-1.5 font-mono" readOnly />
+                    </div>
+                  </div>
+                  <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-success" />
+                    Demo-Zahlung – keine echte Belastung
+                  </p>
+                </TabsContent>
+
+                <TabsContent value="sepa" className="rounded-lg border p-4 space-y-3 bg-card mt-4">
+                  <div>
+                    <Label>IBAN</Label>
+                    <Input defaultValue="DE89 3704 0044 0532 0130 00" className="mt-1.5 font-mono" />
                   </div>
                   <div>
-                    <Label>CVC</Label>
-                    <Input defaultValue="123" className="mt-1.5 font-mono" readOnly />
+                    <Label>Kontoinhaber</Label>
+                    <Input defaultValue={guest.name} className="mt-1.5" />
                   </div>
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-success" />
-                  Demo-Zahlung – keine echte Belastung
-                </p>
-              </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Mit Klick auf Bezahlen ermächtigen Sie Landhotel Schend, Zahlungen von Ihrem Konto einzuziehen.
+                  </p>
+                </TabsContent>
+              </Tabs>
+
               <div className="flex gap-2">
-                <Button variant="outline" onClick={() => setStep("guest")} disabled={submitting}>Zurück</Button>
+                <Button variant="outline" onClick={() => setStep("summary")} disabled={submitting}>Zurück</Button>
                 <Button onClick={handlePayment} className="flex-1" size="lg" disabled={submitting}>
                   {submitting ? "Wird verarbeitet..." : `${eur(grandTotal)} jetzt bezahlen`}
                 </Button>
