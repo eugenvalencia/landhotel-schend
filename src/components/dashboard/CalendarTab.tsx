@@ -209,7 +209,8 @@ export default function CalendarTab() {
     setQuickOpen(true);
   };
 
-  const submitQuick = async () => {
+  const submitQuick = async (asType?: "online" | "intern") => {
+    const type = asType ?? quickForm.type;
     if (!quickForm.room_id || !quickForm.guest_name || !quickForm.check_in || !quickForm.check_out) {
       toast.error("Bitte Zimmer, Name und Daten ausfüllen");
       return;
@@ -220,7 +221,7 @@ export default function CalendarTab() {
     }
     const r = rooms.find((x) => x.id === quickForm.room_id);
     const n = nightsBetween(quickForm.check_in, quickForm.check_out);
-    const total = quickForm.type === "intern" ? 0 : Number(r?.price_per_night ?? 0) * n;
+    const total = type === "intern" ? 0 : Number(r?.price_per_night ?? 0) * n;
 
     setQuickSaving(true);
     const { error } = await supabase.from("bookings").insert({
@@ -231,13 +232,13 @@ export default function CalendarTab() {
       check_in: quickForm.check_in,
       check_out: quickForm.check_out,
       total_price: total,
-      booking_type: quickForm.type,
+      booking_type: type,
       payment_status: "paid",
       notes: quickForm.notes || null,
     });
     setQuickSaving(false);
     if (error) { toast.error("Fehler: " + error.message); return; }
-    toast.success(quickForm.type === "intern" ? "Interne Buchung erstellt" : "Buchung erstellt");
+    toast.success(type === "intern" ? "Interne Buchung erstellt" : "Buchung erstellt");
     setQuickOpen(false);
     setQuickForm(initialQuick);
     loadAll();
