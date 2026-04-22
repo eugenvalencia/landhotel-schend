@@ -8,16 +8,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { eur } from "@/lib/format";
-
-const ROOM_TYPE_PHOTO: Record<string, string> = {
-  "Einzelzimmer": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200",
-  "Doppelzimmer Standard": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=1200",
-  "Doppelzimmer Komfort": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200",
-  "Familienzimmer": "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1200",
-  "Junior Suite": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200",
-  "Suite": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=1200",
-  "Eifel-Suite": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=1200",
-};
+import { HotelImage } from "@/components/HotelImage";
+import { photoForRoomType } from "@/lib/photos";
 
 const TYPE_DESCRIPTIONS: Record<string, string> = {
   "Einzelzimmer": "Gemütliches Einzelzimmer mit Blick auf die Vulkaneifel. Ideal für Geschäftsreisende und Solo-Urlauber. Inklusive Frühstücksoption und kostenlosem WLAN.",
@@ -60,7 +52,7 @@ export default function RoomDetail() {
 
   const gallery = useMemo(() => {
     if (!room) return [];
-    const main = ROOM_TYPE_PHOTO[room.room_type] ?? room.photos?.[0];
+    const main = photoForRoomType(room.room_type);
     return [main, main, main, main];
   }, [room]);
 
@@ -95,7 +87,7 @@ export default function RoomDetail() {
           {/* GALLERY */}
           <div className="space-y-3">
             <div className="aspect-[4/3] rounded-xl overflow-hidden bg-muted shadow-elevated">
-              <img src={gallery[activeIdx]} alt={room.name} className="w-full h-full object-cover" />
+              <HotelImage src={gallery[activeIdx]} alt={room.name} className="w-full h-full object-cover" />
             </div>
             <div className="grid grid-cols-4 gap-2">
               {gallery.map((src, i) => (
@@ -107,7 +99,7 @@ export default function RoomDetail() {
                   }`}
                   aria-label={`Foto ${i + 1}`}
                 >
-                  <img src={src} alt="" className="w-full h-full object-cover" />
+                  <HotelImage src={src} alt="" className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
