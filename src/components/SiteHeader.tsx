@@ -9,7 +9,8 @@ const MENU = [
   { label: "ZIMMER", id: "rooms" },
   { label: "PAKETE", id: "rooms" },
   { label: "GASTRONOMIE", id: "restaurant" },
-  { label: "ÜBER UNS", id: "reviews" },
+  { label: "ÜBER UNS", id: "about" },
+  { label: "BEWERTUNGEN", id: "reviews" },
   { label: "URLAUBSREGION", id: "location" },
 ];
 

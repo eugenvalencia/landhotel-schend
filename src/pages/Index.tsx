@@ -11,6 +11,7 @@ import { HotelImage } from "@/components/HotelImage";
 import ReviewsSection from "@/components/ReviewsSection";
 import LocationSection from "@/components/LocationSection";
 import WeatherWidget from "@/components/WeatherWidget";
+import AboutSection from "@/components/AboutSection";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_GALLERY, photoForRoomType,
 } from "@/lib/photos";
@@ -197,6 +198,9 @@ const Index = () => {
           ))}
         </div>
       </section>
+
+      {/* ABOUT */}
+      <AboutSection />
 
       {/* REVIEWS */}
       <div id="reviews">
