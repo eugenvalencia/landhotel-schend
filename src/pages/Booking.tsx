@@ -122,7 +122,7 @@ export default function Booking() {
     }
     const g = guestSchema.safeParse(guest);
     if (!g.success) {
-      toast.error(g.error.errors[0].message);
+      toast.error(g.error.issues[0]?.message ?? "Bitte prüfen Sie Ihre Eingaben");
       return;
     }
     setSubmitting(true);
