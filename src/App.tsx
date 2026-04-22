@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index";
 import Booking from "./pages/Booking";
+import RoomDetail from "./pages/RoomDetail";
 import Confirmation from "./pages/Confirmation";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -20,6 +21,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/rooms/:id" element={<RoomDetail />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/confirmation/:bookingNumber" element={<Confirmation />} />
           <Route path="/login" element={<Login />} />
