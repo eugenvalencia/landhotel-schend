@@ -239,12 +239,26 @@ export default function CalendarTab() {
     <div className="space-y-4">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="icon" onClick={() => setMonthOffset((o) => o - 1)}><ChevronLeft className="h-4 w-4" /></Button>
-          <span className="font-semibold text-lg capitalize min-w-[180px] text-center">{monthLabel}</span>
-          <Button variant="outline" size="icon" onClick={() => setMonthOffset((o) => o + 1)}><ChevronRight className="h-4 w-4" /></Button>
-          <Button variant="ghost" size="sm" onClick={() => setMonthOffset(0)}>Heute</Button>
+          <Button variant="outline" size="icon" onClick={goPrev}><ChevronLeft className="h-4 w-4" /></Button>
+          <span className="font-semibold text-lg capitalize min-w-[220px] text-center">{view === "year" ? anchor.getFullYear() : headerLabel}</span>
+          <Button variant="outline" size="icon" onClick={goNext}><ChevronRight className="h-4 w-4" /></Button>
+          <Button variant="ghost" size="sm" onClick={goToday}>Heute</Button>
         </div>
         <div className="flex items-center gap-3 text-xs flex-wrap">
+          <div className="inline-flex rounded-md border bg-card overflow-hidden">
+            {(["day", "week", "month", "year"] as ViewMode[]).map((v) => (
+              <button
+                key={v}
+                onClick={() => setView(v)}
+                className={cn(
+                  "px-3 py-1.5 text-xs font-medium transition-colors",
+                  view === v ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground hover:bg-muted",
+                )}
+              >
+                {v === "day" ? "Tag" : v === "week" ? "Woche" : v === "month" ? "Monat" : "Jahr"}
+              </button>
+            ))}
+          </div>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-free))] border" /> Frei</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-paid))] border" /> Bezahlt</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-intern))] border" /> Intern</span>
