@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type Props = React.ImgHTMLAttributes<HTMLImageElement> & {
@@ -11,10 +11,13 @@ const DEFAULT_FALLBACK_SRC =
   "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800&q=80";
 
 /**
- * Renders an <img>; if loading fails, shows a navy placeholder with "LS"
- * (Landhotel Schend) initials. Used so we never fall back to generic stock.
+ * Renders an <img>; if loading fails, swaps to a fallback image and finally
+ * shows a navy "LS" placeholder so we never display a broken image.
  */
-export function HotelImage({ src, alt, className, fallbackSrc = DEFAULT_FALLBACK_SRC, ...rest }: Props) {
+export const HotelImage = forwardRef<HTMLImageElement, Props>(function HotelImage(
+  { src, alt, className, fallbackSrc = DEFAULT_FALLBACK_SRC, ...rest },
+  ref,
+) {
   const [failed, setFailed] = useState(false);
   const [currentSrc, setCurrentSrc] = useState(src);
   const [usedFallback, setUsedFallback] = useState(false);
@@ -50,6 +53,7 @@ export function HotelImage({ src, alt, className, fallbackSrc = DEFAULT_FALLBACK
   }
   return (
     <img
+      ref={ref}
       src={currentSrc}
       alt={alt}
       onError={handleError}
@@ -57,4 +61,4 @@ export function HotelImage({ src, alt, className, fallbackSrc = DEFAULT_FALLBACK
       {...rest}
     />
   );
-}
+});
