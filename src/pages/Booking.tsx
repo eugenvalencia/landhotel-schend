@@ -16,6 +16,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -64,6 +65,7 @@ export default function Booking() {
   const [extrasOpen, setExtrasOpen] = useState(false);
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
   const [guest, setGuest] = useState({ name: "", email: "", phone: "" });
+  const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const nights = useMemo(
@@ -145,6 +147,7 @@ export default function Booking() {
           extras: extrasPayload,
           booking_type: "online",
           payment_status: "paid",
+          notes: notes.trim() || null,
         })
         .select()
         .single();
@@ -342,6 +345,18 @@ export default function Booking() {
                   <Input id="phone" value={guest.phone} onChange={(e) => setGuest({ ...guest, phone: e.target.value })} className="mt-1.5" maxLength={40} />
                 </div>
               </div>
+              <div>
+                <Label htmlFor="notes">Sonderwünsche (optional)</Label>
+                <Textarea
+                  id="notes"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  className="mt-1.5"
+                  placeholder="z. B. Allergien, frühere Anreise, ruhiges Zimmer …"
+                  maxLength={1000}
+                  rows={3}
+                />
+              </div>
             </CardContent>
           </Card>
 
@@ -431,11 +446,11 @@ export default function Booking() {
                   <div className="space-y-1.5">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Check-in</span>
-                      <span>{checkIn ? format(checkIn, "dd.MM.yyyy") : "—"}</span>
+                      <span>{checkIn ? `${format(checkIn, "dd.MM.yyyy")} · ab 15:00` : "—"}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Check-out</span>
-                      <span>{checkOut ? format(checkOut, "dd.MM.yyyy") : "—"}</span>
+                      <span>{checkOut ? `${format(checkOut, "dd.MM.yyyy")} · bis 11:00` : "—"}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Aufenthalt</span>
