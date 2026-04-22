@@ -564,6 +564,17 @@ export default function Booking() {
                         </div>
                       );
                     })}
+                    {selectedUpsells.map((id) => {
+                      const u = UPSELLS.find((x) => x.id === id);
+                      if (!u) return null;
+                      const lineTotal = u.perNight ? u.price * Math.max(nights, 1) * (u.id === "ups-fruehstueck" ? persons : 1) : u.price;
+                      return (
+                        <div key={id} className="flex justify-between text-secondary">
+                          <span>{u.name}</span>
+                          <span>+{eur(lineTotal)}</span>
+                        </div>
+                      );
+                    })}
                   </div>
                   <Separator />
                   <div className="flex justify-between text-lg font-bold">
