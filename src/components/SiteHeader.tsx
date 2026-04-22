@@ -115,26 +115,32 @@ export default function SiteHeader() {
 function LanguageSwitcher() {
   const [lang, setLang] = useState("DE");
   const langs = [
-    { code: "DE", flag: "🇩🇪" },
-    { code: "EN", flag: "🇬🇧" },
-    { code: "ES", flag: "🇪🇸" },
-    { code: "FR", flag: "🇫🇷" },
+    { code: "DE", flag: "🇩🇪", name: "Deutsch" },
+    { code: "EN", flag: "🇬🇧", name: "English" },
+    { code: "FR", flag: "🇫🇷", name: "Français" },
   ];
   return (
-    <div className="ml-2 flex items-center gap-0.5 rounded-md border bg-background p-0.5">
-      {langs.map((l) => (
-        <button
-          key={l.code}
-          onClick={() => setLang(l.code)}
-          className={cn(
-            "px-1.5 py-1 text-xs rounded transition-colors",
-            lang === l.code ? "bg-primary text-primary-foreground" : "hover:bg-muted"
-          )}
-          aria-label={l.code}
-        >
-          <span className="mr-1">{l.flag}</span>{l.code}
-        </button>
-      ))}
+    <div className="ml-2 flex items-center gap-2">
+      {langs.map((l) => {
+        const active = lang === l.code;
+        return (
+          <button
+            key={l.code}
+            onClick={() => {
+              setLang(l.code);
+              import("sonner").then(({ toast }) => toast.success(`Sprache: ${l.name}`));
+            }}
+            aria-label={l.name}
+            title={l.name}
+            className={cn(
+              "h-6 w-6 flex items-center justify-center text-xl leading-none rounded-full transition-all duration-200 hover:scale-110 hover:shadow-md",
+              active && "ring-2 ring-secondary ring-offset-2 ring-offset-background shadow-md"
+            )}
+          >
+            <span className="block">{l.flag}</span>
+          </button>
+        );
+      })}
     </div>
   );
 }
