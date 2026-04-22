@@ -50,6 +50,13 @@ export default function SiteFooter() {
           <div className="flex items-center gap-4">
             <Link to="/impressum" className="hover:text-secondary">Impressum</Link>
             <Link to="/datenschutz" className="hover:text-secondary">Datenschutz</Link>
+            <Link
+              to="/login"
+              aria-label="Admin"
+              className="opacity-50 hover:opacity-100 text-primary-foreground/60 hover:text-[#d4af37] transition-all duration-300"
+            >
+              <Star className="h-5 w-5" />
+            </Link>
           </div>
         </div>
         <div className="container mx-auto px-4 pb-4 text-center text-xs text-primary-foreground/60">
