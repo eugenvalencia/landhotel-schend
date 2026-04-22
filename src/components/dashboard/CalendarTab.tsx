@@ -345,6 +345,9 @@ export default function CalendarTab() {
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-free))] border" /> Frei</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-paid))] border" /> Bezahlt</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-intern))] border" /> Intern</span>
+          <Button size="sm" variant="outline" onClick={() => { setQuickForm(initialQuick); setQuickOpen(true); }}>
+            <Plus className="h-4 w-4" /> Neue Buchung
+          </Button>
           <Button size="sm" onClick={() => setInternOpen(true)}><Plus className="h-4 w-4" /> Intern eintragen</Button>
         </div>
       </div>
