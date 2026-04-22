@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
-import { CalendarIcon, Hotel, Users, BedDouble, ArrowLeft, CheckCircle2, CreditCard } from "lucide-react";
+import {
+  CalendarIcon, Hotel, ArrowLeft, CheckCircle2, CreditCard, Lock,
+  Landmark, ClipboardList, ChevronDown,
+} from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
 
@@ -17,7 +20,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AmenityIcon } from "@/components/AmenityIcon";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { eur, nightsBetween, toISODate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -41,8 +44,6 @@ type Extra = {
   per_night: boolean;
 };
 
-type Step = "dates" | "room" | "extras" | "guest" | "summary" | "payment";
-
 const guestSchema = z.object({
   name: z.string().trim().min(2, "Name muss mind. 2 Zeichen haben").max(120),
   email: z.string().trim().email("Ungültige E-Mail-Adresse").max(255),
@@ -51,13 +52,16 @@ const guestSchema = z.object({
 
 export default function Booking() {
   const navigate = useNavigate();
-  const [step, setStep] = useState<Step>("dates");
+  const [params] = useSearchParams();
+  const roomIdParam = params.get("room");
+
+  const [room, setRoom] = useState<Room | null>(null);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [extras, setExtras] = useState<Extra[]>([]);
   const [checkIn, setCheckIn] = useState<Date | undefined>();
   const [checkOut, setCheckOut] = useState<Date | undefined>();
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const [availability, setAvailability] = useState<Record<string, boolean>>({});
-  const [extras, setExtras] = useState<Extra[]>([]);
-  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+  const [persons, setPersons] = useState<number>(2);
+  const [extrasOpen, setExtrasOpen] = useState(false);
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
   const [guest, setGuest] = useState({ name: "", email: "", phone: "" });
   const [submitting, setSubmitting] = useState(false);
@@ -73,33 +77,21 @@ export default function Booking() {
       .select("*")
       .eq("status", "aktiv")
       .order("room_number")
-      .then(({ data }) => setRooms((data as any) ?? []));
+      .then(({ data }) => {
+        const list = (data as any[]) ?? [];
+        setRooms(list);
+        if (roomIdParam) {
+          const found = list.find((r) => r.id === roomIdParam);
+          if (found) setRoom(found);
+        }
+      });
     supabase
       .from("extras")
       .select("*")
       .eq("active", true)
       .order("sort_order")
       .then(({ data }) => setExtras((data as any) ?? []));
-  }, []);
-
-  const checkAvailability = async () => {
-    if (!checkIn || !checkOut || nights < 1) {
-      toast.error("Bitte gültigen Zeitraum wählen");
-      return;
-    }
-    const { data, error } = await supabase.rpc("get_room_availability", {
-      _check_in: toISODate(checkIn),
-      _check_out: toISODate(checkOut),
-    });
-    if (error) {
-      toast.error("Verfügbarkeit konnte nicht geprüft werden");
-      return;
-    }
-    const map: Record<string, boolean> = {};
-    (data as any[])?.forEach((r) => (map[r.room_id] = r.is_available));
-    setAvailability(map);
-    setStep("room");
-  };
+  }, [roomIdParam]);
 
   const extrasTotal = useMemo(() => {
     return selectedExtras.reduce((sum, id) => {
@@ -109,24 +101,25 @@ export default function Booking() {
     }, 0);
   }, [selectedExtras, extras, nights]);
 
-  const roomTotal = selectedRoom ? selectedRoom.price_per_night * nights : 0;
+  const roomTotal = room ? room.price_per_night * nights : 0;
   const grandTotal = roomTotal + extrasTotal;
 
-  const handleConfirmGuest = () => {
-    const result = guestSchema.safeParse(guest);
-    if (!result.success) {
-      toast.error(result.error.errors[0].message);
-      return;
-    }
-    setStep("summary");
-  };
+  const canSubmit = room && checkIn && checkOut && nights > 0 &&
+    guestSchema.safeParse(guest).success;
 
   const handlePayment = async () => {
-    if (!selectedRoom || !checkIn || !checkOut) return;
+    if (!room || !checkIn || !checkOut) {
+      toast.error("Bitte Reisedaten vervollständigen");
+      return;
+    }
+    const g = guestSchema.safeParse(guest);
+    if (!g.success) {
+      toast.error(g.error.errors[0].message);
+      return;
+    }
     setSubmitting(true);
     try {
-      // Create guest
-      const { data: g, error: gErr } = await supabase
+      const { data: gd, error: gErr } = await supabase
         .from("guests")
         .insert({ name: guest.name, email: guest.email, phone: guest.phone })
         .select()
@@ -141,8 +134,8 @@ export default function Booking() {
       const { data: b, error: bErr } = await supabase
         .from("bookings")
         .insert({
-          room_id: selectedRoom.id,
-          guest_id: g!.id,
+          room_id: room.id,
+          guest_id: gd!.id,
           guest_name: guest.name,
           guest_email: guest.email,
           guest_phone: guest.phone,
@@ -157,7 +150,7 @@ export default function Booking() {
         .single();
       if (bErr) throw bErr;
 
-      toast.success("📱 Telegram: Neue Buchung gesendet!");
+      toast.success("📱 Telegram-Benachrichtigung an Hotel gesendet");
       navigate(`/confirmation/${b!.booking_number}`);
     } catch (e: any) {
       toast.error("Buchung fehlgeschlagen: " + (e.message ?? "Unbekannt"));
@@ -178,43 +171,47 @@ export default function Booking() {
             Direktbuchung
           </Badge>
         </div>
-        <div className="container mx-auto px-4 pb-10 pt-4">
-          <h1 className="text-2xl md:text-3xl font-bold">Zimmer buchen</h1>
-          <p className="opacity-80 text-sm md:text-base">Ihr Urlaubsdomizil in der Vulkaneifel · sichere Zahlung · sofortige Bestätigung</p>
+        <div className="container mx-auto px-4 pb-8 pt-2">
+          <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/15 hover:text-primary-foreground -ml-3">
+            <Link to={room ? `/rooms/${room.id}` : "/"}>
+              <ArrowLeft className="h-4 w-4" /> Zurück
+            </Link>
+          </Button>
+          <h1 className="text-2xl md:text-3xl font-bold mt-2">Buchung abschließen</h1>
+          <p className="opacity-80 text-sm md:text-base">
+            {room ? `Zimmer ${room.room_number} · ${room.room_type}` : "Wählen Sie Ihr Zimmer und Reisedaten"}
+          </p>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 max-w-5xl">
-        {/* Progress */}
-        <div className="flex flex-wrap gap-2 mb-6 text-xs">
-          {[
-            ["dates", "1. Reisedaten"],
-            ["room", "2. Zimmer"],
-            ["extras", "3. Extras"],
-            ["guest", "4. Gastdaten"],
-            ["summary", "5. Übersicht"],
-            ["payment", "6. Zahlung"],
-          ].map(([k, label]) => (
-            <Badge
-              key={k}
-              variant={step === k ? "default" : "secondary"}
-              className={cn("rounded-full", step === k && "bg-secondary")}
-            >
-              {label}
-            </Badge>
-          ))}
-        </div>
-
-        {/* STEP 1: DATES */}
-        {step === "dates" && (
+      <main className="container mx-auto px-4 py-8 max-w-5xl grid lg:grid-cols-[1fr_360px] gap-6">
+        <div className="space-y-6">
+          {/* SECTION 1: REISEDATEN */}
           <Card className="shadow-card">
             <CardHeader>
-              <CardTitle>Reisezeitraum wählen</CardTitle>
+              <CardTitle className="text-lg">1. Reisedaten</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              {!roomIdParam && (
+                <div>
+                  <Label>Zimmer</Label>
+                  <Select value={room?.id} onValueChange={(v) => setRoom(rooms.find((r) => r.id === v) ?? null)}>
+                    <SelectTrigger className="mt-1.5">
+                      <SelectValue placeholder="Zimmer auswählen" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {rooms.map((r) => (
+                        <SelectItem key={r.id} value={r.id}>
+                          Nr. {r.room_number} · {r.room_type} · {eur(r.price_per_night)}/Nacht
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <Label>Anreise</Label>
+                  <Label>Check-in</Label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button variant="outline" className="w-full justify-start mt-1.5">
@@ -238,7 +235,7 @@ export default function Booking() {
                   </Popover>
                 </div>
                 <div>
-                  <Label>Abreise</Label>
+                  <Label>Check-out</Label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button variant="outline" className="w-full justify-start mt-1.5" disabled={!checkIn}>
@@ -259,278 +256,127 @@ export default function Booking() {
                   </Popover>
                 </div>
               </div>
-              {nights > 0 && (
-                <p className="text-sm text-muted-foreground">
-                  {nights} {nights === 1 ? "Nacht" : "Nächte"}
-                </p>
+              <div>
+                <Label>Personen</Label>
+                <Select value={String(persons)} onValueChange={(v) => setPersons(Number(v))}>
+                  <SelectTrigger className="mt-1.5 w-32">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[1, 2, 3, 4].map((n) => (
+                      <SelectItem key={n} value={String(n)}>{n} {n === 1 ? "Person" : "Personen"}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              {nights > 0 && room && (
+                <div className="rounded-lg bg-accent p-3 text-sm flex justify-between">
+                  <span className="text-muted-foreground">{nights} {nights === 1 ? "Nacht" : "Nächte"} × {eur(room.price_per_night)}</span>
+                  <span className="font-semibold">{eur(roomTotal)}</span>
+                </div>
               )}
-              <Button onClick={checkAvailability} className="w-full sm:w-auto" size="lg">
-                Verfügbarkeit prüfen
-              </Button>
             </CardContent>
           </Card>
-        )}
 
-        {/* STEP 2: ROOM */}
-        {step === "room" && (
-          <>
-            <div className="flex items-center justify-between mb-4">
-              <Button variant="ghost" size="sm" onClick={() => setStep("dates")}>
-                <ArrowLeft className="h-4 w-4" /> Datum ändern
-              </Button>
-              <p className="text-sm text-muted-foreground">
-                {checkIn && checkOut && `${format(checkIn, "dd.MM.yyyy")} – ${format(checkOut, "dd.MM.yyyy")} · ${nights} Nächte`}
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {rooms.map((r) => {
-                const available = availability[r.id] !== false;
-                return (
-                  <Card
-                    key={r.id}
-                    className={cn("shadow-card overflow-hidden flex flex-col", !available && "opacity-50")}
-                  >
-                    <div className="aspect-[4/3] bg-accent flex items-center justify-center overflow-hidden">
-                      {r.photos?.[0] ? (
-                        <img src={r.photos[0]} alt={r.name} className="w-full h-full object-cover" />
-                      ) : (
-                        <BedDouble className="h-12 w-12 text-secondary/40" />
-                      )}
-                    </div>
-                    <CardContent className="p-4 flex-1 flex flex-col">
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <h3 className="font-semibold">{r.name}</h3>
-                        <Badge variant="secondary">{eur(r.price_per_night)}/Nacht</Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-2">{r.room_type}</p>
-                      <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground mb-3">
-                        <span className="inline-flex items-center gap-1"><BedDouble className="h-3.5 w-3.5" />{r.bed_description}</span>
-                        <span className="inline-flex items-center gap-1"><Users className="h-3.5 w-3.5" />max {r.max_persons}</span>
-                      </div>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {(r.amenities ?? []).map((a) => (
-                          <AmenityIcon key={a} name={a} />
-                        ))}
-                      </div>
-                      <Button
-                        className="mt-auto"
-                        disabled={!available}
-                        onClick={() => {
-                          setSelectedRoom(r);
-                          setStep("extras");
-                        }}
-                      >
-                        {available ? "Auswählen" : "Nicht verfügbar"}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </>
-        )}
-
-        {/* STEP 3: EXTRAS */}
-        {step === "extras" && selectedRoom && (
+          {/* SECTION 2: EXTRAS */}
           <Card className="shadow-card">
-            <CardHeader>
-              <CardTitle>Extras auswählen</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {extras.map((e) => {
-                const checked = selectedExtras.includes(e.id);
-                const lineTotal = e.per_night ? e.price * nights : e.price;
-                return (
-                  <label
-                    key={e.id}
-                    className="flex items-center justify-between gap-3 rounded-lg border p-3 cursor-pointer hover:bg-accent/50"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Checkbox
-                        checked={checked}
-                        onCheckedChange={(c) =>
-                          setSelectedExtras((prev) =>
-                            c ? [...prev, e.id] : prev.filter((x) => x !== e.id)
-                          )
-                        }
-                      />
-                      <div>
-                        <p className="font-medium">{e.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {eur(e.price)} {e.per_night ? "/ Nacht" : "/ Aufenthalt"}
-                        </p>
+            <button
+              onClick={() => setExtrasOpen((v) => !v)}
+              className="w-full flex items-center justify-between p-6"
+              type="button"
+            >
+              <span className="text-lg font-semibold">2. Extras (optional)</span>
+              <ChevronDown className={cn("h-5 w-5 transition-transform", extrasOpen && "rotate-180")} />
+            </button>
+            {extrasOpen && (
+              <CardContent className="space-y-2 pt-0">
+                {extras.map((e) => {
+                  const checked = selectedExtras.includes(e.id);
+                  const lineTotal = e.per_night ? e.price * Math.max(nights, 1) : e.price;
+                  return (
+                    <label
+                      key={e.id}
+                      className="flex items-center justify-between gap-3 rounded-lg border p-3 cursor-pointer hover:bg-accent/50"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Checkbox
+                          checked={checked}
+                          onCheckedChange={(c) =>
+                            setSelectedExtras((prev) =>
+                              c ? [...prev, e.id] : prev.filter((x) => x !== e.id)
+                            )
+                          }
+                        />
+                        <div>
+                          <p className="font-medium">{e.name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {eur(e.price)} {e.per_night ? "/ Nacht" : "/ Aufenthalt"}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <span className="font-medium">{eur(lineTotal)}</span>
-                  </label>
-                );
-              })}
-              <Separator className="my-4" />
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">{selectedRoom.name} · {nights} Nächte</span>
-                <span>{eur(roomTotal)}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Extras</span>
-                <span>{eur(extrasTotal)}</span>
-              </div>
-              <div className="flex justify-between text-lg font-semibold">
-                <span>Gesamt</span>
-                <span>{eur(grandTotal)}</span>
-              </div>
-              <div className="flex gap-2 pt-2">
-                <Button variant="outline" onClick={() => setStep("room")}>Zurück</Button>
-                <Button onClick={() => setStep("guest")} className="flex-1">Weiter</Button>
-              </div>
-            </CardContent>
+                      <span className="font-medium">{eur(lineTotal)}</span>
+                    </label>
+                  );
+                })}
+              </CardContent>
+            )}
           </Card>
-        )}
 
-        {/* STEP 4: GUEST */}
-        {step === "guest" && (
+          {/* SECTION 3: GUEST */}
           <Card className="shadow-card">
             <CardHeader>
-              <CardTitle>Gastdaten</CardTitle>
+              <CardTitle className="text-lg">3. Ihre Daten</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
                 <Label htmlFor="name">Vor- und Nachname</Label>
                 <Input id="name" value={guest.name} onChange={(e) => setGuest({ ...guest, name: e.target.value })} className="mt-1.5" maxLength={120} />
               </div>
-              <div>
-                <Label htmlFor="email">E-Mail</Label>
-                <Input id="email" type="email" value={guest.email} onChange={(e) => setGuest({ ...guest, email: e.target.value })} className="mt-1.5" maxLength={255} />
-              </div>
-              <div>
-                <Label htmlFor="phone">Telefon</Label>
-                <Input id="phone" value={guest.phone} onChange={(e) => setGuest({ ...guest, phone: e.target.value })} className="mt-1.5" maxLength={40} />
-              </div>
-              <div className="flex gap-2 pt-2">
-                <Button variant="outline" onClick={() => setStep("extras")}>Zurück</Button>
-                <Button onClick={handleConfirmGuest} className="flex-1">Weiter zur Übersicht</Button>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="email">E-Mail</Label>
+                  <Input id="email" type="email" value={guest.email} onChange={(e) => setGuest({ ...guest, email: e.target.value })} className="mt-1.5" maxLength={255} />
+                </div>
+                <div>
+                  <Label htmlFor="phone">Telefon</Label>
+                  <Input id="phone" value={guest.phone} onChange={(e) => setGuest({ ...guest, phone: e.target.value })} className="mt-1.5" maxLength={40} />
+                </div>
               </div>
             </CardContent>
           </Card>
-        )}
 
-        {/* STEP 5: SUMMARY */}
-        {step === "summary" && selectedRoom && checkIn && checkOut && (
+          {/* SECTION 5: PAYMENT */}
           <Card className="shadow-card">
             <CardHeader>
-              <CardTitle>Buchungsübersicht</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-3">
-                <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Ihre Buchung</h3>
-                <div className="grid sm:grid-cols-2 gap-y-2 gap-x-4 text-sm">
-                  <div className="text-muted-foreground">Zimmer</div>
-                  <div className="font-medium">Nr. {selectedRoom.room_number} · {selectedRoom.name}</div>
-                  <div className="text-muted-foreground">Zimmertyp</div>
-                  <div className="font-medium">{selectedRoom.room_type}</div>
-                  <div className="text-muted-foreground">Check-in</div>
-                  <div className="font-medium">{format(checkIn, "PPP", { locale: de })}</div>
-                  <div className="text-muted-foreground">Check-out</div>
-                  <div className="font-medium">{format(checkOut, "PPP", { locale: de })}</div>
-                  <div className="text-muted-foreground">Aufenthalt</div>
-                  <div className="font-medium">{nights} {nights === 1 ? "Nacht" : "Nächte"}</div>
-                  <div className="text-muted-foreground">Personen</div>
-                  <div className="font-medium">bis zu {selectedRoom.max_persons}</div>
-                </div>
-              </div>
-
-              <Separator />
-
-              <div className="space-y-2">
-                <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">Preisaufschlüsselung</h3>
-                <div className="flex justify-between text-sm">
-                  <span>Zimmer ({nights} {nights === 1 ? "Nacht" : "Nächte"} × {eur(selectedRoom.price_per_night)}/Nacht)</span>
-                  <span className="font-medium">{eur(roomTotal)}</span>
-                </div>
-                {selectedExtras.map((id) => {
-                  const e = extras.find((x) => x.id === id);
-                  if (!e) return null;
-                  const lineTotal = e.per_night ? e.price * nights : e.price;
-                  return (
-                    <div key={id} className="flex justify-between text-sm">
-                      <span>
-                        {e.name}
-                        {e.per_night ? ` (${nights} ${nights === 1 ? "Nacht" : "Nächte"} × ${eur(e.price)})` : ""}
-                      </span>
-                      <span className="font-medium">{eur(lineTotal)}</span>
-                    </div>
-                  );
-                })}
-                <Separator className="my-3" />
-                <div className="flex justify-between text-lg font-bold">
-                  <span>Gesamt</span>
-                  <span>{eur(grandTotal)}</span>
-                </div>
-              </div>
-
-              <Separator />
-
-              <div className="space-y-3">
-                <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Ihre Kontaktdaten</h3>
-                <div className="grid sm:grid-cols-2 gap-y-2 gap-x-4 text-sm">
-                  <div className="text-muted-foreground">Name</div>
-                  <div className="font-medium">{guest.name}</div>
-                  <div className="text-muted-foreground">E-Mail</div>
-                  <div className="font-medium break-all">{guest.email}</div>
-                  <div className="text-muted-foreground">Telefon</div>
-                  <div className="font-medium">{guest.phone}</div>
-                </div>
-              </div>
-
-              <div className="flex gap-2 pt-2">
-                <Button variant="outline" onClick={() => setStep("guest")}>Zurück</Button>
-                <Button onClick={() => setStep("payment")} className="flex-1" size="lg">
-                  Jetzt bezahlen →
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* STEP 6: PAYMENT */}
-        {step === "payment" && selectedRoom && (
-          <Card className="shadow-card">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CreditCard className="h-5 w-5" /> Zahlung (Demo-Modus)
+              <CardTitle className="text-lg flex items-center gap-2">
+                <CreditCard className="h-5 w-5" /> 4. Zahlung
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
-              <div className="rounded-lg bg-accent p-3 text-sm flex flex-wrap items-center justify-between gap-2">
-                <span>
-                  <strong>Zimmer {selectedRoom.room_number}</strong> · {nights} {nights === 1 ? "Nacht" : "Nächte"}
-                </span>
-                <span className="font-semibold">{eur(grandTotal)} Gesamt</span>
-              </div>
-
               <Tabs defaultValue="card" className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="card">Kreditkarte</TabsTrigger>
-                  <TabsTrigger value="sepa">SEPA-Lastschrift</TabsTrigger>
+                  <TabsTrigger value="card"><CreditCard className="h-4 w-4 mr-1.5" /> Kreditkarte</TabsTrigger>
+                  <TabsTrigger value="sepa"><Landmark className="h-4 w-4 mr-1.5" /> SEPA-Lastschrift</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="card" className="rounded-lg border p-4 space-y-3 bg-card mt-4">
                   <div>
                     <Label>Kartennummer</Label>
-                    <Input defaultValue="4242 4242 4242 4242" className="mt-1.5 font-mono" readOnly />
+                    <Input defaultValue="4242 4242 4242 4242" className="mt-1.5 font-mono" />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <Label>Gültig bis</Label>
-                      <Input defaultValue="12 / 28" className="mt-1.5 font-mono" readOnly />
+                      <Input defaultValue="12 / 28" className="mt-1.5 font-mono" />
                     </div>
                     <div>
                       <Label>CVC</Label>
-                      <Input defaultValue="123" className="mt-1.5 font-mono" readOnly />
+                      <Input defaultValue="123" className="mt-1.5 font-mono" />
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground flex items-center gap-1.5">
                     <CheckCircle2 className="h-3.5 w-3.5 text-success" />
-                    Demo-Zahlung – keine echte Belastung
+                    Demo-Modus: 4242 4242 4242 4242 – keine echte Belastung
                   </p>
                 </TabsContent>
 
@@ -549,15 +395,87 @@ export default function Booking() {
                 </TabsContent>
               </Tabs>
 
-              <div className="flex gap-2">
-                <Button variant="outline" onClick={() => setStep("summary")} disabled={submitting}>Zurück</Button>
-                <Button onClick={handlePayment} className="flex-1" size="lg" disabled={submitting}>
-                  {submitting ? "Wird verarbeitet..." : `${eur(grandTotal)} jetzt bezahlen`}
-                </Button>
-              </div>
+              <Button
+                onClick={handlePayment}
+                disabled={!canSubmit || submitting}
+                size="lg"
+                className="w-full text-base"
+              >
+                {submitting
+                  ? "Wird verarbeitet..."
+                  : `${eur(grandTotal || 0)} jetzt bezahlen →`}
+              </Button>
+              <p className="text-xs text-muted-foreground text-center flex items-center justify-center gap-1.5">
+                <Lock className="h-3.5 w-3.5" /> Sichere Zahlung · SSL verschlüsselt · Sofortige Bestätigung
+              </p>
             </CardContent>
           </Card>
-        )}
+        </div>
+
+        {/* LIVE SUMMARY */}
+        <aside className="lg:sticky lg:top-4 self-start">
+          <Card className="shadow-elevated border-primary/20">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <ClipboardList className="h-5 w-5 text-secondary" /> Ihre Buchung
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm">
+              {room ? (
+                <>
+                  <div className="space-y-1">
+                    <div className="font-semibold">Zimmer {room.room_number} · {room.room_type}</div>
+                    <div className="text-muted-foreground text-xs">{room.bed_description}</div>
+                  </div>
+                  <Separator />
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Check-in</span>
+                      <span>{checkIn ? format(checkIn, "dd.MM.yyyy") : "—"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Check-out</span>
+                      <span>{checkOut ? format(checkOut, "dd.MM.yyyy") : "—"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Aufenthalt</span>
+                      <span>{nights > 0 ? `${nights} ${nights === 1 ? "Nacht" : "Nächte"}` : "—"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Personen</span>
+                      <span>{persons}</span>
+                    </div>
+                  </div>
+                  <Separator />
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between">
+                      <span>Zimmer ({nights} × {eur(room.price_per_night)})</span>
+                      <span>{eur(roomTotal)}</span>
+                    </div>
+                    {selectedExtras.map((id) => {
+                      const e = extras.find((x) => x.id === id);
+                      if (!e) return null;
+                      const lineTotal = e.per_night ? e.price * nights : e.price;
+                      return (
+                        <div key={id} className="flex justify-between text-muted-foreground">
+                          <span>{e.name}</span>
+                          <span>{eur(lineTotal)}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <Separator />
+                  <div className="flex justify-between text-lg font-bold">
+                    <span>Gesamt</span>
+                    <span>{eur(grandTotal)}</span>
+                  </div>
+                </>
+              ) : (
+                <p className="text-muted-foreground">Bitte wählen Sie ein Zimmer.</p>
+              )}
+            </CardContent>
+          </Card>
+        </aside>
       </main>
     </div>
   );
