@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import {
   CalendarIcon, Hotel, ArrowLeft, CheckCircle2, CreditCard, Lock,
-  Landmark, ClipboardList, ChevronDown, Loader2, Star,
+  Landmark, ClipboardList, ChevronDown, Loader2, Star, AlertCircle, CheckCircle,
 } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
