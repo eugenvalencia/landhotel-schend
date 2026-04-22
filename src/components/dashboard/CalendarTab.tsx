@@ -52,10 +52,30 @@ const nightsBetween = (inIso: string, outIso: string) =>
     Math.round((new Date(outIso).getTime() - new Date(inIso).getTime()) / 86400000),
   );
 
+type ViewMode = "day" | "week" | "month" | "year";
+
+const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const addDays = (d: Date, n: number) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const addMonths = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth() + n, 1);
+const startOfWeek = (d: Date) => {
+  const x = startOfDay(d);
+  const dow = (x.getDay() + 6) % 7; // Mon=0
+  return addDays(x, -dow);
+};
+const isoWeek = (d: Date) => {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const dow = (t.getUTCDay() + 6) % 7;
+  t.setUTCDate(t.getUTCDate() - dow + 3);
+  const firstThu = new Date(Date.UTC(t.getUTCFullYear(), 0, 4));
+  const diff = (t.getTime() - firstThu.getTime()) / 86400000;
+  return 1 + Math.round((diff - 3 + ((firstThu.getUTCDay() + 6) % 7)) / 7);
+};
+
 export default function CalendarTab() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const [monthOffset, setMonthOffset] = useState(0);
+  const [view, setView] = useState<ViewMode>("month");
+  const [anchor, setAnchor] = useState<Date>(startOfDay(new Date()));
   const [internOpen, setInternOpen] = useState(false);
   const [internForm, setInternForm] = useState({ room_id: "", guest_name: "", check_in: "", check_out: "", notes: "" });
 
@@ -84,14 +104,43 @@ export default function CalendarTab() {
     setEditMode(false);
   }, [selected?.id]);
 
-  const { days, monthLabel } = useMemo(() => {
-    const now = new Date();
-    const ref = new Date(now.getFullYear(), now.getMonth() + monthOffset, 1);
+  const { days, headerLabel } = useMemo(() => {
+    if (view === "day") {
+      return {
+        days: [anchor],
+        headerLabel: anchor.toLocaleDateString("de-DE", { weekday: "long", day: "2-digit", month: "long", year: "numeric" }),
+      };
+    }
+    if (view === "week") {
+      const start = startOfWeek(anchor);
+      const arr = Array.from({ length: 7 }, (_, i) => addDays(start, i));
+      const end = arr[6];
+      return {
+        days: arr,
+        headerLabel: `KW ${isoWeek(start)}: ${formatDateShort(start)} – ${formatDate(end)}`,
+      };
+    }
+    // month
+    const ref = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
     const daysInMonth = new Date(ref.getFullYear(), ref.getMonth() + 1, 0).getDate();
     const arr: Date[] = [];
     for (let i = 1; i <= daysInMonth; i++) arr.push(new Date(ref.getFullYear(), ref.getMonth(), i));
-    return { days: arr, monthLabel: ref.toLocaleDateString("de-DE", { month: "long", year: "numeric" }) };
-  }, [monthOffset]);
+    return { days: arr, headerLabel: ref.toLocaleDateString("de-DE", { month: "long", year: "numeric" }) };
+  }, [view, anchor]);
+
+  const goPrev = () => {
+    if (view === "day") setAnchor((d) => addDays(d, -1));
+    else if (view === "week") setAnchor((d) => addDays(d, -7));
+    else if (view === "month") setAnchor((d) => addMonths(d, -1));
+    else setAnchor((d) => new Date(d.getFullYear() - 1, 0, 1));
+  };
+  const goNext = () => {
+    if (view === "day") setAnchor((d) => addDays(d, 1));
+    else if (view === "week") setAnchor((d) => addDays(d, 7));
+    else if (view === "month") setAnchor((d) => addMonths(d, 1));
+    else setAnchor((d) => new Date(d.getFullYear() + 1, 0, 1));
+  };
+  const goToday = () => setAnchor(startOfDay(new Date()));
 
   const cellState = (roomId: string, day: Date): { type: "free" | "online" | "intern"; booking?: Booking } => {
     const iso = toISODate(day);
@@ -190,12 +239,26 @@ export default function CalendarTab() {
     <div className="space-y-4">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="icon" onClick={() => setMonthOffset((o) => o - 1)}><ChevronLeft className="h-4 w-4" /></Button>
-          <span className="font-semibold text-lg capitalize min-w-[180px] text-center">{monthLabel}</span>
-          <Button variant="outline" size="icon" onClick={() => setMonthOffset((o) => o + 1)}><ChevronRight className="h-4 w-4" /></Button>
-          <Button variant="ghost" size="sm" onClick={() => setMonthOffset(0)}>Heute</Button>
+          <Button variant="outline" size="icon" onClick={goPrev}><ChevronLeft className="h-4 w-4" /></Button>
+          <span className="font-semibold text-lg capitalize min-w-[220px] text-center">{view === "year" ? anchor.getFullYear() : headerLabel}</span>
+          <Button variant="outline" size="icon" onClick={goNext}><ChevronRight className="h-4 w-4" /></Button>
+          <Button variant="ghost" size="sm" onClick={goToday}>Heute</Button>
         </div>
         <div className="flex items-center gap-3 text-xs flex-wrap">
+          <div className="inline-flex rounded-md border bg-card overflow-hidden">
+            {(["day", "week", "month", "year"] as ViewMode[]).map((v) => (
+              <button
+                key={v}
+                onClick={() => setView(v)}
+                className={cn(
+                  "px-3 py-1.5 text-xs font-medium transition-colors",
+                  view === v ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground hover:bg-muted",
+                )}
+              >
+                {v === "day" ? "Tag" : v === "week" ? "Woche" : v === "month" ? "Monat" : "Jahr"}
+              </button>
+            ))}
+          </div>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-free))] border" /> Frei</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-paid))] border" /> Bezahlt</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-intern))] border" /> Intern</span>
@@ -203,45 +266,65 @@ export default function CalendarTab() {
         </div>
       </div>
 
-      <Card className="shadow-card">
-        <CardContent className="p-0 overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead className="bg-muted">
-              <tr>
-                <th className="sticky left-0 bg-muted z-10 text-left font-medium p-2 min-w-[120px] border-b border-r">Zimmer</th>
-                {days.map((d) => (
-                  <th key={d.toISOString()} className={cn("font-medium p-1 text-center min-w-[36px] border-b", (d.getDay() === 0 || d.getDay() === 6) && "bg-accent/40")}>
-                    <div className="text-[10px] text-muted-foreground uppercase">{d.toLocaleDateString("de-DE", { weekday: "short" }).slice(0, 2)}</div>
-                    <div>{d.getDate()}</div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rooms.map((r) => (
-                <tr key={r.id}>
-                  <td className="sticky left-0 bg-card z-10 p-2 font-medium border-b border-r whitespace-nowrap">{r.name}</td>
-                  {days.map((d) => {
-                    const s = cellState(r.id, d);
-                    const cls =
-                      s.type === "free" ? "bg-[hsl(var(--cal-free))]" :
-                      s.type === "online" ? "bg-[hsl(var(--cal-paid))] hover:brightness-95 cursor-pointer" :
-                      "bg-[hsl(var(--cal-intern))] hover:brightness-95 cursor-pointer";
-                    return (
-                      <td
-                        key={d.toISOString()}
-                        className={cn("border-b border-r/50 h-9 text-center align-middle transition", cls)}
-                        title={s.booking ? `${s.booking.guest_name} (${formatDateShort(s.booking.check_in)}–${formatDateShort(s.booking.check_out)})` : "Frei"}
-                        onClick={() => s.booking && setSelected(s.booking)}
-                      />
-                    );
-                  })}
+      {view === "year" ? (
+        <YearGrid
+          year={anchor.getFullYear()}
+          rooms={rooms}
+          bookings={bookings}
+          onPickMonth={(m) => { setAnchor(new Date(anchor.getFullYear(), m, 1)); setView("month"); }}
+        />
+      ) : (
+        <Card className="shadow-card">
+          <CardContent className="p-0 overflow-x-auto">
+            {view === "week" && (
+              <div className="px-3 py-2 border-b bg-muted/50 text-xs font-bold tracking-wide">
+                KW {isoWeek(days[0])}
+              </div>
+            )}
+            <table className="w-full text-xs">
+              <thead className="bg-muted">
+                <tr>
+                  <th className="sticky left-0 bg-muted z-10 text-left font-medium p-2 min-w-[120px] border-b border-r">Zimmer</th>
+                  {days.map((d) => (
+                    <th key={d.toISOString()} className={cn("font-medium p-1 text-center border-b", view === "day" ? "min-w-[420px]" : view === "week" ? "min-w-[110px]" : "min-w-[36px]", (d.getDay() === 0 || d.getDay() === 6) && "bg-accent/40")}>
+                      <div className="text-[10px] text-muted-foreground uppercase">{d.toLocaleDateString("de-DE", { weekday: "short" }).slice(0, 2)}</div>
+                      <div>{d.getDate()}{view !== "month" && <span className="text-muted-foreground font-normal">.{String(d.getMonth() + 1).padStart(2, "0")}</span>}</div>
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </CardContent>
-      </Card>
+              </thead>
+              <tbody>
+                {rooms.map((r) => (
+                  <tr key={r.id}>
+                    <td className="sticky left-0 bg-card z-10 p-2 font-medium border-b border-r whitespace-nowrap">{r.name}</td>
+                    {days.map((d) => {
+                      const s = cellState(r.id, d);
+                      const cls =
+                        s.type === "free" ? "bg-[hsl(var(--cal-free))]" :
+                        s.type === "online" ? "bg-[hsl(var(--cal-paid))] hover:brightness-95 cursor-pointer" :
+                        "bg-[hsl(var(--cal-intern))] hover:brightness-95 cursor-pointer";
+                      return (
+                        <td
+                          key={d.toISOString()}
+                          className={cn("border-b border-r/50 text-center align-middle transition", view === "day" ? "h-12" : "h-9", cls)}
+                          title={s.booking ? `${s.booking.guest_name} (${formatDateShort(s.booking.check_in)}–${formatDateShort(s.booking.check_out)})` : "Frei"}
+                          onClick={() => s.booking && setSelected(s.booking)}
+                        >
+                          {s.booking && (view === "day" || view === "week") && (
+                            <span className="text-[11px] font-medium text-foreground/80 px-1 truncate">
+                              {s.booking.guest_name}
+                            </span>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </CardContent>
+        </Card>
+      )}
 
       {/* INTERN */}
       <Dialog open={internOpen} onOpenChange={setInternOpen}>
@@ -475,6 +558,71 @@ export default function CalendarTab() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+    </div>
+  );
+}
+
+function YearGrid({
+  year,
+  rooms,
+  bookings,
+  onPickMonth,
+}: {
+  year: number;
+  rooms: Room[];
+  bookings: Booking[];
+  onPickMonth: (monthIndex: number) => void;
+}) {
+  const months = Array.from({ length: 12 }, (_, m) => {
+    const daysInMonth = new Date(year, m + 1, 0).getDate();
+    const totalSlots = daysInMonth * Math.max(1, rooms.length);
+    let paid = 0;
+    let intern = 0;
+    for (let day = 1; day <= daysInMonth; day++) {
+      const iso = toISODate(new Date(year, m, day));
+      for (const r of rooms) {
+        const b = bookings.find(
+          (x) => x.room_id === r.id && x.payment_status !== "cancelled" && x.check_in <= iso && x.check_out > iso,
+        );
+        if (b) {
+          if (b.booking_type === "intern") intern++;
+          else paid++;
+        }
+      }
+    }
+    const free = totalSlots - paid - intern;
+    return { m, daysInMonth, paid, intern, free, totalSlots };
+  });
+
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      {months.map(({ m, paid, intern, free, totalSlots }) => {
+        const label = new Date(year, m, 1).toLocaleDateString("de-DE", { month: "long" });
+        const pct = (n: number) => (totalSlots ? (n / totalSlots) * 100 : 0);
+        return (
+          <Card
+            key={m}
+            className="shadow-card cursor-pointer hover:shadow-elegant transition-shadow"
+            onClick={() => onPickMonth(m)}
+          >
+            <CardContent className="p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="font-semibold capitalize">{label}</div>
+                <div className="text-xs text-muted-foreground">{paid + intern} belegt</div>
+              </div>
+              <div className="flex h-2 overflow-hidden rounded-full bg-[hsl(var(--cal-free))]">
+                <div className="bg-[hsl(var(--cal-paid))]" style={{ width: `${pct(paid)}%` }} />
+                <div className="bg-[hsl(var(--cal-intern))]" style={{ width: `${pct(intern)}%` }} />
+              </div>
+              <div className="flex justify-between text-[11px] text-muted-foreground">
+                <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-paid))]" />{paid}</span>
+                <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-intern))]" />{intern}</span>
+                <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-free))] border" />{free}</span>
+              </div>
+            </CardContent>
+          </Card>
+        );
+      })}
     </div>
   );
 }
