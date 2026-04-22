@@ -8,14 +8,13 @@ import OverviewTab from "@/components/dashboard/OverviewTab";
 import CalendarTab from "@/components/dashboard/CalendarTab";
 import BookingsTab from "@/components/dashboard/BookingsTab";
 import GuestsTab from "@/components/dashboard/GuestsTab";
-import RoomsTab from "@/components/dashboard/RoomsTab";
 import RevenueTab from "@/components/dashboard/RevenueTab";
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const logout = async () => {
     await supabase.auth.signOut();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -41,7 +40,6 @@ export default function Dashboard() {
                 <TabsTrigger value="calendar">Kalender</TabsTrigger>
                 <TabsTrigger value="bookings">Buchungen</TabsTrigger>
                 <TabsTrigger value="guests">Gäste</TabsTrigger>
-                <TabsTrigger value="rooms">Zimmer verwalten</TabsTrigger>
                 <TabsTrigger value="revenue">Einnahmen</TabsTrigger>
               </TabsList>
             </div>
@@ -49,7 +47,6 @@ export default function Dashboard() {
             <TabsContent value="calendar"><CalendarTab /></TabsContent>
             <TabsContent value="bookings"><BookingsTab /></TabsContent>
             <TabsContent value="guests"><GuestsTab /></TabsContent>
-            <TabsContent value="rooms"><RoomsTab /></TabsContent>
             <TabsContent value="revenue"><RevenueTab /></TabsContent>
           </Tabs>
         </main>

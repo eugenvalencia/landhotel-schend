@@ -52,6 +52,17 @@ export default function SiteFooter() {
             <Link to="/datenschutz" className="hover:text-secondary">Datenschutz</Link>
           </div>
         </div>
+        <div className="container mx-auto px-4 pb-4 text-center text-xs text-primary-foreground/60">
+          Website erstellt von{" "}
+          <a
+            href="https://www.conexadigital.eu"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-secondary underline-offset-2 hover:underline"
+          >
+            CONEXA DIGITAL
+          </a>
+        </div>
       </div>
     </footer>
   );
