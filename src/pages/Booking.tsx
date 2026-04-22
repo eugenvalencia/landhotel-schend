@@ -23,6 +23,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { eur, nightsBetween, toISODate } from "@/lib/format";
+import { photoForRoomType } from "@/lib/photos";
+import { saveBookingConfirmation } from "@/lib/bookingConfirmation";
 import { cn } from "@/lib/utils";
 
 type Room = {
@@ -120,7 +122,7 @@ export default function Booking() {
     }
     const g = guestSchema.safeParse(guest);
     if (!g.success) {
-      toast.error(g.error.errors[0].message);
+      toast.error(g.error.issues[0]?.message ?? "Bitte prüfen Sie Ihre Eingaben");
       return;
     }
     setSubmitting(true);
@@ -157,14 +159,42 @@ export default function Booking() {
         .select()
         .single();
       if (bErr) throw bErr;
-      if (!b?.booking_number) throw new Error("Buchungsnummer fehlt");
 
-      const remainingMs = 2000 - (Date.now() - startedAt);
+      const confirmationExtras = extrasPayload.map((extra) => ({
+        id: extra.id,
+        name: extra.name,
+        price: Number(extra.price),
+        perNight: extra.per_night,
+        total: extra.per_night ? Number(extra.price) * nights : Number(extra.price),
+      }));
+
+      saveBookingConfirmation({
+        bookingNumber: b?.booking_number ?? `LS-${new Date().toISOString().slice(2, 10).replace(/-/g, "")}`,
+        guestName: guest.name,
+        guestEmail: guest.email,
+        guestPhone: guest.phone,
+        checkIn: toISODate(checkIn),
+        checkOut: toISODate(checkOut),
+        nights,
+        persons,
+        roomName: room.name,
+        roomType: room.room_type,
+        roomNumber: room.room_number,
+        roomPrice: Number(room.price_per_night),
+        roomPhoto: room.photos?.[0] || photoForRoomType(room.room_type),
+        roomSubtotal: roomTotal,
+        extras: confirmationExtras,
+        extrasTotal,
+        totalPrice: grandTotal,
+        notes: notes.trim() || null,
+      });
+
+      const remainingMs = 1200 - (Date.now() - startedAt);
       if (remainingMs > 0) {
         await new Promise((resolve) => setTimeout(resolve, remainingMs));
       }
       toast.success("Buchung bestätigt!");
-      navigate(`/confirmation/${b.booking_number}`);
+      navigate("/booking-confirmation");
     } catch (e: any) {
       console.error("Booking failed:", e);
       toast.error("Buchung fehlgeschlagen: " + (e?.message ?? "Unbekannter Fehler"));
