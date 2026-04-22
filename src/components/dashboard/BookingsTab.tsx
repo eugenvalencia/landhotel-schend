@@ -79,7 +79,12 @@ export default function BookingsTab() {
             <CardContent className="p-4 space-y-2">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <div className="font-semibold">{b.guest_name}</div>
+                  <button
+                    onClick={() => setProfileGuest({ name: b.guest_name, email: b.guest_email })}
+                    className="font-semibold text-left hover:text-secondary hover:underline transition-colors"
+                  >
+                    {b.guest_name}
+                  </button>
                   <div className="text-xs font-mono text-muted-foreground">{b.booking_number}</div>
                 </div>
                 <Badge variant={b.payment_status === "paid" ? "default" : b.payment_status === "cancelled" ? "destructive" : "secondary"}>
