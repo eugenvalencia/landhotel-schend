@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { eur, formatDate } from "@/lib/format";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
+import GuestProfileDialog from "./GuestProfileDialog";
 
 export default function BookingsTab() {
   const [bookings, setBookings] = useState<any[]>([]);
@@ -16,6 +17,7 @@ export default function BookingsTab() {
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [filterType, setFilterType] = useState<string>("all");
   const [search, setSearch] = useState("");
+  const [profileGuest, setProfileGuest] = useState<{ name: string; email?: string | null } | null>(null);
 
   const load = async () => {
     const [{ data: b }, { data: r }] = await Promise.all([
