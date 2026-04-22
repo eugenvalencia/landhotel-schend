@@ -8,6 +8,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { eur } from "@/lib/format";
 import { HotelImage } from "@/components/HotelImage";
+import ReviewsSection from "@/components/ReviewsSection";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_GALLERY, photoForRoomType,
 } from "@/lib/photos";
@@ -167,6 +168,9 @@ const Index = () => {
           </Button>
         </div>
       </section>
+
+      {/* REVIEWS */}
+      <ReviewsSection />
 
       {/* RESTAURANT */}
       <section className="bg-muted">
