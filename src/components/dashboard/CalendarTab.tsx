@@ -506,17 +506,10 @@ export default function CalendarTab() {
           </div>
           <DialogFooter className="flex-wrap gap-2 sm:gap-2">
             <Button variant="ghost" onClick={() => setQuickOpen(false)}>Abbrechen</Button>
-            <Button
-              variant="outline"
-              disabled={quickSaving}
-              onClick={() => { setQuickForm({ ...quickForm, type: "intern" }); setTimeout(submitQuick, 0); }}
-            >
+            <Button variant="outline" disabled={quickSaving} onClick={() => submitQuick("intern")}>
               Intern eintragen
             </Button>
-            <Button
-              disabled={quickSaving}
-              onClick={() => { setQuickForm({ ...quickForm, type: "online" }); setTimeout(submitQuick, 0); }}
-            >
+            <Button disabled={quickSaving} onClick={() => submitQuick("online")}>
               Online-Buchung
             </Button>
           </DialogFooter>
