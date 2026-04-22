@@ -164,7 +164,36 @@ export default function Booking() {
       .eq("active", true)
       .order("sort_order")
       .then(({ data }) => setExtras((data as any) ?? []));
+    supabase
+      .from("bookings")
+      .select("room_id,check_in,check_out,payment_status")
+      .neq("payment_status", "cancelled")
+      .then(({ data }) => setAllBookings((data as any[]) ?? []));
   }, [roomIdParam]);
+
+  // Refresh per-room bookings whenever the selected room changes
+  useEffect(() => {
+    if (!room) { setRoomBookings([]); return; }
+    setRoomBookings(
+      allBookings
+        .filter((b) => b.room_id === room.id)
+        .map((b) => ({ check_in: b.check_in, check_out: b.check_out }))
+    );
+    // Reset chosen dates if they conflict with newly loaded room
+    if (checkIn && checkOut) {
+      const inIso = toISODate(checkIn);
+      const outIso = toISODate(checkOut);
+      const conflict = allBookings.some(
+        (b) => b.room_id === room.id && b.check_in < outIso && b.check_out > inIso
+      );
+      if (conflict) {
+        setCheckIn(undefined);
+        setCheckOut(undefined);
+        toast.info("Die zuvor gewählten Daten sind für dieses Zimmer nicht verfügbar.");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [room?.id, allBookings]);
 
   const UPSELLS = useMemo(() => [
     { id: "ups-suite", name: "Suite-Upgrade", price: 30, perNight: true, desc: "Upgrade in eine Suite (sofern verfügbar)" },
