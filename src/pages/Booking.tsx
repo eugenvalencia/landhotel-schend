@@ -40,7 +40,7 @@ type Extra = {
   per_night: boolean;
 };
 
-type Step = "dates" | "room" | "extras" | "guest" | "payment";
+type Step = "dates" | "room" | "extras" | "guest" | "summary" | "payment";
 
 const guestSchema = z.object({
   name: z.string().trim().min(2, "Name muss mind. 2 Zeichen haben").max(120),
@@ -117,7 +117,7 @@ export default function Booking() {
       toast.error(result.error.errors[0].message);
       return;
     }
-    setStep("payment");
+    setStep("summary");
   };
 
   const handlePayment = async () => {
@@ -191,7 +191,8 @@ export default function Booking() {
             ["room", "2. Zimmer"],
             ["extras", "3. Extras"],
             ["guest", "4. Gastdaten"],
-            ["payment", "5. Zahlung"],
+            ["summary", "5. Übersicht"],
+            ["payment", "6. Zahlung"],
           ].map(([k, label]) => (
             <Badge
               key={k}
