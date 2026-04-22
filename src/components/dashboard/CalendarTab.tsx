@@ -52,10 +52,30 @@ const nightsBetween = (inIso: string, outIso: string) =>
     Math.round((new Date(outIso).getTime() - new Date(inIso).getTime()) / 86400000),
   );
 
+type ViewMode = "day" | "week" | "month" | "year";
+
+const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const addDays = (d: Date, n: number) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const addMonths = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth() + n, 1);
+const startOfWeek = (d: Date) => {
+  const x = startOfDay(d);
+  const dow = (x.getDay() + 6) % 7; // Mon=0
+  return addDays(x, -dow);
+};
+const isoWeek = (d: Date) => {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const dow = (t.getUTCDay() + 6) % 7;
+  t.setUTCDate(t.getUTCDate() - dow + 3);
+  const firstThu = new Date(Date.UTC(t.getUTCFullYear(), 0, 4));
+  const diff = (t.getTime() - firstThu.getTime()) / 86400000;
+  return 1 + Math.round((diff - 3 + ((firstThu.getUTCDay() + 6) % 7)) / 7);
+};
+
 export default function CalendarTab() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const [monthOffset, setMonthOffset] = useState(0);
+  const [view, setView] = useState<ViewMode>("month");
+  const [anchor, setAnchor] = useState<Date>(startOfDay(new Date()));
   const [internOpen, setInternOpen] = useState(false);
   const [internForm, setInternForm] = useState({ room_id: "", guest_name: "", check_in: "", check_out: "", notes: "" });
 
