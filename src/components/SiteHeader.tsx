@@ -112,12 +112,41 @@ export default function SiteHeader() {
   );
 }
 
+const FlagDE = () => (
+  <svg viewBox="0 0 5 3" className="w-full h-full block" preserveAspectRatio="none" aria-hidden>
+    <rect width="5" height="1" y="0" fill="#000" />
+    <rect width="5" height="1" y="1" fill="#DD0000" />
+    <rect width="5" height="1" y="2" fill="#FFCE00" />
+  </svg>
+);
+
+const FlagGB = () => (
+  <svg viewBox="0 0 60 30" className="w-full h-full block" preserveAspectRatio="none" aria-hidden>
+    <clipPath id="gb-c"><rect width="60" height="30" /></clipPath>
+    <g clipPath="url(#gb-c)">
+      <rect width="60" height="30" fill="#012169" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4" clipPath="url(#gb-c)" />
+      <path d="M30,0 V30 M0,15 H60" stroke="#fff" strokeWidth="10" />
+      <path d="M30,0 V30 M0,15 H60" stroke="#C8102E" strokeWidth="6" />
+    </g>
+  </svg>
+);
+
+const FlagFR = () => (
+  <svg viewBox="0 0 3 2" className="w-full h-full block" preserveAspectRatio="none" aria-hidden>
+    <rect width="1" height="2" x="0" fill="#0055A4" />
+    <rect width="1" height="2" x="1" fill="#fff" />
+    <rect width="1" height="2" x="2" fill="#EF4135" />
+  </svg>
+);
+
 function LanguageSwitcher() {
   const [lang, setLang] = useState("DE");
   const langs = [
-    { code: "DE", flag: "🇩🇪", name: "Deutsch" },
-    { code: "EN", flag: "🇬🇧", name: "English" },
-    { code: "FR", flag: "🇫🇷", name: "Français" },
+    { code: "DE", name: "Deutsch", Flag: FlagDE },
+    { code: "EN", name: "English", Flag: FlagGB },
+    { code: "FR", name: "Français", Flag: FlagFR },
   ];
   return (
     <div className="ml-2 flex items-center gap-2">
@@ -133,11 +162,11 @@ function LanguageSwitcher() {
             aria-label={l.name}
             title={l.name}
             className={cn(
-              "h-6 w-6 flex items-center justify-center text-xl leading-none rounded-full transition-all duration-200 hover:scale-110 hover:shadow-md",
+              "h-5 w-7 overflow-hidden rounded-sm border border-border transition-all duration-200 hover:scale-110 hover:shadow-md",
               active && "ring-2 ring-secondary ring-offset-2 ring-offset-background shadow-md"
             )}
           >
-            <span className="block">{l.flag}</span>
+            <l.Flag />
           </button>
         );
       })}
