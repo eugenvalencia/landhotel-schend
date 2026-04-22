@@ -266,45 +266,65 @@ export default function CalendarTab() {
         </div>
       </div>
 
-      <Card className="shadow-card">
-        <CardContent className="p-0 overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead className="bg-muted">
-              <tr>
-                <th className="sticky left-0 bg-muted z-10 text-left font-medium p-2 min-w-[120px] border-b border-r">Zimmer</th>
-                {days.map((d) => (
-                  <th key={d.toISOString()} className={cn("font-medium p-1 text-center min-w-[36px] border-b", (d.getDay() === 0 || d.getDay() === 6) && "bg-accent/40")}>
-                    <div className="text-[10px] text-muted-foreground uppercase">{d.toLocaleDateString("de-DE", { weekday: "short" }).slice(0, 2)}</div>
-                    <div>{d.getDate()}</div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rooms.map((r) => (
-                <tr key={r.id}>
-                  <td className="sticky left-0 bg-card z-10 p-2 font-medium border-b border-r whitespace-nowrap">{r.name}</td>
-                  {days.map((d) => {
-                    const s = cellState(r.id, d);
-                    const cls =
-                      s.type === "free" ? "bg-[hsl(var(--cal-free))]" :
-                      s.type === "online" ? "bg-[hsl(var(--cal-paid))] hover:brightness-95 cursor-pointer" :
-                      "bg-[hsl(var(--cal-intern))] hover:brightness-95 cursor-pointer";
-                    return (
-                      <td
-                        key={d.toISOString()}
-                        className={cn("border-b border-r/50 h-9 text-center align-middle transition", cls)}
-                        title={s.booking ? `${s.booking.guest_name} (${formatDateShort(s.booking.check_in)}–${formatDateShort(s.booking.check_out)})` : "Frei"}
-                        onClick={() => s.booking && setSelected(s.booking)}
-                      />
-                    );
-                  })}
+      {view === "year" ? (
+        <YearGrid
+          year={anchor.getFullYear()}
+          rooms={rooms}
+          bookings={bookings}
+          onPickMonth={(m) => { setAnchor(new Date(anchor.getFullYear(), m, 1)); setView("month"); }}
+        />
+      ) : (
+        <Card className="shadow-card">
+          <CardContent className="p-0 overflow-x-auto">
+            {view === "week" && (
+              <div className="px-3 py-2 border-b bg-muted/50 text-xs font-bold tracking-wide">
+                KW {isoWeek(days[0])}
+              </div>
+            )}
+            <table className="w-full text-xs">
+              <thead className="bg-muted">
+                <tr>
+                  <th className="sticky left-0 bg-muted z-10 text-left font-medium p-2 min-w-[120px] border-b border-r">Zimmer</th>
+                  {days.map((d) => (
+                    <th key={d.toISOString()} className={cn("font-medium p-1 text-center border-b", view === "day" ? "min-w-[420px]" : view === "week" ? "min-w-[110px]" : "min-w-[36px]", (d.getDay() === 0 || d.getDay() === 6) && "bg-accent/40")}>
+                      <div className="text-[10px] text-muted-foreground uppercase">{d.toLocaleDateString("de-DE", { weekday: "short" }).slice(0, 2)}</div>
+                      <div>{d.getDate()}{view !== "month" && <span className="text-muted-foreground font-normal">.{String(d.getMonth() + 1).padStart(2, "0")}</span>}</div>
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </CardContent>
-      </Card>
+              </thead>
+              <tbody>
+                {rooms.map((r) => (
+                  <tr key={r.id}>
+                    <td className="sticky left-0 bg-card z-10 p-2 font-medium border-b border-r whitespace-nowrap">{r.name}</td>
+                    {days.map((d) => {
+                      const s = cellState(r.id, d);
+                      const cls =
+                        s.type === "free" ? "bg-[hsl(var(--cal-free))]" :
+                        s.type === "online" ? "bg-[hsl(var(--cal-paid))] hover:brightness-95 cursor-pointer" :
+                        "bg-[hsl(var(--cal-intern))] hover:brightness-95 cursor-pointer";
+                      return (
+                        <td
+                          key={d.toISOString()}
+                          className={cn("border-b border-r/50 text-center align-middle transition", view === "day" ? "h-12" : "h-9", cls)}
+                          title={s.booking ? `${s.booking.guest_name} (${formatDateShort(s.booking.check_in)}–${formatDateShort(s.booking.check_out)})` : "Frei"}
+                          onClick={() => s.booking && setSelected(s.booking)}
+                        >
+                          {s.booking && (view === "day" || view === "week") && (
+                            <span className="text-[11px] font-medium text-foreground/80 px-1 truncate">
+                              {s.booking.guest_name}
+                            </span>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </CardContent>
+        </Card>
+      )}
 
       {/* INTERN */}
       <Dialog open={internOpen} onOpenChange={setInternOpen}>
