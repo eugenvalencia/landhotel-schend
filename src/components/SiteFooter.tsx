@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Hotel, Phone, Mail, MapPin } from "lucide-react";
+import { Hotel, Phone, Mail, MapPin, Star } from "lucide-react";
 
 export default function SiteFooter() {
   return (
