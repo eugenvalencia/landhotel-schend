@@ -59,7 +59,7 @@ const addDays = (d: Date, n: number) => { const x = new Date(d); x.setDate(x.get
 const addMonths = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth() + n, 1);
 const startOfWeek = (d: Date) => {
   const x = startOfDay(d);
-  const dow = (x.getDay() + 6) % 7; // Mon=0
+  const dow = (x.getDay() + 6) % 7;
   return addDays(x, -dow);
 };
 const isoWeek = (d: Date) => {
@@ -71,6 +71,17 @@ const isoWeek = (d: Date) => {
   return 1 + Math.round((diff - 3 + ((firstThu.getUTCDay() + 6) % 7)) / 7);
 };
 
+const initialQuick = {
+  room_id: "",
+  guest_name: "",
+  guest_email: "",
+  guest_phone: "",
+  check_in: "",
+  check_out: "",
+  notes: "",
+  type: "online" as "online" | "intern",
+};
+
 export default function CalendarTab() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -79,12 +90,22 @@ export default function CalendarTab() {
   const [internOpen, setInternOpen] = useState(false);
   const [internForm, setInternForm] = useState({ room_id: "", guest_name: "", check_in: "", check_out: "", notes: "" });
 
+  // Quick-booking
+  const [quickOpen, setQuickOpen] = useState(false);
+  const [quickForm, setQuickForm] = useState(initialQuick);
+  const [quickSaving, setQuickSaving] = useState(false);
+
+  // Drag selection
+  const [dragStart, setDragStart] = useState<{ roomId: string; date: Date } | null>(null);
+  const [dragEnd, setDragEnd] = useState<Date | null>(null);
+
   const [selected, setSelected] = useState<Booking | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [editForm, setEditForm] = useState({ check_in: "", check_out: "", notes: "" });
   const [staffNotes, setStaffNotes] = useState("");
   const [savingNotes, setSavingNotes] = useState(false);
   const [confirmCancel, setConfirmCancel] = useState(false);
+
 
   const loadAll = async () => {
     const [{ data: r }, { data: b }] = await Promise.all([
@@ -180,6 +201,69 @@ export default function CalendarTab() {
     loadAll();
   };
 
+  // Quick booking helpers
+  const openQuickFor = (roomId: string, from: Date, to?: Date) => {
+    const checkIn = toISODate(from);
+    const checkOut = toISODate(to ? addDays(to, 1) : addDays(from, 1));
+    setQuickForm({ ...initialQuick, room_id: roomId, check_in: checkIn, check_out: checkOut, type: "online" });
+    setQuickOpen(true);
+  };
+
+  const submitQuick = async (asType?: "online" | "intern") => {
+    const type = asType ?? quickForm.type;
+    if (!quickForm.room_id || !quickForm.guest_name || !quickForm.check_in || !quickForm.check_out) {
+      toast.error("Bitte Zimmer, Name und Daten ausfüllen");
+      return;
+    }
+    if (quickForm.check_out <= quickForm.check_in) {
+      toast.error("Abreise muss nach Anreise liegen");
+      return;
+    }
+    const r = rooms.find((x) => x.id === quickForm.room_id);
+    const n = nightsBetween(quickForm.check_in, quickForm.check_out);
+    const total = type === "intern" ? 0 : Number(r?.price_per_night ?? 0) * n;
+
+    setQuickSaving(true);
+    const { error } = await supabase.from("bookings").insert({
+      room_id: quickForm.room_id,
+      guest_name: quickForm.guest_name,
+      guest_email: quickForm.guest_email || null,
+      guest_phone: quickForm.guest_phone || null,
+      check_in: quickForm.check_in,
+      check_out: quickForm.check_out,
+      total_price: total,
+      booking_type: type,
+      payment_status: "paid",
+      notes: quickForm.notes || null,
+    });
+    setQuickSaving(false);
+    if (error) { toast.error("Fehler: " + error.message); return; }
+    toast.success(type === "intern" ? "Interne Buchung erstellt" : "Buchung erstellt");
+    setQuickOpen(false);
+    setQuickForm(initialQuick);
+    loadAll();
+  };
+
+  // Drag selection
+  const isInDrag = (roomId: string, date: Date) => {
+    if (!dragStart || dragStart.roomId !== roomId || !dragEnd) return false;
+    const a = Math.min(dragStart.date.getTime(), dragEnd.getTime());
+    const b = Math.max(dragStart.date.getTime(), dragEnd.getTime());
+    const t = date.getTime();
+    return t >= a && t <= b;
+  };
+  const finishDrag = () => {
+    if (dragStart && dragEnd) {
+      const a = dragStart.date.getTime() <= dragEnd.getTime() ? dragStart.date : dragEnd;
+      const b = dragStart.date.getTime() <= dragEnd.getTime() ? dragEnd : dragStart.date;
+      openQuickFor(dragStart.roomId, a, b);
+    } else if (dragStart) {
+      openQuickFor(dragStart.roomId, dragStart.date);
+    }
+    setDragStart(null);
+    setDragEnd(null);
+  };
+
   const room = selected ? rooms.find((r) => r.id === selected.room_id) : null;
   const nights = selected ? nightsBetween(selected.check_in, selected.check_out) : 0;
   const roomPrice = room?.price_per_night ? Number(room.price_per_night) : 0;
@@ -262,6 +346,9 @@ export default function CalendarTab() {
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-free))] border" /> Frei</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-paid))] border" /> Bezahlt</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-intern))] border" /> Intern</span>
+          <Button size="sm" variant="outline" onClick={() => { setQuickForm(initialQuick); setQuickOpen(true); }}>
+            <Plus className="h-4 w-4" /> Neue Buchung
+          </Button>
           <Button size="sm" onClick={() => setInternOpen(true)}><Plus className="h-4 w-4" /> Intern eintragen</Button>
         </div>
       </div>
@@ -281,10 +368,14 @@ export default function CalendarTab() {
                 KW {isoWeek(days[0])}
               </div>
             )}
-            <table className="w-full text-xs">
+            <table
+              className="w-full text-xs select-none"
+              onMouseUp={finishDrag}
+              onMouseLeave={() => { if (dragStart) finishDrag(); }}
+            >
               <thead className="bg-muted">
                 <tr>
-                  <th className="sticky left-0 bg-muted z-10 text-left font-medium p-2 min-w-[120px] border-b border-r">Zimmer</th>
+                  <th className="sticky left-0 bg-muted z-10 text-left font-medium p-2 min-w-[200px] border-b border-r">Zimmer</th>
                   {days.map((d) => (
                     <th key={d.toISOString()} className={cn("font-medium p-1 text-center border-b", view === "day" ? "min-w-[420px]" : view === "week" ? "min-w-[110px]" : "min-w-[36px]", (d.getDay() === 0 || d.getDay() === 6) && "bg-accent/40")}>
                       <div className="text-[10px] text-muted-foreground uppercase">{d.toLocaleDateString("de-DE", { weekday: "short" }).slice(0, 2)}</div>
@@ -296,23 +387,42 @@ export default function CalendarTab() {
               <tbody>
                 {rooms.map((r) => (
                   <tr key={r.id}>
-                    <td className="sticky left-0 bg-card z-10 p-2 font-medium border-b border-r whitespace-nowrap">{r.name}</td>
+                    <td className="sticky left-0 bg-card z-10 p-2 font-medium border-b border-r whitespace-nowrap">
+                      <div>Zimmer {r.room_number}</div>
+                      {r.room_type && <div className="text-[10px] text-muted-foreground font-normal">{r.room_type}</div>}
+                    </td>
                     {days.map((d) => {
                       const s = cellState(r.id, d);
+                      const dragHL = isInDrag(r.id, d);
                       const cls =
-                        s.type === "free" ? "bg-[hsl(var(--cal-free))]" :
-                        s.type === "online" ? "bg-[hsl(var(--cal-paid))] hover:brightness-95 cursor-pointer" :
+                        s.type === "free" ? cn("bg-[hsl(var(--cal-free))] hover:brightness-95 cursor-pointer", dragHL && "bg-secondary/40") :
+                        s.type === "online" ? "bg-[hsl(var(--cal-paid))] hover:brightness-95 cursor-pointer text-primary-foreground" :
                         "bg-[hsl(var(--cal-intern))] hover:brightness-95 cursor-pointer";
+                      const showLabel = !!s.booking && (
+                        view === "day" || view === "week" ||
+                        toISODate(d) === s.booking.check_in
+                      );
                       return (
                         <td
                           key={d.toISOString()}
-                          className={cn("border-b border-r/50 text-center align-middle transition", view === "day" ? "h-12" : "h-9", cls)}
-                          title={s.booking ? `${s.booking.guest_name} (${formatDateShort(s.booking.check_in)}–${formatDateShort(s.booking.check_out)})` : "Frei"}
-                          onClick={() => s.booking && setSelected(s.booking)}
+                          className={cn("border-b border-r/50 text-center align-middle transition px-1", view === "day" ? "h-12" : "h-9", cls)}
+                          title={s.booking ? `${s.booking.guest_name} · Zimmer ${r.room_number} (${formatDateShort(s.booking.check_in)}–${formatDateShort(s.booking.check_out)})` : `Frei · Klicken zum Buchen`}
+                          onMouseDown={() => {
+                            if (s.booking) return;
+                            setDragStart({ roomId: r.id, date: d });
+                            setDragEnd(d);
+                          }}
+                          onMouseEnter={() => {
+                            if (dragStart && dragStart.roomId === r.id) setDragEnd(d);
+                          }}
+                          onClick={() => {
+                            if (s.booking) setSelected(s.booking);
+                          }}
                         >
-                          {s.booking && (view === "day" || view === "week") && (
-                            <span className="text-[11px] font-medium text-foreground/80 px-1 truncate">
-                              {s.booking.guest_name}
+                          {showLabel && s.booking && (
+                            <span className="text-[10px] font-medium truncate block leading-tight">
+                              {s.booking.guest_name.split(" ").map((p, i, a) => i === a.length - 1 || a.length === 1 ? p : `${p[0]}.`).join(" ")}
+                              <span className="opacity-75"> #{r.room_number}</span>
                             </span>
                           )}
                         </td>
@@ -325,6 +435,86 @@ export default function CalendarTab() {
           </CardContent>
         </Card>
       )}
+
+      {/* INTERN */}
+      {/* QUICK BOOKING */}
+      <Dialog open={quickOpen} onOpenChange={(o) => { setQuickOpen(o); if (!o) setQuickForm(initialQuick); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Neue Buchung</DialogTitle>
+            <DialogDescription>
+              {quickForm.check_in && quickForm.check_out && (
+                <>
+                  {formatDateShort(quickForm.check_in)} – {formatDateShort(quickForm.check_out)}
+                  {" · "}
+                  {nightsBetween(quickForm.check_in, quickForm.check_out)}{" "}
+                  {nightsBetween(quickForm.check_in, quickForm.check_out) === 1 ? "Nacht" : "Nächte"}
+                </>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div>
+              <Label>Zimmer</Label>
+              <Select value={quickForm.room_id} onValueChange={(v) => setQuickForm({ ...quickForm, room_id: v })}>
+                <SelectTrigger className="mt-1.5"><SelectValue placeholder="Zimmer wählen" /></SelectTrigger>
+                <SelectContent>
+                  {rooms.map((r) => (
+                    <SelectItem key={r.id} value={r.id}>
+                      Zimmer {r.room_number}{r.room_type ? ` · ${r.room_type}` : ""}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Gastname</Label>
+              <Input className="mt-1.5" value={quickForm.guest_name} onChange={(e) => setQuickForm({ ...quickForm, guest_name: e.target.value })} placeholder="Vor- und Nachname" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>E-Mail</Label>
+                <Input className="mt-1.5" type="email" value={quickForm.guest_email} onChange={(e) => setQuickForm({ ...quickForm, guest_email: e.target.value })} />
+              </div>
+              <div>
+                <Label>Telefon</Label>
+                <Input className="mt-1.5" value={quickForm.guest_phone} onChange={(e) => setQuickForm({ ...quickForm, guest_phone: e.target.value })} />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Anreise</Label>
+                <Input className="mt-1.5" type="date" value={quickForm.check_in} onChange={(e) => setQuickForm({ ...quickForm, check_in: e.target.value })} />
+              </div>
+              <div>
+                <Label>Abreise</Label>
+                <Input className="mt-1.5" type="date" value={quickForm.check_out} onChange={(e) => setQuickForm({ ...quickForm, check_out: e.target.value })} />
+              </div>
+            </div>
+            <div>
+              <Label>Notiz</Label>
+              <Textarea className="mt-1.5" rows={2} value={quickForm.notes} onChange={(e) => setQuickForm({ ...quickForm, notes: e.target.value })} />
+            </div>
+            {quickForm.room_id && quickForm.check_in && quickForm.check_out && quickForm.check_out > quickForm.check_in && (
+              <div className="rounded-md bg-muted p-2 text-xs flex justify-between">
+                <span className="text-muted-foreground">Voraussichtlicher Preis ({quickForm.type === "intern" ? "intern" : "online"})</span>
+                <span className="font-semibold">
+                  {eur(quickForm.type === "intern" ? 0 : Number(rooms.find((r) => r.id === quickForm.room_id)?.price_per_night ?? 0) * nightsBetween(quickForm.check_in, quickForm.check_out))}
+                </span>
+              </div>
+            )}
+          </div>
+          <DialogFooter className="flex-wrap gap-2 sm:gap-2">
+            <Button variant="ghost" onClick={() => setQuickOpen(false)}>Abbrechen</Button>
+            <Button variant="outline" disabled={quickSaving} onClick={() => submitQuick("intern")}>
+              Intern eintragen
+            </Button>
+            <Button disabled={quickSaving} onClick={() => submitQuick("online")}>
+              Online-Buchung
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* INTERN */}
       <Dialog open={internOpen} onOpenChange={setInternOpen}>
