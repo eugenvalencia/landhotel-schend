@@ -717,6 +717,11 @@ export default function CalendarTab() {
                         <Mail className="h-4 w-4" /> E-Mail erneut senden
                       </Button>
                     )}
+                    {!isIntern && (
+                      <Button variant="outline" size="sm" onClick={() => setInvoiceOpen(true)}>
+                        <FileText className="h-4 w-4" /> Rechnung erstellen
+                      </Button>
+                    )}
                     {selected.payment_status !== "cancelled" && (
                       <Button variant="destructive" size="sm" onClick={() => setConfirmCancel(true)}>
                         <Ban className="h-4 w-4" /> Stornieren
@@ -732,6 +737,15 @@ export default function CalendarTab() {
           )}
         </DialogContent>
       </Dialog>
+
+      {selected && (
+        <InvoiceDialog
+          open={invoiceOpen}
+          onOpenChange={setInvoiceOpen}
+          booking={selected}
+          room={room}
+        />
+      )}
 
       <AlertDialog open={confirmCancel} onOpenChange={setConfirmCancel}>
         <AlertDialogContent>
