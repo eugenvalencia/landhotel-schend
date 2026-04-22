@@ -9,7 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight, Plus, Mail, Pencil, Ban, X, BedDouble, Users, Phone, CalendarDays, CreditCard, StickyNote } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Mail, Pencil, Ban, X, BedDouble, Users, Phone, CalendarDays, CreditCard, StickyNote, FileText } from "lucide-react";
+import InvoiceDialog from "./InvoiceDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -105,7 +106,7 @@ export default function CalendarTab() {
   const [staffNotes, setStaffNotes] = useState("");
   const [savingNotes, setSavingNotes] = useState(false);
   const [confirmCancel, setConfirmCancel] = useState(false);
-
+  const [invoiceOpen, setInvoiceOpen] = useState(false);
 
   const loadAll = async () => {
     const [{ data: r }, { data: b }] = await Promise.all([
