@@ -8,7 +8,7 @@ import OverviewTab from "@/components/dashboard/OverviewTab";
 import CalendarTab from "@/components/dashboard/CalendarTab";
 import BookingsTab from "@/components/dashboard/BookingsTab";
 import GuestsTab from "@/components/dashboard/GuestsTab";
-import RevenueTab from "@/components/dashboard/RevenueTab";
+
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -40,14 +40,12 @@ export default function Dashboard() {
                 <TabsTrigger value="calendar">Kalender</TabsTrigger>
                 <TabsTrigger value="bookings">Buchungen</TabsTrigger>
                 <TabsTrigger value="guests">Gäste</TabsTrigger>
-                <TabsTrigger value="revenue">Einnahmen</TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value="overview"><OverviewTab /></TabsContent>
             <TabsContent value="calendar"><CalendarTab /></TabsContent>
             <TabsContent value="bookings"><BookingsTab /></TabsContent>
             <TabsContent value="guests"><GuestsTab /></TabsContent>
-            <TabsContent value="revenue"><RevenueTab /></TabsContent>
           </Tabs>
         </main>
       </div>

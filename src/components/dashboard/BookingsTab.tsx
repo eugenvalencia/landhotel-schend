@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { eur, formatDate } from "@/lib/format";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
+import GuestProfileDialog from "./GuestProfileDialog";
 
 export default function BookingsTab() {
   const [bookings, setBookings] = useState<any[]>([]);
@@ -16,6 +17,7 @@ export default function BookingsTab() {
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [filterType, setFilterType] = useState<string>("all");
   const [search, setSearch] = useState("");
+  const [profileGuest, setProfileGuest] = useState<{ name: string; email?: string | null } | null>(null);
 
   const load = async () => {
     const [{ data: b }, { data: r }] = await Promise.all([
@@ -77,7 +79,12 @@ export default function BookingsTab() {
             <CardContent className="p-4 space-y-2">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <div className="font-semibold">{b.guest_name}</div>
+                  <button
+                    onClick={() => setProfileGuest({ name: b.guest_name, email: b.guest_email })}
+                    className="font-semibold text-left hover:text-secondary hover:underline transition-colors"
+                  >
+                    {b.guest_name}
+                  </button>
                   <div className="text-xs font-mono text-muted-foreground">{b.booking_number}</div>
                 </div>
                 <Badge variant={b.payment_status === "paid" ? "default" : b.payment_status === "cancelled" ? "destructive" : "secondary"}>
@@ -127,7 +134,14 @@ export default function BookingsTab() {
               {filtered.map((b) => (
                 <TableRow key={b.id}>
                   <TableCell className="font-mono text-xs">{b.booking_number}</TableCell>
-                  <TableCell>{b.guest_name}</TableCell>
+                  <TableCell>
+                    <button
+                      onClick={() => setProfileGuest({ name: b.guest_name, email: b.guest_email })}
+                      className="hover:text-secondary hover:underline transition-colors text-left"
+                    >
+                      {b.guest_name}
+                    </button>
+                  </TableCell>
                   <TableCell>{roomMap[b.room_id] ?? "—"}</TableCell>
                   <TableCell>{formatDate(b.check_in)}</TableCell>
                   <TableCell>{formatDate(b.check_out)}</TableCell>
@@ -151,6 +165,12 @@ export default function BookingsTab() {
           </Table>
         </CardContent>
       </Card>
+
+      <GuestProfileDialog
+        guestKey={profileGuest}
+        open={!!profileGuest}
+        onOpenChange={(o) => !o && setProfileGuest(null)}
+      />
     </div>
   );
 }
