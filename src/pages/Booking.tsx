@@ -380,7 +380,37 @@ export default function Booking() {
             )}
           </Card>
 
-          {/* SECTION 3: GUEST */}
+          {/* UPSELLS */}
+          <Card className="shadow-card border-secondary/30">
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Star className="h-5 w-5 text-secondary" /> Upgrades & Pakete
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {UPSELLS.map((u) => {
+                const checked = selectedUpsells.includes(u.id);
+                const lineTotal = u.perNight ? u.price * Math.max(nights, 1) * (u.id === "ups-fruehstueck" ? persons : 1) : u.price;
+                return (
+                  <div key={u.id} className={cn("flex items-center justify-between gap-3 rounded-lg border p-3", checked && "bg-secondary/5 border-secondary")}>
+                    <div className="min-w-0">
+                      <p className="font-medium text-sm">{u.name} <span className="text-secondary font-semibold">+{u.price}€{u.perNight ? "/N" : ""}</span></p>
+                      <p className="text-xs text-muted-foreground">{u.desc}</p>
+                    </div>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant={checked ? "default" : "outline"}
+                      onClick={() => setSelectedUpsells((prev) => checked ? prev.filter((x) => x !== u.id) : [...prev, u.id])}
+                    >
+                      {checked ? `✓ ${eur(lineTotal)}` : "Hinzufügen"}
+                    </Button>
+                  </div>
+                );
+              })}
+            </CardContent>
+          </Card>
+
           <Card className="shadow-card">
             <CardHeader>
               <CardTitle className="text-lg">3. Ihre Daten</CardTitle>
