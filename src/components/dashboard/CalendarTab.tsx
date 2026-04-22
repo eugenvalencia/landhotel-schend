@@ -436,6 +436,93 @@ export default function CalendarTab() {
       )}
 
       {/* INTERN */}
+      {/* QUICK BOOKING */}
+      <Dialog open={quickOpen} onOpenChange={(o) => { setQuickOpen(o); if (!o) setQuickForm(initialQuick); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Neue Buchung</DialogTitle>
+            <DialogDescription>
+              {quickForm.check_in && quickForm.check_out && (
+                <>
+                  {formatDateShort(quickForm.check_in)} – {formatDateShort(quickForm.check_out)}
+                  {" · "}
+                  {nightsBetween(quickForm.check_in, quickForm.check_out)}{" "}
+                  {nightsBetween(quickForm.check_in, quickForm.check_out) === 1 ? "Nacht" : "Nächte"}
+                </>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div>
+              <Label>Zimmer</Label>
+              <Select value={quickForm.room_id} onValueChange={(v) => setQuickForm({ ...quickForm, room_id: v })}>
+                <SelectTrigger className="mt-1.5"><SelectValue placeholder="Zimmer wählen" /></SelectTrigger>
+                <SelectContent>
+                  {rooms.map((r) => (
+                    <SelectItem key={r.id} value={r.id}>
+                      Zimmer {r.room_number}{r.room_type ? ` · ${r.room_type}` : ""}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Gastname</Label>
+              <Input className="mt-1.5" value={quickForm.guest_name} onChange={(e) => setQuickForm({ ...quickForm, guest_name: e.target.value })} placeholder="Vor- und Nachname" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>E-Mail</Label>
+                <Input className="mt-1.5" type="email" value={quickForm.guest_email} onChange={(e) => setQuickForm({ ...quickForm, guest_email: e.target.value })} />
+              </div>
+              <div>
+                <Label>Telefon</Label>
+                <Input className="mt-1.5" value={quickForm.guest_phone} onChange={(e) => setQuickForm({ ...quickForm, guest_phone: e.target.value })} />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Anreise</Label>
+                <Input className="mt-1.5" type="date" value={quickForm.check_in} onChange={(e) => setQuickForm({ ...quickForm, check_in: e.target.value })} />
+              </div>
+              <div>
+                <Label>Abreise</Label>
+                <Input className="mt-1.5" type="date" value={quickForm.check_out} onChange={(e) => setQuickForm({ ...quickForm, check_out: e.target.value })} />
+              </div>
+            </div>
+            <div>
+              <Label>Notiz</Label>
+              <Textarea className="mt-1.5" rows={2} value={quickForm.notes} onChange={(e) => setQuickForm({ ...quickForm, notes: e.target.value })} />
+            </div>
+            {quickForm.room_id && quickForm.check_in && quickForm.check_out && quickForm.check_out > quickForm.check_in && (
+              <div className="rounded-md bg-muted p-2 text-xs flex justify-between">
+                <span className="text-muted-foreground">Voraussichtlicher Preis ({quickForm.type === "intern" ? "intern" : "online"})</span>
+                <span className="font-semibold">
+                  {eur(quickForm.type === "intern" ? 0 : Number(rooms.find((r) => r.id === quickForm.room_id)?.price_per_night ?? 0) * nightsBetween(quickForm.check_in, quickForm.check_out))}
+                </span>
+              </div>
+            )}
+          </div>
+          <DialogFooter className="flex-wrap gap-2 sm:gap-2">
+            <Button variant="ghost" onClick={() => setQuickOpen(false)}>Abbrechen</Button>
+            <Button
+              variant="outline"
+              disabled={quickSaving}
+              onClick={() => { setQuickForm({ ...quickForm, type: "intern" }); setTimeout(submitQuick, 0); }}
+            >
+              Intern eintragen
+            </Button>
+            <Button
+              disabled={quickSaving}
+              onClick={() => { setQuickForm({ ...quickForm, type: "online" }); setTimeout(submitQuick, 0); }}
+            >
+              Online-Buchung
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* INTERN */}
       <Dialog open={internOpen} onOpenChange={setInternOpen}>
         <DialogContent>
           <DialogHeader><DialogTitle>Intern eintragen</DialogTitle></DialogHeader>
