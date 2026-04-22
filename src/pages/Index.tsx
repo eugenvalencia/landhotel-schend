@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { eur } from "@/lib/format";
 import { HotelImage } from "@/components/HotelImage";
 import ReviewsSection from "@/components/ReviewsSection";
+import LocationSection from "@/components/LocationSection";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_GALLERY, photoForRoomType,
 } from "@/lib/photos";
@@ -234,6 +235,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* LOCATION / MAP */}
+      <LocationSection />
 
       <footer className="border-t py-6 text-center text-sm text-muted-foreground bg-card">
         © {new Date().getFullYear()} Landhotel Schend · Vulkaneifel · landhaus-schend.de
