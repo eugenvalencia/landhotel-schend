@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import {
   CalendarIcon, Hotel, ArrowLeft, CheckCircle2, CreditCard, Lock,
-  Landmark, ClipboardList, ChevronDown,
+  Landmark, ClipboardList, ChevronDown, Loader2,
 } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -120,6 +120,7 @@ export default function Booking() {
       return;
     }
     setSubmitting(true);
+    const startedAt = Date.now();
     try {
       const { data: gd, error: gErr } = await supabase
         .from("guests")
@@ -153,7 +154,10 @@ export default function Booking() {
         .single();
       if (bErr) throw bErr;
 
-      toast.success("📱 Telegram-Benachrichtigung an Hotel gesendet");
+      const remainingMs = 2000 - (Date.now() - startedAt);
+      if (remainingMs > 0) {
+        await new Promise((resolve) => setTimeout(resolve, remainingMs));
+      }
       navigate(`/confirmation/${b!.booking_number}`);
     } catch (e: any) {
       toast.error("Buchung fehlgeschlagen: " + (e.message ?? "Unbekannt"));
@@ -416,9 +420,9 @@ export default function Booking() {
                 size="lg"
                 className="w-full text-base"
               >
-                <Lock className="h-4 w-4" />
+                {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}
                 {submitting
-                  ? "Wird verarbeitet..."
+                  ? "Zahlung wird bestätigt..."
                   : `${eur(grandTotal || 0)} jetzt bezahlen`}
               </Button>
               <p className="text-xs text-muted-foreground text-center">
@@ -502,9 +506,9 @@ export default function Booking() {
           size="lg"
           className="w-full h-12 text-base"
         >
-          <Lock className="h-4 w-4" />
+          {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}
           {submitting
-            ? "Wird verarbeitet..."
+            ? "Zahlung wird bestätigt..."
             : `${eur(grandTotal || 0)} jetzt bezahlen`}
         </Button>
       </div>

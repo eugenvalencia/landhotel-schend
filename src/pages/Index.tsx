@@ -10,6 +10,7 @@ import { eur } from "@/lib/format";
 import { HotelImage } from "@/components/HotelImage";
 import ReviewsSection from "@/components/ReviewsSection";
 import LocationSection from "@/components/LocationSection";
+import WeatherWidget from "@/components/WeatherWidget";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_GALLERY, photoForRoomType,
 } from "@/lib/photos";
@@ -116,6 +117,11 @@ const Index = () => {
             </Button>
           </div>
         </div>
+        <div className="absolute bottom-4 left-4 right-4 z-10 sm:right-auto sm:left-6 sm:bottom-6">
+          <div className="max-w-xs">
+            <WeatherWidget />
+          </div>
+        </div>
       </section>
 
       {/* USPs */}
@@ -170,9 +176,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* REVIEWS */}
-      <ReviewsSection />
-
       {/* RESTAURANT */}
       <section className="bg-muted">
         <div className="container mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
@@ -208,6 +211,9 @@ const Index = () => {
           ))}
         </div>
       </section>
+
+      {/* REVIEWS */}
+      <ReviewsSection />
 
       {/* CONTACT */}
       <section className="gradient-hero text-primary-foreground">
