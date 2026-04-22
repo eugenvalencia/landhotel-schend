@@ -201,6 +201,68 @@ export default function CalendarTab() {
     loadAll();
   };
 
+  // Quick booking helpers
+  const openQuickFor = (roomId: string, from: Date, to?: Date) => {
+    const checkIn = toISODate(from);
+    const checkOut = toISODate(to ? addDays(to, 1) : addDays(from, 1));
+    setQuickForm({ ...initialQuick, room_id: roomId, check_in: checkIn, check_out: checkOut, type: "online" });
+    setQuickOpen(true);
+  };
+
+  const submitQuick = async () => {
+    if (!quickForm.room_id || !quickForm.guest_name || !quickForm.check_in || !quickForm.check_out) {
+      toast.error("Bitte Zimmer, Name und Daten ausfüllen");
+      return;
+    }
+    if (quickForm.check_out <= quickForm.check_in) {
+      toast.error("Abreise muss nach Anreise liegen");
+      return;
+    }
+    const r = rooms.find((x) => x.id === quickForm.room_id);
+    const n = nightsBetween(quickForm.check_in, quickForm.check_out);
+    const total = quickForm.type === "intern" ? 0 : Number(r?.price_per_night ?? 0) * n;
+
+    setQuickSaving(true);
+    const { error } = await supabase.from("bookings").insert({
+      room_id: quickForm.room_id,
+      guest_name: quickForm.guest_name,
+      guest_email: quickForm.guest_email || null,
+      guest_phone: quickForm.guest_phone || null,
+      check_in: quickForm.check_in,
+      check_out: quickForm.check_out,
+      total_price: total,
+      booking_type: quickForm.type,
+      payment_status: "paid",
+      notes: quickForm.notes || null,
+    });
+    setQuickSaving(false);
+    if (error) { toast.error("Fehler: " + error.message); return; }
+    toast.success(quickForm.type === "intern" ? "Interne Buchung erstellt" : "Buchung erstellt");
+    setQuickOpen(false);
+    setQuickForm(initialQuick);
+    loadAll();
+  };
+
+  // Drag selection
+  const isInDrag = (roomId: string, date: Date) => {
+    if (!dragStart || dragStart.roomId !== roomId || !dragEnd) return false;
+    const a = Math.min(dragStart.date.getTime(), dragEnd.getTime());
+    const b = Math.max(dragStart.date.getTime(), dragEnd.getTime());
+    const t = date.getTime();
+    return t >= a && t <= b;
+  };
+  const finishDrag = () => {
+    if (dragStart && dragEnd) {
+      const a = dragStart.date.getTime() <= dragEnd.getTime() ? dragStart.date : dragEnd;
+      const b = dragStart.date.getTime() <= dragEnd.getTime() ? dragEnd : dragStart.date;
+      openQuickFor(dragStart.roomId, a, b);
+    } else if (dragStart) {
+      openQuickFor(dragStart.roomId, dragStart.date);
+    }
+    setDragStart(null);
+    setDragEnd(null);
+  };
+
   const room = selected ? rooms.find((r) => r.id === selected.room_id) : null;
   const nights = selected ? nightsBetween(selected.check_in, selected.check_out) : 0;
   const roomPrice = room?.price_per_night ? Number(room.price_per_night) : 0;
