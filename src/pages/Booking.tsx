@@ -179,7 +179,7 @@ export default function Booking() {
         </div>
         <div className="container mx-auto px-4 pb-10 pt-4">
           <h1 className="text-2xl md:text-3xl font-bold">Zimmer buchen</h1>
-          <p className="opacity-80 text-sm md:text-base">Vulkaneifel · sichere Zahlung · sofortige Bestätigung</p>
+          <p className="opacity-80 text-sm md:text-base">Ihr Urlaubsdomizil in der Vulkaneifel · sichere Zahlung · sofortige Bestätigung</p>
         </div>
       </header>
 
