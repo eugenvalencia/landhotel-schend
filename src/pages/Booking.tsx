@@ -23,6 +23,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { eur, nightsBetween, toISODate } from "@/lib/format";
+import { photoForRoomType } from "@/lib/photos";
+import { saveBookingConfirmation } from "@/lib/bookingConfirmation";
 import { cn } from "@/lib/utils";
 
 type Room = {
