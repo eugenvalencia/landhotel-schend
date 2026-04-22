@@ -66,6 +66,7 @@ export default function Booking() {
   const [persons, setPersons] = useState<number>(2);
   const [extrasOpen, setExtrasOpen] = useState(false);
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
+  const [selectedUpsells, setSelectedUpsells] = useState<string[]>([]);
   const [guest, setGuest] = useState({ name: "", email: "", phone: "" });
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -97,6 +98,20 @@ export default function Booking() {
       .then(({ data }) => setExtras((data as any) ?? []));
   }, [roomIdParam]);
 
+  const UPSELLS = useMemo(() => [
+    { id: "ups-suite", name: "Suite-Upgrade", price: 30, perNight: true, desc: "Upgrade in eine Suite (sofern verfügbar)" },
+    { id: "ups-romantik", name: "Romantik-Paket", price: 25, perNight: false, desc: "Wein, Rosen & Pralinen im Zimmer" },
+    { id: "ups-fruehstueck", name: "Frühstück nachrüsten", price: 12, perNight: true, desc: "Pro Person & Nacht – regional & frisch" },
+  ], []);
+
+  const upsellTotal = useMemo(() => {
+    return selectedUpsells.reduce((sum, id) => {
+      const u = UPSELLS.find((x) => x.id === id);
+      if (!u) return sum;
+      return sum + (u.perNight ? u.price * Math.max(nights, 1) * (u.id === "ups-fruehstueck" ? persons : 1) : u.price);
+    }, 0);
+  }, [selectedUpsells, UPSELLS, nights, persons]);
+
   const extrasTotal = useMemo(() => {
     return selectedExtras.reduce((sum, id) => {
       const e = extras.find((x) => x.id === id);
@@ -106,7 +121,7 @@ export default function Booking() {
   }, [selectedExtras, extras, nights]);
 
   const roomTotal = room ? room.price_per_night * nights : 0;
-  const grandTotal = roomTotal + extrasTotal;
+  const grandTotal = roomTotal + extrasTotal + upsellTotal;
 
   const canSubmit = room && checkIn && checkOut && nights > 0 &&
     guestSchema.safeParse(guest).success;
