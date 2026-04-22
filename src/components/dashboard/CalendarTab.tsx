@@ -561,3 +561,68 @@ export default function CalendarTab() {
     </div>
   );
 }
+
+function YearGrid({
+  year,
+  rooms,
+  bookings,
+  onPickMonth,
+}: {
+  year: number;
+  rooms: Room[];
+  bookings: Booking[];
+  onPickMonth: (monthIndex: number) => void;
+}) {
+  const months = Array.from({ length: 12 }, (_, m) => {
+    const daysInMonth = new Date(year, m + 1, 0).getDate();
+    const totalSlots = daysInMonth * Math.max(1, rooms.length);
+    let paid = 0;
+    let intern = 0;
+    for (let day = 1; day <= daysInMonth; day++) {
+      const iso = toISODate(new Date(year, m, day));
+      for (const r of rooms) {
+        const b = bookings.find(
+          (x) => x.room_id === r.id && x.payment_status !== "cancelled" && x.check_in <= iso && x.check_out > iso,
+        );
+        if (b) {
+          if (b.booking_type === "intern") intern++;
+          else paid++;
+        }
+      }
+    }
+    const free = totalSlots - paid - intern;
+    return { m, daysInMonth, paid, intern, free, totalSlots };
+  });
+
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      {months.map(({ m, paid, intern, free, totalSlots }) => {
+        const label = new Date(year, m, 1).toLocaleDateString("de-DE", { month: "long" });
+        const pct = (n: number) => (totalSlots ? (n / totalSlots) * 100 : 0);
+        return (
+          <Card
+            key={m}
+            className="shadow-card cursor-pointer hover:shadow-elegant transition-shadow"
+            onClick={() => onPickMonth(m)}
+          >
+            <CardContent className="p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="font-semibold capitalize">{label}</div>
+                <div className="text-xs text-muted-foreground">{paid + intern} belegt</div>
+              </div>
+              <div className="flex h-2 overflow-hidden rounded-full bg-[hsl(var(--cal-free))]">
+                <div className="bg-[hsl(var(--cal-paid))]" style={{ width: `${pct(paid)}%` }} />
+                <div className="bg-[hsl(var(--cal-intern))]" style={{ width: `${pct(intern)}%` }} />
+              </div>
+              <div className="flex justify-between text-[11px] text-muted-foreground">
+                <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-paid))]" />{paid}</span>
+                <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-intern))]" />{intern}</span>
+                <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-free))] border" />{free}</span>
+              </div>
+            </CardContent>
+          </Card>
+        );
+      })}
+    </div>
+  );
+}
