@@ -474,6 +474,29 @@ export default function Booking() {
                   <span className="font-semibold">{eur(roomTotal)}</span>
                 </div>
               )}
+              {alternativeRoom && (
+                <div className="rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm space-y-2">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-semibold text-destructive">
+                        {room?.name} ist in diesem Zeitraum belegt.
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Alternative: Zimmer {alternativeRoom.room_number} ({alternativeRoom.room_type}) – {eur(alternativeRoom.price_per_night)}/Nacht
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setRoom(alternativeRoom)}
+                  >
+                    Zu Zimmer {alternativeRoom.room_number} wechseln
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
 
