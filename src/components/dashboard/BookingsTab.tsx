@@ -165,6 +165,12 @@ export default function BookingsTab() {
           </Table>
         </CardContent>
       </Card>
+
+      <GuestProfileDialog
+        guestKey={profileGuest}
+        open={!!profileGuest}
+        onOpenChange={(o) => !o && setProfileGuest(null)}
+      />
     </div>
   );
 }
