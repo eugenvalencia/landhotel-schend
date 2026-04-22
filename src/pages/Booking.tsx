@@ -187,7 +187,7 @@ export default function Booking() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 max-w-5xl grid lg:grid-cols-[1fr_360px] gap-6">
+      <main className="container mx-auto px-4 py-8 pb-32 lg:pb-8 max-w-5xl grid lg:grid-cols-[1fr_360px] gap-6">
         <div className="space-y-6">
           {/* SECTION 1: REISEDATEN */}
           <Card className="shadow-card">
@@ -493,6 +493,21 @@ export default function Booking() {
           </Card>
         </aside>
       </main>
+
+      {/* Sticky mobile pay bar */}
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-card border-t shadow-elevated safe-pb px-4 pt-3">
+        <Button
+          onClick={handlePayment}
+          disabled={!canSubmit || submitting}
+          size="lg"
+          className="w-full h-12 text-base"
+        >
+          <Lock className="h-4 w-4" />
+          {submitting
+            ? "Wird verarbeitet..."
+            : `${eur(grandTotal || 0)} jetzt bezahlen`}
+        </Button>
+      </div>
     </div>
   );
 }
