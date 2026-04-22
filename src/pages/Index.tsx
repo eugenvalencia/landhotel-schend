@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
-  Hotel, CalendarCheck, Phone, Mail, MapPin, Star,
+  Hotel, CalendarCheck, Phone, Star,
   ParkingCircle, Bike, Waves, UtensilsCrossed, BedDouble, Wifi, Coffee, Trophy,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,13 +10,14 @@ import { eur } from "@/lib/format";
 import { HotelImage } from "@/components/HotelImage";
 import ReviewsSection from "@/components/ReviewsSection";
 import LocationSection from "@/components/LocationSection";
+import WeatherWidget from "@/components/WeatherWidget";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_GALLERY, photoForRoomType,
 } from "@/lib/photos";
 
 const USPS = [
   { icon: ParkingCircle, text: "Kostenlose Parkplätze — videoüberwacht" },
-  { icon: Bike, text: "Motorrad-Parkplätze vorhanden — videoüberwacht" },
+  { icon: Bike, text: "Genügend Motorrad-Parkplätze — videoüberwacht" },
   { icon: Waves, text: "Sauna & Wellness" },
   { icon: UtensilsCrossed, text: "Hauseigenes Restaurant" },
   { icon: BedDouble, text: "21 Zimmer mit Balkon/Terrasse" },
@@ -116,6 +117,11 @@ const Index = () => {
             </Button>
           </div>
         </div>
+        <div className="absolute bottom-4 left-4 right-4 z-10 sm:right-auto sm:left-6 sm:bottom-6">
+          <div className="max-w-xs">
+            <WeatherWidget />
+          </div>
+        </div>
       </section>
 
       {/* USPs */}
@@ -170,9 +176,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* REVIEWS */}
-      <ReviewsSection />
-
       {/* RESTAURANT */}
       <section className="bg-muted">
         <div className="container mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
@@ -209,32 +212,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CONTACT */}
-      <section className="gradient-hero text-primary-foreground">
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">Kontakt & Anfahrt</h2>
-          <p className="opacity-90 mb-8">Wir freuen uns auf Ihren Besuch in der Vulkaneifel.</p>
-          <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            <a href="tel:+4965731306" className="flex flex-col items-center gap-2 hover:opacity-90">
-              <Phone className="h-6 w-6" />
-              <span className="font-medium">+49 6573 306</span>
-            </a>
-            <a href="mailto:info@landhaus-schend.de" className="flex flex-col items-center gap-2 hover:opacity-90 break-all">
-              <Mail className="h-6 w-6" />
-              <span className="font-medium">info@landhaus-schend.de</span>
-            </a>
-            <div className="flex flex-col items-center gap-2">
-              <MapPin className="h-6 w-6" />
-              <span className="font-medium">54552 Immerath<br />Vulkaneifel</span>
-            </div>
-          </div>
-          <div className="mt-10">
-            <Button asChild size="lg" variant="secondary">
-              <Link to="/booking"><CalendarCheck className="h-5 w-5" /> Jetzt buchen</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* REVIEWS */}
+      <ReviewsSection />
 
       {/* LOCATION / MAP */}
       <LocationSection />

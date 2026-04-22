@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { eur, formatDate } from "@/lib/format";
 import { HotelImage } from "@/components/HotelImage";
-import { SCHEND_LOGO, photoForRoomType } from "@/lib/photos";
+import { photoForRoomType } from "@/lib/photos";
 
 type ExtraLine = { id: string; name: string; price: number; per_night: boolean };
 
@@ -59,6 +59,9 @@ export default function Confirmation() {
     (s, e) => s + (e.per_night ? Number(e.price) * nights : Number(e.price)),
     0,
   );
+  const displayBookingNumber = booking?.booking_number
+    ? `SCH-${booking.booking_number.replace(/\D/g, "").slice(-4).padStart(4, "0")}`
+    : null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -78,16 +81,14 @@ export default function Confirmation() {
             <div className="mx-auto w-24 h-24 rounded-full bg-success/10 flex items-center justify-center">
               <CheckCircle2 className="h-14 w-14 text-success" />
             </div>
-            <h1 className="text-3xl font-bold">
-              Vielen Dank{booking?.guest_name ? `, ${booking.guest_name}` : ""}!
-            </h1>
+            <h1 className="text-3xl font-bold">Vielen Dank {booking?.guest_name ?? ""}!</h1>
             <p className="text-muted-foreground text-lg">Ihre Buchung ist bestätigt.</p>
 
             {booking && (
               <>
                 <div className="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-1.5 mt-2">
                   <span className="text-xs uppercase tracking-wider text-muted-foreground">Buchungsnummer</span>
-                  <span className="font-mono font-semibold">#{booking.booking_number}</span>
+                  <span className="font-mono font-semibold">#{displayBookingNumber}</span>
                 </div>
 
                 <div className="text-left bg-accent rounded-lg p-5 space-y-2 mt-4">
@@ -151,16 +152,11 @@ export default function Confirmation() {
                 <div className="border-b px-5 py-3 text-xs text-slate-600 space-y-0.5 bg-slate-50">
                   <div><span className="text-slate-400">Von:</span> info@landhotel-schend.de</div>
                   <div><span className="text-slate-400">An:</span> {booking.guest_email}</div>
-                  <div><span className="text-slate-400">Betreff:</span> ✅ Buchungsbestätigung #{booking.booking_number}</div>
+                  <div><span className="text-slate-400">Betreff:</span> ✅ Buchungsbestätigung #{displayBookingNumber}</div>
                 </div>
 
                 {/* navy header */}
                 <div className="bg-primary text-primary-foreground px-5 py-5 flex items-center gap-3">
-                  <HotelImage
-                    src={SCHEND_LOGO}
-                    alt="Landhotel Schend Logo"
-                    className="h-10 w-auto object-contain bg-transparent"
-                  />
                   <div className="font-bold tracking-wide text-lg">LANDHOTEL SCHEND</div>
                 </div>
 
@@ -186,7 +182,7 @@ export default function Confirmation() {
                     <div className="border-t border-slate-200" />
                     <dl className="grid grid-cols-[140px_1fr] gap-y-1 mt-2">
                       <dt className="text-slate-500">Buchungsnummer:</dt>
-                      <dd className="font-mono">#{booking.booking_number}</dd>
+                      <dd className="font-mono">#{displayBookingNumber}</dd>
                       <dt className="text-slate-500">Zimmer:</dt>
                       <dd>{room ? `Nr. ${room.room_number} · ${room.room_type}` : "—"}</dd>
                       <dt className="text-slate-500">Check-in:</dt>
@@ -223,7 +219,7 @@ export default function Confirmation() {
                       <span>{eur(Number(booking.total_price))}</span>
                     </div>
                     <div className="text-xs text-slate-500 mt-1">
-                      Zahlungsart: Kreditkarte / SEPA-Lastschrift
+                      Zahlungsart: Kreditkarte / SEPA-Lastschrift · Extras: {eur(extrasTotal)}
                     </div>
                   </div>
 
@@ -240,7 +236,7 @@ export default function Confirmation() {
                     <div className="font-semibold mb-2">✅ Highlights</div>
                     <ul className="space-y-1">
                       <li>🅿️ Kostenlose Parkplätze — videoüberwacht</li>
-                      <li>🏍️ Motorrad-Parkplätze — videoüberwacht</li>
+                        <li>🏍️ Genügend Motorrad-Parkplätze — videoüberwacht</li>
                       <li>🧖 Sauna & Wellness</li>
                       <li>🍽️ Restaurant & großes Frühstücksbuffet</li>
                       <li>📶 Kostenloses WLAN</li>
