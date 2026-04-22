@@ -70,11 +70,79 @@ export default function Booking() {
   const [guest, setGuest] = useState({ name: "", email: "", phone: "" });
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [roomBookings, setRoomBookings] = useState<Array<{ check_in: string; check_out: string }>>([]);
+  const [allBookings, setAllBookings] = useState<Array<{ room_id: string; check_in: string; check_out: string }>>([]);
 
   const nights = useMemo(
     () => (checkIn && checkOut ? nightsBetween(checkIn, checkOut) : 0),
     [checkIn, checkOut]
   );
+
+  // Build a Set of ISO date strings that are blocked for the selected room
+  // A booking from check_in -> check_out blocks [check_in, check_out) — checkout day is free
+  const blockedDates = useMemo(() => {
+    const set = new Set<string>();
+    roomBookings.forEach((b) => {
+      const start = new Date(b.check_in);
+      const end = new Date(b.check_out);
+      for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+        set.add(toISODate(d));
+      }
+    });
+    return set;
+  }, [roomBookings]);
+
+  const isDateBlocked = (d: Date) => blockedDates.has(toISODate(d));
+
+  // Earliest forced check-out: first blocked date strictly after the chosen check-in
+  const maxCheckout = useMemo(() => {
+    if (!checkIn) return undefined;
+    const sorted = [...blockedDates].sort();
+    const inIso = toISODate(checkIn);
+    for (const iso of sorted) {
+      if (iso > inIso) return new Date(iso);
+    }
+    return undefined;
+  }, [checkIn, blockedDates]);
+
+  // Upcoming availability windows (next ~90 days) for info panel
+  const availabilityWindows = useMemo(() => {
+    if (!room) return [];
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const windows: Array<{ from: Date; to: Date; available: boolean }> = [];
+    let current: { from: Date; available: boolean } | null = null;
+    for (let i = 0; i < 90; i++) {
+      const d = new Date(today); d.setDate(today.getDate() + i);
+      const blocked = blockedDates.has(toISODate(d));
+      const avail = !blocked;
+      if (!current) {
+        current = { from: new Date(d), available: avail };
+      } else if (current.available !== avail) {
+        const to = new Date(d); to.setDate(d.getDate() - 1);
+        windows.push({ from: current.from, to, available: current.available });
+        current = { from: new Date(d), available: avail };
+      }
+    }
+    if (current) {
+      const last = new Date(today); last.setDate(today.getDate() + 89);
+      windows.push({ from: current.from, to: last, available: current.available });
+    }
+    return windows.slice(0, 4);
+  }, [room, blockedDates]);
+
+  // Suggest an alternative room when the selected dates are not available
+  const alternativeRoom = useMemo(() => {
+    if (!room || !checkIn || !checkOut) return null;
+    const inIso = toISODate(checkIn);
+    const outIso = toISODate(checkOut);
+    const conflict = (roomId: string) =>
+      allBookings.some((b) => b.room_id === roomId && b.check_in < outIso && b.check_out > inIso);
+    if (!conflict(room.id)) return null;
+    const candidate = rooms.find(
+      (r) => r.id !== room.id && r.room_type === room.room_type && !conflict(r.id)
+    );
+    return candidate ?? rooms.find((r) => r.id !== room.id && !conflict(r.id)) ?? null;
+  }, [room, rooms, checkIn, checkOut, allBookings]);
 
   useEffect(() => {
     supabase
