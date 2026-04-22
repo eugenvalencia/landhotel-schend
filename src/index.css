@@ -106,4 +106,15 @@
   .gradient-hero { background: var(--gradient-hero); }
   .shadow-card { box-shadow: var(--shadow-card); }
   .shadow-elevated { box-shadow: var(--shadow-elevated); }
+  /* Respect iOS safe areas for sticky bottom bars */
+  .safe-pb { padding-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
 }
+
+/* Prevent iOS Safari auto-zoom on focus by enforcing >=16px font-size on
+   form controls below the md breakpoint. */
+@media (max-width: 767px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+

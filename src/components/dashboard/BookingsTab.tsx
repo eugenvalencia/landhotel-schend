@@ -67,7 +67,44 @@ export default function BookingsTab() {
           </SelectContent>
         </Select>
       </div>
-      <Card className="shadow-card">
+      {/* Mobile: cards */}
+      <div className="md:hidden space-y-3">
+        {filtered.length === 0 && (
+          <Card className="shadow-card"><CardContent className="text-center text-muted-foreground py-8">Keine Buchungen</CardContent></Card>
+        )}
+        {filtered.map((b) => (
+          <Card key={b.id} className="shadow-card">
+            <CardContent className="p-4 space-y-2">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <div className="font-semibold">{b.guest_name}</div>
+                  <div className="text-xs font-mono text-muted-foreground">{b.booking_number}</div>
+                </div>
+                <Badge variant={b.payment_status === "paid" ? "default" : b.payment_status === "cancelled" ? "destructive" : "secondary"}>
+                  {b.payment_status}
+                </Badge>
+              </div>
+              <div className="text-sm text-muted-foreground">{roomMap[b.room_id] ?? "—"}</div>
+              <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
+                <div><span className="text-muted-foreground">Anreise:</span> {formatDate(b.check_in)}</div>
+                <div><span className="text-muted-foreground">Abreise:</span> {formatDate(b.check_out)}</div>
+                <div><span className="text-muted-foreground">Preis:</span> {eur(Number(b.total_price))}</div>
+                <div><span className="text-muted-foreground">Typ:</span> {b.booking_type}</div>
+              </div>
+              {b.payment_status !== "cancelled" && (
+                <div className="pt-1">
+                  <Button size="sm" variant="outline" onClick={() => cancel(b.id)} className="w-full">
+                    <Trash2 className="h-4 w-4" /> Stornieren
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Desktop: table */}
+      <Card className="shadow-card hidden md:block">
         <CardContent className="p-0 overflow-x-auto">
           <Table>
             <TableHeader>
