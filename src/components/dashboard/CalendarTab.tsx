@@ -104,14 +104,43 @@ export default function CalendarTab() {
     setEditMode(false);
   }, [selected?.id]);
 
-  const { days, monthLabel } = useMemo(() => {
-    const now = new Date();
-    const ref = new Date(now.getFullYear(), now.getMonth() + monthOffset, 1);
+  const { days, headerLabel } = useMemo(() => {
+    if (view === "day") {
+      return {
+        days: [anchor],
+        headerLabel: anchor.toLocaleDateString("de-DE", { weekday: "long", day: "2-digit", month: "long", year: "numeric" }),
+      };
+    }
+    if (view === "week") {
+      const start = startOfWeek(anchor);
+      const arr = Array.from({ length: 7 }, (_, i) => addDays(start, i));
+      const end = arr[6];
+      return {
+        days: arr,
+        headerLabel: `KW ${isoWeek(start)}: ${formatDateShort(start)} – ${formatDate(end)}`,
+      };
+    }
+    // month
+    const ref = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
     const daysInMonth = new Date(ref.getFullYear(), ref.getMonth() + 1, 0).getDate();
     const arr: Date[] = [];
     for (let i = 1; i <= daysInMonth; i++) arr.push(new Date(ref.getFullYear(), ref.getMonth(), i));
-    return { days: arr, monthLabel: ref.toLocaleDateString("de-DE", { month: "long", year: "numeric" }) };
-  }, [monthOffset]);
+    return { days: arr, headerLabel: ref.toLocaleDateString("de-DE", { month: "long", year: "numeric" }) };
+  }, [view, anchor]);
+
+  const goPrev = () => {
+    if (view === "day") setAnchor((d) => addDays(d, -1));
+    else if (view === "week") setAnchor((d) => addDays(d, -7));
+    else if (view === "month") setAnchor((d) => addMonths(d, -1));
+    else setAnchor((d) => new Date(d.getFullYear() - 1, 0, 1));
+  };
+  const goNext = () => {
+    if (view === "day") setAnchor((d) => addDays(d, 1));
+    else if (view === "week") setAnchor((d) => addDays(d, 7));
+    else if (view === "month") setAnchor((d) => addMonths(d, 1));
+    else setAnchor((d) => new Date(d.getFullYear() + 1, 0, 1));
+  };
+  const goToday = () => setAnchor(startOfDay(new Date()));
 
   const cellState = (roomId: string, day: Date): { type: "free" | "online" | "intern"; booking?: Booking } => {
     const iso = toISODate(day);
