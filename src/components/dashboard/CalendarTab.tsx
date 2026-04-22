@@ -106,20 +106,6 @@ export default function CalendarTab() {
   const [savingNotes, setSavingNotes] = useState(false);
   const [confirmCancel, setConfirmCancel] = useState(false);
 
-export default function CalendarTab() {
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [view, setView] = useState<ViewMode>("month");
-  const [anchor, setAnchor] = useState<Date>(startOfDay(new Date()));
-  const [internOpen, setInternOpen] = useState(false);
-  const [internForm, setInternForm] = useState({ room_id: "", guest_name: "", check_in: "", check_out: "", notes: "" });
-
-  const [selected, setSelected] = useState<Booking | null>(null);
-  const [editMode, setEditMode] = useState(false);
-  const [editForm, setEditForm] = useState({ check_in: "", check_out: "", notes: "" });
-  const [staffNotes, setStaffNotes] = useState("");
-  const [savingNotes, setSavingNotes] = useState(false);
-  const [confirmCancel, setConfirmCancel] = useState(false);
 
   const loadAll = async () => {
     const [{ data: r }, { data: b }] = await Promise.all([
