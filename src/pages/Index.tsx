@@ -17,7 +17,7 @@ import {
 
 const USPS = [
   { icon: ParkingCircle, text: "Kostenlose Parkplätze — videoüberwacht" },
-  { icon: Bike, text: "Motorrad-Parkplätze vorhanden — videoüberwacht" },
+  { icon: Bike, text: "Genügend Motorrad-Parkplätze — videoüberwacht" },
   { icon: Waves, text: "Sauna & Wellness" },
   { icon: UtensilsCrossed, text: "Hauseigenes Restaurant" },
   { icon: BedDouble, text: "21 Zimmer mit Balkon/Terrasse" },

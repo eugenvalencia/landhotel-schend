@@ -236,7 +236,7 @@ export default function Confirmation() {
                     <div className="font-semibold mb-2">✅ Highlights</div>
                     <ul className="space-y-1">
                       <li>🅿️ Kostenlose Parkplätze — videoüberwacht</li>
-                      <li>🏍️ Motorrad-Parkplätze — videoüberwacht</li>
+                        <li>🏍️ Genügend Motorrad-Parkplätze — videoüberwacht</li>
                       <li>🧖 Sauna & Wellness</li>
                       <li>🍽️ Restaurant & großes Frühstücksbuffet</li>
                       <li>📶 Kostenloses WLAN</li>
