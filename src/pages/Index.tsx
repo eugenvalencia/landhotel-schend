@@ -236,6 +236,9 @@ const Index = () => {
         </div>
       </section>
 
+      {/* LOCATION / MAP */}
+      <LocationSection />
+
       <footer className="border-t py-6 text-center text-sm text-muted-foreground bg-card">
         © {new Date().getFullYear()} Landhotel Schend · Vulkaneifel · landhaus-schend.de
       </footer>
