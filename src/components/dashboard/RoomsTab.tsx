@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { HotelImage } from "@/components/HotelImage";
 import { supabase } from "@/integrations/supabase/client";
 import { eur } from "@/lib/format";
 import { toast } from "sonner";
@@ -60,7 +61,7 @@ export default function RoomsTab() {
           <Card key={r.id} className="shadow-card overflow-hidden">
             <div className="aspect-[4/3] bg-accent flex items-center justify-center overflow-hidden">
               {r.photos?.[0] ? (
-                <img src={r.photos[0]} alt={r.name} className="w-full h-full object-cover" />
+                <HotelImage src={r.photos[0]} alt={r.name} className="w-full h-full object-cover" />
               ) : (
                 <BedDouble className="h-10 w-10 text-secondary/40" />
               )}
@@ -138,7 +139,7 @@ export default function RoomsTab() {
                 <div className="grid grid-cols-3 gap-2 mt-1.5">
                   {(editing.photos ?? []).map((p: string) => (
                     <div key={p} className="relative aspect-square rounded-md overflow-hidden border group">
-                      <img src={p} alt="" className="w-full h-full object-cover" />
+                      <HotelImage src={p} alt="Zimmerfoto" className="w-full h-full object-cover" />
                       <button onClick={() => removePhoto(p)} className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition">
                         <X className="h-3 w-3" />
                       </button>
