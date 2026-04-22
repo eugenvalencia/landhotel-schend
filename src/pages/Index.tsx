@@ -14,6 +14,8 @@ import WeatherWidget from "@/components/WeatherWidget";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_GALLERY, photoForRoomType,
 } from "@/lib/photos";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 
 const USPS = [
   { icon: ParkingCircle, text: "Kostenlose Parkplätze — videoüberwacht" },
@@ -71,26 +73,10 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* NAV */}
-      <header className="absolute top-0 inset-x-0 z-30 text-primary-foreground">
-        <div className="container mx-auto px-4 py-5 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Hotel className="h-6 w-6" />
-            <span className="font-semibold text-lg drop-shadow">Landhotel Schend</span>
-          </div>
-          <nav className="flex items-center gap-2">
-            <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/15 hover:text-primary-foreground">
-              <Link to="/login">Hotel-Login</Link>
-            </Button>
-            <Button asChild variant="secondary" size="sm">
-              <Link to="/booking">Jetzt buchen</Link>
-            </Button>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* HERO */}
-      <section className="relative min-h-[80vh] flex items-center text-primary-foreground overflow-hidden">
+      <section id="top" className="relative min-h-[80vh] pt-16 md:pt-20 flex items-center text-primary-foreground overflow-hidden">
         {SCHEND_HEROES.map((src, i) => (
           <HotelImage
             key={src}
@@ -137,7 +123,7 @@ const Index = () => {
       </section>
 
       {/* ROOMS */}
-      <section className="container mx-auto px-4 py-16">
+      <section id="rooms" className="container mx-auto px-4 py-16">
         <div className="text-center mb-10">
           <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Unsere Zimmer</p>
           <h2 className="text-3xl md:text-4xl font-bold">Zu Gast im Landhotel Schend</h2>
@@ -177,7 +163,7 @@ const Index = () => {
       </section>
 
       {/* RESTAURANT */}
-      <section className="bg-muted">
+      <section id="restaurant" className="bg-muted">
         <div className="container mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
           <div className="rounded-xl overflow-hidden shadow-elevated order-last md:order-first aspect-[4/3]">
             <HotelImage src={SCHEND_RESTAURANT} alt="Landhaus Restaurant & Terrasse" className="w-full h-full object-cover" />
@@ -198,7 +184,7 @@ const Index = () => {
       </section>
 
       {/* GALLERY */}
-      <section className="container mx-auto px-4 py-16">
+      <section id="gallery" className="container mx-auto px-4 py-16">
         <div className="text-center mb-10">
           <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Galerie</p>
           <h2 className="text-3xl md:text-4xl font-bold">Eindrücke aus der Vulkaneifel</h2>
@@ -213,14 +199,16 @@ const Index = () => {
       </section>
 
       {/* REVIEWS */}
-      <ReviewsSection />
+      <div id="reviews">
+        <ReviewsSection />
+      </div>
 
       {/* LOCATION / MAP */}
-      <LocationSection />
+      <div id="location">
+        <LocationSection />
+      </div>
 
-      <footer className="border-t py-6 text-center text-sm text-muted-foreground bg-card">
-        © {new Date().getFullYear()} Landhotel Schend · Vulkaneifel · landhaus-schend.de
-      </footer>
+      <SiteFooter />
     </div>
   );
 };

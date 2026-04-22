@@ -9,7 +9,10 @@ import RoomDetail from "./pages/RoomDetail";
 import Confirmation from "./pages/Confirmation";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Impressum from "./pages/Impressum";
+import Datenschutz from "./pages/Datenschutz";
 import NotFound from "./pages/NotFound";
+import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -26,8 +29,11 @@ const App = () => (
           <Route path="/confirmation/:bookingNumber" element={<Confirmation />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/impressum" element={<Impressum />} />
+          <Route path="/datenschutz" element={<Datenschutz />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <CookieBanner />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
