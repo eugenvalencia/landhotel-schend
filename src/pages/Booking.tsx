@@ -240,12 +240,11 @@ export default function Booking() {
     setSubmitting(true);
     const startedAt = Date.now();
     try {
-      const { data: gd, error: gErr } = await supabase
+      // Insert guest record (fire-and-forget — anonymous users can't read it back)
+      const { error: gErr } = await supabase
         .from("guests")
-        .insert({ name: guest.name, email: guest.email, phone: guest.phone })
-        .select()
-        .single();
-      if (gErr) throw gErr;
+        .insert({ name: guest.name, email: guest.email, phone: guest.phone });
+      if (gErr) console.warn("Guest insert warning:", gErr.message);
 
       const extrasPayload = selectedExtras.map((id) => {
         const e = extras.find((x) => x.id === id)!;
@@ -256,7 +255,6 @@ export default function Booking() {
         .from("bookings")
         .insert({
           room_id: room.id,
-          guest_id: gd!.id,
           guest_name: guest.name,
           guest_email: guest.email,
           guest_phone: guest.phone,
