@@ -251,9 +251,16 @@ export default function Booking() {
         return { id: e.id, name: e.name, price: e.price, per_night: e.per_night };
       });
 
-      const { data: b, error: bErr } = await supabase
+      // Generate a booking number client-side (DB default uses same format but anon can't read back)
+      const now = new Date();
+      const yymmdd = `${String(now.getFullYear()).slice(-2)}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`;
+      const rand = String(Math.floor(Math.random() * 10000)).padStart(4, "0");
+      const bookingNumber = `LHS-${yymmdd}-${rand}`;
+
+      const { error: bErr } = await supabase
         .from("bookings")
         .insert({
+          booking_number: bookingNumber,
           room_id: room.id,
           guest_name: guest.name,
           guest_email: guest.email,
@@ -265,9 +272,7 @@ export default function Booking() {
           booking_type: "online",
           payment_status: "paid",
           notes: notes.trim() || null,
-        })
-        .select()
-        .single();
+        });
       if (bErr) throw bErr;
 
       const confirmationExtras = extrasPayload.map((extra) => ({
@@ -279,7 +284,7 @@ export default function Booking() {
       }));
 
       saveBookingConfirmation({
-        bookingNumber: b?.booking_number ?? `LS-${new Date().toISOString().slice(2, 10).replace(/-/g, "")}`,
+        bookingNumber,
         guestName: guest.name,
         guestEmail: guest.email,
         guestPhone: guest.phone,
