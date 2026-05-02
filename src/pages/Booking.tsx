@@ -58,6 +58,15 @@ const FALLBACK_ROOMS: Room[] = [
   { id: "06183ce9-3314-4f82-aab9-40e8c7d32d86", room_number: 21, name: "Eifel-Suite", room_type: "Suite", bed_description: "Doppelbett und separater Wohnbereich", max_persons: 2, price_per_night: 195, amenities: [], photos: [], status: "aktiv" },
 ];
 
+const FALLBACK_EXTRAS: Extra[] = [
+  { id: "2177e1d4-cb02-49d5-b1bb-ae995fd19d7a", name: "Frühstück", price: 12, per_night: true },
+  { id: "595b0d19-c04d-4c13-a44b-53c478baa9b3", name: "Halbpension", price: 28, per_night: true },
+  { id: "04801a2c-88db-418a-ac8a-177bf145912b", name: "Fahrrad", price: 15, per_night: false },
+  { id: "3c738498-11a0-4b52-aa92-d7bfef4bdae1", name: "Late Check-out", price: 20, per_night: false },
+  { id: "1d6b93b1-78aa-4fa7-8bde-a24600290d29", name: "Früh Check-in", price: 20, per_night: false },
+  { id: "5744643a-c890-4195-bbe2-bd8100d64ed2", name: "Haustier", price: 10, per_night: true },
+];
+
 const guestSchema = z.object({
   name: z.string().trim().min(2, "Name muss mind. 2 Zeichen haben").max(120),
   email: z.string().trim().email("Ungültige E-Mail-Adresse").max(255),
