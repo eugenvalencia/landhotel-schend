@@ -70,7 +70,7 @@ export default function Booking() {
   const roomIdParam = params.get("room");
 
   const [room, setRoom] = useState<Room | null>(null);
-  const [rooms, setRooms] = useState<Room[]>([]);
+  const [rooms, setRooms] = useState<Room[]>(FALLBACK_ROOMS);
   const [extras, setExtras] = useState<Extra[]>([]);
   const [checkIn, setCheckIn] = useState<Date | undefined>();
   const [checkOut, setCheckOut] = useState<Date | undefined>();
@@ -161,8 +161,8 @@ export default function Booking() {
       .select("*")
       .eq("status", "aktiv")
       .order("room_number")
-      .then(({ data }) => {
-        const list = (data as any[]) ?? [];
+      .then(({ data, error }) => {
+        const list = !error && data?.length ? (data as Room[]) : FALLBACK_ROOMS;
         setRooms(list);
         if (roomIdParam) {
           const found = list.find((r) => r.id === roomIdParam);
