@@ -174,7 +174,10 @@ export default function Booking() {
       .select("*")
       .eq("active", true)
       .order("sort_order")
-      .then(({ data }) => setExtras((data as any) ?? []));
+      .then(({ data, error }) => {
+        const list = !error && data?.length ? (data as Extra[]) : FALLBACK_EXTRAS;
+        setExtras(list);
+      });
     supabase
       .rpc("get_booked_ranges")
       .then(({ data }) => setAllBookings((data as any[]) ?? []));
