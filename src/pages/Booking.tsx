@@ -308,7 +308,7 @@ export default function Booking() {
       if (remainingMs > 0) {
         await new Promise((resolve) => setTimeout(resolve, remainingMs));
       }
-      toast.success("Buchung bestätigt!");
+      toast.success("Reservierungsanfrage gesendet!");
       navigate("/booking-confirmation");
     } catch (e: any) {
       console.error("Booking failed:", e);
