@@ -270,7 +270,7 @@ export default function Booking() {
           total_price: grandTotal,
           extras: extrasPayload,
           booking_type: "online",
-          payment_status: "paid",
+          payment_status: "pending",
           notes: notes.trim() || null,
         });
       if (bErr) throw bErr;
