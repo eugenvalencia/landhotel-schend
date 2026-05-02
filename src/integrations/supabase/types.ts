@@ -247,6 +247,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_booked_ranges: {
+        Args: never
+        Returns: {
+          check_in: string
+          check_out: string
+          room_id: string
+        }[]
+      }
       get_room_availability: {
         Args: { _check_in: string; _check_out: string }
         Returns: {
