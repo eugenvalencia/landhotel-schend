@@ -47,6 +47,17 @@ type Extra = {
   per_night: boolean;
 };
 
+const FALLBACK_ROOMS: Room[] = [
+  { id: "d47bcebd-a254-4880-8952-72a2929d2520", room_number: 1, name: "Zimmer 1", room_type: "Einzelzimmer", bed_description: "Einzelbett", max_persons: 1, price_per_night: 65, amenities: [], photos: [], status: "aktiv" },
+  { id: "6d45c8cb-d584-43b4-ad7b-4f54d7f4c8de", room_number: 2, name: "Zimmer 2", room_type: "Einzelzimmer", bed_description: "Einzelbett", max_persons: 1, price_per_night: 65, amenities: [], photos: [], status: "aktiv" },
+  { id: "ade89315-160a-4211-b7ee-7dfbf4e7eeb3", room_number: 3, name: "Zimmer 3", room_type: "Einzelzimmer", bed_description: "Einzelbett", max_persons: 1, price_per_night: 65, amenities: [], photos: [], status: "aktiv" },
+  ...[4, 5, 6, 7, 8, 9, 10].map((n, i) => ({ id: ["8e3d91a0-0711-4cdf-a580-c2debb684d0c", "e288b28f-affb-4a18-b95e-991b28e15306", "b350d97f-8f76-4144-be97-6a2f18d69c6b", "cbdb5c64-5843-44e7-a802-da8b361ccb7a", "8ea5ebaa-2570-45c3-8340-112391ae422b", "a75e046c-6f0b-4ddc-bce6-77f5f4141644", "2f539adf-8c88-440f-8900-996ebbb764b8"][i], room_number: n, name: `Zimmer ${n}`, room_type: "Doppelzimmer Standard", bed_description: "Doppelbett", max_persons: 2, price_per_night: 95, amenities: [], photos: [], status: "aktiv" })),
+  ...[11, 12, 13, 14, 15, 16].map((n, i) => ({ id: ["5af7abab-0811-4e14-9b71-923c3afafbeb", "c219233b-4571-4196-a697-c49c3412d4b1", "0e940352-a7a7-4d5d-890a-4db63ad9e2fc", "05af9142-9a56-4583-a2de-c3e11cdd6380", "dce1e187-c5fd-4649-950c-03d51236261c", "e67d9828-126c-4700-b223-a3acb88ceb44"][i], room_number: n, name: `Zimmer ${n}`, room_type: "Doppelzimmer Komfort", bed_description: "Doppelbett", max_persons: 2, price_per_night: 105, amenities: [], photos: [], status: "aktiv" })),
+  ...[17, 18, 19].map((n, i) => ({ id: ["2dffe866-7b1a-42d5-8ea9-29c9f2975994", "d1bd202f-eedf-45e9-be4c-18a43742ca12", "ab65f06b-385c-4f6a-ad3c-5b9c4de47495"][i], room_number: n, name: `Zimmer ${n}`, room_type: "Familienzimmer", bed_description: "Doppelbett und Schlafsofa", max_persons: 4, price_per_night: 145, amenities: [], photos: [], status: "aktiv" })),
+  { id: "8460eb23-82ff-4280-a1f1-ca01f97733bd", room_number: 20, name: "Junior Suite", room_type: "Junior Suite", bed_description: "Doppelbett und Wohnbereich", max_persons: 2, price_per_night: 165, amenities: [], photos: [], status: "aktiv" },
+  { id: "06183ce9-3314-4f82-aab9-40e8c7d32d86", room_number: 21, name: "Eifel-Suite", room_type: "Suite", bed_description: "Doppelbett und separater Wohnbereich", max_persons: 2, price_per_night: 195, amenities: [], photos: [], status: "aktiv" },
+];
+
 const guestSchema = z.object({
   name: z.string().trim().min(2, "Name muss mind. 2 Zeichen haben").max(120),
   email: z.string().trim().email("Ungültige E-Mail-Adresse").max(255),
