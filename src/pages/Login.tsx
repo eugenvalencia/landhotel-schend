@@ -12,8 +12,8 @@ import { useAuth } from "@/hooks/useAuth";
 export default function Login() {
   const navigate = useNavigate();
   const { user, isAdmin, loading } = useAuth();
-  const [email, setEmail] = useState("admin@landhotel-schend.de");
-  const [password, setPassword] = useState("Demo2026");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
