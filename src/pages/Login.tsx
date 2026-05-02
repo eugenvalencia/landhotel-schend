@@ -56,9 +56,6 @@ export default function Login() {
             <Button type="submit" className="w-full" disabled={busy}>
               <LogIn className="h-4 w-4" /> {busy ? "Anmelden..." : "Anmelden"}
             </Button>
-            <p className="text-xs text-muted-foreground text-center pt-2">
-              Demo: admin@landhotel-schend.de / Demo2026
-            </p>
           </form>
         </CardContent>
       </Card>
