@@ -612,55 +612,37 @@ export default function Booking() {
             </CardContent>
           </Card>
 
-          {/* SECTION 5: PAYMENT */}
-          <Card className="shadow-card">
+          {/* SECTION 4: RESERVATION REQUEST */}
+          <Card className="shadow-card border-secondary/30">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <CreditCard className="h-5 w-5" /> 4. Zahlung
+                <ClipboardList className="h-5 w-5 text-secondary" /> 4. Reservierung abschließen
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
-              <Tabs defaultValue="card" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="card"><CreditCard className="h-4 w-4 mr-1.5" /> Kreditkarte</TabsTrigger>
-                  <TabsTrigger value="sepa"><Landmark className="h-4 w-4 mr-1.5" /> SEPA-Lastschrift</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="card" className="rounded-lg border p-4 space-y-3 bg-card mt-4">
-                  <div>
-                    <Label>Kartennummer</Label>
-                    <Input defaultValue="4242 4242 4242 4242" className="mt-1.5 font-mono" />
+              <div className="rounded-lg border bg-accent/40 p-4 space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="h-5 w-5 text-success shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <p className="font-semibold text-sm">Unverbindliche Reservierungsanfrage</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Sie senden uns Ihre Anfrage – wir prüfen die Verfügbarkeit und bestätigen Ihre Reservierung
+                      in der Regel innerhalb von 24 Stunden per E-Mail.
+                    </p>
                   </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <Label>Gültig bis</Label>
-                      <Input defaultValue="12 / 28" className="mt-1.5 font-mono" />
-                    </div>
-                    <div>
-                      <Label>CVC</Label>
-                      <Input defaultValue="123" className="mt-1.5 font-mono" />
-                    </div>
+                </div>
+                <Separator />
+                <div className="flex items-start gap-3">
+                  <Landmark className="h-5 w-5 text-secondary shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <p className="font-semibold text-sm">Zahlung bequem vor Ort</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Die Bezahlung erfolgt bei der Anreise im Hotel – bar oder mit EC-/Kreditkarte.
+                      Keine Vorauszahlung, keine Kreditkartendaten erforderlich.
+                    </p>
                   </div>
-                  <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-success" />
-                    Demo-Modus: 4242 4242 4242 4242 – keine echte Belastung
-                  </p>
-                </TabsContent>
-
-                <TabsContent value="sepa" className="rounded-lg border p-4 space-y-3 bg-card mt-4">
-                  <div>
-                    <Label>IBAN</Label>
-                    <Input defaultValue="DE89 3704 0044 0532 0130 00" className="mt-1.5 font-mono" />
-                  </div>
-                  <div>
-                    <Label>Kontoinhaber</Label>
-                    <Input defaultValue={guest.name} className="mt-1.5" />
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Mit Klick auf Bezahlen ermächtigen Sie Landhotel Schend, Zahlungen von Ihrem Konto einzuziehen.
-                  </p>
-                </TabsContent>
-              </Tabs>
+                </div>
+              </div>
 
               <Button
                 onClick={handlePayment}
@@ -668,13 +650,11 @@ export default function Booking() {
                 size="lg"
                 className="w-full text-base"
               >
-                {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}
-                {submitting
-                  ? "Zahlung wird bestätigt..."
-                  : `${eur(grandTotal || 0)} jetzt bezahlen`}
+                {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle className="h-4 w-4" />}
+                {submitting ? "Anfrage wird gesendet..." : "Reservierungsanfrage senden"}
               </Button>
               <p className="text-xs text-muted-foreground text-center">
-                SSL-verschlüsselt · Sofortige Bestätigung · Keine versteckten Gebühren
+                Kostenlose Stornierung bis 48 Stunden vor Anreise · Bestätigung innerhalb von 24 Std.
               </p>
             </CardContent>
           </Card>
