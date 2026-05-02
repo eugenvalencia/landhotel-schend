@@ -737,7 +737,7 @@ export default function Booking() {
         </aside>
       </main>
 
-      {/* Sticky mobile pay bar */}
+      {/* Sticky mobile reservation bar */}
       <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-card border-t shadow-elevated safe-pb px-4 pt-3">
         <Button
           onClick={handlePayment}
@@ -745,10 +745,8 @@ export default function Booking() {
           size="lg"
           className="w-full h-12 text-base"
         >
-          {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}
-          {submitting
-            ? "Zahlung wird bestätigt..."
-            : `${eur(grandTotal || 0)} jetzt bezahlen`}
+          {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle className="h-4 w-4" />}
+          {submitting ? "Anfrage wird gesendet..." : "Reservierungsanfrage senden"}
         </Button>
       </div>
     </div>
