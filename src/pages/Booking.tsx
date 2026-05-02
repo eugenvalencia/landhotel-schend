@@ -238,67 +238,65 @@ export default function Booking() {
     setSubmitting(true);
     const startedAt = Date.now();
     try {
-      // Insert guest record (fire-and-forget — anonymous users can't read it back)
-      const { error: gErr } = await supabase
-        .from("guests")
-        .insert({ name: guest.name, email: guest.email, phone: guest.phone });
-      if (gErr) console.warn("Guest insert warning:", gErr.message);
-
-      const extrasPayload = selectedExtras.map((id) => {
-        const e = extras.find((x) => x.id === id)!;
-        return { id: e.id, name: e.name, price: e.price, per_night: e.per_night };
-      });
-
-      // Generate a booking number client-side (DB default uses same format but anon can't read back)
-      const now = new Date();
-      const yymmdd = `${String(now.getFullYear()).slice(-2)}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`;
-      const rand = String(Math.floor(Math.random() * 10000)).padStart(4, "0");
-      const bookingNumber = `LHS-${yymmdd}-${rand}`;
-
-      const { error: bErr } = await supabase
-        .from("bookings")
-        .insert({
-          booking_number: bookingNumber,
+      const { data, error } = await supabase.functions.invoke("create-booking", {
+        body: {
           room_id: room.id,
+          check_in: toISODate(checkIn),
+          check_out: toISODate(checkOut),
           guest_name: guest.name,
           guest_email: guest.email,
           guest_phone: guest.phone,
-          check_in: toISODate(checkIn),
-          check_out: toISODate(checkOut),
-          total_price: grandTotal,
-          extras: extrasPayload,
-          booking_type: "online",
-          payment_status: "pending",
+          extras: selectedExtras,
           notes: notes.trim() || null,
-        });
-      if (bErr) throw bErr;
+        },
+      });
 
-      const confirmationExtras = extrasPayload.map((extra) => ({
+      if (error || !data || (data as any).error) {
+        const code = (data as any)?.error;
+        if (code === "Dates not available") {
+          toast.error("Die gewählten Daten sind leider nicht mehr verfügbar.");
+        } else {
+          toast.error("Reservierungsanfrage fehlgeschlagen. Bitte versuchen Sie es erneut.");
+        }
+        setSubmitting(false);
+        return;
+      }
+
+      const result = data as {
+        booking_number: string;
+        total_price: number;
+        extras: Array<{ id: string; name: string; price: number; per_night: boolean }>;
+        nights: number;
+        room_total: number;
+        extras_total: number;
+      };
+
+      const confirmationExtras = result.extras.map((extra) => ({
         id: extra.id,
         name: extra.name,
         price: Number(extra.price),
         perNight: extra.per_night,
-        total: extra.per_night ? Number(extra.price) * nights : Number(extra.price),
+        total: extra.per_night ? Number(extra.price) * result.nights : Number(extra.price),
       }));
 
       saveBookingConfirmation({
-        bookingNumber,
+        bookingNumber: result.booking_number,
         guestName: guest.name,
         guestEmail: guest.email,
         guestPhone: guest.phone,
         checkIn: toISODate(checkIn),
         checkOut: toISODate(checkOut),
-        nights,
+        nights: result.nights,
         persons,
         roomName: room.name,
         roomType: room.room_type,
         roomNumber: room.room_number,
         roomPrice: Number(room.price_per_night),
         roomPhoto: room.photos?.[0] || photoForRoomType(room.room_type),
-        roomSubtotal: roomTotal,
+        roomSubtotal: result.room_total,
         extras: confirmationExtras,
-        extrasTotal,
-        totalPrice: grandTotal,
+        extrasTotal: result.extras_total,
+        totalPrice: result.total_price,
         notes: notes.trim() || null,
       });
 
@@ -308,9 +306,9 @@ export default function Booking() {
       }
       toast.success("Reservierungsanfrage gesendet!");
       navigate("/booking-confirmation");
-    } catch (e: any) {
+    } catch (e) {
       console.error("Booking failed:", e);
-      toast.error("Buchung fehlgeschlagen: " + (e?.message ?? "Unbekannter Fehler"));
+      toast.error("Reservierungsanfrage fehlgeschlagen. Bitte versuchen Sie es erneut.");
       setSubmitting(false);
     }
   };
