@@ -372,18 +372,18 @@ export default function Booking() {
               {!roomIdParam && (
                 <div>
                   <Label>Zimmer</Label>
-                  <Select value={room?.id} onValueChange={(v) => setRoom(rooms.find((r) => r.id === v) ?? null)}>
-                    <SelectTrigger className="mt-1.5">
-                      <SelectValue placeholder="Zimmer auswählen" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {rooms.map((r) => (
-                        <SelectItem key={r.id} value={r.id}>
-                          Nr. {r.room_number} · {r.room_type} · {eur(r.price_per_night)}/Nacht
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <select
+                    value={room?.id ?? ""}
+                    onChange={(event) => setRoom(rooms.find((r) => r.id === event.target.value) ?? null)}
+                    className="mt-1.5 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                  >
+                    <option value="">Zimmer auswählen</option>
+                    {rooms.map((r) => (
+                      <option key={r.id} value={r.id}>
+                        Nr. {r.room_number} · {r.room_type} · {eur(r.price_per_night)}/Nacht
+                      </option>
+                    ))}
+                  </select>
                 </div>
               )}
               {room && availabilityWindows.length > 0 && (
