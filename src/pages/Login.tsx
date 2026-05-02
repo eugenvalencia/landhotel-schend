@@ -12,8 +12,8 @@ import { useAuth } from "@/hooks/useAuth";
 export default function Login() {
   const navigate = useNavigate();
   const { user, isAdmin, loading } = useAuth();
-  const [email, setEmail] = useState("admin@landhotel-schend.de");
-  const [password, setPassword] = useState("Demo2026");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -56,9 +56,6 @@ export default function Login() {
             <Button type="submit" className="w-full" disabled={busy}>
               <LogIn className="h-4 w-4" /> {busy ? "Anmelden..." : "Anmelden"}
             </Button>
-            <p className="text-xs text-muted-foreground text-center pt-2">
-              Demo: admin@landhotel-schend.de / Demo2026
-            </p>
           </form>
         </CardContent>
       </Card>
