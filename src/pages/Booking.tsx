@@ -165,9 +165,7 @@ export default function Booking() {
       .order("sort_order")
       .then(({ data }) => setExtras((data as any) ?? []));
     supabase
-      .from("bookings")
-      .select("room_id,check_in,check_out,payment_status")
-      .neq("payment_status", "cancelled")
+      .rpc("get_booked_ranges")
       .then(({ data }) => setAllBookings((data as any[]) ?? []));
   }, [roomIdParam]);
 
