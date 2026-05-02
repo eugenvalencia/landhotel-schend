@@ -71,7 +71,7 @@ export default function Booking() {
 
   const [room, setRoom] = useState<Room | null>(null);
   const [rooms, setRooms] = useState<Room[]>(FALLBACK_ROOMS);
-  const [extras, setExtras] = useState<Extra[]>([]);
+  const [extras, setExtras] = useState<Extra[]>(FALLBACK_EXTRAS);
   const [checkIn, setCheckIn] = useState<Date | undefined>();
   const [checkOut, setCheckOut] = useState<Date | undefined>();
   const [persons, setPersons] = useState<number>(2);
