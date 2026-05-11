@@ -146,7 +146,8 @@ const FlagFR = () => (
 );
 
 function LanguageSwitcher() {
-  const [lang, setLang] = useState("DE");
+  const { i18n } = useTranslation();
+  const lang = i18n.language?.slice(0, 2).toUpperCase() || "DE";
   const langs = [
     { code: "DE", name: "Deutsch", Flag: FlagDE },
     { code: "EN", name: "English", Flag: FlagGB },
@@ -160,8 +161,9 @@ function LanguageSwitcher() {
           <button
             key={l.code}
             onClick={() => {
-              setLang(l.code);
-              import("sonner").then(({ toast }) => toast.success(`Sprache: ${l.name}`));
+              const code = l.code.toLowerCase();
+              i18n.changeLanguage(code);
+              try { localStorage.setItem("lang", code); } catch {}
             }}
             aria-label={l.name}
             title={l.name}
