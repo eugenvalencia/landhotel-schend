@@ -11,6 +11,7 @@ import { eur } from "@/lib/format";
 import { HotelImage } from "@/components/HotelImage";
 import ReviewsSection from "@/components/ReviewsSection";
 import LocationSection from "@/components/LocationSection";
+import EifelRegionSection from "@/components/EifelRegionSection";
 import WeatherWidget from "@/components/WeatherWidget";
 import AboutSection from "@/components/AboutSection";
 import {
@@ -280,6 +281,11 @@ const Index = () => {
       {/* REVIEWS */}
       <div id="reviews">
         <ReviewsSection />
+      </div>
+
+      {/* URLAUBSREGION EIFEL */}
+      <div id="region">
+        <EifelRegionSection />
       </div>
 
       {/* LOCATION / MAP */}
