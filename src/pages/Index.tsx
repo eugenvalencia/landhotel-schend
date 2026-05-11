@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   Hotel, CalendarCheck, Phone, Star,
@@ -27,15 +28,15 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
 const USPS = [
-  { icon: ParkingCircle, text: "Kostenlose Parkplätze — videoüberwacht" },
-  { icon: Bike, text: "Genügend Motorrad-Parkplätze — videoüberwacht" },
-  { icon: Waves, text: "Sauna & Wellness" },
-  { icon: UtensilsCrossed, text: "Hauseigenes Restaurant" },
-  { icon: BedDouble, text: "21 Zimmer mit Balkon/Terrasse" },
-  { icon: Wifi, text: "Kostenloses WLAN" },
-  { icon: Coffee, text: "Großes Frühstücksbuffet" },
-  { icon: Trophy, text: "Booking.com 8.5 · Tripadvisor #1" },
-];
+  { icon: ParkingCircle, key: "parking" },
+  { icon: Bike, key: "moto" },
+  { icon: Waves, key: "sauna" },
+  { icon: UtensilsCrossed, key: "restaurant" },
+  { icon: BedDouble, key: "rooms" },
+  { icon: Wifi, key: "wifi" },
+  { icon: Coffee, key: "breakfast" },
+  { icon: Trophy, key: "rating" },
+] as const;
 
 const TYPE_DESCRIPTIONS: Record<string, string> = {
   "Einzelzimmer": "Gemütliches Einzelzimmer mit Blick auf die Vulkaneifel",
@@ -52,6 +53,7 @@ type RoomCategory = { id: string; name: string; type: string; price: number };
 const Index = () => {
   const [categories, setCategories] = useState<RoomCategory[]>([]);
   const [heroIdx, setHeroIdx] = useState(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const t = setInterval(
@@ -98,14 +100,12 @@ const Index = () => {
         ))}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/50 to-primary/80" />
         <div className="container mx-auto px-4 py-24 relative z-10 text-center">
-          <p className="uppercase tracking-[0.2em] text-sm opacity-90 mb-4">Ihr Urlaubsdomizil in der Vulkaneifel</p>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow">Willkommen im Landhotel Schend</h1>
-          <p className="text-lg md:text-xl opacity-95 max-w-2xl mx-auto mb-8">
-            Erholen Sie sich in der wunderschönen Vulkaneifel — mit Sauna, Wellness, hauseigenem Restaurant und 21 komfortablen Zimmern.
-          </p>
+          <p className="uppercase tracking-[0.2em] text-sm opacity-90 mb-4">{t("hero.eyebrow")}</p>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow">{t("hero.title")}</h1>
+          <p className="text-lg md:text-xl opacity-95 max-w-2xl mx-auto mb-8">{t("hero.text")}</p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Button asChild size="lg" variant="secondary" className="text-base">
-              <Link to="/booking"><CalendarCheck className="h-5 w-5" /> Jetzt direkt buchen</Link>
+              <Link to="/booking"><CalendarCheck className="h-5 w-5" /> {t("hero.bookDirect")}</Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="text-base bg-white/10 text-primary-foreground border-white/40 hover:bg-white/20 hover:text-primary-foreground">
               <a href="tel:+4965731306"><Phone className="h-5 w-5" /> +49 6573 306</a>
@@ -123,9 +123,9 @@ const Index = () => {
       <section className="bg-card border-b">
         <div className="container mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-5">
           {USPS.map((u) => (
-            <div key={u.text} className="flex items-start gap-3">
+            <div key={u.key} className="flex items-start gap-3">
               <u.icon className="h-5 w-5 text-secondary shrink-0 mt-0.5" />
-              <span className="text-sm font-medium">{u.text}</span>
+              <span className="text-sm font-medium">{t(`usps.${u.key}`)}</span>
             </div>
           ))}
         </div>
@@ -134,11 +134,9 @@ const Index = () => {
       {/* ROOMS */}
       <section id="rooms" className="container mx-auto px-4 py-16">
         <div className="text-center mb-10">
-          <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Unsere Zimmer</p>
-          <h2 className="text-3xl md:text-4xl font-bold">Zu Gast im Landhotel Schend</h2>
-          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
-            21 individuell gestaltete Zimmer und Suiten — alle mit Balkon oder Terrasse und Blick in die Vulkaneifel.
-          </p>
+          <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("rooms.eyebrow")}</p>
+          <h2 className="text-3xl md:text-4xl font-bold">{t("rooms.title")}</h2>
+          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">{t("rooms.intro")}</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((r) => (
@@ -157,7 +155,7 @@ const Index = () => {
               <div className="p-5">
                 <div className="flex items-start justify-between gap-2 mb-1">
                   <h3 className="font-semibold text-lg">{r.name}</h3>
-                  <span className="text-sm font-semibold text-secondary">ab {eur(r.price)}</span>
+                  <span className="text-sm font-semibold text-secondary">{t("rooms.from")} {eur(r.price)}</span>
                 </div>
                 <p className="text-sm text-muted-foreground">{TYPE_DESCRIPTIONS[r.type] ?? ""}</p>
               </div>
@@ -166,7 +164,7 @@ const Index = () => {
         </div>
         <div className="text-center mt-10">
           <Button asChild size="lg">
-            <Link to="/booking"><CalendarCheck className="h-5 w-5" /> Verfügbarkeit prüfen</Link>
+            <Link to="/booking"><CalendarCheck className="h-5 w-5" /> {t("rooms.check")}</Link>
           </Button>
         </div>
       </section>
@@ -178,32 +176,26 @@ const Index = () => {
             <HotelImage src={SCHEND_RESTAURANT} alt="Landhaus Restaurant & Terrasse" className="w-full h-full object-cover" />
           </div>
           <div>
-            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Kulinarik</p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Landhaus Restaurant & Terrasse</h2>
+            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("restaurant.eyebrow")}</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("restaurant.title")}</h2>
             <div className="space-y-4 text-muted-foreground">
-              <p>
-                Für den großen Hunger ist unser besonders gemütliches Restaurant genau die richtige Wahl. Dort werden Ihnen Eifeler und Internationale Spezialitäten in stilvoller Atmosphäre serviert. Wir verwöhnen Sie mit Produkten der Eifeler Landküche und frisch gezapftem Bitburger Bier. Eine separate Karte für Kinder und eine Kinderspielecke bieten auch Familien ein attraktives Angebot. Hunde sind lediglich in der Dorfgaststätte erlaubt.
-              </p>
-              <p>Gruppen und Veranstaltungen gerne auf Anfrage auch zum Frühstück, Kaffee und Mittag.</p>
-              <p>
-                Wir verwenden ausschließlich qualitativ hochwertige frische Zutaten. Ausgewählte Delikatessen und saisonale Spezialitäten unserer Speisekarte lassen selbst Gäste mit verwöhnten Gaumen ein Lob an unseren Küchenchef aussprechen.
-              </p>
-              <p>
-                Neben vielfältigen Gerichten bieten wir Ihnen eine umfangreiche Getränkekarte und eine große Auswahl an erlesenen Weinen.
-              </p>
+              <p>{t("restaurant.p1")}</p>
+              <p>{t("restaurant.p2")}</p>
+              <p>{t("restaurant.p3")}</p>
+              <p>{t("restaurant.p4")}</p>
             </div>
             <div className="mt-6 rounded-xl bg-accent/60 p-5">
-              <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-3">Öffnungszeiten</p>
+              <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-3">{t("restaurant.hours")}</p>
               <div className="text-sm space-y-2">
-                <div className="grid grid-cols-[140px_1fr] gap-x-6">
-                  <p className="font-semibold">Montag – Samstag</p>
-                  <p className="text-muted-foreground">17:30 – 20:00 Uhr</p>
+                <div className="grid grid-cols-[160px_1fr] gap-x-6">
+                  <p className="font-semibold">{t("restaurant.monSat")}</p>
+                  <p className="text-muted-foreground">17:30 – 20:00</p>
                 </div>
-                <div className="grid grid-cols-[140px_1fr] gap-x-6">
-                  <p className="font-semibold">Sonntag</p>
+                <div className="grid grid-cols-[160px_1fr] gap-x-6">
+                  <p className="font-semibold">{t("restaurant.sun")}</p>
                   <div className="text-muted-foreground">
-                    <p>12:00 – 14:00 Uhr</p>
-                    <p>17:30 – 20:00 Uhr</p>
+                    <p>12:00 – 14:00</p>
+                    <p>17:30 – 20:00</p>
                   </div>
                 </div>
               </div>
@@ -235,11 +227,9 @@ const Index = () => {
             />
           </div>
           <div>
-            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Wir organisieren Ihre Feste</p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Familien- & Firmenfeiern</h2>
-            <p className="text-muted-foreground">
-              Laden Sie ein zu einem unvergesslichen Fest in ansprechendem Ambiente. Wir kümmern uns mit einem erfahrenen Team um die Details: von der Planung bis zur Dekoration und vom Rahmenprogramm bis zum von Ihnen gewünschten Menü oder Büffet. Feiern Sie bei uns Geburtstag, Kommunion oder Taufe wie auch geschäftliche Anlässe vom Kundenevent bis zur Weihnachtsfeier. Im eleganten Eichelbergzimmer können bis zu 70 Personen speisen, im behaglichen Kaminzimmer 35 und in unserer Dorfgaststätte und auf der Sonnenterrasse jeweils 40. Wir freuen uns, Sie beraten zu dürfen, und stellen Ihnen ein individuelles Paket zusammen.
-            </p>
+            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("feiern.eyebrow")}</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("feiern.title")}</h2>
+            <p className="text-muted-foreground">{t("feiern.text")}</p>
           </div>
         </div>
       </section>
@@ -248,22 +238,20 @@ const Index = () => {
       <section id="pakete" className="bg-muted">
         <div className="container mx-auto px-4 py-16">
           <div className="text-center mb-10">
-            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Pakete & Angebote</p>
-            <h2 className="text-3xl md:text-4xl font-bold">Unsere Eifel-Pakete</h2>
-            <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
-              Wandern, Radfahren oder einfach nur entspannen — wählen Sie Ihr passendes Paket für Ihre Auszeit in der Vulkaneifel.
-            </p>
+            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("pakete.eyebrow")}</p>
+            <h2 className="text-3xl md:text-4xl font-bold">{t("pakete.title")}</h2>
+            <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">{t("pakete.intro")}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {PAKETE.map((p) => (
               <div key={p.slug} className="rounded-xl overflow-hidden bg-card border shadow-card hover:shadow-elevated transition-shadow flex flex-col">
                 <Link to={`/pakete/${p.slug}`} className="block aspect-[4/3] overflow-hidden group">
-                  <img src={p.cover} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={p.cover} alt={t(`paketDetails.${p.slug}.title`, p.title)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </Link>
                 <div className="p-5 flex-1 flex flex-col text-center">
-                  <h3 className="font-semibold text-lg mb-4 flex-1">{p.title}</h3>
+                  <h3 className="font-semibold text-lg mb-4 flex-1">{t(`paketDetails.${p.slug}.title`, p.title)}</h3>
                   <Button asChild variant="secondary" className="w-full">
-                    <Link to={`/pakete/${p.slug}`}>Mehr Infos</Link>
+                    <Link to={`/pakete/${p.slug}`}>{t("pakete.more")}</Link>
                   </Button>
                 </div>
               </div>
@@ -274,8 +262,8 @@ const Index = () => {
 
       <section id="gallery" className="container mx-auto px-4 py-16">
         <div className="text-center mb-10">
-          <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Galerie</p>
-          <h2 className="text-3xl md:text-4xl font-bold">Eindrücke aus der Vulkaneifel</h2>
+          <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("gallery.eyebrow")}</p>
+          <h2 className="text-3xl md:text-4xl font-bold">{t("gallery.title")}</h2>
         </div>
         <div className="grid md:grid-cols-3 gap-4">
           {SCHEND_GALLERY.map((src) => (

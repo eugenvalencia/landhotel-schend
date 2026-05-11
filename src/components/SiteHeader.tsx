@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Hotel } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const MENU = [
-  { label: "STARTSEITE", id: "top" },
-  { label: "ZIMMER", id: "rooms" },
-  { label: "PAKETE", id: "pakete" },
-  { label: "GASTRONOMIE", id: "restaurant" },
-  { label: "ÜBER UNS", id: "about" },
-  { label: "BEWERTUNGEN", id: "reviews" },
-  { label: "URLAUBSREGION", id: "location" },
-];
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
+
+  const MENU = [
+    { label: t("nav.home"), id: "top" },
+    { label: t("nav.rooms"), id: "rooms" },
+    { label: t("nav.pakete"), id: "pakete" },
+    { label: t("nav.gastro"), id: "restaurant" },
+    { label: t("nav.about"), id: "about" },
+    { label: t("nav.reviews"), id: "reviews" },
+    { label: t("nav.location"), id: "location" },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -61,7 +64,7 @@ export default function SiteHeader() {
               LANDHOTEL SCHEND
             </p>
             <p className="hidden sm:block text-[10px] md:text-xs text-muted-foreground leading-tight truncate">
-              Ihr Familienhotel im Immerath | Vulkaneifel
+              {t("nav.subtitle")}
             </p>
           </div>
         </Link>
@@ -78,7 +81,7 @@ export default function SiteHeader() {
           ))}
           <LanguageSwitcher />
           <Button asChild size="sm" className="ml-2">
-            <Link to="/booking">Jetzt buchen</Link>
+            <Link to="/booking">{t("nav.book")}</Link>
           </Button>
         </nav>
 
@@ -104,7 +107,7 @@ export default function SiteHeader() {
               </button>
             ))}
             <Button asChild className="mt-2 h-12">
-              <Link to="/booking" onClick={() => setOpen(false)}>Jetzt buchen</Link>
+              <Link to="/booking" onClick={() => setOpen(false)}>{t("nav.book")}</Link>
             </Button>
           </div>
         </div>
@@ -143,7 +146,8 @@ const FlagFR = () => (
 );
 
 function LanguageSwitcher() {
-  const [lang, setLang] = useState("DE");
+  const { i18n } = useTranslation();
+  const lang = i18n.language?.slice(0, 2).toUpperCase() || "DE";
   const langs = [
     { code: "DE", name: "Deutsch", Flag: FlagDE },
     { code: "EN", name: "English", Flag: FlagGB },
@@ -157,8 +161,9 @@ function LanguageSwitcher() {
           <button
             key={l.code}
             onClick={() => {
-              setLang(l.code);
-              import("sonner").then(({ toast }) => toast.success(`Sprache: ${l.name}`));
+              const code = l.code.toLowerCase();
+              i18n.changeLanguage(code);
+              try { localStorage.setItem("lang", code); } catch {}
             }}
             aria-label={l.name}
             title={l.name}
