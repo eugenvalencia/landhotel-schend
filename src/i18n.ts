@@ -1,0 +1,292 @@
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+
+const resources = {
+  de: {
+    translation: {
+      nav: {
+        home: "STARTSEITE",
+        rooms: "ZIMMER",
+        pakete: "PAKETE",
+        gastro: "GASTRONOMIE",
+        about: "ÜBER UNS",
+        reviews: "BEWERTUNGEN",
+        location: "URLAUBSREGION",
+        book: "Jetzt buchen",
+        subtitle: "Ihr Familienhotel im Immerath | Vulkaneifel",
+      },
+      hero: {
+        eyebrow: "Ihr Urlaubsdomizil in der Vulkaneifel",
+        title: "Willkommen im Landhotel Schend",
+        text:
+          "Erholen Sie sich in der wunderschönen Vulkaneifel — mit Sauna, Wellness, hauseigenem Restaurant und 21 komfortablen Zimmern.",
+        bookDirect: "Jetzt direkt buchen",
+      },
+      usps: {
+        parking: "Kostenlose Parkplätze — videoüberwacht",
+        moto: "Genügend Motorrad-Parkplätze — videoüberwacht",
+        sauna: "Sauna & Wellness",
+        restaurant: "Hauseigenes Restaurant",
+        rooms: "21 Zimmer mit Balkon/Terrasse",
+        wifi: "Kostenloses WLAN",
+        breakfast: "Großes Frühstücksbuffet",
+        rating: "Booking.com 8.5 · Tripadvisor #1",
+      },
+      rooms: {
+        eyebrow: "Unsere Zimmer",
+        title: "Zu Gast im Landhotel Schend",
+        intro:
+          "21 individuell gestaltete Zimmer und Suiten — alle mit Balkon oder Terrasse und Blick in die Vulkaneifel.",
+        from: "ab",
+        check: "Verfügbarkeit prüfen",
+      },
+      restaurant: {
+        eyebrow: "Kulinarik",
+        title: "Landhaus Restaurant & Terrasse",
+        p1:
+          "Für den großen Hunger ist unser besonders gemütliches Restaurant genau die richtige Wahl. Dort werden Ihnen Eifeler und Internationale Spezialitäten in stilvoller Atmosphäre serviert. Wir verwöhnen Sie mit Produkten der Eifeler Landküche und frisch gezapftem Bitburger Bier. Eine separate Karte für Kinder und eine Kinderspielecke bieten auch Familien ein attraktives Angebot. Hunde sind lediglich in der Dorfgaststätte erlaubt.",
+        p2: "Gruppen und Veranstaltungen gerne auf Anfrage auch zum Frühstück, Kaffee und Mittag.",
+        p3:
+          "Wir verwenden ausschließlich qualitativ hochwertige frische Zutaten. Ausgewählte Delikatessen und saisonale Spezialitäten unserer Speisekarte lassen selbst Gäste mit verwöhnten Gaumen ein Lob an unseren Küchenchef aussprechen.",
+        p4:
+          "Neben vielfältigen Gerichten bieten wir Ihnen eine umfangreiche Getränkekarte und eine große Auswahl an erlesenen Weinen.",
+        hours: "Öffnungszeiten",
+        monSat: "Montag – Samstag",
+        sun: "Sonntag",
+      },
+      feiern: {
+        eyebrow: "Wir organisieren Ihre Feste",
+        title: "Familien- & Firmenfeiern",
+        text:
+          "Laden Sie ein zu einem unvergesslichen Fest in ansprechendem Ambiente. Wir kümmern uns mit einem erfahrenen Team um die Details: von der Planung bis zur Dekoration und vom Rahmenprogramm bis zum von Ihnen gewünschten Menü oder Büffet. Feiern Sie bei uns Geburtstag, Kommunion oder Taufe wie auch geschäftliche Anlässe vom Kundenevent bis zur Weihnachtsfeier. Im eleganten Eichelbergzimmer können bis zu 70 Personen speisen, im behaglichen Kaminzimmer 35 und in unserer Dorfgaststätte und auf der Sonnenterrasse jeweils 40. Wir freuen uns, Sie beraten zu dürfen, und stellen Ihnen ein individuelles Paket zusammen.",
+      },
+      pakete: {
+        eyebrow: "Pakete & Angebote",
+        title: "Unsere Eifel-Pakete",
+        intro:
+          "Wandern, Radfahren oder einfach nur entspannen — wählen Sie Ihr passendes Paket für Ihre Auszeit in der Vulkaneifel.",
+        more: "Mehr Infos",
+        back: "Alle Pakete",
+        included: "Im Paket enthalten",
+        description: "Beschreibung",
+        descriptionTitle: "Ihr Aufenthalt im Detail",
+        photos: "Eindrücke",
+        photosTitle: "Fotos zum Paket",
+        otherTitle: "Auch interessant",
+        otherEyebrow: "Weitere Pakete",
+        bookNow: "Jetzt buchen",
+      },
+      gallery: {
+        eyebrow: "Galerie",
+        title: "Eindrücke aus der Vulkaneifel",
+      },
+      footer: {
+        tagline:
+          "Ihr Familienhotel in der Vulkaneifel — mit Sauna, Wellness und hauseigenem Restaurant.",
+        quick: "Quick Links",
+        home: "Startseite",
+        bookRoom: "Zimmer buchen",
+        gastro: "Gastronomie",
+        contact: "Kontakt",
+        contactTitle: "Kontakt",
+        impressum: "Impressum",
+        privacy: "Datenschutz",
+      },
+    },
+  },
+  en: {
+    translation: {
+      nav: {
+        home: "HOME",
+        rooms: "ROOMS",
+        pakete: "PACKAGES",
+        gastro: "DINING",
+        about: "ABOUT US",
+        reviews: "REVIEWS",
+        location: "REGION",
+        book: "Book now",
+        subtitle: "Your family hotel in Immerath | Volcanic Eifel",
+      },
+      hero: {
+        eyebrow: "Your holiday home in the Volcanic Eifel",
+        title: "Welcome to Landhotel Schend",
+        text:
+          "Relax in the beautiful Volcanic Eifel — with sauna, wellness, our own restaurant and 21 comfortable rooms.",
+        bookDirect: "Book directly now",
+      },
+      usps: {
+        parking: "Free parking — video-monitored",
+        moto: "Plenty of motorcycle parking — video-monitored",
+        sauna: "Sauna & wellness",
+        restaurant: "On-site restaurant",
+        rooms: "21 rooms with balcony/terrace",
+        wifi: "Free Wi-Fi",
+        breakfast: "Generous breakfast buffet",
+        rating: "Booking.com 8.5 · Tripadvisor #1",
+      },
+      rooms: {
+        eyebrow: "Our rooms",
+        title: "A guest at Landhotel Schend",
+        intro:
+          "21 individually designed rooms and suites — all with balcony or terrace and views of the Volcanic Eifel.",
+        from: "from",
+        check: "Check availability",
+      },
+      restaurant: {
+        eyebrow: "Cuisine",
+        title: "Landhaus Restaurant & Terrace",
+        p1:
+          "For a hearty appetite our particularly cosy restaurant is the perfect choice. We serve Eifel and international specialities in a stylish atmosphere, with regional country cuisine and freshly tapped Bitburger beer. A separate kids' menu and a play corner make families feel welcome. Dogs are allowed only in the village tavern.",
+        p2: "Groups and events on request — also for breakfast, coffee and lunch.",
+        p3:
+          "We use only fresh, high-quality ingredients. Selected delicacies and seasonal specialities from our menu earn praise for our chef even from the most discerning guests.",
+        p4: "Alongside our varied dishes you'll find an extensive drinks list and a fine selection of wines.",
+        hours: "Opening hours",
+        monSat: "Monday – Saturday",
+        sun: "Sunday",
+      },
+      feiern: {
+        eyebrow: "We organise your celebrations",
+        title: "Family & Corporate Events",
+        text:
+          "Invite your guests to an unforgettable celebration in stylish surroundings. Our experienced team takes care of every detail — from planning and decoration to the entertainment programme and the menu or buffet of your choice. Celebrate birthdays, communions or christenings, as well as corporate events from customer evenings to Christmas parties. The elegant Eichelbergzimmer seats up to 70 guests, the cosy Kaminzimmer 35, and our village tavern and sun terrace 40 each. We'd love to advise you and put together an individual package.",
+      },
+      pakete: {
+        eyebrow: "Packages & offers",
+        title: "Our Eifel packages",
+        intro:
+          "Hiking, cycling or simply relaxing — choose the right package for your time-out in the Volcanic Eifel.",
+        more: "More info",
+        back: "All packages",
+        included: "Included in the package",
+        description: "Description",
+        descriptionTitle: "Your stay in detail",
+        photos: "Impressions",
+        photosTitle: "Photos of this package",
+        otherTitle: "You may also like",
+        otherEyebrow: "More packages",
+        bookNow: "Book now",
+      },
+      gallery: {
+        eyebrow: "Gallery",
+        title: "Impressions of the Volcanic Eifel",
+      },
+      footer: {
+        tagline:
+          "Your family hotel in the Volcanic Eifel — with sauna, wellness and on-site restaurant.",
+        quick: "Quick links",
+        home: "Home",
+        bookRoom: "Book a room",
+        gastro: "Dining",
+        contact: "Contact",
+        contactTitle: "Contact",
+        impressum: "Imprint",
+        privacy: "Privacy",
+      },
+    },
+  },
+  fr: {
+    translation: {
+      nav: {
+        home: "ACCUEIL",
+        rooms: "CHAMBRES",
+        pakete: "FORFAITS",
+        gastro: "RESTAURATION",
+        about: "À PROPOS",
+        reviews: "AVIS",
+        location: "RÉGION",
+        book: "Réserver",
+        subtitle: "Votre hôtel familial à Immerath | Eifel volcanique",
+      },
+      hero: {
+        eyebrow: "Votre lieu de vacances dans l'Eifel volcanique",
+        title: "Bienvenue au Landhotel Schend",
+        text:
+          "Détendez-vous dans la magnifique Eifel volcanique — sauna, bien-être, restaurant maison et 21 chambres confortables.",
+        bookDirect: "Réserver en direct",
+      },
+      usps: {
+        parking: "Parking gratuit — vidéosurveillé",
+        moto: "Nombreuses places moto — vidéosurveillées",
+        sauna: "Sauna & bien-être",
+        restaurant: "Restaurant maison",
+        rooms: "21 chambres avec balcon/terrasse",
+        wifi: "Wi-Fi gratuit",
+        breakfast: "Grand buffet petit-déjeuner",
+        rating: "Booking.com 8,5 · Tripadvisor n°1",
+      },
+      rooms: {
+        eyebrow: "Nos chambres",
+        title: "Séjourner au Landhotel Schend",
+        intro:
+          "21 chambres et suites individuelles — toutes avec balcon ou terrasse et vue sur l'Eifel volcanique.",
+        from: "à partir de",
+        check: "Vérifier les disponibilités",
+      },
+      restaurant: {
+        eyebrow: "Gastronomie",
+        title: "Restaurant Landhaus & Terrasse",
+        p1:
+          "Pour les grandes faims, notre restaurant chaleureux est l'adresse idéale. Nous servons des spécialités de l'Eifel et internationales dans une atmosphère élégante, avec des produits du terroir et une bière Bitburger pression. Carte enfants et coin jeux pour les familles. Les chiens sont autorisés uniquement dans la taverne du village.",
+        p2:
+          "Groupes et événements sur demande — également pour le petit-déjeuner, le café et le déjeuner.",
+        p3:
+          "Nous n'utilisons que des produits frais de grande qualité. Délices sélectionnés et spécialités de saison ravissent même les palais les plus exigeants.",
+        p4:
+          "Une carte des boissons étoffée et une belle sélection de vins complètent nos plats variés.",
+        hours: "Horaires d'ouverture",
+        monSat: "Lundi – Samedi",
+        sun: "Dimanche",
+      },
+      feiern: {
+        eyebrow: "Nous organisons vos fêtes",
+        title: "Événements familiaux & d'entreprise",
+        text:
+          "Invitez vos proches à une fête inoubliable dans un cadre raffiné. Notre équipe expérimentée s'occupe de tout — de la planification à la décoration, du programme au menu ou buffet de votre choix. Anniversaires, communions, baptêmes ou événements professionnels : le salon Eichelbergzimmer accueille jusqu'à 70 personnes, le Kaminzimmer 35, la taverne du village et la terrasse ensoleillée 40 chacune. Nous vous conseillons volontiers pour composer une formule sur mesure.",
+      },
+      pakete: {
+        eyebrow: "Forfaits & offres",
+        title: "Nos forfaits Eifel",
+        intro:
+          "Randonnée, vélo ou détente — choisissez le forfait qui vous convient pour votre séjour dans l'Eifel volcanique.",
+        more: "En savoir plus",
+        back: "Tous les forfaits",
+        included: "Inclus dans le forfait",
+        description: "Description",
+        descriptionTitle: "Votre séjour en détail",
+        photos: "Impressions",
+        photosTitle: "Photos du forfait",
+        otherTitle: "À découvrir aussi",
+        otherEyebrow: "Autres forfaits",
+        bookNow: "Réserver",
+      },
+      gallery: {
+        eyebrow: "Galerie",
+        title: "Impressions de l'Eifel volcanique",
+      },
+      footer: {
+        tagline:
+          "Votre hôtel familial dans l'Eifel volcanique — sauna, bien-être et restaurant maison.",
+        quick: "Liens rapides",
+        home: "Accueil",
+        bookRoom: "Réserver une chambre",
+        gastro: "Restauration",
+        contact: "Contact",
+        contactTitle: "Contact",
+        impressum: "Mentions légales",
+        privacy: "Confidentialité",
+      },
+    },
+  },
+};
+
+const saved = typeof window !== "undefined" ? localStorage.getItem("lang") : null;
+
+i18n.use(initReactI18next).init({
+  resources,
+  lng: saved || "de",
+  fallbackLng: "de",
+  interpolation: { escapeValue: false },
+});
+
+export default i18n;
