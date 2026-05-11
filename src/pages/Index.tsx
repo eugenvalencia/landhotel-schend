@@ -176,32 +176,26 @@ const Index = () => {
             <HotelImage src={SCHEND_RESTAURANT} alt="Landhaus Restaurant & Terrasse" className="w-full h-full object-cover" />
           </div>
           <div>
-            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Kulinarik</p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Landhaus Restaurant & Terrasse</h2>
+            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("restaurant.eyebrow")}</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("restaurant.title")}</h2>
             <div className="space-y-4 text-muted-foreground">
-              <p>
-                Für den großen Hunger ist unser besonders gemütliches Restaurant genau die richtige Wahl. Dort werden Ihnen Eifeler und Internationale Spezialitäten in stilvoller Atmosphäre serviert. Wir verwöhnen Sie mit Produkten der Eifeler Landküche und frisch gezapftem Bitburger Bier. Eine separate Karte für Kinder und eine Kinderspielecke bieten auch Familien ein attraktives Angebot. Hunde sind lediglich in der Dorfgaststätte erlaubt.
-              </p>
-              <p>Gruppen und Veranstaltungen gerne auf Anfrage auch zum Frühstück, Kaffee und Mittag.</p>
-              <p>
-                Wir verwenden ausschließlich qualitativ hochwertige frische Zutaten. Ausgewählte Delikatessen und saisonale Spezialitäten unserer Speisekarte lassen selbst Gäste mit verwöhnten Gaumen ein Lob an unseren Küchenchef aussprechen.
-              </p>
-              <p>
-                Neben vielfältigen Gerichten bieten wir Ihnen eine umfangreiche Getränkekarte und eine große Auswahl an erlesenen Weinen.
-              </p>
+              <p>{t("restaurant.p1")}</p>
+              <p>{t("restaurant.p2")}</p>
+              <p>{t("restaurant.p3")}</p>
+              <p>{t("restaurant.p4")}</p>
             </div>
             <div className="mt-6 rounded-xl bg-accent/60 p-5">
-              <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-3">Öffnungszeiten</p>
+              <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-3">{t("restaurant.hours")}</p>
               <div className="text-sm space-y-2">
-                <div className="grid grid-cols-[140px_1fr] gap-x-6">
-                  <p className="font-semibold">Montag – Samstag</p>
-                  <p className="text-muted-foreground">17:30 – 20:00 Uhr</p>
+                <div className="grid grid-cols-[160px_1fr] gap-x-6">
+                  <p className="font-semibold">{t("restaurant.monSat")}</p>
+                  <p className="text-muted-foreground">17:30 – 20:00</p>
                 </div>
-                <div className="grid grid-cols-[140px_1fr] gap-x-6">
-                  <p className="font-semibold">Sonntag</p>
+                <div className="grid grid-cols-[160px_1fr] gap-x-6">
+                  <p className="font-semibold">{t("restaurant.sun")}</p>
                   <div className="text-muted-foreground">
-                    <p>12:00 – 14:00 Uhr</p>
-                    <p>17:30 – 20:00 Uhr</p>
+                    <p>12:00 – 14:00</p>
+                    <p>17:30 – 20:00</p>
                   </div>
                 </div>
               </div>
@@ -233,11 +227,9 @@ const Index = () => {
             />
           </div>
           <div>
-            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Wir organisieren Ihre Feste</p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Familien- & Firmenfeiern</h2>
-            <p className="text-muted-foreground">
-              Laden Sie ein zu einem unvergesslichen Fest in ansprechendem Ambiente. Wir kümmern uns mit einem erfahrenen Team um die Details: von der Planung bis zur Dekoration und vom Rahmenprogramm bis zum von Ihnen gewünschten Menü oder Büffet. Feiern Sie bei uns Geburtstag, Kommunion oder Taufe wie auch geschäftliche Anlässe vom Kundenevent bis zur Weihnachtsfeier. Im eleganten Eichelbergzimmer können bis zu 70 Personen speisen, im behaglichen Kaminzimmer 35 und in unserer Dorfgaststätte und auf der Sonnenterrasse jeweils 40. Wir freuen uns, Sie beraten zu dürfen, und stellen Ihnen ein individuelles Paket zusammen.
-            </p>
+            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("feiern.eyebrow")}</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("feiern.title")}</h2>
+            <p className="text-muted-foreground">{t("feiern.text")}</p>
           </div>
         </div>
       </section>
