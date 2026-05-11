@@ -44,6 +44,11 @@ export default function Login() {
           <CardTitle>Hotel-Dashboard</CardTitle>
         </CardHeader>
         <CardContent>
+          <div className="mb-4 rounded-md border border-primary/20 bg-primary/5 p-3 text-sm">
+            <div className="font-semibold text-primary mb-1">Demo-Zugangsdaten</div>
+            <div><span className="text-muted-foreground">E-Mail:</span> admin@landhotel-schend.de</div>
+            <div><span className="text-muted-foreground">Passwort:</span> Demo2026</div>
+          </div>
           <form onSubmit={submit} className="space-y-4">
             <div>
               <Label htmlFor="email">E-Mail</Label>
