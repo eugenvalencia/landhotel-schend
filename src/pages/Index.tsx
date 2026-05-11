@@ -222,6 +222,24 @@ const Index = () => {
             ))}
           </div>
         </div>
+
+        {/* Familien- & Firmenfeiern */}
+        <div className="mt-16 grid md:grid-cols-2 gap-10 items-center">
+          <div className="rounded-xl overflow-hidden shadow-elevated aspect-[4/3]">
+            <img
+              src={feiernImg}
+              alt="Festlich gedeckter Saal im Landhotel Schend"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div>
+            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Wir organisieren Ihre Feste</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Familien- & Firmenfeiern</h2>
+            <p className="text-muted-foreground">
+              Laden Sie ein zu einem unvergesslichen Fest in ansprechendem Ambiente. Wir kümmern uns mit einem erfahrenen Team um die Details: von der Planung bis zur Dekoration und vom Rahmenprogramm bis zum von Ihnen gewünschten Menü oder Büffet. Feiern Sie bei uns Geburtstag, Kommunion oder Taufe wie auch geschäftliche Anlässe vom Kundenevent bis zur Weihnachtsfeier. Im eleganten Eichelbergzimmer können bis zu 70 Personen speisen, im behaglichen Kaminzimmer 35 und in unserer Dorfgaststätte und auf der Sonnenterrasse jeweils 40. Wir freuen uns, Sie beraten zu dürfen, und stellen Ihnen ein individuelles Paket zusammen.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* GALLERY */}
