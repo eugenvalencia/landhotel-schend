@@ -15,6 +15,12 @@ import AboutSection from "@/components/AboutSection";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_GALLERY, photoForRoomType,
 } from "@/lib/photos";
+import food0 from "@/assets/food-0.jpg";
+import food1 from "@/assets/food-1.jpg";
+import food2 from "@/assets/food-2.jpg";
+import food3 from "@/assets/food-3.jpg";
+
+const FOOD_PHOTOS = [food0, food1, food2, food3];
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -172,14 +178,46 @@ const Index = () => {
           <div>
             <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Kulinarik</p>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Landhaus Restaurant & Terrasse</h2>
-            <p className="text-muted-foreground text-lg mb-6">
-              Genießen Sie die Eifeler Landküche in unserem hauseigenen Restaurant mit gemütlicher Terrasse.
-            </p>
-            <div className="space-y-2 text-sm">
-              <p className="flex items-center gap-2"><UtensilsCrossed className="h-4 w-4 text-secondary" /> Regionale Spezialitäten</p>
-              <p className="flex items-center gap-2"><Coffee className="h-4 w-4 text-secondary" /> Großes Frühstücksbuffet</p>
-              <p className="flex items-center gap-2"><Star className="h-4 w-4 text-secondary" /> Halbpension auf Wunsch</p>
+            <div className="space-y-4 text-muted-foreground">
+              <p>
+                Für den großen Hunger ist unser besonders gemütliches Restaurant genau die richtige Wahl. Dort werden Ihnen Eifeler und Internationale Spezialitäten in stilvoller Atmosphäre serviert. Wir verwöhnen Sie mit Produkten der Eifeler Landküche und frisch gezapftem Bitburger Bier. Eine separate Karte für Kinder und eine Kinderspielecke bieten auch Familien ein attraktives Angebot. Hunde sind lediglich in der Dorfgaststätte erlaubt.
+              </p>
+              <p>Gruppen und Veranstaltungen gerne auf Anfrage auch zum Frühstück, Kaffee und Mittag.</p>
+              <p>
+                Wir verwenden ausschließlich qualitativ hochwertige frische Zutaten. Ausgewählte Delikatessen und saisonale Spezialitäten unserer Speisekarte lassen selbst Gäste mit verwöhnten Gaumen ein Lob an unseren Küchenchef aussprechen.
+              </p>
+              <p>
+                Neben vielfältigen Gerichten bieten wir Ihnen eine umfangreiche Getränkekarte und eine große Auswahl an erlesenen Weinen.
+              </p>
             </div>
+            <div className="mt-6 rounded-xl bg-accent/60 p-5">
+              <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-3">Öffnungszeiten</p>
+              <div className="grid sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="font-semibold">Montag – Samstag</p>
+                  <p className="text-muted-foreground">17:30 – 20:00 Uhr</p>
+                </div>
+                <div>
+                  <p className="font-semibold">Sonntag</p>
+                  <p className="text-muted-foreground">12:00 – 14:00 Uhr</p>
+                  <p className="text-muted-foreground">17:30 – 20:00 Uhr</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Endlose Foto-Schleife */}
+        <div className="mt-12 overflow-hidden">
+          <div className="flex w-max animate-marquee gap-4">
+            {[...FOOD_PHOTOS, ...FOOD_PHOTOS].map((src, i) => (
+              <img
+                key={i}
+                src={src}
+                alt="Gericht aus dem Landhaus Restaurant"
+                className="h-48 md:h-64 w-auto rounded-xl object-cover shadow-card"
+              />
+            ))}
           </div>
         </div>
       </section>
