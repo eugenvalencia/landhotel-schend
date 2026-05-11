@@ -15,6 +15,12 @@ import AboutSection from "@/components/AboutSection";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_GALLERY, photoForRoomType,
 } from "@/lib/photos";
+import food0 from "@/assets/food-0.jpg";
+import food1 from "@/assets/food-1.jpg";
+import food2 from "@/assets/food-2.jpg";
+import food3 from "@/assets/food-3.jpg";
+
+const FOOD_PHOTOS = [food0, food1, food2, food3];
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
