@@ -261,19 +261,10 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="gallery" className="container mx-auto px-4 py-16">
-        <div className="text-center mb-10">
-          <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("gallery.eyebrow")}</p>
-          <h2 className="text-3xl md:text-4xl font-bold">{t("gallery.title")}</h2>
-        </div>
-        <div className="grid md:grid-cols-3 gap-4">
-          {SCHEND_GALLERY.map((src) => (
-            <div key={src} className="aspect-[4/3] rounded-xl overflow-hidden shadow-card">
-              <HotelImage src={src} alt="Landhotel Schend Eindruck" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* URLAUBSREGION EIFEL */}
+      <div id="region">
+        <EifelRegionSection />
+      </div>
 
       {/* ABOUT */}
       <AboutSection />
@@ -281,11 +272,6 @@ const Index = () => {
       {/* REVIEWS */}
       <div id="reviews">
         <ReviewsSection />
-      </div>
-
-      {/* URLAUBSREGION EIFEL */}
-      <div id="region">
-        <EifelRegionSection />
       </div>
 
       {/* LOCATION / MAP */}
