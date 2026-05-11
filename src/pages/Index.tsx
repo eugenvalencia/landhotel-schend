@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   Hotel, CalendarCheck, Phone, Star,
@@ -27,15 +28,15 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
 const USPS = [
-  { icon: ParkingCircle, text: "Kostenlose Parkplätze — videoüberwacht" },
-  { icon: Bike, text: "Genügend Motorrad-Parkplätze — videoüberwacht" },
-  { icon: Waves, text: "Sauna & Wellness" },
-  { icon: UtensilsCrossed, text: "Hauseigenes Restaurant" },
-  { icon: BedDouble, text: "21 Zimmer mit Balkon/Terrasse" },
-  { icon: Wifi, text: "Kostenloses WLAN" },
-  { icon: Coffee, text: "Großes Frühstücksbuffet" },
-  { icon: Trophy, text: "Booking.com 8.5 · Tripadvisor #1" },
-];
+  { icon: ParkingCircle, key: "parking" },
+  { icon: Bike, key: "moto" },
+  { icon: Waves, key: "sauna" },
+  { icon: UtensilsCrossed, key: "restaurant" },
+  { icon: BedDouble, key: "rooms" },
+  { icon: Wifi, key: "wifi" },
+  { icon: Coffee, key: "breakfast" },
+  { icon: Trophy, key: "rating" },
+] as const;
 
 const TYPE_DESCRIPTIONS: Record<string, string> = {
   "Einzelzimmer": "Gemütliches Einzelzimmer mit Blick auf die Vulkaneifel",
@@ -52,6 +53,7 @@ type RoomCategory = { id: string; name: string; type: string; price: number };
 const Index = () => {
   const [categories, setCategories] = useState<RoomCategory[]>([]);
   const [heroIdx, setHeroIdx] = useState(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const t = setInterval(
