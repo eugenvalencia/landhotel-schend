@@ -166,6 +166,12 @@ const resources = {
           ],
         },
       },
+    },
+  },
+  en: {
+    translation: {
+      nav: {
+        home: "HOME",
         rooms: "ROOMS",
         pakete: "PACKAGES",
         gastro: "DINING",
