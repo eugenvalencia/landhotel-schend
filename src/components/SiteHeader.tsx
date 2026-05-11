@@ -64,7 +64,7 @@ export default function SiteHeader() {
               LANDHOTEL SCHEND
             </p>
             <p className="hidden sm:block text-[10px] md:text-xs text-muted-foreground leading-tight truncate">
-              Ihr Familienhotel im Immerath | Vulkaneifel
+              {t("nav.subtitle")}
             </p>
           </div>
         </Link>
@@ -81,7 +81,7 @@ export default function SiteHeader() {
           ))}
           <LanguageSwitcher />
           <Button asChild size="sm" className="ml-2">
-            <Link to="/booking">Jetzt buchen</Link>
+            <Link to="/booking">{t("nav.book")}</Link>
           </Button>
         </nav>
 
@@ -107,7 +107,7 @@ export default function SiteHeader() {
               </button>
             ))}
             <Button asChild className="mt-2 h-12">
-              <Link to="/booking" onClick={() => setOpen(false)}>Jetzt buchen</Link>
+              <Link to="/booking" onClick={() => setOpen(false)}>{t("nav.book")}</Link>
             </Button>
           </div>
         </div>
