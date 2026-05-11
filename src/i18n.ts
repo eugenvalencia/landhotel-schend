@@ -92,12 +92,80 @@ const resources = {
         impressum: "Impressum",
         privacy: "Datenschutz",
       },
-    },
-  },
-  en: {
-    translation: {
-      nav: {
-        home: "HOME",
+      paketDetails: {
+        "eifler-wandertage": {
+          title: "Genussvolle Eifler Wandertage",
+          intro: "Erleben Sie die Vulkaneifel auf den schönsten Wanderwegen Deutschlands – mit Eifelsteig, Lieserpfad und unzähligen Themenrouten direkt vor unserer Haustür.",
+          details: "Unser erfahrenes Team stellt Ihnen täglich passende Routen zusammen – ob gemütliche Tagestour rund um die Maare oder anspruchsvolle Etappen auf dem Eifelsteig. Nach dem Wandertag erwartet Sie ein liebevoll zubereitetes Abendmenü mit regionalen Zutaten und ein entspannender Saunabesuch.",
+          highlights: [
+            "4 Übernachtungen inkl. großem Frühstücksbuffet",
+            "3× Eifeler 3-Gang-Abendmenü im Landhaus Restaurant",
+            "Wanderkarte & persönliche Tourenempfehlungen",
+            "Lunchpaket für unterwegs",
+            "Wellness-Zugang zu Sauna & Ruhebereich",
+          ],
+        },
+        "rad-erlebnisse": {
+          title: "Eifler Rad-Erlebnisse",
+          intro: "Sattelfest durch die Vulkaneifel – Maare-Mosel-Radweg, Kylltal-Radweg und herausfordernde Mountainbike-Strecken starten direkt am Hotel.",
+          details: "Ob Genussradler oder ambitionierter Mountainbiker – unsere Empfehlungen reichen vom familienfreundlichen Maare-Mosel-Radweg bis zu knackigen Trails durch die Vulkaneifel. Nach der Tour locken Sauna, Massage auf Wunsch und ein deftiges Eifeler Menü.",
+          highlights: [
+            "3 Übernachtungen mit Frühstücksbuffet",
+            "2× Eifeler Abendmenü",
+            "Abschließbarer Fahrradraum mit Ladestation für E-Bikes",
+            "Streckenkarten & GPX-Tracks",
+            "Wäscheservice für Funktionsbekleidung",
+          ],
+        },
+        "erholung-entschleunigung": {
+          title: "Tage der Erholung und Entschleunigung",
+          intro: "Einfach mal abschalten – ankommen, durchatmen und die wohltuende Stille der Eifel genießen.",
+          details: "Dieses Paket ist eine Auszeit für Körper und Geist. Lassen Sie sich kulinarisch verwöhnen, genießen Sie ausgedehnte Saunagänge und finden Sie zur Ruhe – mit Blick in die sanften Hügel der Vulkaneifel.",
+          highlights: [
+            "3 Übernachtungen mit Frühstücksbuffet",
+            "1× Candle-Light-Dinner zur Begrüßung",
+            "Sauna, Wellnessbereich und Ruhezone",
+            "Frische Blumen & Obstteller im Zimmer",
+            "Spaziergangs-Empfehlungen rund um Schalkenmehren",
+          ],
+        },
+        "eifelgold-weissdornhecken": {
+          title: '"Eifelgold" und Weißdornhecken',
+          intro: "Frühling in der Vulkaneifel – wenn Ginster und Weißdorn die Landschaft in Gold und Weiß tauchen, beginnt die schönste Wanderzeit des Jahres.",
+          details: "Ein Paket für Naturliebhaber: Erleben Sie die Eifel in voller Blüte, lernen Sie auf einer geführten Tour die Besonderheiten der Vulkanlandschaft kennen und genießen Sie täglich frische Eifeler Küche.",
+          highlights: [
+            "5 Übernachtungen inkl. Halbpension",
+            "Geführte Themenwanderung mit zertifiziertem Wanderführer",
+            "Picknickkorb für eine Tagestour",
+            "Eintritt in das Naturkundemuseum Daun",
+            "Wellness-Zugang inklusive",
+          ],
+        },
+        "bunt-sind-schon-die-waelder": {
+          title: '"Bunt sind schon die Wälder"',
+          intro: "Wenn sich die Wälder rund um die Eifelmaare bunt färben, beginnt die zauberhafteste Jahreszeit – Goldener Herbst zum Wandern, Genießen und Verweilen.",
+          details: "Goldenes Licht über den Maaren, dampfende Tassen Tee nach der Wanderung und herzhafte Wildgerichte am Abend – dieses Paket fängt die magische Atmosphäre des Eifel-Herbstes ein.",
+          highlights: [
+            "4 Übernachtungen mit Frühstücksbuffet",
+            "3× Herbst-Menü mit saisonalen Spezialitäten",
+            "Wanderkarte „Herbst rund um die Maare\"",
+            "Wildgericht-Abend nach Wahl",
+            "Sauna & Ruhebereich inklusive",
+          ],
+        },
+        "zimmer-ohne-paket": {
+          title: "Zimmer ohne Paket buchen",
+          intro: "Sie möchten flexibel bleiben? Buchen Sie eines unserer 21 Zimmer ohne Paket – ganz nach Ihren Wünschen.",
+          details: "Alle Zimmer verfügen über Balkon oder Terrasse mit Blick in die Vulkaneifel. Wählen Sie Ihren Zeitraum frei und stellen Sie sich Ihren Aufenthalt individuell zusammen – wir kümmern uns um den Rest.",
+          highlights: [
+            "Doppelzimmer, Familienzimmer oder Einzelnutzung",
+            "Großes Frühstücksbuffet inklusive",
+            "Kostenfreies WLAN & Parkplatz",
+            "Sauna & Wellnessbereich nutzbar",
+            "Halbpension auf Wunsch zubuchbar",
+          ],
+        },
+      },
         rooms: "ROOMS",
         pakete: "PACKAGES",
         gastro: "DINING",
