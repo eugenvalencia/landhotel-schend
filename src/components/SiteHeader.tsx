@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Hotel } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const MENU = [
-  { label: "STARTSEITE", id: "top" },
-  { label: "ZIMMER", id: "rooms" },
-  { label: "PAKETE", id: "pakete" },
-  { label: "GASTRONOMIE", id: "restaurant" },
-  { label: "ÜBER UNS", id: "about" },
-  { label: "BEWERTUNGEN", id: "reviews" },
-  { label: "URLAUBSREGION", id: "location" },
-];
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
+
+  const MENU = [
+    { label: t("nav.home"), id: "top" },
+    { label: t("nav.rooms"), id: "rooms" },
+    { label: t("nav.pakete"), id: "pakete" },
+    { label: t("nav.gastro"), id: "restaurant" },
+    { label: t("nav.about"), id: "about" },
+    { label: t("nav.reviews"), id: "reviews" },
+    { label: t("nav.location"), id: "location" },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
