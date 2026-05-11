@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Hotel } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 
 export default function SiteHeader() {
@@ -58,7 +59,7 @@ export default function SiteHeader() {
     >
       <div className="container mx-auto px-4 h-16 md:h-20 flex items-center justify-between gap-4">
         <Link to="/" className="flex items-center gap-2 min-w-0" onClick={() => scrollTo("top")}>
-          <Hotel className="h-6 w-6 text-primary shrink-0" />
+          <img src={logo} alt="Landhotel Schend Logo" className="h-10 md:h-14 w-auto shrink-0 object-contain" />
           <div className="min-w-0">
             <p className="font-bold text-primary text-sm md:text-base leading-tight tracking-wide truncate">
               LANDHOTEL SCHEND
