@@ -210,7 +210,7 @@ const Index = () => {
         {/* Endlose Foto-Schleife */}
         <div className="mt-12 overflow-hidden">
           <div className="flex w-max animate-marquee gap-4">
-            {[...FOOD_PHOTOS, ...FOOD_PHOTOS, ...FOOD_PHOTOS].map((src, i) => (
+            {[...FOOD_PHOTOS, ...FOOD_PHOTOS].map((src, i) => (
               <img
                 key={i}
                 src={src}
