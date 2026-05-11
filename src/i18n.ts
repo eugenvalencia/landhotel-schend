@@ -19,7 +19,7 @@ const resources = {
         eyebrow: "Ihr Urlaubsdomizil in der Vulkaneifel",
         title: "Willkommen im Landhotel Schend",
         text:
-          "Erholen Sie sich in der wunderschönen Vulkaneifel — mit Sauna, Wellness, hauseigenem Restaurant und 21 komfortablen Zimmern.",
+          "Die erste Adresse für Ihren Kurzurlaub in der Vulkaneifel — erholen Sie sich mit Sauna, Wellness, hauseigenem Restaurant und 21 komfortablen Zimmern.",
         bookDirect: "Jetzt direkt buchen",
       },
       usps: {
@@ -185,7 +185,7 @@ const resources = {
         eyebrow: "Your holiday home in the Volcanic Eifel",
         title: "Welcome to Landhotel Schend",
         text:
-          "Relax in the beautiful Volcanic Eifel — with sauna, wellness, our own restaurant and 21 comfortable rooms.",
+          "The top address for your short break in the Volcanic Eifel — unwind with sauna, wellness, our own restaurant and 21 comfortable rooms.",
         bookDirect: "Book directly now",
       },
       usps: {
@@ -350,7 +350,7 @@ const resources = {
         eyebrow: "Votre lieu de vacances dans l'Eifel volcanique",
         title: "Bienvenue au Landhotel Schend",
         text:
-          "Détendez-vous dans la magnifique Eifel volcanique — sauna, bien-être, restaurant maison et 21 chambres confortables.",
+          "L'adresse de référence pour votre court séjour dans l'Eifel volcanique — détendez-vous avec sauna, bien-être, restaurant maison et 21 chambres confortables.",
         bookDirect: "Réserver en direct",
       },
       usps: {
