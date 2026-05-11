@@ -20,6 +20,7 @@ import food1 from "@/assets/food-1.jpg";
 import food2 from "@/assets/food-2.jpg";
 import food3 from "@/assets/food-3.jpg";
 import feiernImg from "@/assets/feiern.jpg";
+import { PAKETE } from "@/lib/pakete";
 
 const FOOD_PHOTOS = [food0, food1, food2, food3];
 import SiteHeader from "@/components/SiteHeader";
