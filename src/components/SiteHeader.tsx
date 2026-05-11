@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 const MENU = [
   { label: "STARTSEITE", id: "top" },
   { label: "ZIMMER", id: "rooms" },
-  { label: "PAKETE", id: "rooms" },
+  { label: "PAKETE", id: "pakete" },
   { label: "GASTRONOMIE", id: "restaurant" },
   { label: "ÜBER UNS", id: "about" },
   { label: "BEWERTUNGEN", id: "reviews" },

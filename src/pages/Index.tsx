@@ -20,6 +20,7 @@ import food1 from "@/assets/food-1.jpg";
 import food2 from "@/assets/food-2.jpg";
 import food3 from "@/assets/food-3.jpg";
 import feiernImg from "@/assets/feiern.jpg";
+import { PAKETE } from "@/lib/pakete";
 
 const FOOD_PHOTOS = [food0, food1, food2, food3];
 import SiteHeader from "@/components/SiteHeader";
@@ -243,7 +244,34 @@ const Index = () => {
         </div>
       </section>
 
-      {/* GALLERY */}
+      {/* PAKETE */}
+      <section id="pakete" className="bg-muted">
+        <div className="container mx-auto px-4 py-16">
+          <div className="text-center mb-10">
+            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Pakete & Angebote</p>
+            <h2 className="text-3xl md:text-4xl font-bold">Unsere Eifel-Pakete</h2>
+            <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
+              Wandern, Radfahren oder einfach nur entspannen — wählen Sie Ihr passendes Paket für Ihre Auszeit in der Vulkaneifel.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {PAKETE.map((p) => (
+              <div key={p.slug} className="rounded-xl overflow-hidden bg-card border shadow-card hover:shadow-elevated transition-shadow flex flex-col">
+                <Link to={`/pakete/${p.slug}`} className="block aspect-[4/3] overflow-hidden group">
+                  <img src={p.cover} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </Link>
+                <div className="p-5 flex-1 flex flex-col text-center">
+                  <h3 className="font-semibold text-lg mb-4 flex-1">{p.title}</h3>
+                  <Button asChild variant="secondary" className="w-full">
+                    <Link to={`/pakete/${p.slug}`}>Mehr Infos</Link>
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="gallery" className="container mx-auto px-4 py-16">
         <div className="text-center mb-10">
           <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Galerie</p>
