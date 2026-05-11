@@ -19,6 +19,7 @@ import food0 from "@/assets/food-0.jpg";
 import food1 from "@/assets/food-1.jpg";
 import food2 from "@/assets/food-2.jpg";
 import food3 from "@/assets/food-3.jpg";
+import feiernImg from "@/assets/feiern.jpg";
 
 const FOOD_PHOTOS = [food0, food1, food2, food3];
 import SiteHeader from "@/components/SiteHeader";
@@ -220,6 +221,24 @@ const Index = () => {
                 className="h-48 md:h-64 w-auto rounded-xl object-cover shadow-card"
               />
             ))}
+          </div>
+        </div>
+
+        {/* Familien- & Firmenfeiern */}
+        <div className="mt-16 grid md:grid-cols-2 gap-10 items-center">
+          <div className="rounded-xl overflow-hidden shadow-elevated aspect-[4/3]">
+            <img
+              src={feiernImg}
+              alt="Festlich gedeckter Saal im Landhotel Schend"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div>
+            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Wir organisieren Ihre Feste</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Familien- & Firmenfeiern</h2>
+            <p className="text-muted-foreground">
+              Laden Sie ein zu einem unvergesslichen Fest in ansprechendem Ambiente. Wir kümmern uns mit einem erfahrenen Team um die Details: von der Planung bis zur Dekoration und vom Rahmenprogramm bis zum von Ihnen gewünschten Menü oder Büffet. Feiern Sie bei uns Geburtstag, Kommunion oder Taufe wie auch geschäftliche Anlässe vom Kundenevent bis zur Weihnachtsfeier. Im eleganten Eichelbergzimmer können bis zu 70 Personen speisen, im behaglichen Kaminzimmer 35 und in unserer Dorfgaststätte und auf der Sonnenterrasse jeweils 40. Wir freuen uns, Sie beraten zu dürfen, und stellen Ihnen ein individuelles Paket zusammen.
+            </p>
           </div>
         </div>
       </section>
