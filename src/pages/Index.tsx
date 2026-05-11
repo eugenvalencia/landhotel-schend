@@ -192,15 +192,17 @@ const Index = () => {
             </div>
             <div className="mt-6 rounded-xl bg-accent/60 p-5">
               <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-3">Öffnungszeiten</p>
-              <div className="grid sm:grid-cols-2 gap-4 text-sm">
-                <div>
+              <div className="text-sm space-y-2">
+                <div className="grid grid-cols-[140px_1fr] gap-x-6">
                   <p className="font-semibold">Montag – Samstag</p>
                   <p className="text-muted-foreground">17:30 – 20:00 Uhr</p>
                 </div>
-                <div>
+                <div className="grid grid-cols-[140px_1fr] gap-x-6">
                   <p className="font-semibold">Sonntag</p>
-                  <p className="text-muted-foreground">12:00 – 14:00 Uhr</p>
-                  <p className="text-muted-foreground">17:30 – 20:00 Uhr</p>
+                  <div className="text-muted-foreground">
+                    <p>12:00 – 14:00 Uhr</p>
+                    <p>17:30 – 20:00 Uhr</p>
+                  </div>
                 </div>
               </div>
             </div>
