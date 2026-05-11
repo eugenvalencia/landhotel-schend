@@ -100,14 +100,12 @@ const Index = () => {
         ))}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/50 to-primary/80" />
         <div className="container mx-auto px-4 py-24 relative z-10 text-center">
-          <p className="uppercase tracking-[0.2em] text-sm opacity-90 mb-4">Ihr Urlaubsdomizil in der Vulkaneifel</p>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow">Willkommen im Landhotel Schend</h1>
-          <p className="text-lg md:text-xl opacity-95 max-w-2xl mx-auto mb-8">
-            Erholen Sie sich in der wunderschönen Vulkaneifel — mit Sauna, Wellness, hauseigenem Restaurant und 21 komfortablen Zimmern.
-          </p>
+          <p className="uppercase tracking-[0.2em] text-sm opacity-90 mb-4">{t("hero.eyebrow")}</p>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow">{t("hero.title")}</h1>
+          <p className="text-lg md:text-xl opacity-95 max-w-2xl mx-auto mb-8">{t("hero.text")}</p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Button asChild size="lg" variant="secondary" className="text-base">
-              <Link to="/booking"><CalendarCheck className="h-5 w-5" /> Jetzt direkt buchen</Link>
+              <Link to="/booking"><CalendarCheck className="h-5 w-5" /> {t("hero.bookDirect")}</Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="text-base bg-white/10 text-primary-foreground border-white/40 hover:bg-white/20 hover:text-primary-foreground">
               <a href="tel:+4965731306"><Phone className="h-5 w-5" /> +49 6573 306</a>
@@ -125,9 +123,9 @@ const Index = () => {
       <section className="bg-card border-b">
         <div className="container mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-5">
           {USPS.map((u) => (
-            <div key={u.text} className="flex items-start gap-3">
+            <div key={u.key} className="flex items-start gap-3">
               <u.icon className="h-5 w-5 text-secondary shrink-0 mt-0.5" />
-              <span className="text-sm font-medium">{u.text}</span>
+              <span className="text-sm font-medium">{t(`usps.${u.key}`)}</span>
             </div>
           ))}
         </div>
@@ -136,11 +134,9 @@ const Index = () => {
       {/* ROOMS */}
       <section id="rooms" className="container mx-auto px-4 py-16">
         <div className="text-center mb-10">
-          <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Unsere Zimmer</p>
-          <h2 className="text-3xl md:text-4xl font-bold">Zu Gast im Landhotel Schend</h2>
-          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
-            21 individuell gestaltete Zimmer und Suiten — alle mit Balkon oder Terrasse und Blick in die Vulkaneifel.
-          </p>
+          <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("rooms.eyebrow")}</p>
+          <h2 className="text-3xl md:text-4xl font-bold">{t("rooms.title")}</h2>
+          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">{t("rooms.intro")}</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((r) => (
@@ -159,7 +155,7 @@ const Index = () => {
               <div className="p-5">
                 <div className="flex items-start justify-between gap-2 mb-1">
                   <h3 className="font-semibold text-lg">{r.name}</h3>
-                  <span className="text-sm font-semibold text-secondary">ab {eur(r.price)}</span>
+                  <span className="text-sm font-semibold text-secondary">{t("rooms.from")} {eur(r.price)}</span>
                 </div>
                 <p className="text-sm text-muted-foreground">{TYPE_DESCRIPTIONS[r.type] ?? ""}</p>
               </div>
@@ -168,7 +164,7 @@ const Index = () => {
         </div>
         <div className="text-center mt-10">
           <Button asChild size="lg">
-            <Link to="/booking"><CalendarCheck className="h-5 w-5" /> Verfügbarkeit prüfen</Link>
+            <Link to="/booking"><CalendarCheck className="h-5 w-5" /> {t("rooms.check")}</Link>
           </Button>
         </div>
       </section>
