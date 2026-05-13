@@ -117,33 +117,52 @@ const Index = () => {
           />
         ))}
 
-        {/* Soft editorial overlay — tokenized */}
-        <div className="absolute inset-0 gradient-hero" />
-        {/* Bottom vignette for legibility of CTA */}
-        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/45 to-transparent" />
+        {/* Cinematic editorial overlay — three layers ensure legibility on ANY photo */}
+        <div aria-hidden className="absolute inset-0 bg-black/25" />
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 65% 55% at 50% 50%, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.18) 55%, transparent 100%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-black/55 via-black/20 to-transparent"
+        />
 
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
           {/* Eyebrow with hairlines */}
           <div className="flex items-center gap-4 mb-10 md:mb-14 animate-fade-up">
-            <span className="block h-px w-12 md:w-20 bg-white/55" />
-            <span className="text-[11px] md:text-xs font-medium tracking-[0.24em] uppercase text-white/85">
+            <span className="block h-px w-12 md:w-20 bg-white/65" />
+            <span
+              className="text-[11px] md:text-xs font-medium tracking-[0.24em] uppercase text-white/90"
+              style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
+            >
               Anno 1856 · Vulkaneifel
             </span>
-            <span className="block h-px w-12 md:w-20 bg-white/55" />
+            <span className="block h-px w-12 md:w-20 bg-white/65" />
           </div>
 
           {/* Display headline — Fraunces, balanced */}
           <h1
             className="font-display text-balance text-white text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] mb-7 md:mb-9 max-w-4xl animate-fade-up"
-            style={{ animationDelay: "0.15s", textShadow: "0 1px 2px rgba(0,0,0,0.25)" }}
+            style={{
+              animationDelay: "0.15s",
+              textShadow: "0 2px 14px rgba(0,0,0,0.55), 0 1px 2px rgba(0,0,0,0.4)",
+            }}
           >
             {t("hero.title")}
           </h1>
 
           {/* Italic subhead */}
           <p
-            className="font-display-italic text-balance text-white/92 text-lg md:text-2xl max-w-2xl leading-snug mb-12 md:mb-14 animate-fade-up"
-            style={{ animationDelay: "0.3s" }}
+            className="font-display-italic text-balance text-white/95 text-lg md:text-2xl max-w-2xl leading-snug mb-12 md:mb-14 animate-fade-up"
+            style={{
+              animationDelay: "0.3s",
+              textShadow: "0 1px 8px rgba(0,0,0,0.55), 0 1px 2px rgba(0,0,0,0.4)",
+            }}
           >
             {t("hero.text")}
           </p>
@@ -163,7 +182,8 @@ const Index = () => {
             </Link>
             <a
               href="tel:+4965731306"
-              className="text-white/75 text-sm tracking-wide hover:text-white transition-colors"
+              className="text-white/85 text-sm tracking-wide hover:text-white transition-colors"
+              style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
             >
               oder anrufen <span className="font-medium ml-1">+49 6573 306</span>
             </a>
