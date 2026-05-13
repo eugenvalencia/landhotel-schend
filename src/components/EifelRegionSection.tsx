@@ -20,37 +20,37 @@ export default function EifelRegionSection() {
           </p>
         </div>
 
-        {/* Photo mosaic — flat, minimal gaps, no shadows */}
+        {/* Photo mosaic — sanfte Rundung, ruhige Schatten */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mb-20 md:mb-24">
           <img
             src={eifel1}
             alt="Eifel Maar – Kratersee im Wald"
             loading="lazy"
-            className="w-full h-48 md:h-64 object-cover row-span-2 md:h-[33rem]"
+            className="w-full h-48 md:h-64 object-cover row-span-2 md:h-[33rem] rounded-md shadow-card"
           />
           <img
             src={eifel2}
             alt="Aussichtsplattform in der Eifel bei Sonnenuntergang"
             loading="lazy"
-            className="w-full h-48 md:h-64 object-cover md:col-span-2"
+            className="w-full h-48 md:h-64 object-cover md:col-span-2 rounded-md shadow-card"
           />
           <img
             src={eifel3}
             alt="Schilf am Maar in der Vulkaneifel"
             loading="lazy"
-            className="w-full h-48 md:h-64 object-cover row-span-2 md:h-[33rem]"
+            className="w-full h-48 md:h-64 object-cover row-span-2 md:h-[33rem] rounded-md shadow-card"
           />
           <img
             src={eifel4}
             alt="Ruderboote am Maar"
             loading="lazy"
-            className="w-full h-48 md:h-64 object-cover"
+            className="w-full h-48 md:h-64 object-cover rounded-md shadow-card"
           />
           <img
             src={eifel5}
             alt="Panorama der Vulkaneifel"
             loading="lazy"
-            className="w-full h-48 md:h-64 object-cover"
+            className="w-full h-48 md:h-64 object-cover rounded-md shadow-card"
           />
         </div>
 

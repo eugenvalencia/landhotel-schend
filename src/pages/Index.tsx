@@ -235,7 +235,7 @@ const Index = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-x-10 md:gap-y-14">
             {categories.map((r) => (
               <Link key={r.id} to={`/rooms/${r.id}`} className="group block">
-                <div className="aspect-[4/5] overflow-hidden mb-5 bg-muted">
+                <div className="aspect-[4/5] overflow-hidden mb-5 bg-muted rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
                   <HotelImage
                     src={photoForRoomType(r.type)}
                     alt={r.name}
@@ -279,7 +279,7 @@ const Index = () => {
         <div className="grid lg:grid-cols-12 items-stretch">
           {/* Bild bricht aus dem Container aus */}
           <div className="lg:col-span-7 lg:order-last">
-            <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[640px] overflow-hidden">
+            <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[640px] overflow-hidden shadow-card">
               <HotelImage
                 src={SCHEND_RESTAURANT}
                 alt="Landhaus Restaurant & Terrasse"
@@ -320,7 +320,7 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Food-Marquee — ohne Schatten, mit Hairline-Top/Bottom */}
+        {/* Food-Marquee — Hairline-Top/Bottom, mit weicher Rundung */}
         <div className="overflow-hidden border-y border-border/60 py-6 bg-background">
           <div className="flex w-max animate-marquee gap-4">
             {[...FOOD_PHOTOS, ...FOOD_PHOTOS].map((src, i) => (
@@ -330,7 +330,7 @@ const Index = () => {
                 alt="Gericht aus dem Landhaus Restaurant"
                 loading="lazy"
                 decoding="async"
-                className="h-44 md:h-56 w-auto object-cover"
+                className="h-44 md:h-56 w-auto object-cover rounded-md shadow-card"
               />
             ))}
           </div>
@@ -339,7 +339,7 @@ const Index = () => {
         {/* Feiern — zweiter Spread, gespiegelt */}
         <div className="grid lg:grid-cols-12 items-stretch">
           <div className="lg:col-span-7">
-            <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[560px] overflow-hidden">
+            <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[560px] overflow-hidden shadow-card">
               <img
                 src={feiernImg}
                 alt="Festlich gedeckter Saal im Landhotel Schend"
@@ -375,7 +375,7 @@ const Index = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-x-10 md:gap-y-14">
             {PAKETE.map((p) => (
               <Link key={p.slug} to={`/pakete/${p.slug}`} className="group block">
-                <div className="aspect-[4/5] overflow-hidden mb-5 bg-muted">
+                <div className="aspect-[4/5] overflow-hidden mb-5 bg-muted rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
                   <img
                     src={p.cover}
                     alt={t(`paketDetails.${p.slug}.title`, p.title)}

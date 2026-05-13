@@ -174,8 +174,8 @@ export default function ReviewsSection() {
           </p>
         </div>
 
-        {/* Platform grid — hairline-divided, no shadows */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border/50 mb-20 md:mb-28 border border-border/50">
+        {/* Platform grid — hairline-divided, sanfte Rundung */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border/50 mb-20 md:mb-28 border border-border/50 rounded-md overflow-hidden shadow-card">
           {PLATFORMS.map((p) => (
             <a
               key={p.name}

@@ -55,8 +55,8 @@ export default function LocationSection() {
           </p>
         </div>
 
-        {/* Map — flat with hairline border, no shadow */}
-        <div className="border border-border/70 mb-10">
+        {/* Map — Hairline-Border, sanfte Rundung, leichter Schatten */}
+        <div className="border border-border/70 rounded-md overflow-hidden shadow-card mb-10">
           <iframe
             src={MAP_SRC}
             title="Landhotel Schend, Hauptstraße 9, 54552 Immerath – auf Google Maps"
@@ -105,7 +105,7 @@ export default function LocationSection() {
         </div>
 
         {/* Info row 1: Address · Contact · Distances */}
-        <div className="grid md:grid-cols-3 gap-px bg-border/50 mb-3 border border-border/50">
+        <div className="grid md:grid-cols-3 gap-px bg-border/50 mb-3 border border-border/50 rounded-md overflow-hidden shadow-card">
           {/* Adresse */}
           <div className="bg-background p-8 md:p-10">
             <div className="flex items-center gap-2 mb-5">

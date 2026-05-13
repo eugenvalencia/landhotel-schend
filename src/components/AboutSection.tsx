@@ -25,7 +25,7 @@ export default function AboutSection() {
       {/* History — asymmetric magazine spread */}
       <div className="grid lg:grid-cols-12 items-stretch">
         <div className="lg:col-span-6">
-          <div className="aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden">
+          <div className="aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden shadow-elevated">
             <HotelImage
               src={historyPhoto}
               alt="Historisches Schwarz-Weiß Foto des Landhotels Schend in Immerath, ca. 1950er Jahre"
@@ -86,7 +86,7 @@ export default function AboutSection() {
         </div>
 
         {/* Three values as numbered editorial column */}
-        <div className="grid md:grid-cols-3 gap-px bg-border/50 max-w-5xl mx-auto border border-border/50">
+        <div className="grid md:grid-cols-3 gap-px bg-border/50 max-w-5xl mx-auto border border-border/50 rounded-md overflow-hidden shadow-card">
           {VALUES.map((v) => (
             <div key={v.num} className="bg-background px-8 py-12 text-center">
               <p className="font-display text-secondary text-3xl mb-5">{v.num}</p>

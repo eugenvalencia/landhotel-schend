@@ -51,8 +51,8 @@
     --input: 38 18% 82%;
     --ring: 38 48% 38%;
 
-    /* Smaller radius — less app-y, more editorial */
-    --radius: 0.375rem;
+    /* Editorial radius — weich aber nicht App-y */
+    --radius: 0.5rem;
 
     /* Calendar status — unchanged for dashboard consistency */
     --cal-free: 142 50% 90%;
