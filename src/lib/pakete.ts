@@ -1,9 +1,10 @@
 import paketA0 from "@/assets/paket-a-0.jpg";
 import paketA1 from "@/assets/paket-a-1.jpg";
-import paketA2 from "@/assets/paket-a-2.jpg";
 import paketB0 from "@/assets/paket-b-0.jpg";
 import paketB1 from "@/assets/paket-b-1.jpg";
 import paketB2 from "@/assets/paket-b-2.jpg";
+import eifel3 from "@/assets/eifel-3.jpg";
+import eifel4 from "@/assets/eifel-4.jpg";
 
 export type Paket = {
   slug: string;
@@ -64,11 +65,11 @@ export const PAKETE: Paket[] = [
   {
     slug: "erholung-entschleunigung",
     title: "Tage der Erholung und Entschleunigung",
-    cover: paketA2,
+    cover: eifel3,
     gallery: [
-      paketA2,
+      eifel3,
+      eifel4,
       "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1200&q=80",
-      "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=1200&q=80",
     ],
     intro:
       "Einfach mal abschalten – ankommen, durchatmen und die wohltuende Stille der Eifel genießen.",
