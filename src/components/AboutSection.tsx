@@ -25,7 +25,7 @@ export default function AboutSection() {
       {/* History — asymmetric magazine spread */}
       <div className="grid lg:grid-cols-12 items-stretch">
         <div className="lg:col-span-6">
-          <div className="aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden shadow-elevated">
+          <div className="aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden shadow-elevated">
             <HotelImage
               src={historyPhoto}
               alt="Historisches Schwarz-Weiß Foto des Landhotels Schend in Immerath, ca. 1950er Jahre"
