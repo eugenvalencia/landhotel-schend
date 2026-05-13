@@ -88,10 +88,24 @@ export default function SiteFooter() {
         </div>
       </div>
 
-      {/* Bottom strip — hairline with legal + admin star (hidden) + credit */}
+      {/* Bottom strip — alles in einer Zeile */}
       <div className="border-t border-[hsl(38_30%_92%)]/12">
-        <div className="container mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[hsl(38_30%_92%)]/65">
-          <p>© {new Date().getFullYear()} Landhotel Schend · landhaus-schend.de</p>
+        <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-[hsl(38_30%_92%)]/65">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5 text-center sm:text-left">
+            <p>© {new Date().getFullYear()} Landhotel Schend · landhaus-schend.de</p>
+            <span className="hidden sm:inline text-[hsl(38_30%_92%)]/25">·</span>
+            <p className="text-[11px] tracking-wide text-[hsl(38_30%_92%)]/55">
+              Powered by{" "}
+              <a
+                href="https://www.conexadigital.eu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-secondary underline-offset-2 hover:underline transition-colors"
+              >
+                CONEXA DIGITAL
+              </a>
+            </p>
+          </div>
           <div className="flex items-center gap-5">
             <Link to="/impressum" className="hover:text-secondary transition-colors">
               {t("footer.impressum")}
@@ -107,17 +121,6 @@ export default function SiteFooter() {
               <Star className="h-4 w-4" strokeWidth={1.5} />
             </Link>
           </div>
-        </div>
-        <div className="container mx-auto px-4 pb-6 text-center text-[11px] tracking-wide text-[hsl(38_30%_92%)]/45">
-          Powered by{" "}
-          <a
-            href="https://www.conexadigital.eu"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-secondary underline-offset-2 hover:underline transition-colors"
-          >
-            CONEXA DIGITAL
-          </a>
         </div>
       </div>
     </footer>

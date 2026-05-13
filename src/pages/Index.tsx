@@ -220,7 +220,7 @@ const Index = () => {
       </section>
 
       {/* ROOMS — editorial cards, kein Schatten, Hairline statt Border */}
-      <section id="rooms" className="bg-background">
+      <section id="rooms" className="bg-gradient-to-b from-background via-muted/20 to-background">
         <div className="container mx-auto px-4 py-20 md:py-28">
           <div className="text-center mb-14 md:mb-20">
             <p className="eyebrow">{t("rooms.eyebrow")}</p>
@@ -275,7 +275,7 @@ const Index = () => {
       </section>
 
       {/* RESTAURANT — asymmetrischer Magazin-Spread */}
-      <section id="restaurant" className="bg-muted/30">
+      <section id="restaurant" className="bg-gradient-to-b from-muted/40 via-muted/20 to-muted/40">
         <div className="grid lg:grid-cols-12 items-stretch">
           {/* Bild bricht aus dem Container aus */}
           <div className="lg:col-span-7 lg:order-last">
@@ -360,7 +360,7 @@ const Index = () => {
       </section>
 
       {/* PAKETE — editorial cards, Hairline + Display-Title */}
-      <section id="pakete" className="bg-background">
+      <section id="pakete" className="bg-gradient-to-b from-muted/30 via-background to-muted/15">
         <div className="container mx-auto px-4 py-20 md:py-28">
           <div className="text-center mb-14 md:mb-20">
             <p className="eyebrow">{t("pakete.eyebrow")}</p>

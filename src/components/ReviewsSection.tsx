@@ -160,7 +160,7 @@ export default function ReviewsSection() {
   }, []);
 
   return (
-    <section className="bg-muted/40">
+    <section className="bg-gradient-to-b from-background via-muted/50 to-background">
       <JsonLd id="reviews" data={reviewsJsonLd} />
       <div className="container mx-auto px-4 py-20 md:py-28">
         {/* Header */}

@@ -96,7 +96,7 @@ export default function FAQSection() {
   };
 
   return (
-    <section id="faq" className="bg-background">
+    <section id="faq" className="bg-gradient-to-b from-muted/15 via-background to-muted/15">
       <JsonLd id="faq" data={faqJsonLd} />
       <div className="container mx-auto px-4 py-20 md:py-28 max-w-3xl">
         <div className="text-center mb-14 md:mb-20">

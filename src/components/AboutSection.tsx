@@ -21,7 +21,7 @@ const VALUES = [
 
 export default function AboutSection() {
   return (
-    <section id="about" className="bg-background">
+    <section id="about" className="bg-gradient-to-b from-background via-muted/15 to-background">
       {/* History — asymmetric magazine spread */}
       <div className="grid lg:grid-cols-12 items-stretch">
         <div className="lg:col-span-6">
