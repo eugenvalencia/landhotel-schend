@@ -84,31 +84,31 @@ export default function SiteHeader() {
             )}
           />
           <div className="min-w-0">
-            <p className="font-display text-primary text-lg md:text-xl leading-tight truncate tracking-tight">
+            <p className="font-display text-primary text-base md:text-lg lg:text-xl leading-tight truncate tracking-tight">
               Landhotel Schend
             </p>
             <p className={cn(
-              "text-[10px] md:text-[11px] tracking-[0.18em] uppercase text-muted-foreground leading-tight truncate transition-all duration-500",
-              scrolled ? "hidden sm:hidden" : "hidden sm:block",
+              "text-[10px] xl:text-[11px] tracking-[0.18em] uppercase text-muted-foreground leading-tight truncate transition-all duration-500",
+              scrolled ? "hidden" : "hidden xl:block",
             )}>
               {t("nav.subtitle")}
             </p>
           </div>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-0.5">
           {MENU.map((item) => (
             <button
               key={item.label}
               onClick={() => handleNav(item.id)}
-              className="px-3 py-2 text-xs font-semibold text-primary hover:text-secondary transition-colors tracking-wider"
+              className="px-2 xl:px-2.5 py-2 text-[11px] xl:text-xs font-semibold text-primary hover:text-secondary transition-colors tracking-[0.08em] whitespace-nowrap"
             >
               {item.label}
             </button>
           ))}
-          <ThemeToggle className="ml-2" />
+          <ThemeToggle className="ml-1.5" />
           <LanguageSwitcher />
-          <Button asChild size="sm" className="ml-2 rounded-sm">
+          <Button asChild size="sm" className="ml-1.5 rounded-sm h-9 px-4 text-xs tracking-[0.12em] uppercase">
             <Link to="/booking">{t("nav.book")}</Link>
           </Button>
         </nav>
@@ -186,7 +186,7 @@ function LanguageSwitcher() {
     { code: "FR", name: "Français", Flag: FlagFR },
   ];
   return (
-    <div className="ml-2 flex items-center gap-2">
+    <div className="ml-1.5 flex items-center gap-1.5">
       {langs.map((l) => {
         const active = lang === l.code;
         return (
@@ -200,8 +200,8 @@ function LanguageSwitcher() {
             aria-label={l.name}
             title={l.name}
             className={cn(
-              "h-5 w-7 overflow-hidden rounded-sm border border-border transition-all duration-200 hover:scale-110 hover:shadow-md",
-              active && "ring-2 ring-secondary ring-offset-2 ring-offset-background shadow-md"
+              "h-4 w-6 overflow-hidden rounded-sm border border-border transition-all duration-200 hover:scale-110 hover:shadow-md",
+              active && "ring-2 ring-secondary ring-offset-1 ring-offset-background shadow-md"
             )}
           >
             <l.Flag />

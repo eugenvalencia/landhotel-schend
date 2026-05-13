@@ -71,13 +71,13 @@ export default function ThemeToggle({ className }: { className?: string }) {
             aria-label={o.label}
             title={o.label}
             className={cn(
-              "h-7 w-7 rounded-full flex items-center justify-center transition-all duration-300",
+              "h-6 w-6 rounded-full flex items-center justify-center transition-all duration-300",
               active
                 ? "bg-primary text-primary-foreground shadow-sm"
                 : "text-muted-foreground hover:text-primary",
             )}
           >
-            <Icon className="h-3.5 w-3.5" strokeWidth={1.5} />
+            <Icon className="h-3 w-3" strokeWidth={1.5} />
           </button>
         );
       })}
