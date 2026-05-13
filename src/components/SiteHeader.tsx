@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import ThemeToggle from "@/components/ThemeToggle";
 import logo from "@/assets/logo.png";
 
 
@@ -105,8 +106,9 @@ export default function SiteHeader() {
               {item.label}
             </button>
           ))}
+          <ThemeToggle className="ml-2" />
           <LanguageSwitcher />
-          <Button asChild size="sm" className="ml-2">
+          <Button asChild size="sm" className="ml-2 rounded-sm">
             <Link to="/booking">{t("nav.book")}</Link>
           </Button>
         </nav>
@@ -132,7 +134,11 @@ export default function SiteHeader() {
                 {item.label}
               </button>
             ))}
-            <Button asChild className="mt-2 h-12">
+            <div className="flex items-center justify-center gap-3 mt-3 mb-1">
+              <ThemeToggle />
+              <LanguageSwitcher />
+            </div>
+            <Button asChild className="mt-2 h-12 rounded-sm">
               <Link to="/booking" onClick={() => setOpen(false)}>{t("nav.book")}</Link>
             </Button>
           </div>

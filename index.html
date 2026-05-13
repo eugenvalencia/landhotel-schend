@@ -24,6 +24,19 @@
     <link rel="alternate" hreflang="fr" href="https://landhaus-schend.de/?lang=fr" />
     <link rel="alternate" hreflang="x-default" href="https://landhaus-schend.de/" />
 
+    <script>
+      // Apply saved theme before render to avoid flash of unstyled colour scheme.
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t === "light") document.documentElement.classList.add("light");
+          else if (t === "dark") document.documentElement.classList.add("dark");
+        } catch (e) {
+          /* localStorage disabled */
+        }
+      })();
+    </script>
+
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="icon" type="image/png" href="/icon-192.png" />
