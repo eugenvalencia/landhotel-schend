@@ -235,7 +235,7 @@ const Index = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-x-10 md:gap-y-14">
             {categories.map((r) => (
               <Link key={r.id} to={`/rooms/${r.id}`} className="group block">
-                <div className="aspect-[4/5] overflow-hidden mb-5 bg-muted rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
+                <div className="aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
                   <HotelImage
                     src={photoForRoomType(r.type)}
                     alt={r.name}
@@ -375,7 +375,7 @@ const Index = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-x-10 md:gap-y-14">
             {PAKETE.map((p) => (
               <Link key={p.slug} to={`/pakete/${p.slug}`} className="group block">
-                <div className="aspect-[4/5] overflow-hidden mb-5 bg-muted rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
+                <div className="aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
                   <img
                     src={p.cover}
                     alt={t(`paketDetails.${p.slug}.title`, p.title)}

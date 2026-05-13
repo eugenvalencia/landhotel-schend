@@ -220,15 +220,22 @@
   .text-balance { text-wrap: balance; }
   .text-pretty { text-wrap: pretty; }
 
-  /* Editorial drop-cap — for the first paragraph of a long passage */
+  /* Editorial drop-cap — for the first paragraph of a long passage.
+     Smaller on mobile so it doesn't dominate narrow columns. */
   .drop-cap::first-letter {
     font-family: "Cormorant Garamond", Georgia, serif;
     font-weight: 500;
-    font-size: 4.5em;
+    font-size: 3.4em;
     line-height: 0.82;
     float: left;
-    margin: 0.08em 0.12em -0.05em 0;
+    margin: 0.08em 0.1em -0.05em 0;
     color: hsl(var(--secondary));
+  }
+  @media (min-width: 768px) {
+    .drop-cap::first-letter {
+      font-size: 4.5em;
+      margin: 0.08em 0.12em -0.05em 0;
+    }
   }
 
   /* Small-caps eyebrow label — section labels above headlines */
