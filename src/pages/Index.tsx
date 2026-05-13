@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
-  Hotel, CalendarCheck, Phone, Star,
+  CalendarCheck,
   ParkingCircle, Bike, Waves, UtensilsCrossed, BedDouble, Wifi, Coffee, Trophy,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,11 +12,11 @@ import { HotelImage } from "@/components/HotelImage";
 import ReviewsSection from "@/components/ReviewsSection";
 import LocationSection from "@/components/LocationSection";
 import EifelRegionSection from "@/components/EifelRegionSection";
-import WeatherWidget from "@/components/WeatherWidget";
 import AboutSection from "@/components/AboutSection";
 import FAQSection from "@/components/FAQSection";
 import FeatureIcon from "@/components/FeatureIcon";
 import { useSEO } from "@/hooks/useSEO";
+import { cn } from "@/lib/utils";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_GALLERY, photoForRoomType,
 } from "@/lib/photos";
@@ -98,60 +98,82 @@ const Index = () => {
       <SiteHeader />
 
       <main id="main">
-      {/* HERO */}
-      <section id="top" className="relative min-h-[80vh] pt-16 md:pt-20 flex items-center text-primary-foreground overflow-hidden">
+      {/* HERO — editorial: photo + typography only */}
+      <section
+        id="top"
+        className="relative h-[100vh] min-h-[640px] max-h-[1100px] overflow-hidden"
+      >
         {SCHEND_HEROES.map((src, i) => (
           <HotelImage
             key={src}
             src={src}
-            alt="Landhotel Schend in der Vulkaneifel — Außenansicht"
+            alt="Landhotel Schend in der Vulkaneifel"
             loading={i === 0 ? "eager" : "lazy"}
             decoding={i === 0 ? "sync" : "async"}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-              i === heroIdx ? "opacity-100" : "opacity-0"
-            }`}
+            className={cn(
+              "absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ease-out",
+              i === heroIdx ? "opacity-100" : "opacity-0",
+            )}
           />
         ))}
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/50 to-primary/80" />
-        <div className="container mx-auto px-4 py-24 relative z-10 text-center">
-          <div className="inline-flex items-center gap-1.5 mb-4 px-3 py-1.5 rounded-full bg-white/15 border border-white/30 backdrop-blur-sm">
-            <Star className="h-3.5 w-3.5 fill-[#FBBF24] text-[#FBBF24]" />
-            <Star className="h-3.5 w-3.5 fill-[#FBBF24] text-[#FBBF24]" />
-            <Star className="h-3.5 w-3.5 fill-[#FBBF24] text-[#FBBF24]" />
-            <span className="text-xs font-semibold tracking-wider ml-1">{t("hero.starsBadge", "3 STERNE SUPERIOR")}</span>
+
+        {/* Soft editorial overlay — tokenized */}
+        <div className="absolute inset-0 gradient-hero" />
+        {/* Bottom vignette for legibility of CTA */}
+        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/45 to-transparent" />
+
+        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
+          {/* Eyebrow with hairlines */}
+          <div className="flex items-center gap-4 mb-10 md:mb-14 animate-fade-up">
+            <span className="block h-px w-12 md:w-20 bg-white/55" />
+            <span className="text-[11px] md:text-xs font-medium tracking-[0.24em] uppercase text-white/85">
+              Anno 1856 · Vulkaneifel
+            </span>
+            <span className="block h-px w-12 md:w-20 bg-white/55" />
           </div>
-          <p className="uppercase tracking-[0.2em] text-sm opacity-90 mb-4">{t("hero.eyebrow")}</p>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow">{t("hero.title")}</h1>
-          <p className="text-lg md:text-xl opacity-95 max-w-2xl mx-auto mb-8">{t("hero.text")}</p>
-          <div className="flex flex-wrap gap-3 justify-center">
-            <Button asChild size="lg" variant="secondary" className="text-base">
-              <Link to="/booking"><CalendarCheck className="h-5 w-5" /> {t("hero.bookDirect")}</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="text-base bg-white/10 text-primary-foreground border-white/40 hover:bg-white/20 hover:text-primary-foreground">
-              <a href="tel:+4965731306"><Phone className="h-5 w-5" /> +49 6573 306</a>
-            </Button>
-          </div>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm opacity-95">
-            <span className="inline-flex items-center gap-1.5">
-              <Star className="h-4 w-4 fill-[#FBBF24] text-[#FBBF24]" />
-              <strong>8.5/10</strong> Booking.com
-            </span>
-            <span className="hidden sm:inline opacity-50">·</span>
-            <span className="inline-flex items-center gap-1.5">
-              <Trophy className="h-4 w-4 text-[#FBBF24]" />
-              <strong>Nr. 1</strong> in Immerath – Tripadvisor
-            </span>
-            <span className="hidden sm:inline opacity-50">·</span>
-            <span className="inline-flex items-center gap-1.5">
-              <Star className="h-4 w-4 fill-[#FBBF24] text-[#FBBF24]" />
-              <strong>4,5/5</strong> Google
-            </span>
+
+          {/* Display headline — Fraunces, balanced */}
+          <h1
+            className="font-display text-balance text-white text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] mb-7 md:mb-9 max-w-4xl animate-fade-up"
+            style={{ animationDelay: "0.15s", textShadow: "0 1px 2px rgba(0,0,0,0.25)" }}
+          >
+            {t("hero.title")}
+          </h1>
+
+          {/* Italic subhead */}
+          <p
+            className="font-display-italic text-balance text-white/92 text-lg md:text-2xl max-w-2xl leading-snug mb-12 md:mb-14 animate-fade-up"
+            style={{ animationDelay: "0.3s" }}
+          >
+            {t("hero.text")}
+          </p>
+
+          {/* Single primary CTA + phone link */}
+          <div
+            className="flex flex-col items-center gap-5 animate-fade-up"
+            style={{ animationDelay: "0.45s" }}
+          >
+            <Link
+              to="/booking"
+              className="group inline-flex items-center gap-3 px-9 py-3.5 bg-white text-primary text-xs font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300 shadow-sm"
+            >
+              <CalendarCheck className="h-4 w-4" />
+              {t("hero.bookDirect")}
+              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </Link>
+            <a
+              href="tel:+4965731306"
+              className="text-white/75 text-sm tracking-wide hover:text-white transition-colors"
+            >
+              oder anrufen <span className="font-medium ml-1">+49 6573 306</span>
+            </a>
           </div>
         </div>
-        <div className="absolute bottom-4 left-4 right-4 z-10 sm:right-auto sm:left-6 sm:bottom-6">
-          <div className="max-w-xs">
-            <WeatherWidget />
-          </div>
+
+        {/* Subtle scroll cue */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 text-white/55">
+          <span className="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+          <span className="block h-10 w-px bg-white/45" />
         </div>
       </section>
 
