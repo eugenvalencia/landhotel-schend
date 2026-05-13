@@ -12,12 +12,13 @@ const Datenschutz = () => {
   return (
   <div className="min-h-screen flex flex-col bg-background">
     <SiteHeader />
-    <main className="flex-1 container mx-auto px-4 pt-32 pb-16 max-w-3xl">
-      <h1 className="text-3xl md:text-4xl font-bold mb-8 text-primary">Datenschutzerklärung</h1>
+    <main className="flex-1 container mx-auto px-4 pt-28 md:pt-32 pb-16 max-w-3xl">
+      <p className="eyebrow mb-4">Rechtliches</p>
+      <h1 className="font-display text-4xl md:text-5xl mb-12 text-balance leading-[1.05]">Datenschutzerklärung</h1>
 
       <div className="space-y-8 text-foreground/90 leading-relaxed">
         <section>
-          <h2 className="text-xl font-semibold text-primary mb-2">1. Datenschutz auf einen Blick</h2>
+          <h2 className="font-display text-xl md:text-2xl mb-3">1. Datenschutz auf einen Blick</h2>
           <h3 className="font-semibold mt-4 mb-1">Allgemeine Hinweise</h3>
           <p>
             Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren
@@ -29,7 +30,7 @@ const Datenschutz = () => {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-primary mb-2">2. Verantwortliche Stelle</h2>
+          <h2 className="font-display text-xl md:text-2xl mb-3">2. Verantwortliche Stelle</h2>
           <p>
             Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br />
             Eugen Beimler<br />
@@ -47,7 +48,7 @@ const Datenschutz = () => {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-primary mb-2">3. Hosting</h2>
+          <h2 className="font-display text-xl md:text-2xl mb-3">3. Hosting</h2>
           <p>
             Wir hosten die Inhalte unserer Website bei folgendem Anbieter:
           </p>
@@ -73,7 +74,7 @@ const Datenschutz = () => {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-primary mb-2">4. Allgemeine Hinweise und Pflichtinformationen</h2>
+          <h2 className="font-display text-xl md:text-2xl mb-3">4. Allgemeine Hinweise und Pflichtinformationen</h2>
           <h3 className="font-semibold mt-4 mb-1">Datenschutz</h3>
           <p>
             Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir
@@ -110,7 +111,7 @@ const Datenschutz = () => {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-primary mb-2">5. Ihre Rechte</h2>
+          <h2 className="font-display text-xl md:text-2xl mb-3">5. Ihre Rechte</h2>
           <p>Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht auf:</p>
           <ul className="list-disc pl-6 mt-2 space-y-1">
             <li>unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren
@@ -128,7 +129,7 @@ const Datenschutz = () => {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-primary mb-2">6. Datenerfassung auf dieser Website</h2>
+          <h2 className="font-display text-xl md:text-2xl mb-3">6. Datenerfassung auf dieser Website</h2>
           <h3 className="font-semibold mt-4 mb-1">Cookies</h3>
           <p>
             Unsere Internetseiten verwenden so genannte „Cookies". Cookies sind kleine Textdateien und
