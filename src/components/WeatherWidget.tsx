@@ -16,7 +16,7 @@ const weatherContent = (weatherCode: number) => {
   if (weatherCode >= 45 && weatherCode <= 48) return { icon: "🌫️", message: "Mystische Eifelstimmung" };
   if (weatherCode >= 51 && weatherCode <= 67) return { icon: "🌧️", message: "Gemütlich im Hotel bleiben" };
   if (weatherCode >= 71 && weatherCode <= 77) return { icon: "❄️", message: "Winterzauber in der Eifel" };
-  if (weatherCode >= 95 && weatherCode <= 99) return { icon: "⛈️", message: "Perfekt für Sauna & Wellness" };
+  if (weatherCode >= 95 && weatherCode <= 99) return { icon: "⛈️", message: "Gemütlich am Kamin bleiben" };
   return { icon: "⛅", message: "Aktuelles Wetter in Immerath" };
 };
 

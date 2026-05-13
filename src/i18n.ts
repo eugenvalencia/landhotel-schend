@@ -20,14 +20,14 @@ const resources = {
         eyebrow: "Kurzurlaub & Wanderhotel in der Vulkaneifel",
         title: "Willkommen im Landhotel Schend",
         text:
-          "Ihr ★★★ Superior Hotel in Immerath — Eifelsteig, Maare-Mosel-Radweg und Nürburgring direkt vor der Tür. 21 Zimmer mit Balkon, Sauna & Wellness, Eifeler Landküche und kostenlose Motorradgarage. Direkt buchen — provisionsfrei, ohne OTA-Aufpreis.",
+          "Ihr ★★★ Superior Hotel in Immerath — Eifelsteig, Maare-Mosel-Radweg und Nürburgring direkt vor der Tür. 21 Zimmer mit Balkon, hauseigene Eifeler Landküche, Halbpension auf Wunsch und kostenlose Motorradgarage. Ideal für Ihren Kurzurlaub — direkt buchen, provisionsfrei.",
         bookDirect: "Jetzt direkt buchen",
         starsBadge: "3 STERNE SUPERIOR",
       },
       usps: {
         parking: "Kostenlose Parkplätze — videoüberwacht",
         moto: "Genügend Motorrad-Parkplätze — videoüberwacht",
-        sauna: "Sauna & Wellness",
+        halfboard: "Halbpension auf Wunsch",
         restaurant: "Hauseigenes Restaurant",
         rooms: "21 Zimmer mit Balkon/Terrasse",
         wifi: "Kostenloses WLAN",
@@ -84,7 +84,7 @@ const resources = {
       },
       footer: {
         tagline:
-          "Ihr Familienhotel in der Vulkaneifel — mit Sauna, Wellness und hauseigenem Restaurant.",
+          "Ihr Familienhotel in der Vulkaneifel — mit hauseigener Eifeler Landküche, ideal für Ihren Kurzurlaub.",
         quick: "Quick Links",
         home: "Startseite",
         bookRoom: "Zimmer buchen",
@@ -98,19 +98,19 @@ const resources = {
         "eifler-wandertage": {
           title: "Genussvolle Eifler Wandertage",
           intro: "Erleben Sie die Vulkaneifel auf den schönsten Wanderwegen Deutschlands – mit Eifelsteig, Lieserpfad und unzähligen Themenrouten direkt vor unserer Haustür.",
-          details: "Unser erfahrenes Team stellt Ihnen täglich passende Routen zusammen – ob gemütliche Tagestour rund um die Maare oder anspruchsvolle Etappen auf dem Eifelsteig. Nach dem Wandertag erwartet Sie ein liebevoll zubereitetes Abendmenü mit regionalen Zutaten und ein entspannender Saunabesuch.",
+          details: "Unser erfahrenes Team stellt Ihnen täglich passende Routen zusammen – ob gemütliche Tagestour rund um die Maare oder anspruchsvolle Etappen auf dem Eifelsteig. Nach dem Wandertag erwartet Sie ein liebevoll zubereitetes Abendmenü mit regionalen Zutaten und ein Glas Eifeler Wein im behaglichen Kaminzimmer.",
           highlights: [
             "4 Übernachtungen inkl. großem Frühstücksbuffet",
             "3× Eifeler 3-Gang-Abendmenü im Landhaus Restaurant",
             "Wanderkarte & persönliche Tourenempfehlungen",
             "Lunchpaket für unterwegs",
-            "Wellness-Zugang zu Sauna & Ruhebereich",
+            "Glas Eifeler Wein zur Begrüßung im Kaminzimmer",
           ],
         },
         "rad-erlebnisse": {
           title: "Eifler Rad-Erlebnisse",
           intro: "Sattelfest durch die Vulkaneifel – Maare-Mosel-Radweg, Kylltal-Radweg und herausfordernde Mountainbike-Strecken starten direkt am Hotel.",
-          details: "Ob Genussradler oder ambitionierter Mountainbiker – unsere Empfehlungen reichen vom familienfreundlichen Maare-Mosel-Radweg bis zu knackigen Trails durch die Vulkaneifel. Nach der Tour locken Sauna, Massage auf Wunsch und ein deftiges Eifeler Menü.",
+          details: "Ob Genussradler oder ambitionierter Mountainbiker – unsere Empfehlungen reichen vom familienfreundlichen Maare-Mosel-Radweg bis zu knackigen Trails durch die Vulkaneifel. Nach der Tour locken eine Erfrischung auf der Sonnenterrasse und ein deftiges Eifeler Menü im Landhaus Restaurant.",
           highlights: [
             "3 Übernachtungen mit Frühstücksbuffet",
             "2× Eifeler Abendmenü",
@@ -122,11 +122,11 @@ const resources = {
         "erholung-entschleunigung": {
           title: "Tage der Erholung und Entschleunigung",
           intro: "Einfach mal abschalten – ankommen, durchatmen und die wohltuende Stille der Eifel genießen.",
-          details: "Dieses Paket ist eine Auszeit für Körper und Geist. Lassen Sie sich kulinarisch verwöhnen, genießen Sie ausgedehnte Saunagänge und finden Sie zur Ruhe – mit Blick in die sanften Hügel der Vulkaneifel.",
+          details: "Dieses Paket ist eine Auszeit für Körper und Geist. Lassen Sie sich kulinarisch verwöhnen, genießen Sie ausgedehnte Spaziergänge durch die Vulkaneifel und finden Sie zur Ruhe – mit Blick in die sanften Hügel der Eifel.",
           highlights: [
             "3 Übernachtungen mit Frühstücksbuffet",
             "1× Candle-Light-Dinner zur Begrüßung",
-            "Sauna, Wellnessbereich und Ruhezone",
+            "Mehrgängiges Gourmet-Abendmenü mit Weinbegleitung",
             "Frische Blumen & Obstteller im Zimmer",
             "Spaziergangs-Empfehlungen rund um Schalkenmehren",
           ],
@@ -140,7 +140,7 @@ const resources = {
             "Geführte Themenwanderung mit zertifiziertem Wanderführer",
             "Picknickkorb für eine Tagestour",
             "Eintritt in das Naturkundemuseum Daun",
-            "Wellness-Zugang inklusive",
+            "Eifeler Tee & hausgemachter Kuchen am Nachmittag",
           ],
         },
         "bunt-sind-schon-die-waelder": {
@@ -152,7 +152,7 @@ const resources = {
             "3× Herbst-Menü mit saisonalen Spezialitäten",
             "Wanderkarte „Herbst rund um die Maare\"",
             "Wildgericht-Abend nach Wahl",
-            "Sauna & Ruhebereich inklusive",
+            "Halbpension auf Wunsch zubuchbar",
           ],
         },
         "zimmer-ohne-paket": {
@@ -163,7 +163,7 @@ const resources = {
             "Doppelzimmer, Familienzimmer oder Einzelnutzung",
             "Großes Frühstücksbuffet inklusive",
             "Kostenfreies WLAN & Parkplatz",
-            "Sauna & Wellnessbereich nutzbar",
+            "Kaminzimmer & Sonnenterrasse zur freien Nutzung",
             "Halbpension auf Wunsch zubuchbar",
           ],
         },
@@ -188,14 +188,14 @@ const resources = {
         eyebrow: "Short break & hiking hotel in the Volcanic Eifel",
         title: "Welcome to Landhotel Schend",
         text:
-          "Your ★★★ Superior hotel in Immerath — Eifelsteig premium trail, Maare-Mosel cycle path and Nürburgring right at your door. 21 rooms with balcony, sauna & wellness, Eifel regional cuisine and a free motorcycle garage. Book direct — commission-free, no booking surcharge.",
+          "Your ★★★ Superior hotel in Immerath — Eifelsteig premium trail, Maare-Mosel cycle path and Nürburgring right at your door. 21 rooms with balcony, on-site Eifel regional cuisine, half-board on request and a free motorcycle garage. The ideal short break — book direct, commission-free.",
         bookDirect: "Book directly now",
         starsBadge: "3-STAR SUPERIOR",
       },
       usps: {
         parking: "Free parking — video-monitored",
         moto: "Plenty of motorcycle parking — video-monitored",
-        sauna: "Sauna & wellness",
+        halfboard: "Half-board on request",
         restaurant: "On-site restaurant",
         rooms: "21 rooms with balcony/terrace",
         wifi: "Free Wi-Fi",
@@ -251,7 +251,7 @@ const resources = {
       },
       footer: {
         tagline:
-          "Your family hotel in the Volcanic Eifel — with sauna, wellness and on-site restaurant.",
+          "Your family hotel in the Volcanic Eifel — with on-site Eifel cuisine, ideal for your short break.",
         quick: "Quick links",
         home: "Home",
         bookRoom: "Book a room",
@@ -265,19 +265,19 @@ const resources = {
         "eifler-wandertage": {
           title: "Eifel Hiking Days",
           intro: "Discover the Volcanic Eifel on Germany's most beautiful trails – the Eifelsteig, Lieserpfad and countless themed routes start right at our doorstep.",
-          details: "Our experienced team puts together suitable routes for you each day – from leisurely day tours around the maars to challenging stages on the Eifelsteig. After your hike, a lovingly prepared dinner with regional ingredients and a relaxing sauna visit await.",
+          details: "Our experienced team puts together suitable routes for you each day – from leisurely day tours around the maars to challenging stages on the Eifelsteig. After your hike, a lovingly prepared dinner with regional ingredients and a glass of Eifel wine in the cosy fireplace lounge await.",
           highlights: [
             "4 nights including breakfast buffet",
             "3× Eifel 3-course dinner at the Landhaus Restaurant",
             "Hiking map & personal route recommendations",
             "Lunch package for the trail",
-            "Wellness access to sauna & relaxation area",
+            "Welcome glass of Eifel wine in the fireplace lounge",
           ],
         },
         "rad-erlebnisse": {
           title: "Eifel Cycling Adventures",
           intro: "Saddle up through the Volcanic Eifel – the Maare-Mosel cycle path, Kylltal route and challenging mountain bike trails start right at the hotel.",
-          details: "Whether leisure cyclist or ambitious mountain biker – our recommendations range from the family-friendly Maare-Mosel route to demanding trails through the Volcanic Eifel. Sauna, optional massage and a hearty Eifel menu await after your ride.",
+          details: "Whether leisure cyclist or ambitious mountain biker – our recommendations range from the family-friendly Maare-Mosel route to demanding trails through the Volcanic Eifel. A refreshment on the sun terrace and a hearty Eifel menu in the Landhaus Restaurant await after your ride.",
           highlights: [
             "3 nights with breakfast buffet",
             "2× Eifel dinner",
@@ -289,11 +289,11 @@ const resources = {
         "erholung-entschleunigung": {
           title: "Days of Rest and Slowing Down",
           intro: "Simply switch off – arrive, breathe deeply and enjoy the soothing silence of the Eifel.",
-          details: "This package is a time-out for body and mind. Be spoiled with our cuisine, enjoy long sauna sessions and find peace – with views over the gentle hills of the Volcanic Eifel.",
+          details: "This package is a time-out for body and mind. Be spoiled with our cuisine, enjoy long walks through the Volcanic Eifel and find peace – with views over the gentle hills of the Eifel.",
           highlights: [
             "3 nights with breakfast buffet",
             "1× welcome candlelight dinner",
-            "Sauna, wellness area and relaxation zone",
+            "Multi-course gourmet dinner with wine pairing",
             "Fresh flowers & fruit plate in the room",
             "Walking suggestions around Schalkenmehren",
           ],
@@ -307,7 +307,7 @@ const resources = {
             "Guided themed hike with certified guide",
             "Picnic basket for one day tour",
             "Admission to the Daun Natural History Museum",
-            "Wellness access included",
+            "Eifel tea & homemade cake in the afternoon",
           ],
         },
         "bunt-sind-schon-die-waelder": {
@@ -319,7 +319,7 @@ const resources = {
             "3× autumn menu with seasonal specialities",
             "Hiking map “Autumn around the maars”",
             "Game dinner of your choice",
-            "Sauna & relaxation area included",
+            "Half-board bookable on request",
           ],
         },
         "zimmer-ohne-paket": {
@@ -330,7 +330,7 @@ const resources = {
             "Double, family room or single occupancy",
             "Generous breakfast buffet included",
             "Free Wi-Fi & parking",
-            "Sauna & wellness area available",
+            "Fireplace lounge & sun terrace freely usable",
             "Half-board bookable on request",
           ],
         },
@@ -355,14 +355,14 @@ const resources = {
         eyebrow: "Court séjour & hôtel de randonnée dans l'Eifel volcanique",
         title: "Bienvenue au Landhotel Schend",
         text:
-          "Votre hôtel ★★★ Superior à Immerath — sentier Eifelsteig, piste Maare-Mosel et Nürburgring à votre porte. 21 chambres avec balcon, sauna & bien-être, cuisine de l'Eifel et garage à motos gratuit. Réservez en direct — sans commission, sans supplément.",
+          "Votre hôtel ★★★ Superior à Immerath — sentier Eifelsteig, piste Maare-Mosel et Nürburgring à votre porte. 21 chambres avec balcon, cuisine maison de l'Eifel, demi-pension sur demande et garage à motos gratuit. L'escapade idéale — réservez en direct, sans commission.",
         bookDirect: "Réserver en direct",
         starsBadge: "3 ÉTOILES SUPERIOR",
       },
       usps: {
         parking: "Parking gratuit — vidéosurveillé",
         moto: "Nombreuses places moto — vidéosurveillées",
-        sauna: "Sauna & bien-être",
+        halfboard: "Demi-pension sur demande",
         restaurant: "Restaurant maison",
         rooms: "21 chambres avec balcon/terrasse",
         wifi: "Wi-Fi gratuit",
@@ -420,7 +420,7 @@ const resources = {
       },
       footer: {
         tagline:
-          "Votre hôtel familial dans l'Eifel volcanique — sauna, bien-être et restaurant maison.",
+          "Votre hôtel familial dans l'Eifel volcanique — cuisine maison de l'Eifel, idéal pour une escapade.",
         quick: "Liens rapides",
         home: "Accueil",
         bookRoom: "Réserver une chambre",
@@ -434,19 +434,19 @@ const resources = {
         "eifler-wandertage": {
           title: "Journées de randonnée dans l'Eifel",
           intro: "Découvrez l'Eifel volcanique sur les plus beaux sentiers d'Allemagne – Eifelsteig, Lieserpfad et de nombreux itinéraires thématiques au pied de l'hôtel.",
-          details: "Notre équipe expérimentée vous propose chaque jour des itinéraires adaptés – de la balade tranquille autour des maars aux étapes exigeantes de l'Eifelsteig. Après la randonnée, un dîner soigné aux saveurs régionales et un moment au sauna vous attendent.",
+          details: "Notre équipe expérimentée vous propose chaque jour des itinéraires adaptés – de la balade tranquille autour des maars aux étapes exigeantes de l'Eifelsteig. Après la randonnée, un dîner soigné aux saveurs régionales et un verre de vin de l'Eifel au coin du feu vous attendent.",
           highlights: [
             "4 nuitées avec buffet petit-déjeuner",
             "3× menu Eifel 3 plats au restaurant Landhaus",
             "Carte de randonnée & conseils personnalisés",
             "Panier-repas pour la journée",
-            "Accès sauna & espace détente",
+            "Verre de vin de l'Eifel au coin du feu",
           ],
         },
         "rad-erlebnisse": {
           title: "Aventures à vélo dans l'Eifel",
           intro: "En selle pour l'Eifel volcanique – la Maare-Mosel-Radweg, la Kylltal-Radweg et de superbes pistes de VTT démarrent à l'hôtel.",
-          details: "Du cycliste d'agrément au vététiste confirmé – nos conseils vont de la Maare-Mosel familiale aux trails plus engagés. Sauna, massage sur demande et menu Eifel généreux pour récupérer.",
+          details: "Du cycliste d'agrément au vététiste confirmé – nos conseils vont de la Maare-Mosel familiale aux trails plus engagés. Une boisson rafraîchissante sur la terrasse ensoleillée et un menu Eifel généreux pour récupérer au restaurant Landhaus.",
           highlights: [
             "3 nuitées avec buffet petit-déjeuner",
             "2× dîner Eifel",
@@ -458,11 +458,11 @@ const resources = {
         "erholung-entschleunigung": {
           title: "Jours de détente et de ralentissement",
           intro: "Tout simplement déconnecter – arriver, respirer et profiter du silence apaisant de l'Eifel.",
-          details: "Ce forfait est une parenthèse pour le corps et l'esprit. Laissez-vous tenter par notre cuisine, profitez de longues séances de sauna et trouvez le calme – avec vue sur les douces collines de l'Eifel volcanique.",
+          details: "Ce forfait est une parenthèse pour le corps et l'esprit. Laissez-vous tenter par notre cuisine, profitez de longues promenades dans l'Eifel volcanique et trouvez le calme – avec vue sur les douces collines de l'Eifel.",
           highlights: [
             "3 nuitées avec buffet petit-déjeuner",
             "1× dîner aux chandelles de bienvenue",
-            "Sauna, espace bien-être et zone de repos",
+            "Menu gastronomique avec accord mets-vins",
             "Fleurs fraîches & assiette de fruits en chambre",
             "Conseils de balades autour de Schalkenmehren",
           ],
@@ -476,7 +476,7 @@ const resources = {
             "Randonnée thématique avec guide certifié",
             "Panier pique-nique pour une journée",
             "Entrée au Musée d'histoire naturelle de Daun",
-            "Accès bien-être inclus",
+            "Thé de l'Eifel & gâteau maison l'après-midi",
           ],
         },
         "bunt-sind-schon-die-waelder": {
@@ -488,7 +488,7 @@ const resources = {
             "3× menu d'automne avec spécialités de saison",
             "Carte de randonnée « Automne autour des maars »",
             "Soirée gibier au choix",
-            "Sauna & espace détente inclus",
+            "Demi-pension sur demande",
           ],
         },
         "zimmer-ohne-paket": {
@@ -499,7 +499,7 @@ const resources = {
             "Chambre double, familiale ou occupation simple",
             "Grand buffet petit-déjeuner inclus",
             "Wi-Fi & parking gratuits",
-            "Sauna & espace bien-être disponibles",
+            "Salon avec cheminée & terrasse à disposition",
             "Demi-pension sur demande",
           ],
         },

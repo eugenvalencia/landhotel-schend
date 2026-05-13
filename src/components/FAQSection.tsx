@@ -20,8 +20,12 @@ const FAQS_DE: FAQ[] = [
     a: "Ja. Wir bieten kostenlose, videoüberwachte Parkplätze und genügend Motorrad-Stellplätze. Damit sind wir ein beliebtes Hotel für Motorradfahrer rund um den Nürburgring und die kurvenreichen Straßen der Vulkaneifel.",
   },
   {
-    q: "Welche Wellness-Einrichtungen gibt es?",
-    a: "Unseren Gästen steht ein Wellness-Bereich mit Sauna und Ruhezone zur Verfügung — ideal nach einer Wanderung auf dem Eifelsteig oder einer Radtour auf dem Maare-Mosel-Radweg.",
+    q: "Bieten Sie Halbpension oder Vollpension an?",
+    a: "Halbpension ist auf Wunsch buchbar (+23 € pro Person/Tag) — täglich frische Eifeler Landküche mit 3-Gang-Menü im Landhaus Restaurant. Das große Frühstücksbuffet mit regionalen Produkten ist in jedem Übernachtungspreis bereits enthalten. Vollpension auf Anfrage.",
+  },
+  {
+    q: "Welche Erholungsmöglichkeiten gibt es im Haus?",
+    a: "Unser behagliches Kaminzimmer, die Sonnenterrasse und das gemütliche Restaurant laden zum Verweilen ein. Die ruhige Lage in der Kratermulde der Vulkaneifel — fernab vom Großstadttrubel — sorgt von selbst für Erholung. Wanderwege, Maare und Radrouten direkt vor der Tür sind ideal zum Durchatmen.",
   },
   {
     q: "Ist Frühstück inklusive und wie sieht es aus?",

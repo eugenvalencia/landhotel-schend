@@ -3,10 +3,10 @@ import { Badge } from "@/components/ui/badge";
 import { Star, MessageSquare, Mail, Smartphone, TrendingUp, CheckCircle2 } from "lucide-react";
 
 const reviews = [
-  { name: "Maria Weber", rating: 5, source: "Google", date: "vor 2 Tagen", text: "Wunderbarer Aufenthalt! Sauna war Top, das Frühstück hervorragend. Wir kommen wieder!" },
+  { name: "Maria Weber", rating: 5, source: "Google", date: "vor 2 Tagen", text: "Wunderbarer Aufenthalt! Das Frühstück war hervorragend, die Eifeler Küche super. Wir kommen wieder!" },
   { name: "Thomas Schmidt", rating: 5, source: "Booking.com", date: "vor 5 Tagen", text: "Sehr familiäre Atmosphäre, herzliches Personal. Zimmer 7 ist eine Empfehlung." },
   { name: "Anna Becker", rating: 4, source: "Google", date: "vor 1 Woche", text: "Schöne Lage in der Eifel. Kleines Manko: WLAN könnte stärker sein." },
-  { name: "Familie Hoffmann", rating: 5, source: "Booking.com", date: "vor 2 Wochen", text: "Perfekt für Familien. Kinder lieben die Umgebung, Eltern lieben den Wellness-Bereich." },
+  { name: "Familie Hoffmann", rating: 5, source: "Booking.com", date: "vor 2 Wochen", text: "Perfekt für Familien. Kinder lieben die Umgebung, Eltern das gemütliche Kaminzimmer." },
   { name: "Klaus Meier", rating: 5, source: "Google", date: "vor 3 Wochen", text: "Echtes Vulkaneifel-Feeling. Abendessen im Restaurant: regional und lecker." },
 ];
 

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   CalendarCheck,
-  ParkingCircle, Bike, Waves, UtensilsCrossed, BedDouble, Wifi, Coffee, Trophy,
+  ParkingCircle, Bike, ChefHat, UtensilsCrossed, BedDouble, Wifi, Coffee, Trophy,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { eur } from "@/lib/format";
@@ -34,7 +34,7 @@ import SiteFooter from "@/components/SiteFooter";
 const USPS = [
   { icon: ParkingCircle, key: "parking", variant: "primary" as const },
   { icon: Bike, key: "moto", variant: "ocean" as const },
-  { icon: Waves, key: "sauna", variant: "ocean" as const },
+  { icon: ChefHat, key: "halfboard", variant: "sunset" as const },
   { icon: UtensilsCrossed, key: "restaurant", variant: "sunset" as const },
   { icon: BedDouble, key: "rooms", variant: "primary" as const },
   { icon: Wifi, key: "wifi", variant: "ocean" as const },
@@ -62,7 +62,7 @@ const Index = () => {
   useSEO({
     title: "3-Sterne-Superior Hotel in der Vulkaneifel",
     description:
-      "Familiengeführtes Landhotel in Immerath mit 21 Zimmern, Sauna & Wellness, Eifeler Restaurant. Direkt buchen — provisionsfrei. Top-Lage für Wanderer, Motorradfahrer und Familien in der Vulkaneifel.",
+      "Familiengeführtes Landhotel in Immerath mit 21 Zimmern, hauseigener Eifeler Landküche und Halbpension auf Wunsch. Direkt buchen — provisionsfrei. Ideal für Kurzurlaub, Wandern und Motorradfahren in der Vulkaneifel.",
     canonical: "/",
   });
 

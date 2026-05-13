@@ -33,10 +33,10 @@ export const PAKETE: Paket[] = [
       "3× Eifeler 3-Gang-Abendmenü im Landhaus Restaurant",
       "Wanderkarte & persönliche Tourenempfehlungen",
       "Lunchpaket für unterwegs",
-      "Wellness-Zugang zu Sauna & Ruhebereich",
+      "Glas Eifeler Wein zur Begrüßung im Kaminzimmer",
     ],
     details:
-      "Unser erfahrenes Team stellt Ihnen täglich passende Routen zusammen – ob gemütliche Tagestour rund um die Maare oder anspruchsvolle Etappen auf dem Eifelsteig. Nach dem Wandertag erwartet Sie ein liebevoll zubereitetes Abendmenü mit regionalen Zutaten und ein entspannender Saunabesuch.",
+      "Unser erfahrenes Team stellt Ihnen täglich passende Routen zusammen – ob gemütliche Tagestour rund um die Maare oder anspruchsvolle Etappen auf dem Eifelsteig. Nach dem Wandertag erwartet Sie ein liebevoll zubereitetes Abendmenü mit regionalen Zutaten und ein Glas Eifeler Wein im behaglichen Kaminzimmer.",
     price: "ab 359 € pro Person",
   },
   {
@@ -58,7 +58,7 @@ export const PAKETE: Paket[] = [
       "Wäscheservice für Funktionsbekleidung",
     ],
     details:
-      "Ob Genussradler oder ambitionierter Mountainbiker – unsere Empfehlungen reichen vom familienfreundlichen Maare-Mosel-Radweg bis zu knackigen Trails durch die Vulkaneifel. Nach der Tour locken Sauna, Massage auf Wunsch und ein deftiges Eifeler Menü.",
+      "Ob Genussradler oder ambitionierter Mountainbiker – unsere Empfehlungen reichen vom familienfreundlichen Maare-Mosel-Radweg bis zu knackigen Trails durch die Vulkaneifel. Nach der Tour locken eine Erfrischung auf der Sonnenterrasse und ein deftiges Eifeler Menü im Landhaus Restaurant.",
     price: "ab 279 € pro Person",
   },
   {
@@ -75,12 +75,12 @@ export const PAKETE: Paket[] = [
     highlights: [
       "3 Übernachtungen mit Frühstücksbuffet",
       "1× Candle-Light-Dinner zur Begrüßung",
-      "Sauna, Wellnessbereich und Ruhezone",
+      "Mehrgängiges Gourmet-Abendmenü mit Weinbegleitung",
       "Frische Blumen & Obstteller im Zimmer",
       "Spaziergangs-Empfehlungen rund um Schalkenmehren",
     ],
     details:
-      "Dieses Paket ist eine Auszeit für Körper und Geist. Lassen Sie sich kulinarisch verwöhnen, genießen Sie ausgedehnte Saunagänge und finden Sie zur Ruhe – mit Blick in die sanften Hügel der Vulkaneifel.",
+      "Dieses Paket ist eine Auszeit für Körper und Geist. Lassen Sie sich kulinarisch verwöhnen, genießen Sie ausgedehnte Spaziergänge durch die Vulkaneifel und finden Sie zur Ruhe – mit Blick in die sanften Hügel der Eifel.",
     price: "ab 319 € pro Person",
   },
   {
@@ -99,7 +99,7 @@ export const PAKETE: Paket[] = [
       "Geführte Themenwanderung mit zertifiziertem Wanderführer",
       "Picknickkorb für eine Tagestour",
       "Eintritt in das Naturkundemuseum Daun",
-      "Wellness-Zugang inklusive",
+      "Eifeler Tee & hausgemachter Kuchen am Nachmittag",
     ],
     details:
       "Ein Paket für Naturliebhaber: Erleben Sie die Eifel in voller Blüte, lernen Sie auf einer geführten Tour die Besonderheiten der Vulkanlandschaft kennen und genießen Sie täglich frische Eifeler Küche.",
@@ -121,7 +121,7 @@ export const PAKETE: Paket[] = [
       "3× Herbst-Menü mit saisonalen Spezialitäten",
       "Wanderkarte „Herbst rund um die Maare\"",
       "Wildgericht-Abend nach Wahl",
-      "Sauna & Ruhebereich inklusive",
+      "Halbpension auf Wunsch zubuchbar",
     ],
     details:
       "Goldenes Licht über den Maaren, dampfende Tassen Tee nach der Wanderung und herzhafte Wildgerichte am Abend – dieses Paket fängt die magische Atmosphäre des Eifel-Herbstes ein.",
@@ -142,7 +142,7 @@ export const PAKETE: Paket[] = [
       "Doppelzimmer, Familienzimmer oder Einzelnutzung",
       "Großes Frühstücksbuffet inklusive",
       "Kostenfreies WLAN & Parkplatz",
-      "Sauna & Wellnessbereich nutzbar",
+      "Kaminzimmer & Sonnenterrasse zur freien Nutzung",
       "Halbpension auf Wunsch zubuchbar",
     ],
     details:
