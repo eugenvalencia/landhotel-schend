@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
+import { cn } from "@/lib/utils";
 
 type Platform = {
   name: string;
@@ -9,20 +10,19 @@ type Platform = {
   scoreLine: string;
   reviews: string;
   href: string;
-  accent: string; // tailwind border accent
 };
 
 const GoogleG = () => (
   <svg viewBox="0 0 48 48" className="h-7 w-7" aria-hidden>
-    <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.6-6 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/>
-    <path fill="#FF3D00" d="M6.3 14.1l6.6 4.8C14.7 15 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.1z"/>
-    <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.3 0-9.7-3.4-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/>
-    <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.6l6.2 5.2C41 35.5 44 30.2 44 24c0-1.3-.1-2.3-.4-3.5z"/>
+    <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.6-6 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z" />
+    <path fill="#FF3D00" d="M6.3 14.1l6.6 4.8C14.7 15 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.1z" />
+    <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.3 0-9.7-3.4-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z" />
+    <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.6l6.2 5.2C41 35.5 44 30.2 44 24c0-1.3-.1-2.3-.4-3.5z" />
   </svg>
 );
 
 const BookingLogo = () => (
-  <div className="h-7 px-2 rounded bg-[#003580] text-white text-xs font-bold flex items-center">
+  <div className="h-7 px-2 rounded-sm bg-[#003580] text-white text-xs font-bold flex items-center">
     Booking.com
   </div>
 );
@@ -37,7 +37,7 @@ const TripadvisorLogo = () => (
 );
 
 const HrsLogo = () => (
-  <div className="h-7 px-2 rounded bg-[#E2231A] text-white text-sm font-extrabold tracking-widest flex items-center">
+  <div className="h-7 px-2 rounded-sm bg-[#E2231A] text-white text-sm font-extrabold tracking-widest flex items-center">
     HRS
   </div>
 );
@@ -47,10 +47,9 @@ const PLATFORMS: Platform[] = [
     name: "Google",
     logo: <GoogleG />,
     scoreLabel: "4.5 / 5",
-    scoreLine: "★★★★★",
+    scoreLine: "Sehr gut",
     reviews: "142 Bewertungen",
     href: "https://www.google.com/search?q=Landhotel+Schend",
-    accent: "border-t-4 border-t-[#4285F4]",
   },
   {
     name: "Booking.com",
@@ -59,7 +58,6 @@ const PLATFORMS: Platform[] = [
     scoreLine: "Sehr gut",
     reviews: "203 Bewertungen",
     href: "https://www.booking.com/",
-    accent: "border-t-4 border-t-[#003580]",
   },
   {
     name: "Tripadvisor",
@@ -68,7 +66,6 @@ const PLATFORMS: Platform[] = [
     scoreLine: "Nr. 1 in Immerath",
     reviews: "89 Bewertungen",
     href: "https://www.tripadvisor.com/",
-    accent: "border-t-4 border-t-[#34E0A1]",
   },
   {
     name: "HRS",
@@ -77,7 +74,6 @@ const PLATFORMS: Platform[] = [
     scoreLine: "Empfehlenswert",
     reviews: "67 Bewertungen",
     href: "https://www.hrs.com/",
-    accent: "border-t-4 border-t-[#E2231A]",
   },
 ];
 
@@ -108,8 +104,8 @@ const REVIEWS: Review[] = [
   },
   {
     stars: 4,
-      text:
-        "Gemütliches Hotel mit hervorragendem Restaurant. Die Eifeler Küche hat uns begeistert. Genügend Motorrad-Parkplätze sind vorhanden und sicher videoüberwacht.",
+    text:
+      "Gemütliches Hotel mit hervorragendem Restaurant. Die Eifeler Küche hat uns begeistert. Genügend Motorrad-Parkplätze sind vorhanden und sicher videoüberwacht.",
     author: "Bikergruppe aus München",
     source: "Tripadvisor",
     date: "September 2025",
@@ -121,9 +117,11 @@ const Stars = ({ n }: { n: number }) => (
     {[1, 2, 3, 4, 5].map((i) => (
       <Star
         key={i}
-        className={`h-4 w-4 ${
-          i <= n ? "fill-[#FBBF24] text-[#FBBF24]" : "text-muted-foreground/30"
-        }`}
+        className={cn(
+          "h-4 w-4",
+          i <= n ? "fill-secondary text-secondary" : "text-muted-foreground/25",
+        )}
+        strokeWidth={1.5}
       />
     ))}
   </div>
@@ -162,82 +160,102 @@ export default function ReviewsSection() {
   }, []);
 
   return (
-    <section className="bg-[#f5f7fa]">
+    <section className="bg-muted/40">
       <JsonLd id="reviews" data={reviewsJsonLd} />
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-10">
-          <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Bewertungen</p>
-          <h2 className="text-3xl md:text-4xl font-bold">Was unsere Gäste sagen</h2>
-          <p className="text-muted-foreground mt-3">
+      <div className="container mx-auto px-4 py-20 md:py-28">
+        {/* Header */}
+        <div className="text-center mb-14 md:mb-20 max-w-3xl mx-auto">
+          <p className="eyebrow">Bewertungen</p>
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">
+            Was unsere Gäste sagen
+          </h2>
+          <p className="text-muted-foreground mt-5 leading-relaxed">
             Landhotel Schend — bewertet auf allen großen Plattformen
           </p>
         </div>
 
-        {/* PLATFORM CARDS */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+        {/* Platform grid — hairline-divided, no shadows */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border/50 mb-20 md:mb-28 border border-border/50">
           {PLATFORMS.map((p) => (
             <a
               key={p.name}
               href={p.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={`bg-card rounded-xl border shadow-card hover:shadow-elevated transition-shadow p-5 flex flex-col items-center text-center gap-2 ${p.accent}`}
+              className="group bg-background p-7 flex flex-col items-center text-center gap-2 hover:bg-muted/40 transition-colors"
             >
               <div className="h-9 flex items-center justify-center">{p.logo}</div>
-              <div className="text-2xl font-bold mt-1">{p.scoreLabel}</div>
-              <div className="text-sm text-secondary font-medium">{p.scoreLine}</div>
+              <div className="font-display text-3xl mt-3">{p.scoreLabel}</div>
+              <div className="text-xs uppercase tracking-[0.18em] text-secondary">
+                {p.scoreLine}
+              </div>
               <div className="text-xs text-muted-foreground">{p.reviews}</div>
-              <span className="text-xs font-medium text-primary mt-2 hover:underline">
-                Auf {p.name} ansehen →
+              <span className="text-[10px] font-medium tracking-[0.22em] uppercase text-primary/70 mt-3 group-hover:text-primary transition-colors">
+                Ansehen →
               </span>
             </a>
           ))}
         </div>
 
-        {/* REVIEW CAROUSEL */}
-        <div className="max-w-3xl mx-auto">
-          <div className="relative bg-card rounded-xl border shadow-card p-6 md:p-8">
-            <div className="flex flex-col items-center text-center gap-3 min-h-[180px]">
-              <Stars n={REVIEWS[idx].stars} />
-              <p className="text-base md:text-lg text-foreground leading-relaxed italic">
-                „{REVIEWS[idx].text}"
-              </p>
-              <p className="text-sm text-muted-foreground">
-                — <span className="font-medium text-foreground">{REVIEWS[idx].author}</span> ·{" "}
-                {REVIEWS[idx].source} · {REVIEWS[idx].date}
-              </p>
-            </div>
+        {/* Magazine pull-quote */}
+        <div className="max-w-3xl mx-auto text-center">
+          <div
+            aria-hidden
+            className="font-display text-secondary text-[7rem] md:text-[9rem] leading-[0.6] mb-2 opacity-70 select-none"
+          >
+            “
+          </div>
 
+          <blockquote
+            key={idx}
+            className="font-display text-2xl md:text-3xl lg:text-[2.5rem] leading-snug text-balance text-foreground/90 min-h-[6em] md:min-h-[5em] animate-fade-up"
+          >
+            {REVIEWS[idx].text}
+          </blockquote>
+
+          <div className="hairline mt-12 mb-6 max-w-xs mx-auto" />
+          <div className="flex flex-col items-center gap-3">
+            <Stars n={REVIEWS[idx].stars} />
+            <p className="text-sm text-muted-foreground tracking-wide">
+              <span className="text-foreground/90 font-medium">{REVIEWS[idx].author}</span>
+              <span className="mx-2 opacity-50">·</span>
+              {REVIEWS[idx].source}
+              <span className="mx-2 opacity-50">·</span>
+              {REVIEWS[idx].date}
+            </p>
+          </div>
+
+          {/* Navigation: arrows + dots */}
+          <div className="flex items-center justify-center gap-6 mt-12">
             <button
               type="button"
               onClick={prev}
               aria-label="Vorherige Bewertung"
-              className="absolute left-2 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-background border shadow-card flex items-center justify-center hover:bg-accent"
+              className="h-10 w-10 rounded-full border border-border/70 flex items-center justify-center hover:bg-background hover:border-primary/40 transition-colors"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
             </button>
+            <div className="flex gap-2">
+              {REVIEWS.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setIdx(i)}
+                  aria-label={`Bewertung ${i + 1}`}
+                  className={cn(
+                    "h-1.5 rounded-full transition-all duration-500",
+                    i === idx ? "w-8 bg-primary" : "w-1.5 bg-border",
+                  )}
+                />
+              ))}
+            </div>
             <button
               type="button"
               onClick={next}
               aria-label="Nächste Bewertung"
-              className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-background border shadow-card flex items-center justify-center hover:bg-accent"
+              className="h-10 w-10 rounded-full border border-border/70 flex items-center justify-center hover:bg-background hover:border-primary/40 transition-colors"
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
             </button>
-          </div>
-
-          {/* dots */}
-          <div className="flex justify-center gap-2 mt-4">
-            {REVIEWS.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setIdx(i)}
-                aria-label={`Bewertung ${i + 1}`}
-                className={`h-2 rounded-full transition-all ${
-                  i === idx ? "w-6 bg-primary" : "w-2 bg-muted-foreground/30"
-                }`}
-              />
-            ))}
           </div>
         </div>
       </div>

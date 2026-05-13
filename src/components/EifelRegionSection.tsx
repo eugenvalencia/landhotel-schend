@@ -7,85 +7,95 @@ import eifel5 from "@/assets/eifel-5.jpg";
 export default function EifelRegionSection() {
   return (
     <section className="bg-background">
-      <div className="container mx-auto px-4 py-16">
-        {/* Headline */}
-        <div className="text-center mb-10 max-w-4xl mx-auto">
-          <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Region</p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Urlaubsregion Eifel</h2>
-          <p className="text-muted-foreground text-base md:text-lg">
+      <div className="container mx-auto px-4 py-20 md:py-28">
+        {/* Editorial headline */}
+        <div className="text-center mb-14 md:mb-20 max-w-3xl mx-auto">
+          <p className="eyebrow">Region</p>
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-6 text-balance leading-[1.05]">
+            Urlaubsregion Eifel
+          </h2>
+          <p className="text-foreground/85 text-base md:text-lg leading-relaxed text-pretty">
             Unser Hotel schmiegt sich in die Kratermulde eines erloschenen Vulkans.
             Erleben Sie die Einzigartigkeit unserer Gesundheitslandschaft Vulkaneifel.
           </p>
         </div>
 
-        {/* Collage */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-14">
+        {/* Photo mosaic — flat, minimal gaps, no shadows */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mb-20 md:mb-24">
           <img
             src={eifel1}
             alt="Eifel Maar – Kratersee im Wald"
             loading="lazy"
-            className="w-full h-48 md:h-64 object-cover rounded-lg shadow-card row-span-2 md:h-[33rem]"
+            className="w-full h-48 md:h-64 object-cover row-span-2 md:h-[33rem]"
           />
           <img
             src={eifel2}
             alt="Aussichtsplattform in der Eifel bei Sonnenuntergang"
             loading="lazy"
-            className="w-full h-48 md:h-64 object-cover rounded-lg shadow-card md:col-span-2"
+            className="w-full h-48 md:h-64 object-cover md:col-span-2"
           />
           <img
             src={eifel3}
             alt="Schilf am Maar in der Vulkaneifel"
             loading="lazy"
-            className="w-full h-48 md:h-64 object-cover rounded-lg shadow-card row-span-2 md:h-[33rem]"
+            className="w-full h-48 md:h-64 object-cover row-span-2 md:h-[33rem]"
           />
           <img
             src={eifel4}
             alt="Ruderboote am Maar"
             loading="lazy"
-            className="w-full h-48 md:h-64 object-cover rounded-lg shadow-card"
+            className="w-full h-48 md:h-64 object-cover"
           />
           <img
             src={eifel5}
             alt="Panorama der Vulkaneifel"
             loading="lazy"
-            className="w-full h-48 md:h-64 object-cover rounded-lg shadow-card"
+            className="w-full h-48 md:h-64 object-cover"
           />
         </div>
 
-        {/* Freizeittipps */}
-        <div className="max-w-4xl mx-auto text-center">
-          <h3 className="text-2xl md:text-3xl font-bold mb-3">Freizeittipps & Ausflugsziele</h3>
-          <p className="uppercase tracking-[0.18em] text-xs text-secondary mb-6">
-            Lebendige Erdgeschichte
-          </p>
-          <div className="space-y-5 text-muted-foreground text-base leading-relaxed text-left md:text-center">
-            <p>
-              Immerath und das gleichnamige Maar, der Kratersee eines vor zehntausenden Jahren
-              ausgebrochenen Vulkans, öffnen Ihnen Fenster in die Erdgeschichte. Die einstigen
-              Dimensionen des Vulkans lassen sich nur mehr erahnen bei Touren durch die vielfach
-              unberührt wirkende Natur.
-            </p>
-            <p>
-              Attraktive Rad- und Wander- oder auch Nordic-Walking-Wege bieten dafür optimale
-              Voraussetzungen. Allen voran der Maare-Mosel-Radweg und der Premium-Wanderweg
-              Eifelsteig.
-            </p>
+        {/* Editorial body — single column, generous prose width */}
+        <div className="max-w-prose mx-auto space-y-12">
+          <div>
+            <p className="eyebrow">Lebendige Erdgeschichte</p>
+            <h3 className="font-display text-3xl md:text-4xl mt-3 mb-7 text-balance">
+              Freizeittipps & Ausflugsziele
+            </h3>
+            <div className="space-y-5 text-foreground/85 leading-relaxed">
+              <p className="drop-cap">
+                Immerath und das gleichnamige Maar, der Kratersee eines vor zehntausenden
+                Jahren ausgebrochenen Vulkans, öffnen Ihnen Fenster in die Erdgeschichte.
+                Die einstigen Dimensionen des Vulkans lassen sich nur mehr erahnen bei
+                Touren durch die vielfach unberührt wirkende Natur.
+              </p>
+              <p>
+                Attraktive Rad- und Wander- oder auch Nordic-Walking-Wege bieten dafür
+                optimale Voraussetzungen. Allen voran der Maare-Mosel-Radweg und der
+                Premium-Wanderweg Eifelsteig.
+              </p>
+            </div>
           </div>
 
-          <h4 className="text-xl md:text-2xl font-semibold mt-10 mb-5">Vielfalt im Dreiländereck</h4>
-          <div className="space-y-5 text-muted-foreground text-base leading-relaxed text-left md:text-center">
-            <p>
-              Familienfreundliche Touren führen zu Sehenswertem wie in Immerath zum Schulmuseum
-              und zum Parcours der Sinne. In der näheren Umgebung gibt es weitere Eifelmaare zu
-              entdecken und Häuser, die wie das Maarmuseum in Manderscheid oder das Vulkanhaus in
-              Strohn über sie informieren.
-            </p>
-            <p>
-              Ein eindrucksvoller Überblick bietet sich Ihnen von der Vulkano-Infoplattform auf
-              der Steineberger Ley. Besuchen Sie den Wildpark Daun, die Eifelrennstrecke
-              Nürburgring – oder auch ein Freibad – und starten Sie zu Tagesausflügen an die
-              Mosel, nach Luxemburg oder Belgien.
-            </p>
+          <div className="hairline" />
+
+          <div>
+            <h4 className="font-display text-2xl md:text-3xl mb-6 text-balance">
+              Vielfalt im Dreiländereck
+            </h4>
+            <div className="space-y-5 text-foreground/85 leading-relaxed">
+              <p>
+                Familienfreundliche Touren führen zu Sehenswertem wie in Immerath zum
+                Schulmuseum und zum Parcours der Sinne. In der näheren Umgebung gibt
+                es weitere Eifelmaare zu entdecken und Häuser, die wie das Maarmuseum
+                in Manderscheid oder das Vulkanhaus in Strohn über sie informieren.
+              </p>
+              <p>
+                Ein eindrucksvoller Überblick bietet sich Ihnen von der Vulkano-Infoplattform
+                auf der Steineberger Ley. Besuchen Sie den Wildpark Daun, die
+                Eifelrennstrecke Nürburgring – oder auch ein Freibad – und starten Sie
+                zu Tagesausflügen an die Mosel, nach Luxemburg oder Belgien.
+              </p>
+            </div>
           </div>
         </div>
       </div>
