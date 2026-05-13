@@ -104,6 +104,19 @@ export default function SiteFooter() {
               >
                 CONEXA DIGITAL
               </a>
+              <span className="mx-2 opacity-40">·</span>
+              <span>
+                Built on{" "}
+                <a
+                  href="https://www.conexadigital.eu"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Conexa OS — AI-Native Platform für Gastronomie, Hotel & Dienstleister"
+                  className="hover:text-secondary underline-offset-2 hover:underline transition-colors"
+                >
+                  Conexa&nbsp;OS
+                </a>
+              </span>
             </p>
           </div>
           <div className="flex items-center gap-5">
