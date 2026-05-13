@@ -174,7 +174,7 @@ const Index = () => {
           >
             <Link
               to="/booking"
-              className="group inline-flex items-center gap-3 px-9 py-3.5 bg-white text-primary text-xs font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300 shadow-sm"
+              className="group inline-flex items-center gap-3 px-9 py-3.5 bg-white text-zinc-900 text-xs font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300 shadow-sm"
             >
               <CalendarCheck className="h-4 w-4" />
               {t("hero.bookDirect")}
