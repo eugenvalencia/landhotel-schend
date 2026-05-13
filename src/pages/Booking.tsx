@@ -413,26 +413,27 @@ export default function Booking() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="gradient-hero text-primary-foreground">
+      <header className="bg-[hsl(220_22%_13%)] text-[hsl(38_30%_92%)]">
         <div className="container mx-auto px-4 py-5 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 hover:opacity-90">
-            <Hotel className="h-5 w-5" />
-            <span className="font-semibold">Landhotel Schend</span>
+          <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <Hotel className="h-4 w-4" strokeWidth={1.5} />
+            <span className="font-display text-lg">Landhotel Schend</span>
           </Link>
-          <Badge variant="secondary" className="bg-white/15 text-primary-foreground border-0">
+          <Badge variant="secondary" className="bg-white/15 text-[hsl(38_30%_92%)] border-0 rounded-sm uppercase tracking-[0.18em] text-[10px]">
             Direktbuchung
           </Badge>
         </div>
-        <div className="container mx-auto px-4 pb-8 pt-2">
-          <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/15 hover:text-primary-foreground -ml-3">
-            <Link to={room ? `/rooms/${room.id}` : "/"}>
-              <ArrowLeft className="h-4 w-4" /> Zurück
-            </Link>
-          </Button>
-          <h1 className="text-2xl md:text-3xl font-bold mt-2">
+        <div className="container mx-auto px-4 pb-10 pt-2">
+          <Link
+            to={room ? `/rooms/${room.id}` : "/"}
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] opacity-75 hover:opacity-100 transition-opacity -ml-1"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" strokeWidth={1.5} /> Zurück
+          </Link>
+          <h1 className="font-display text-3xl md:text-4xl lg:text-5xl mt-3 text-balance leading-[1.05]">
             {confirmed ? "Buchung bestätigt" : "Buchung abschließen"}
           </h1>
-          <p className="opacity-80 text-sm md:text-base">
+          <p className="opacity-85 text-sm md:text-base mt-2">
             {confirmed
               ? "Vielen Dank — Ihr Zimmer ist verbindlich reserviert."
               : room
@@ -454,7 +455,7 @@ export default function Booking() {
           {/* SECTION 1: REISEDATEN */}
           <Card className="shadow-card">
             <CardHeader>
-              <CardTitle className="text-lg">1. Reisedaten</CardTitle>
+              <CardTitle className="font-display text-xl md:text-2xl">1. Reisedaten</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {!roomIdParam && (
@@ -657,8 +658,8 @@ export default function Booking() {
           {/* UPSELLS */}
           <Card className="shadow-card border-secondary/30">
             <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Star className="h-5 w-5 text-secondary" /> Upgrades & Pakete
+              <CardTitle className="font-display text-xl md:text-2xl flex items-center gap-2">
+                <Star className="h-4 w-4 text-secondary" strokeWidth={1.5} /> Upgrades & Pakete
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -687,7 +688,7 @@ export default function Booking() {
 
           <Card className="shadow-card">
             <CardHeader>
-              <CardTitle className="text-lg">3. Ihre Daten</CardTitle>
+              <CardTitle className="font-display text-xl md:text-2xl">3. Ihre Daten</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -764,8 +765,8 @@ export default function Booking() {
           {/* SECTION 4: BOOKING */}
           <Card className="shadow-card border-secondary/30">
             <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <ClipboardList className="h-5 w-5 text-secondary" /> 4. Buchung abschließen
+              <CardTitle className="font-display text-xl md:text-2xl flex items-center gap-2">
+                <ClipboardList className="h-4 w-4 text-secondary" strokeWidth={1.5} /> 4. Buchung abschließen
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
@@ -814,8 +815,8 @@ export default function Booking() {
         <aside className="lg:sticky lg:top-4 self-start">
           <Card className="shadow-elevated border-primary/20">
             <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                <ClipboardList className="h-5 w-5 text-secondary" /> Ihre Buchung
+              <CardTitle className="font-display text-lg md:text-xl flex items-center gap-2">
+                <ClipboardList className="h-4 w-4 text-secondary" strokeWidth={1.5} /> Ihre Buchung
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm">
