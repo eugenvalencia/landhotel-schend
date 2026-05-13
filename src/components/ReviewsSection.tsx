@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import JsonLd from "@/components/JsonLd";
 
 type Platform = {
   name: string;
@@ -128,13 +129,41 @@ const Stars = ({ n }: { n: number }) => (
   </div>
 );
 
+const reviewsJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Hotel",
+  "@id": "https://landhaus-schend.de/#hotel",
+  name: "Landhotel Schend",
+  review: REVIEWS.map((r) => ({
+    "@type": "Review",
+    reviewRating: { "@type": "Rating", ratingValue: r.stars, bestRating: 5 },
+    author: { "@type": "Person", name: r.author },
+    publisher: { "@type": "Organization", name: r.source },
+    reviewBody: r.text,
+    datePublished: r.date,
+  })),
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: 4.5,
+    bestRating: 5,
+    ratingCount: 501,
+    reviewCount: 501,
+  },
+};
+
 export default function ReviewsSection() {
   const [idx, setIdx] = useState(0);
   const prev = () => setIdx((i) => (i - 1 + REVIEWS.length) % REVIEWS.length);
   const next = () => setIdx((i) => (i + 1) % REVIEWS.length);
 
+  useEffect(() => {
+    const t = setInterval(() => setIdx((i) => (i + 1) % REVIEWS.length), 8000);
+    return () => clearInterval(t);
+  }, []);
+
   return (
     <section className="bg-[#f5f7fa]">
+      <JsonLd id="reviews" data={reviewsJsonLd} />
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-10">
           <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">Bewertungen</p>

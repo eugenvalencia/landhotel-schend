@@ -14,6 +14,9 @@ import LocationSection from "@/components/LocationSection";
 import EifelRegionSection from "@/components/EifelRegionSection";
 import WeatherWidget from "@/components/WeatherWidget";
 import AboutSection from "@/components/AboutSection";
+import FAQSection from "@/components/FAQSection";
+import FeatureIcon from "@/components/FeatureIcon";
+import { useSEO } from "@/hooks/useSEO";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_GALLERY, photoForRoomType,
 } from "@/lib/photos";
@@ -29,14 +32,14 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
 const USPS = [
-  { icon: ParkingCircle, key: "parking" },
-  { icon: Bike, key: "moto" },
-  { icon: Waves, key: "sauna" },
-  { icon: UtensilsCrossed, key: "restaurant" },
-  { icon: BedDouble, key: "rooms" },
-  { icon: Wifi, key: "wifi" },
-  { icon: Coffee, key: "breakfast" },
-  { icon: Trophy, key: "rating" },
+  { icon: ParkingCircle, key: "parking", variant: "primary" as const },
+  { icon: Bike, key: "moto", variant: "ocean" as const },
+  { icon: Waves, key: "sauna", variant: "ocean" as const },
+  { icon: UtensilsCrossed, key: "restaurant", variant: "sunset" as const },
+  { icon: BedDouble, key: "rooms", variant: "primary" as const },
+  { icon: Wifi, key: "wifi", variant: "ocean" as const },
+  { icon: Coffee, key: "breakfast", variant: "sunset" as const },
+  { icon: Trophy, key: "rating", variant: "secondary" as const },
 ] as const;
 
 const TYPE_DESCRIPTIONS: Record<string, string> = {
@@ -56,6 +59,13 @@ const Index = () => {
   const [heroIdx, setHeroIdx] = useState(0);
   const { t } = useTranslation();
 
+  useSEO({
+    title: "3-Sterne-Superior Hotel in der Vulkaneifel",
+    description:
+      "Familiengeführtes Landhotel in Immerath mit 21 Zimmern, Sauna & Wellness, Eifeler Restaurant. Direkt buchen — provisionsfrei. Top-Lage für Wanderer, Motorradfahrer und Familien in der Vulkaneifel.",
+    canonical: "/",
+  });
+
   useEffect(() => {
     const t = setInterval(
       () => setHeroIdx((i) => (i + 1) % SCHEND_HEROES.length),
@@ -74,7 +84,7 @@ const Index = () => {
         if (!data) return;
         const seen = new Set<string>();
         const cats: RoomCategory[] = [];
-        for (const r of data as any[]) {
+        for (const r of data) {
           if (seen.has(r.room_type)) continue;
           seen.add(r.room_type);
           cats.push({ id: r.id, name: r.room_type, type: r.room_type, price: Number(r.price_per_night) });
@@ -87,13 +97,16 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <SiteHeader />
 
+      <main id="main">
       {/* HERO */}
       <section id="top" className="relative min-h-[80vh] pt-16 md:pt-20 flex items-center text-primary-foreground overflow-hidden">
         {SCHEND_HEROES.map((src, i) => (
           <HotelImage
             key={src}
             src={src}
-            alt="Landhotel Schend in der Vulkaneifel"
+            alt="Landhotel Schend in der Vulkaneifel — Außenansicht"
+            loading={i === 0 ? "eager" : "lazy"}
+            decoding={i === 0 ? "sync" : "async"}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
               i === heroIdx ? "opacity-100" : "opacity-0"
             }`}
@@ -101,6 +114,12 @@ const Index = () => {
         ))}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/50 to-primary/80" />
         <div className="container mx-auto px-4 py-24 relative z-10 text-center">
+          <div className="inline-flex items-center gap-1.5 mb-4 px-3 py-1.5 rounded-full bg-white/15 border border-white/30 backdrop-blur-sm">
+            <Star className="h-3.5 w-3.5 fill-[#FBBF24] text-[#FBBF24]" />
+            <Star className="h-3.5 w-3.5 fill-[#FBBF24] text-[#FBBF24]" />
+            <Star className="h-3.5 w-3.5 fill-[#FBBF24] text-[#FBBF24]" />
+            <span className="text-xs font-semibold tracking-wider ml-1">{t("hero.starsBadge", "3 STERNE SUPERIOR")}</span>
+          </div>
           <p className="uppercase tracking-[0.2em] text-sm opacity-90 mb-4">{t("hero.eyebrow")}</p>
           <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow">{t("hero.title")}</h1>
           <p className="text-lg md:text-xl opacity-95 max-w-2xl mx-auto mb-8">{t("hero.text")}</p>
@@ -112,6 +131,22 @@ const Index = () => {
               <a href="tel:+4965731306"><Phone className="h-5 w-5" /> +49 6573 306</a>
             </Button>
           </div>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm opacity-95">
+            <span className="inline-flex items-center gap-1.5">
+              <Star className="h-4 w-4 fill-[#FBBF24] text-[#FBBF24]" />
+              <strong>8.5/10</strong> Booking.com
+            </span>
+            <span className="hidden sm:inline opacity-50">·</span>
+            <span className="inline-flex items-center gap-1.5">
+              <Trophy className="h-4 w-4 text-[#FBBF24]" />
+              <strong>Nr. 1</strong> in Immerath – Tripadvisor
+            </span>
+            <span className="hidden sm:inline opacity-50">·</span>
+            <span className="inline-flex items-center gap-1.5">
+              <Star className="h-4 w-4 fill-[#FBBF24] text-[#FBBF24]" />
+              <strong>4,5/5</strong> Google
+            </span>
+          </div>
         </div>
         <div className="absolute bottom-4 left-4 right-4 z-10 sm:right-auto sm:left-6 sm:bottom-6">
           <div className="max-w-xs">
@@ -122,11 +157,16 @@ const Index = () => {
 
       {/* USPs */}
       <section className="bg-card border-b">
-        <div className="container mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-5">
+        <div className="container mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-x-5 gap-y-7">
           {USPS.map((u) => (
-            <div key={u.key} className="flex items-start gap-3">
-              <u.icon className="h-5 w-5 text-secondary shrink-0 mt-0.5" />
-              <span className="text-sm font-medium">{t(`usps.${u.key}`)}</span>
+            <div
+              key={u.key}
+              className="group flex items-center gap-3 rounded-xl p-2 -m-2 transition-all duration-300 hover:bg-muted/40"
+            >
+              <FeatureIcon icon={u.icon} variant={u.variant} size="sm" />
+              <span className="text-sm font-medium leading-tight group-hover:text-primary transition-colors">
+                {t(`usps.${u.key}`)}
+              </span>
             </div>
           ))}
         </div>
@@ -212,6 +252,8 @@ const Index = () => {
                 key={i}
                 src={src}
                 alt="Gericht aus dem Landhaus Restaurant"
+                loading="lazy"
+                decoding="async"
                 className="h-48 md:h-64 w-auto rounded-xl object-cover shadow-card"
               />
             ))}
@@ -224,6 +266,8 @@ const Index = () => {
             <img
               src={feiernImg}
               alt="Festlich gedeckter Saal im Landhotel Schend"
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
             />
           </div>
@@ -247,7 +291,7 @@ const Index = () => {
             {PAKETE.map((p) => (
               <div key={p.slug} className="rounded-xl overflow-hidden bg-card border shadow-card hover:shadow-elevated transition-shadow flex flex-col">
                 <Link to={`/pakete/${p.slug}`} className="block aspect-[4/3] overflow-hidden group">
-                  <img src={p.cover} alt={t(`paketDetails.${p.slug}.title`, p.title)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={p.cover} alt={t(`paketDetails.${p.slug}.title`, p.title)} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </Link>
                 <div className="p-5 flex-1 flex flex-col text-center">
                   <h3 className="font-semibold text-lg mb-4 flex-1">{t(`paketDetails.${p.slug}.title`, p.title)}</h3>
@@ -274,10 +318,14 @@ const Index = () => {
         <ReviewsSection />
       </div>
 
+      {/* FAQ — wichtig für GEO/AI-Empfehlungen */}
+      <FAQSection />
+
       {/* LOCATION / MAP */}
       <div id="location">
         <LocationSection />
       </div>
+      </main>
 
       <SiteFooter />
     </div>

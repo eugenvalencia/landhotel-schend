@@ -5,11 +5,20 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { findPaket, PAKETE } from "@/lib/pakete";
+import { useSEO } from "@/hooks/useSEO";
+import JsonLd from "@/components/JsonLd";
 
 const PaketDetail = () => {
   const { slug = "" } = useParams();
   const paket = findPaket(slug);
   const { t } = useTranslation();
+
+  useSEO({
+    title: paket ? t(`paketDetails.${paket.slug}.title`, paket.title) : "Paket",
+    description: paket ? t(`paketDetails.${paket.slug}.intro`, paket.intro) : undefined,
+    canonical: paket ? `/pakete/${paket.slug}` : undefined,
+    ogImage: paket?.cover,
+  });
 
   if (!paket) {
     return (
@@ -34,8 +43,38 @@ const PaketDetail = () => {
     defaultValue: paket.highlights,
   }) as string[];
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Startseite", item: "https://landhaus-schend.de/" },
+      { "@type": "ListItem", position: 2, name: "Pakete", item: "https://landhaus-schend.de/#pakete" },
+      { "@type": "ListItem", position: 3, name: title, item: `https://landhaus-schend.de/pakete/${paket.slug}` },
+    ],
+  };
+
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: title,
+    description: intro,
+    image: paket.cover,
+    brand: { "@type": "Organization", name: "Landhotel Schend" },
+    offers: paket.price
+      ? {
+          "@type": "Offer",
+          price: paket.price.replace(/[^\d,.]/g, "").replace(",", "."),
+          priceCurrency: "EUR",
+          availability: "https://schema.org/InStock",
+          url: `https://landhaus-schend.de/pakete/${paket.slug}`,
+        }
+      : undefined,
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <JsonLd id="breadcrumb-paket" data={breadcrumbJsonLd} />
+      <JsonLd id="paket-product" data={productJsonLd} />
       <SiteHeader />
 
       <section className="relative pt-20 md:pt-24 bg-muted">
@@ -45,7 +84,7 @@ const PaketDetail = () => {
           </Link>
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             <div className="aspect-[4/3] rounded-xl overflow-hidden shadow-elevated">
-              <img src={paket.cover} alt={title} className="w-full h-full object-cover" />
+              <img src={paket.cover} alt={title} decoding="async" className="w-full h-full object-cover" />
             </div>
             <div>
               <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("pakete.eyebrow")}</p>
@@ -92,7 +131,7 @@ const PaketDetail = () => {
         <div className="grid md:grid-cols-3 gap-4">
           {paket.gallery.map((src, i) => (
             <div key={i} className="aspect-[4/3] rounded-xl overflow-hidden shadow-card">
-              <img src={src} alt={`${title} – ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+              <img src={src} alt={`${title} – ${i + 1}`} loading="lazy" decoding="async" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
             </div>
           ))}
         </div>
@@ -108,7 +147,7 @@ const PaketDetail = () => {
               return (
                 <Link key={p.slug} to={`/pakete/${p.slug}`} className="group rounded-xl overflow-hidden bg-card border shadow-card hover:shadow-elevated transition-shadow">
                   <div className="aspect-[4/3] overflow-hidden">
-                    <img src={p.cover} alt={pTitle} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <img src={p.cover} alt={pTitle} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="p-5">
                     <h3 className="font-semibold text-lg">{pTitle}</h3>

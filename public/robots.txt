@@ -1,14 +1,43 @@
+# Allgemeine Crawl-Erlaubnis
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /login
+Disallow: /booking-confirmation
+Disallow: /confirmation/
+
+# Suchmaschinen
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
+# Social-Media-Crawler (für Open-Graph-Vorschauen)
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
+# AI-Crawler (für GEO – Generative Engine Optimization)
+User-agent: GPTBot
 Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Sitemap
+Sitemap: https://landhaus-schend.de/sitemap.xml

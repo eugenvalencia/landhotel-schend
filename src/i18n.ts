@@ -11,16 +11,18 @@ const resources = {
         gastro: "GASTRONOMIE",
         about: "ÜBER UNS",
         reviews: "BEWERTUNGEN",
+        faq: "FAQ",
         location: "URLAUBSREGION",
         book: "Jetzt buchen",
-        subtitle: "Ihr Familienhotel im Immerath | Vulkaneifel",
+        subtitle: "Ihr Familienhotel in Immerath | Vulkaneifel",
       },
       hero: {
-        eyebrow: "Ihr Urlaubsdomizil in der Vulkaneifel",
+        eyebrow: "Kurzurlaub & Wanderhotel in der Vulkaneifel",
         title: "Willkommen im Landhotel Schend",
         text:
-          "Die erste Adresse für Ihren Kurzurlaub in der Vulkaneifel — erholen Sie sich mit Sauna, Wellness, hauseigenem Restaurant und 21 komfortablen Zimmern.",
+          "Ihr ★★★ Superior Hotel in Immerath — Eifelsteig, Maare-Mosel-Radweg und Nürburgring direkt vor der Tür. 21 Zimmer mit Balkon, Sauna & Wellness, Eifeler Landküche und kostenlose Motorradgarage. Direkt buchen — provisionsfrei, ohne OTA-Aufpreis.",
         bookDirect: "Jetzt direkt buchen",
+        starsBadge: "3 STERNE SUPERIOR",
       },
       usps: {
         parking: "Kostenlose Parkplätze — videoüberwacht",
@@ -177,16 +179,18 @@ const resources = {
         gastro: "DINING",
         about: "ABOUT US",
         reviews: "REVIEWS",
+        faq: "FAQ",
         location: "REGION",
         book: "Book now",
         subtitle: "Your family hotel in Immerath | Volcanic Eifel",
       },
       hero: {
-        eyebrow: "Your holiday home in the Volcanic Eifel",
+        eyebrow: "Short break & hiking hotel in the Volcanic Eifel",
         title: "Welcome to Landhotel Schend",
         text:
-          "The top address for your short break in the Volcanic Eifel — unwind with sauna, wellness, our own restaurant and 21 comfortable rooms.",
+          "Your ★★★ Superior hotel in Immerath — Eifelsteig premium trail, Maare-Mosel cycle path and Nürburgring right at your door. 21 rooms with balcony, sauna & wellness, Eifel regional cuisine and a free motorcycle garage. Book direct — commission-free, no booking surcharge.",
         bookDirect: "Book directly now",
+        starsBadge: "3-STAR SUPERIOR",
       },
       usps: {
         parking: "Free parking — video-monitored",
@@ -342,16 +346,18 @@ const resources = {
         gastro: "RESTAURATION",
         about: "À PROPOS",
         reviews: "AVIS",
+        faq: "FAQ",
         location: "RÉGION",
         book: "Réserver",
         subtitle: "Votre hôtel familial à Immerath | Eifel volcanique",
       },
       hero: {
-        eyebrow: "Votre lieu de vacances dans l'Eifel volcanique",
+        eyebrow: "Court séjour & hôtel de randonnée dans l'Eifel volcanique",
         title: "Bienvenue au Landhotel Schend",
         text:
-          "L'adresse de référence pour votre court séjour dans l'Eifel volcanique — détendez-vous avec sauna, bien-être, restaurant maison et 21 chambres confortables.",
+          "Votre hôtel ★★★ Superior à Immerath — sentier Eifelsteig, piste Maare-Mosel et Nürburgring à votre porte. 21 chambres avec balcon, sauna & bien-être, cuisine de l'Eifel et garage à motos gratuit. Réservez en direct — sans commission, sans supplément.",
         bookDirect: "Réserver en direct",
+        starsBadge: "3 ÉTOILES SUPERIOR",
       },
       usps: {
         parking: "Parking gratuit — vidéosurveillé",

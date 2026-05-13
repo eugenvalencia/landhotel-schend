@@ -1,6 +1,7 @@
 import { HotelImage } from "@/components/HotelImage";
 import historyPhoto from "@/assets/landhotel-history-bw.jpg";
 import { Heart, Sparkles, Users } from "lucide-react";
+import FeatureIcon from "@/components/FeatureIcon";
 
 export default function AboutSection() {
   return (
@@ -64,16 +65,19 @@ export default function AboutSection() {
 
           <div className="grid sm:grid-cols-3 gap-6 mt-10">
             {[
-              { icon: Heart, title: "Herzlichkeit", text: "Persönlicher Service mit familiärer Atmosphäre." },
-              { icon: Sparkles, title: "Qualität", text: "Regionale Küche und liebevoll gestaltete Zimmer." },
-              { icon: Users, title: "Tradition", text: "Über 165 Jahre Gastfreundschaft in Familienhand." },
+              { icon: Heart, title: "Herzlichkeit", text: "Persönlicher Service mit familiärer Atmosphäre.", variant: "rose" as const, sparkle: true },
+              { icon: Sparkles, title: "Qualität", text: "Regionale Küche und liebevoll gestaltete Zimmer.", variant: "secondary" as const, sparkle: true },
+              { icon: Users, title: "Tradition", text: "Über 165 Jahre Gastfreundschaft in Familienhand.", variant: "primary" as const, sparkle: false },
             ].map((v) => (
-              <div key={v.title} className="bg-card rounded-xl p-5 border shadow-card text-center">
-                <div className="mx-auto h-10 w-10 rounded-full bg-secondary/10 text-secondary flex items-center justify-center mb-3">
-                  <v.icon className="h-5 w-5" />
+              <div
+                key={v.title}
+                className="group bg-card rounded-xl p-6 border shadow-card hover:shadow-elevated text-center transition-all duration-500 hover:-translate-y-1"
+              >
+                <div className="mx-auto mb-4 w-fit">
+                  <FeatureIcon icon={v.icon} variant={v.variant} size="lg" sparkle={v.sparkle} />
                 </div>
-                <h4 className="font-semibold mb-1">{v.title}</h4>
-                <p className="text-sm text-muted-foreground">{v.text}</p>
+                <h4 className="font-semibold mb-1.5 group-hover:text-primary transition-colors">{v.title}</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">{v.text}</p>
               </div>
             ))}
           </div>

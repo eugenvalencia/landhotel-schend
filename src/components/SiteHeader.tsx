@@ -20,8 +20,7 @@ export default function SiteHeader() {
     { label: t("nav.pakete"), id: "pakete" },
     { label: t("nav.gastro"), id: "restaurant" },
     { label: t("nav.about"), id: "about" },
-    { label: t("nav.reviews"), id: "reviews" },
-    { label: t("nav.location"), id: "location" },
+    { label: t("nav.faq"), id: "faq" },
   ];
 
   useEffect(() => {
@@ -53,18 +52,44 @@ export default function SiteHeader() {
   return (
     <header
       className={cn(
-        "fixed top-0 inset-x-0 z-50 transition-all duration-300",
-        scrolled ? "bg-background shadow-card border-b" : "bg-background/95 backdrop-blur",
+        "fixed top-0 inset-x-0 z-50 transition-all duration-500 ease-out",
+        scrolled
+          ? "bg-background/55 backdrop-blur-xl backdrop-saturate-150 border-b border-white/30 shadow-[0_8px_30px_rgb(0_0_0_/0.08)]"
+          : "bg-background border-b border-transparent",
       )}
     >
-      <div className="container mx-auto px-4 h-16 md:h-20 flex items-center justify-between gap-4">
+      {/* subtle gradient sheen — only when scrolled */}
+      <div
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute inset-0 transition-opacity duration-500",
+          scrolled ? "opacity-100" : "opacity-0",
+          "bg-gradient-to-b from-white/40 via-white/10 to-transparent",
+        )}
+      />
+      <div
+        className={cn(
+          "container mx-auto px-4 flex items-center justify-between gap-4 transition-all duration-500 relative z-10",
+          scrolled ? "h-14 md:h-16" : "h-16 md:h-20",
+        )}
+      >
         <Link to="/" className="flex items-center gap-2 min-w-0" onClick={() => scrollTo("top")}>
-          <img src={logo} alt="Landhotel Schend Logo" className="h-10 md:h-14 w-auto shrink-0 object-contain" />
+          <img
+            src={logo}
+            alt="Landhotel Schend Logo"
+            className={cn(
+              "w-auto shrink-0 object-contain transition-all duration-500",
+              scrolled ? "h-8 md:h-10" : "h-10 md:h-14",
+            )}
+          />
           <div className="min-w-0">
             <p className="font-bold text-primary text-sm md:text-base leading-tight tracking-wide truncate">
               LANDHOTEL SCHEND
             </p>
-            <p className="hidden sm:block text-[10px] md:text-xs text-muted-foreground leading-tight truncate">
+            <p className={cn(
+              "sm:block text-[10px] md:text-xs text-muted-foreground leading-tight truncate transition-all duration-500",
+              scrolled ? "hidden sm:hidden" : "hidden sm:block",
+            )}>
               {t("nav.subtitle")}
             </p>
           </div>
@@ -164,7 +189,7 @@ function LanguageSwitcher() {
             onClick={() => {
               const code = l.code.toLowerCase();
               i18n.changeLanguage(code);
-              try { localStorage.setItem("lang", code); } catch {}
+              try { localStorage.setItem("lang", code); } catch { /* localStorage disabled */ }
             }}
             aria-label={l.name}
             title={l.name}

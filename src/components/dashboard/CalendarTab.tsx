@@ -109,15 +109,34 @@ export default function CalendarTab() {
   const [invoiceOpen, setInvoiceOpen] = useState(false);
 
   const loadAll = async () => {
-    const [{ data: r }, { data: b }] = await Promise.all([
+    const [{ data: r, error: rErr }, { data: b, error: bErr }] = await Promise.all([
       supabase.from("rooms").select("id,room_number,name,room_type,price_per_night,photos").order("room_number"),
       supabase.from("bookings").select("*").order("check_in"),
     ]);
-    setRooms((r as any) ?? []);
-    setBookings(((b as any) ?? []).map((x: any) => ({ ...x, extras: Array.isArray(x.extras) ? x.extras : [] })));
+    if (rErr || bErr) {
+      toast.error("Kalender konnte nicht geladen werden");
+      return;
+    }
+    setRooms((r as Room[] | null) ?? []);
+    setBookings(
+      ((b ?? []) as unknown as Booking[]).map((x) => ({
+        ...x,
+        extras: Array.isArray(x.extras) ? (x.extras as ExtraLine[]) : [],
+      })),
+    );
   };
 
-  useEffect(() => { loadAll(); }, []);
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      await loadAll();
+      if (!active) return;
+    })();
+    return () => {
+      active = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!selected) return;
@@ -173,6 +192,29 @@ export default function CalendarTab() {
     return { type: b.booking_type === "intern" ? "intern" : "online", booking: b };
   };
 
+  // Conflict check: returns the conflicting booking or null.
+  // Two bookings conflict if their [check_in, check_out) ranges overlap on the same room.
+  const findConflict = (
+    roomId: string,
+    checkIn: string,
+    checkOut: string,
+    excludeBookingId?: string,
+  ): Booking | null => {
+    return (
+      bookings.find(
+        (b) =>
+          b.room_id === roomId &&
+          b.payment_status !== "cancelled" &&
+          b.id !== excludeBookingId &&
+          b.check_in < checkOut &&
+          b.check_out > checkIn,
+      ) ?? null
+    );
+  };
+
+  const conflictMessage = (c: Booking) =>
+    `Konflikt: Zimmer ist vom ${formatDateShort(c.check_in)} bis ${formatDateShort(c.check_out)} bereits durch „${c.guest_name}" belegt (#${c.booking_number}).`;
+
   const submitIntern = async () => {
     if (!internForm.room_id || !internForm.guest_name || !internForm.check_in || !internForm.check_out) {
       toast.error("Bitte alle Felder ausfüllen");
@@ -180,6 +222,11 @@ export default function CalendarTab() {
     }
     if (internForm.check_out <= internForm.check_in) {
       toast.error("Abreise muss nach Anreise liegen");
+      return;
+    }
+    const conflict = findConflict(internForm.room_id, internForm.check_in, internForm.check_out);
+    if (conflict) {
+      toast.error(conflictMessage(conflict));
       return;
     }
     const { error } = await supabase.from("bookings").insert({
@@ -218,6 +265,11 @@ export default function CalendarTab() {
     }
     if (quickForm.check_out <= quickForm.check_in) {
       toast.error("Abreise muss nach Anreise liegen");
+      return;
+    }
+    const conflict = findConflict(quickForm.room_id, quickForm.check_in, quickForm.check_out);
+    if (conflict) {
+      toast.error(conflictMessage(conflict));
       return;
     }
     const r = rooms.find((x) => x.id === quickForm.room_id);
@@ -281,6 +333,11 @@ export default function CalendarTab() {
     if (!selected) return;
     if (!editForm.check_in || !editForm.check_out || editForm.check_out <= editForm.check_in) {
       toast.error("Ungültiger Zeitraum");
+      return;
+    }
+    const conflict = findConflict(selected.room_id, editForm.check_in, editForm.check_out, selected.id);
+    if (conflict) {
+      toast.error(conflictMessage(conflict));
       return;
     }
     const { error } = await supabase

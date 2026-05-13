@@ -34,11 +34,11 @@ export default function SiteFooter() {
             </li>
             <li className="flex items-center gap-2">
               <Mail className="h-4 w-4 shrink-0" />
-              <a href="mailto:info@landhotel-schend.de" className="hover:text-secondary break-all">info@landhotel-schend.de</a>
+              <a href="mailto:info@landhaus-schend.de" className="hover:text-secondary break-all">info@landhaus-schend.de</a>
             </li>
             <li className="flex items-start gap-2">
               <MapPin className="h-4 w-4 shrink-0 mt-0.5" />
-              <span>Immerath<br />54552 Vulkaneifel</span>
+              <span>Hauptstraße 9<br />54552 Immerath</span>
             </li>
           </ul>
         </div>

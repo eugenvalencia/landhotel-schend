@@ -5,6 +5,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import CookieBanner from "./components/CookieBanner";
+import StickyMobileCTA from "./components/StickyMobileCTA";
 
 const Index = lazy(() => import("./pages/Index"));
 const Booking = lazy(() => import("./pages/Booking"));
@@ -25,6 +26,12 @@ const App = () => (
       <Toaster />
       <Sonner position="top-right" />
       <BrowserRouter>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-elevated"
+        >
+          Zum Hauptinhalt springen
+        </a>
         <Suspense
           fallback={
             <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
@@ -49,6 +56,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
+        <StickyMobileCTA />
         <CookieBanner />
       </BrowserRouter>
     </TooltipProvider>

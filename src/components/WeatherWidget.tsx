@@ -8,7 +8,7 @@ type WeatherState = {
 };
 
 const WEATHER_URL =
-  "https://api.open-meteo.com/v1/forecast?latitude=50.1847&longitude=6.7891&current=temperature_2m,weathercode,windspeed_10m&timezone=Europe/Berlin";
+  "https://api.open-meteo.com/v1/forecast?latitude=50.1303&longitude=6.9594&current=temperature_2m,weathercode,windspeed_10m&timezone=Europe/Berlin";
 
 const weatherContent = (weatherCode: number) => {
   if (weatherCode <= 1) return { icon: "☀️", message: "Perfektes Wanderwetter" };
@@ -26,22 +26,28 @@ export default function WeatherWidget() {
   useEffect(() => {
     let active = true;
 
-    fetch(WEATHER_URL)
-      .then((response) => response.json())
-      .then((data) => {
-        if (!active || !data?.current) return;
-        setWeather({
-          temperature: Number(data.current.temperature_2m ?? 0),
-          weatherCode: Number(data.current.weathercode ?? 0),
-          windSpeed: Number(data.current.windspeed_10m ?? 0),
+    const load = () => {
+      fetch(WEATHER_URL)
+        .then((response) => response.json())
+        .then((data) => {
+          if (!active || !data?.current) return;
+          setWeather({
+            temperature: Number(data.current.temperature_2m ?? 0),
+            weatherCode: Number(data.current.weathercode ?? 0),
+            windSpeed: Number(data.current.windspeed_10m ?? 0),
+          });
+        })
+        .catch(() => {
+          if (active) setWeather(null);
         });
-      })
-      .catch(() => {
-        if (active) setWeather(null);
-      });
+    };
+
+    load();
+    const interval = window.setInterval(load, 2 * 60 * 60 * 1000);
 
     return () => {
       active = false;
+      window.clearInterval(interval);
     };
   }, []);
 
