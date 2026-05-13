@@ -16,8 +16,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['"Inter"', "system-ui", "-apple-system", '"Segoe UI"', "sans-serif"],
-        serif: ['"Fraunces"', '"Cormorant Garamond"', "Georgia", '"Times New Roman"', "serif"],
-        display: ['"Fraunces"', '"Cormorant Garamond"', "Georgia", "serif"],
+        serif: ['"Cormorant Garamond"', "Georgia", '"Times New Roman"', "serif"],
+        display: ['"Cormorant Garamond"', "Georgia", "serif"],
       },
       maxWidth: {
         prose: "68ch",
