@@ -197,85 +197,119 @@ const Index = () => {
         </div>
       </section>
 
-      {/* USPs */}
-      <section className="bg-card border-b">
-        <div className="container mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-x-5 gap-y-7">
-          {USPS.map((u) => (
-            <div
-              key={u.key}
-              className="group flex items-center gap-3 rounded-xl p-2 -m-2 transition-all duration-300 hover:bg-muted/40"
-            >
-              <FeatureIcon icon={u.icon} variant={u.variant} size="sm" />
-              <span className="text-sm font-medium leading-tight group-hover:text-primary transition-colors">
-                {t(`usps.${u.key}`)}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ROOMS */}
-      <section id="rooms" className="container mx-auto px-4 py-16">
-        <div className="text-center mb-10">
-          <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("rooms.eyebrow")}</p>
-          <h2 className="text-3xl md:text-4xl font-bold">{t("rooms.title")}</h2>
-          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">{t("rooms.intro")}</p>
-        </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((r) => (
-            <Link
-              key={r.id}
-              to={`/rooms/${r.id}`}
-              className="group rounded-xl overflow-hidden bg-card border shadow-card hover:shadow-elevated transition-shadow"
-            >
-              <div className="aspect-[4/3] overflow-hidden">
-                <HotelImage
-                  src={photoForRoomType(r.type)}
-                  alt={r.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+      {/* USPs — editorial Hairline-Grid statt Boxen */}
+      <section aria-label={t("usps.eyebrow", "Im Haus inbegriffen")} className="bg-background border-y border-border/70">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border/50">
+            {USPS.map((u) => (
+              <div
+                key={u.key}
+                className="group flex items-center gap-3 px-5 py-7 bg-background hover:bg-muted/40 transition-colors"
+              >
+                <u.icon
+                  className="h-5 w-5 text-secondary shrink-0 transition-transform duration-300 group-hover:scale-110"
+                  strokeWidth={1.5}
                 />
+                <span className="text-[13px] font-medium leading-snug">
+                  {t(`usps.${u.key}`)}
+                </span>
               </div>
-              <div className="p-5">
-                <div className="flex items-start justify-between gap-2 mb-1">
-                  <h3 className="font-semibold text-lg">{r.name}</h3>
-                  <span className="text-sm font-semibold text-secondary">{t("rooms.from")} {eur(r.price)}</span>
-                </div>
-                <p className="text-sm text-muted-foreground">{TYPE_DESCRIPTIONS[r.type] ?? ""}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-        <div className="text-center mt-10">
-          <Button asChild size="lg">
-            <Link to="/booking"><CalendarCheck className="h-5 w-5" /> {t("rooms.check")}</Link>
-          </Button>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* RESTAURANT */}
-      <section id="restaurant" className="bg-muted">
-        <div className="container mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
-          <div className="rounded-xl overflow-hidden shadow-elevated order-last md:order-first aspect-[4/3]">
-            <HotelImage src={SCHEND_RESTAURANT} alt="Landhaus Restaurant & Terrasse" className="w-full h-full object-cover" />
+      {/* ROOMS — editorial cards, kein Schatten, Hairline statt Border */}
+      <section id="rooms" className="bg-background">
+        <div className="container mx-auto px-4 py-20 md:py-28">
+          <div className="text-center mb-14 md:mb-20">
+            <p className="eyebrow">{t("rooms.eyebrow")}</p>
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">
+              {t("rooms.title")}
+            </h2>
+            <p className="text-muted-foreground mt-5 max-w-prose mx-auto leading-relaxed text-pretty">
+              {t("rooms.intro")}
+            </p>
           </div>
-          <div>
-            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("restaurant.eyebrow")}</p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("restaurant.title")}</h2>
-            <div className="space-y-4 text-muted-foreground">
-              <p>{t("restaurant.p1")}</p>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-x-10 md:gap-y-14">
+            {categories.map((r) => (
+              <Link key={r.id} to={`/rooms/${r.id}`} className="group block">
+                <div className="aspect-[4/5] overflow-hidden mb-5 bg-muted">
+                  <HotelImage
+                    src={photoForRoomType(r.type)}
+                    alt={r.name}
+                    className="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]"
+                  />
+                </div>
+                <div className="flex items-baseline justify-between gap-4 mb-2">
+                  <h3 className="font-display text-xl md:text-2xl group-hover:text-secondary transition-colors">
+                    {r.name}
+                  </h3>
+                  <span className="text-xs font-medium tracking-[0.15em] uppercase text-secondary whitespace-nowrap">
+                    {t("rooms.from")} {eur(r.price)}
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {TYPE_DESCRIPTIONS[r.type] ?? ""}
+                </p>
+              </Link>
+            ))}
+          </div>
+
+          <div className="text-center mt-16 md:mt-20">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-sm uppercase tracking-[0.2em] text-xs px-9 py-6 border-primary/40"
+            >
+              <Link to="/booking">
+                <CalendarCheck className="h-4 w-4" />
+                {t("rooms.check")}
+                <span className="ml-1">→</span>
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* RESTAURANT — asymmetrischer Magazin-Spread */}
+      <section id="restaurant" className="bg-muted/30">
+        <div className="grid lg:grid-cols-12 items-stretch">
+          {/* Bild bricht aus dem Container aus */}
+          <div className="lg:col-span-7 lg:order-last">
+            <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[640px] overflow-hidden">
+              <HotelImage
+                src={SCHEND_RESTAURANT}
+                alt="Landhaus Restaurant & Terrasse"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+
+          <div className="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center">
+            <p className="eyebrow">{t("restaurant.eyebrow")}</p>
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">
+              {t("restaurant.title")}
+            </h2>
+            <div className="space-y-5 text-foreground/85 leading-relaxed max-w-prose">
+              <p className="drop-cap">{t("restaurant.p1")}</p>
               <p>{t("restaurant.p2")}</p>
               <p>{t("restaurant.p3")}</p>
               <p>{t("restaurant.p4")}</p>
             </div>
-            <div className="mt-6 rounded-xl bg-accent/60 p-5">
-              <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-3">{t("restaurant.hours")}</p>
+
+            <div className="mt-12">
+              <div className="hairline mb-5" />
+              <p className="eyebrow mb-4">{t("restaurant.hours")}</p>
               <div className="text-sm space-y-2">
-                <div className="grid grid-cols-[160px_1fr] gap-x-6">
-                  <p className="font-semibold">{t("restaurant.monSat")}</p>
-                  <p className="text-muted-foreground">17:30 – 20:00</p>
+                <div className="grid grid-cols-[140px_1fr] gap-x-6">
+                  <span className="font-medium">{t("restaurant.monSat")}</span>
+                  <span className="text-muted-foreground">17:30 – 20:00</span>
                 </div>
-                <div className="grid grid-cols-[160px_1fr] gap-x-6">
-                  <p className="font-semibold">{t("restaurant.sun")}</p>
+                <div className="grid grid-cols-[140px_1fr] gap-x-6">
+                  <span className="font-medium">{t("restaurant.sun")}</span>
                   <div className="text-muted-foreground">
                     <p>12:00 – 14:00</p>
                     <p>17:30 – 20:00</p>
@@ -286,8 +320,8 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Endlose Foto-Schleife */}
-        <div className="mt-12 overflow-hidden">
+        {/* Food-Marquee — ohne Schatten, mit Hairline-Top/Bottom */}
+        <div className="overflow-hidden border-y border-border/60 py-6 bg-background">
           <div className="flex w-max animate-marquee gap-4">
             {[...FOOD_PHOTOS, ...FOOD_PHOTOS].map((src, i) => (
               <img
@@ -296,52 +330,68 @@ const Index = () => {
                 alt="Gericht aus dem Landhaus Restaurant"
                 loading="lazy"
                 decoding="async"
-                className="h-48 md:h-64 w-auto rounded-xl object-cover shadow-card"
+                className="h-44 md:h-56 w-auto object-cover"
               />
             ))}
           </div>
         </div>
 
-        {/* Familien- & Firmenfeiern */}
-        <div className="mt-16 grid md:grid-cols-2 gap-10 items-center">
-          <div className="rounded-xl overflow-hidden shadow-elevated aspect-[4/3]">
-            <img
-              src={feiernImg}
-              alt="Festlich gedeckter Saal im Landhotel Schend"
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover"
-            />
+        {/* Feiern — zweiter Spread, gespiegelt */}
+        <div className="grid lg:grid-cols-12 items-stretch">
+          <div className="lg:col-span-7">
+            <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[560px] overflow-hidden">
+              <img
+                src={feiernImg}
+                alt="Festlich gedeckter Saal im Landhotel Schend"
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
-          <div>
-            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("feiern.eyebrow")}</p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("feiern.title")}</h2>
-            <p className="text-muted-foreground">{t("feiern.text")}</p>
+          <div className="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center">
+            <p className="eyebrow">{t("feiern.eyebrow")}</p>
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">
+              {t("feiern.title")}
+            </h2>
+            <p className="text-foreground/85 leading-relaxed max-w-prose">{t("feiern.text")}</p>
           </div>
         </div>
       </section>
 
-      {/* PAKETE */}
-      <section id="pakete" className="bg-muted">
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center mb-10">
-            <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("pakete.eyebrow")}</p>
-            <h2 className="text-3xl md:text-4xl font-bold">{t("pakete.title")}</h2>
-            <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">{t("pakete.intro")}</p>
+      {/* PAKETE — editorial cards, Hairline + Display-Title */}
+      <section id="pakete" className="bg-background">
+        <div className="container mx-auto px-4 py-20 md:py-28">
+          <div className="text-center mb-14 md:mb-20">
+            <p className="eyebrow">{t("pakete.eyebrow")}</p>
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">
+              {t("pakete.title")}
+            </h2>
+            <p className="text-muted-foreground mt-5 max-w-prose mx-auto leading-relaxed text-pretty">
+              {t("pakete.intro")}
+            </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-x-10 md:gap-y-14">
             {PAKETE.map((p) => (
-              <div key={p.slug} className="rounded-xl overflow-hidden bg-card border shadow-card hover:shadow-elevated transition-shadow flex flex-col">
-                <Link to={`/pakete/${p.slug}`} className="block aspect-[4/3] overflow-hidden group">
-                  <img src={p.cover} alt={t(`paketDetails.${p.slug}.title`, p.title)} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                </Link>
-                <div className="p-5 flex-1 flex flex-col text-center">
-                  <h3 className="font-semibold text-lg mb-4 flex-1">{t(`paketDetails.${p.slug}.title`, p.title)}</h3>
-                  <Button asChild variant="secondary" className="w-full">
-                    <Link to={`/pakete/${p.slug}`}>{t("pakete.more")}</Link>
-                  </Button>
+              <Link key={p.slug} to={`/pakete/${p.slug}`} className="group block">
+                <div className="aspect-[4/5] overflow-hidden mb-5 bg-muted">
+                  <img
+                    src={p.cover}
+                    alt={t(`paketDetails.${p.slug}.title`, p.title)}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]"
+                  />
                 </div>
-              </div>
+                <h3 className="font-display text-xl md:text-2xl mb-3 group-hover:text-secondary transition-colors text-balance">
+                  {t(`paketDetails.${p.slug}.title`, p.title)}
+                </h3>
+                <span className="text-xs font-medium tracking-[0.2em] uppercase text-secondary inline-flex items-center gap-2 transition-all group-hover:gap-3">
+                  {t("pakete.more")}
+                  <span>→</span>
+                </span>
+              </Link>
             ))}
           </div>
         </div>
