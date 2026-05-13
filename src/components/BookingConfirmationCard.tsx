@@ -31,26 +31,27 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
     <div className="space-y-6">
       {/* Hero confirmation */}
       <div className="text-center">
-        <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-success/10 animate-in zoom-in duration-500">
-          <CheckCircle2 className="h-10 w-10 text-success" />
+        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-success/10 animate-in zoom-in duration-500">
+          <CheckCircle2 className="h-8 w-8 text-success" strokeWidth={1.5} />
         </div>
-        <h2 className="text-2xl md:text-3xl font-bold text-foreground">Buchung bestätigt!</h2>
-        <p className="mt-2 text-muted-foreground">
-          Vielen Dank, {booking.guestName.split(" ")[0]}. Ihr Zimmer ist verbindlich für Sie reserviert.
-        </p>
-        <p className="mt-1 text-sm font-medium text-foreground">
-          Bestätigung wurde versendet an: <span className="text-primary">{booking.guestEmail}</span>
+        <p className="eyebrow">Buchung bestätigt</p>
+        <h2 className="font-display text-3xl md:text-4xl lg:text-5xl mt-3 mb-4 text-balance leading-[1.05]">
+          Vielen Dank, {booking.guestName.split(" ")[0]}.
+        </h2>
+        <p className="text-foreground/85 max-w-prose mx-auto leading-relaxed">
+          Ihr Zimmer ist verbindlich für Sie reserviert. Eine Bestätigung wurde versendet an{" "}
+          <span className="text-primary font-medium">{booking.guestEmail}</span>.
         </p>
       </div>
 
       {/* Email Preview */}
-      <div className="rounded-lg border bg-card p-3 shadow-elevated sm:p-5">
-        <div className="overflow-hidden rounded-md border bg-background">
+      <div className="rounded-md border bg-card p-3 shadow-elevated sm:p-5">
+        <div className="overflow-hidden rounded-sm border bg-background">
           {/* Email Header */}
           <div className="border-b bg-muted/40 px-5 py-4">
             <div className="flex items-center gap-2 text-primary">
-              <Hotel className="h-5 w-5" />
-              <span className="text-sm font-bold tracking-wide">LANDHOTEL SCHEND</span>
+              <Hotel className="h-4 w-4" strokeWidth={1.5} />
+              <span className="font-display text-base">Landhotel Schend</span>
             </div>
             <p className="mt-3 text-sm font-semibold text-foreground">
               Betreff: Buchungsbestätigung {displayBookingNumber} — Landhotel Schend
@@ -173,8 +174,8 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
           {/* Email Footer */}
           <div className="border-t bg-muted/40 px-5 py-4">
             <div className="flex items-center gap-2 text-primary">
-              <Hotel className="h-4 w-4" />
-              <span className="text-sm font-bold tracking-wide">LANDHOTEL SCHEND</span>
+              <Hotel className="h-4 w-4" strokeWidth={1.5} />
+              <span className="font-display text-base">Landhotel Schend</span>
             </div>
             <p className="mt-2 text-xs text-muted-foreground">
               Ihr Familienhotel in der Vulkaneifel · landhaus-schend.de
@@ -205,12 +206,22 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
       </div>
 
       {showActions && (
-        <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-          <Button variant="outline" size="lg" onClick={() => window.print()}>
-            <Printer className="h-4 w-4" /> Drucken / als PDF speichern
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => window.print()}
+            className="rounded-sm uppercase tracking-[0.18em] text-xs h-12 px-7 border-primary/40"
+          >
+            <Printer className="h-4 w-4" strokeWidth={1.5} />
+            Drucken / PDF
           </Button>
-          <Button asChild size="lg">
-            <Link to="/">Zurück zur Startseite</Link>
+          <Button
+            asChild
+            size="lg"
+            className="rounded-sm uppercase tracking-[0.18em] text-xs h-12 px-7"
+          >
+            <Link to="/">Zur Startseite</Link>
           </Button>
         </div>
       )}
