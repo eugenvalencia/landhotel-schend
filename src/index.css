@@ -2,49 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Landhotel Schend Design System – Navy/Blue, professional hotel */
+/* ===========================================================================
+   Landhotel Schend — Editorial Design System
+   Palette: warm parchment ground, deep slate ink, brushed brass, forest green
+   Typography: Fraunces display serif + Inter sans, 12pt feature settings
+   =========================================================================== */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 226 70% 12%;
+    /* Editorial ground — warm parchment cream, not pure white */
+    --background: 38 35% 96%;
+    --foreground: 220 18% 16%;
 
+    /* Cards sit on paper white for subtle elevation */
     --card: 0 0% 100%;
-    --card-foreground: 226 70% 12%;
+    --card-foreground: 220 18% 16%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 226 70% 12%;
+    --popover-foreground: 220 18% 16%;
 
-    /* Navy #0D1B4B */
-    --primary: 230 71% 17%;
-    --primary-foreground: 0 0% 100%;
+    /* Primary — deep slate ink, editorial */
+    --primary: 220 22% 18%;
+    --primary-foreground: 38 35% 96%;
 
-    /* Blue #1a4fa0 */
-    --secondary: 215 72% 37%;
-    --secondary-foreground: 0 0% 100%;
+    /* Secondary — brushed brass / muted gold (NOT shiny yellow) */
+    --secondary: 38 48% 38%;
+    --secondary-foreground: 38 35% 96%;
 
-    --muted: 220 20% 96%;
-    --muted-foreground: 220 10% 40%;
+    /* Muted — warm cream wash for soft sections */
+    --muted: 38 22% 92%;
+    --muted-foreground: 220 8% 38%;
 
-    --accent: 215 72% 95%;
-    --accent-foreground: 230 71% 17%;
+    /* Accent — forest green (Eifel-Wald), used sparingly */
+    --accent: 110 18% 28%;
+    --accent-foreground: 38 35% 96%;
 
-    --destructive: 0 75% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 358 65% 42%;
+    --destructive-foreground: 38 35% 96%;
 
-    --success: 142 65% 38%;
-    --success-foreground: 0 0% 100%;
+    --success: 142 32% 32%;
+    --success-foreground: 38 35% 96%;
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
+    --warning: 30 75% 42%;
+    --warning-foreground: 38 35% 96%;
 
-    --border: 220 16% 88%;
-    --input: 220 16% 88%;
-    --ring: 215 72% 37%;
+    /* Hairline warm borders */
+    --border: 38 18% 82%;
+    --input: 38 18% 82%;
+    --ring: 38 48% 38%;
 
-    --radius: 0.625rem;
+    /* Smaller radius — less app-y, more editorial */
+    --radius: 0.375rem;
 
-    /* Calendar status colors */
+    /* Calendar status — unchanged for dashboard consistency */
     --cal-free: 142 50% 90%;
     --cal-free-fg: 142 60% 25%;
     --cal-paid: 215 72% 88%;
@@ -52,40 +62,48 @@
     --cal-intern: 220 8% 82%;
     --cal-intern-fg: 220 10% 25%;
 
-    --gradient-hero: linear-gradient(135deg, hsl(230 71% 17%) 0%, hsl(215 72% 37%) 100%);
-    --shadow-card: 0 4px 20px -6px hsl(230 71% 17% / 0.12);
-    --shadow-elevated: 0 10px 40px -12px hsl(230 71% 17% / 0.25);
+    /* Hero overlay — softer, photo-first */
+    --gradient-hero: linear-gradient(
+      180deg,
+      hsl(220 18% 10% / 0.55) 0%,
+      hsl(220 18% 10% / 0.30) 45%,
+      hsl(220 18% 10% / 0.05) 100%
+    );
 
-    --sidebar-background: 230 71% 17%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 215 72% 37%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 230 50% 25%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 230 50% 25%;
-    --sidebar-ring: 215 72% 50%;
+    /* Flatter, editorial shadows */
+    --shadow-card: 0 1px 2px hsl(220 18% 16% / 0.04), 0 4px 12px -4px hsl(220 18% 16% / 0.08);
+    --shadow-elevated: 0 2px 4px hsl(220 18% 16% / 0.06), 0 14px 32px -10px hsl(220 18% 16% / 0.18);
+
+    --sidebar-background: 220 22% 18%;
+    --sidebar-foreground: 38 30% 92%;
+    --sidebar-primary: 38 48% 42%;
+    --sidebar-primary-foreground: 38 35% 96%;
+    --sidebar-accent: 220 22% 24%;
+    --sidebar-accent-foreground: 38 30% 92%;
+    --sidebar-border: 220 22% 24%;
+    --sidebar-ring: 38 48% 50%;
   }
 
   .dark {
-    --background: 226 50% 8%;
-    --foreground: 0 0% 95%;
-    --card: 226 50% 10%;
-    --card-foreground: 0 0% 95%;
-    --popover: 226 50% 10%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 215 72% 55%;
-    --primary-foreground: 226 70% 8%;
-    --secondary: 230 30% 20%;
-    --secondary-foreground: 0 0% 95%;
-    --muted: 230 30% 18%;
-    --muted-foreground: 220 10% 65%;
-    --accent: 230 30% 20%;
-    --accent-foreground: 0 0% 95%;
-    --destructive: 0 70% 45%;
-    --destructive-foreground: 0 0% 95%;
-    --border: 230 30% 22%;
-    --input: 230 30% 22%;
-    --ring: 215 72% 55%;
+    --background: 220 18% 9%;
+    --foreground: 38 30% 92%;
+    --card: 220 18% 12%;
+    --card-foreground: 38 30% 92%;
+    --popover: 220 18% 12%;
+    --popover-foreground: 38 30% 92%;
+    --primary: 38 35% 88%;
+    --primary-foreground: 220 18% 14%;
+    --secondary: 38 48% 50%;
+    --secondary-foreground: 220 18% 9%;
+    --muted: 220 18% 16%;
+    --muted-foreground: 38 12% 65%;
+    --accent: 220 18% 18%;
+    --accent-foreground: 38 30% 92%;
+    --destructive: 358 65% 50%;
+    --destructive-foreground: 38 30% 92%;
+    --border: 220 18% 20%;
+    --input: 220 18% 20%;
+    --ring: 38 48% 50%;
   }
 }
 
@@ -93,31 +111,121 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+
+  html {
+    font-feature-settings: "kern", "liga", "calt";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  h1, h2, h3, h4 {
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-feature-settings: "cv11", "ss01", "cv02";
+  }
+
+  /* Editorial display headings — Fraunces with optical size for large display */
+  h1,
+  h2,
+  h3 {
+    font-family: "Fraunces", "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    font-feature-settings: "liga", "dlig", "ss01";
+    letter-spacing: -0.018em;
     @apply tracking-tight;
+  }
+
+  h4,
+  h5,
+  h6 {
+    @apply tracking-tight font-semibold;
+  }
+
+  /* Body paragraphs — generous editorial line-height */
+  p {
+    line-height: 1.65;
   }
 }
 
 @layer utilities {
+  /* Legacy utilities preserved so existing components don't break */
   .gradient-hero { background: var(--gradient-hero); }
   .shadow-card { box-shadow: var(--shadow-card); }
   .shadow-elevated { box-shadow: var(--shadow-elevated); }
+
+  /* Editorial typography utilities */
+  .font-display {
+    font-family: "Fraunces", "Cormorant Garamond", Georgia, serif;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+  }
+  .font-display-italic {
+    font-family: "Fraunces", Georgia, serif;
+    font-variation-settings: "opsz" 144;
+    font-style: italic;
+  }
+
+  /* Native text balancing for headlines and pull-quotes */
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  /* Editorial drop-cap — for the first paragraph of a long passage */
+  .drop-cap::first-letter {
+    font-family: "Fraunces", Georgia, serif;
+    font-variation-settings: "opsz" 144;
+    font-weight: 500;
+    font-size: 4.25em;
+    line-height: 0.82;
+    float: left;
+    margin: 0.08em 0.12em -0.05em 0;
+    color: hsl(var(--secondary));
+  }
+
+  /* Small-caps eyebrow label — section labels above headlines */
+  .eyebrow {
+    font-family: "Inter", sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: hsl(var(--secondary));
+  }
+
+  /* Hairline divider — fades at the edges */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      hsl(var(--border)) 20%,
+      hsl(var(--border)) 80%,
+      transparent
+    );
+  }
+  .hairline-strong {
+    height: 1px;
+    background: hsl(var(--border));
+  }
+
+  /* Paper texture — subtle noise on cream backgrounds */
+  .paper-grain {
+    background-image:
+      radial-gradient(hsl(38 25% 78% / 0.18) 1px, transparent 1px),
+      radial-gradient(hsl(38 25% 78% / 0.12) 1px, transparent 1px);
+    background-size: 24px 24px, 32px 32px;
+    background-position: 0 0, 8px 12px;
+  }
+
   /* Respect iOS safe areas for sticky bottom bars */
   .safe-pb { padding-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
 }
 
-/* Prevent iOS Safari auto-zoom on focus by enforcing >=16px font-size on
-   form controls below the md breakpoint. */
+/* Prevent iOS auto-zoom on form focus */
 @media (max-width: 767px) {
   input, select, textarea {
     font-size: 16px !important;
   }
 }
-
 
 @layer utilities {
   @keyframes marquee-x {
@@ -126,5 +234,13 @@
   }
   .animate-marquee {
     animation: marquee-x 30s linear infinite;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-up {
+    animation: fade-up 0.7s ease-out both;
   }
 }

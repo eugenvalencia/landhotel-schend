@@ -14,6 +14,15 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['"Inter"', "system-ui", "-apple-system", '"Segoe UI"', "sans-serif"],
+        serif: ['"Fraunces"', '"Cormorant Garamond"', "Georgia", '"Times New Roman"', "serif"],
+        display: ['"Fraunces"', '"Cormorant Garamond"', "Georgia", "serif"],
+      },
+      maxWidth: {
+        prose: "68ch",
+        editorial: "78ch",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
