@@ -98,33 +98,40 @@ export default function FAQSection() {
   return (
     <section id="faq" className="bg-background">
       <JsonLd id="faq" data={faqJsonLd} />
-      <div className="container mx-auto px-4 py-16 max-w-3xl">
-        <div className="text-center mb-10">
-          <p className="uppercase tracking-[0.2em] text-xs text-secondary mb-2">{t("faq.eyebrow", "Häufige Fragen")}</p>
-          <h2 className="text-3xl md:text-4xl font-bold">{t("faq.title", "Was Gäste oft fragen")}</h2>
-          <p className="text-muted-foreground mt-3">
+      <div className="container mx-auto px-4 py-20 md:py-28 max-w-3xl">
+        <div className="text-center mb-14 md:mb-20">
+          <p className="eyebrow">{t("faq.eyebrow", "Häufige Fragen")}</p>
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance leading-[1.05]">
+            {t("faq.title", "Was Gäste oft fragen")}
+          </h2>
+          <p className="text-muted-foreground mt-5 leading-relaxed text-pretty">
             {t("faq.intro", "Antworten zu Ausstattung, Anreise, Restaurant und Buchung — kurz auf den Punkt.")}
           </p>
         </div>
 
-        <div className="space-y-3">
+        <div className="border-t border-border/70">
           {FAQS_DE.map((f, i) => {
             const open = openIndex === i;
             return (
-              <div key={f.q} className="rounded-xl border bg-card overflow-hidden">
+              <div key={f.q} className="border-b border-border/70">
                 <button
                   onClick={() => setOpenIndex(open ? null : i)}
                   aria-expanded={open}
                   aria-controls={`faq-panel-${i}`}
-                  className="w-full flex items-center justify-between gap-4 p-4 md:p-5 text-left hover:bg-muted/40 transition-colors"
+                  className="w-full flex items-start justify-between gap-5 py-6 md:py-7 text-left group"
                 >
-                  <span className="font-semibold text-base md:text-lg">{f.q}</span>
-                  <ChevronDown
-                    className={cn(
-                      "h-5 w-5 shrink-0 text-secondary transition-transform duration-200",
-                      open && "rotate-180",
-                    )}
-                  />
+                  <span className="font-display text-lg md:text-xl leading-snug text-balance pt-0.5 group-hover:text-secondary transition-colors">
+                    {f.q}
+                  </span>
+                  <span className="shrink-0 mt-1.5">
+                    <ChevronDown
+                      className={cn(
+                        "h-4 w-4 text-secondary transition-transform duration-300",
+                        open && "rotate-180",
+                      )}
+                      strokeWidth={1.5}
+                    />
+                  </span>
                 </button>
                 <div
                   id={`faq-panel-${i}`}
@@ -135,7 +142,9 @@ export default function FAQSection() {
                   )}
                 >
                   <div className="overflow-hidden">
-                    <p className="px-4 md:px-5 pb-5 text-muted-foreground leading-relaxed">{f.a}</p>
+                    <p className="pb-7 pr-8 md:pr-10 text-foreground/85 leading-relaxed max-w-prose">
+                      {f.a}
+                    </p>
                   </div>
                 </div>
               </div>

@@ -83,11 +83,11 @@ export default function SiteHeader() {
             )}
           />
           <div className="min-w-0">
-            <p className="font-bold text-primary text-sm md:text-base leading-tight tracking-wide truncate">
-              LANDHOTEL SCHEND
+            <p className="font-display text-primary text-lg md:text-xl leading-tight truncate tracking-tight">
+              Landhotel Schend
             </p>
             <p className={cn(
-              "sm:block text-[10px] md:text-xs text-muted-foreground leading-tight truncate transition-all duration-500",
+              "text-[10px] md:text-[11px] tracking-[0.18em] uppercase text-muted-foreground leading-tight truncate transition-all duration-500",
               scrolled ? "hidden sm:hidden" : "hidden sm:block",
             )}>
               {t("nav.subtitle")}
