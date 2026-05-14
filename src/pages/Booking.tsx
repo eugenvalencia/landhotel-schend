@@ -266,40 +266,6 @@ export default function Booking() {
     });
   };
 
-  const buildLocalConfirmation = (): BookingConfirmationData => {
-    const bookingNumber = `LSC${Date.now().toString().slice(-8)}`;
-    const localExtras = selectedExtras
-      .map((id) => extras.find((e) => e.id === id))
-      .filter((e): e is Extra => !!e)
-      .map((e) => ({
-        id: e.id,
-        name: e.name,
-        price: Number(e.price),
-        perNight: e.per_night,
-        total: e.per_night ? Number(e.price) * Math.max(nights, 1) : Number(e.price),
-      }));
-    return {
-      bookingNumber,
-      guestName: guest.name,
-      guestEmail: guest.email,
-      guestPhone: guest.phone,
-      checkIn: toISODate(checkIn!),
-      checkOut: toISODate(checkOut!),
-      nights,
-      persons,
-      roomName: room!.name,
-      roomType: room!.room_type,
-      roomNumber: room!.room_number,
-      roomPrice: Number(room!.price_per_night),
-      roomPhoto: room!.photos?.[0] || photoForRoomType(room!.room_type),
-      roomSubtotal: roomTotal,
-      extras: localExtras,
-      extrasTotal: extrasTotal,
-      totalPrice: grandTotal,
-      notes: notes.trim() || null,
-    };
-  };
-
   const showConfirmation = (data: BookingConfirmationData) => {
     saveBookingConfirmation(data);
     setConfirmed(data);
@@ -335,26 +301,25 @@ export default function Booking() {
       });
 
     try {
-      const { data, error } = await supabase.functions.invoke("create-booking", {
-        body: {
-          room_id: room.id,
-          check_in: toISODate(checkIn),
-          check_out: toISODate(checkOut),
-          guest_name: guest.name,
-          guest_email: guest.email,
-          guest_phone: guest.phone,
-          extras: selectedExtras,
-          notes: notes.trim() || null,
-        },
+      const { data, error } = await supabase.rpc("create_booking", {
+        p_room_id: room.id,
+        p_check_in: toISODate(checkIn),
+        p_check_out: toISODate(checkOut),
+        p_guest_name: guest.name,
+        p_guest_email: guest.email,
+        p_guest_phone: guest.phone,
+        p_extras: selectedExtras,
+        p_notes: notes.trim() || null,
       });
 
-      if (error || !data || (data as { error?: string }).error) {
-        // Fallback: build a local confirmation so the user still sees the
-        // confirmation email layout in demo / offline mode.
+      if (error || !data) {
         await minDelay(startedAt);
-        const local = buildLocalConfirmation();
-        toast.success("Buchung bestätigt — Ihr Zimmer ist reserviert.");
-        showConfirmation(local);
+        console.error("[booking] create_booking failed:", error);
+        const msg =
+          error?.message?.includes("Room not available")
+            ? "Zimmer in diesem Zeitraum leider nicht mehr verfügbar."
+            : "Buchung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut oder rufen Sie uns an: +49 6573 306";
+        toast.error(msg);
         setSubmitting(false);
         return;
       }
@@ -368,7 +333,7 @@ export default function Booking() {
         extras_total: number;
       };
 
-      const confirmationExtras = result.extras.map((extra) => ({
+      const confirmationExtras = (result.extras ?? []).map((extra) => ({
         id: extra.id,
         name: extra.name,
         price: Number(extra.price),
@@ -390,10 +355,10 @@ export default function Booking() {
         roomNumber: room.room_number,
         roomPrice: Number(room.price_per_night),
         roomPhoto: room.photos?.[0] || photoForRoomType(room.room_type),
-        roomSubtotal: result.room_total,
+        roomSubtotal: Number(result.room_total),
         extras: confirmationExtras,
-        extrasTotal: result.extras_total,
-        totalPrice: result.total_price,
+        extrasTotal: Number(result.extras_total),
+        totalPrice: Number(result.total_price),
         notes: notes.trim() || null,
       };
 
@@ -402,11 +367,9 @@ export default function Booking() {
       showConfirmation(confirmationData);
       setSubmitting(false);
     } catch (e) {
-      console.error("Booking failed, falling back to local demo:", e);
+      console.error("[booking] unexpected error:", e);
       await minDelay(startedAt);
-      const local = buildLocalConfirmation();
-      toast.success("Buchung bestätigt — Ihr Zimmer ist reserviert.");
-      showConfirmation(local);
+      toast.error("Verbindungsfehler. Bitte versuchen Sie es erneut oder rufen Sie uns an: +49 6573 306");
       setSubmitting(false);
     }
   };
