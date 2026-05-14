@@ -73,15 +73,17 @@ export default function SiteHeader() {
           scrolled ? "h-14 md:h-16" : "h-16 md:h-20",
         )}
       >
-        <Link to="/" className="flex items-center gap-2 min-w-0" onClick={() => scrollTo("top")}>
-          {/* Black on light theme; white on dark theme. Two <img> tags swap via Tailwind dark: classes
-              so the SVG stays crisp at any size and never carries the old white background tile. */}
+        <Link to="/" className="flex items-center gap-3 min-w-0" onClick={() => scrollTo("top")}>
+          {/* The .logo-light / .logo-dark CSS swap (defined in index.css) handles all three
+              theme states: explicit Light, explicit Dark, AND system (which Tailwind's `dark:`
+              alone can't reach because it's class-based). Sized to match the height of the
+              two-line text block (Landhotel Schend + subtitle) right of the mark. */}
           <img
             src="/schend-logo-black.svg"
             alt="Landhotel Schend Logo"
             className={cn(
-              "block dark:hidden w-auto shrink-0 object-contain transition-all duration-500",
-              scrolled ? "h-8 md:h-10" : "h-10 md:h-14",
+              "logo-light w-auto shrink-0 object-contain transition-all duration-500",
+              scrolled ? "h-10 md:h-12" : "h-14 md:h-16 lg:h-[4.5rem]",
             )}
           />
           <img
@@ -89,8 +91,8 @@ export default function SiteHeader() {
             alt=""
             aria-hidden
             className={cn(
-              "hidden dark:block w-auto shrink-0 object-contain transition-all duration-500",
-              scrolled ? "h-8 md:h-10" : "h-10 md:h-14",
+              "logo-dark w-auto shrink-0 object-contain transition-all duration-500",
+              scrolled ? "h-10 md:h-12" : "h-14 md:h-16 lg:h-[4.5rem]",
             )}
           />
           <div className="min-w-0">

@@ -197,6 +197,24 @@
   p {
     line-height: 1.65;
   }
+
+  /* Theme-aware logo swap.
+     Mirrors the same precedence as the colour-scheme variables above:
+       1. explicit `.light` / `.dark` class on <html> wins
+       2. otherwise `prefers-color-scheme: dark` decides
+     Tailwind's `dark:` prefix only fires on the explicit class, so the
+     "system" choice (no class) needs the media-query branch below or
+     the dark-OS user sees the black mark on a dark background. */
+  .logo-light { display: block; }
+  .logo-dark  { display: none; }
+
+  :root.dark .logo-light { display: none; }
+  :root.dark .logo-dark  { display: block; }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) .logo-light { display: none; }
+    :root:not(.light) .logo-dark  { display: block; }
+  }
 }
 
 @layer utilities {
