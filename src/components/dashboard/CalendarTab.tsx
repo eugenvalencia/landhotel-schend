@@ -405,8 +405,7 @@ export default function CalendarTab() {
               </button>
             ))}
           </div>
-          <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-free))] border" /> Frei</span>
-          <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-pending))] border" /> Belegt</span>
+          <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded ring-2 ring-inset ring-[hsl(var(--cal-pending-fg))]" /> Belegt</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-paid))] border" /> Bezahlt</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-intern))] border" /> Intern</span>
           <Button size="sm" variant="outline" onClick={() => { setQuickForm(initialQuick); setQuickOpen(true); }}>
@@ -442,6 +441,8 @@ export default function CalendarTab() {
                   {days.map((d) => {
                     const isToday = toISODate(d) === todayIso;
                     const holiday = getHoliday(d, "RP");
+                    // Today-Outline nur in Woche/Monat — in Tag-View ist eh alles "heute".
+                    const showTodayRing = isToday && view !== "day";
                     return (
                       <th
                         key={d.toISOString()}
@@ -451,7 +452,7 @@ export default function CalendarTab() {
                           view === "day" ? "min-w-[420px]" : view === "week" ? "min-w-[110px]" : "min-w-[36px]",
                           (d.getDay() === 0 || d.getDay() === 6) && "bg-accent/40",
                           holiday && "bg-[hsl(var(--cal-holiday))] text-[hsl(var(--cal-holiday-fg))]",
-                          isToday && "ring-2 ring-inset ring-[hsl(var(--cal-today))] text-[hsl(var(--cal-today))] font-bold",
+                          showTodayRing && "ring-1 ring-inset ring-[hsl(var(--cal-today))] text-[hsl(var(--cal-today))] font-bold",
                         )}
                       >
                         <div className="text-[10px] text-muted-foreground uppercase">{d.toLocaleDateString("de-DE", { weekday: "short" }).slice(0, 2)}</div>
@@ -475,9 +476,10 @@ export default function CalendarTab() {
                       const s = cellState(r.id, d);
                       const dragHL = isInDrag(r.id, d);
                       const isToday = toISODate(d) === todayIso;
+                      const showTodayRing = isToday && view !== "day";
                       const cls =
-                        s.type === "free" ? cn("bg-[hsl(var(--cal-free))] hover:brightness-95 cursor-pointer", dragHL && "bg-secondary/40") :
-                        s.type === "pending" ? "bg-[hsl(var(--cal-pending))] hover:brightness-95 cursor-pointer text-[hsl(var(--cal-pending-fg))]" :
+                        s.type === "free" ? cn("bg-[hsl(var(--cal-free))] hover:bg-muted/40 cursor-pointer", dragHL && "bg-secondary/40") :
+                        s.type === "pending" ? "bg-white hover:brightness-95 cursor-pointer text-[hsl(var(--cal-pending-fg))] ring-2 ring-inset ring-[hsl(var(--cal-pending-fg))] font-semibold" :
                         s.type === "paid" ? "bg-[hsl(var(--cal-paid))] hover:brightness-95 cursor-pointer text-[hsl(var(--cal-paid-fg))]" :
                         "bg-[hsl(var(--cal-intern))] hover:brightness-95 cursor-pointer";
                       const showLabel = !!s.booking && (
@@ -491,7 +493,9 @@ export default function CalendarTab() {
                             "border-b border-r/50 text-center align-middle transition px-1",
                             view === "day" ? "h-12" : "h-9",
                             cls,
-                            isToday && "ring-2 ring-inset ring-[hsl(var(--cal-today))]",
+                            // Today-Ring nur in Woche/Monat, und nur wenn die Zelle nicht schon ihren eigenen
+                            // Ring trägt (Pending). Verhindert Ring-on-Ring-Konflikt.
+                            showTodayRing && s.type !== "pending" && "ring-1 ring-inset ring-[hsl(var(--cal-today))]",
                           )}
                           title={s.booking ? `${s.booking.guest_name} · Zimmer ${r.room_number} (${formatDateShort(s.booking.check_in)}–${formatDateShort(s.booking.check_out)})` : `Frei · Klicken zum Buchen`}
                           onMouseDown={() => {

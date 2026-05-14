@@ -54,11 +54,11 @@
     /* Editorial radius — weich aber nicht App-y */
     --radius: 0.5rem;
 
-    /* Calendar status — unchanged for dashboard consistency */
-    --cal-free: 142 50% 90%;
-    --cal-free-fg: 142 60% 25%;
+    /* Calendar status */
+    --cal-free: 0 0% 100%;          /* freie Zellen rein weiss */
+    --cal-free-fg: 0 0% 30%;
     --cal-pending: 0 75% 86%;       /* Belegt (Online-Buchung, Zahlung offen) */
-    --cal-pending-fg: 0 70% 32%;
+    --cal-pending-fg: 0 72% 45%;    /* satte rote Umrandung */
     --cal-paid: 215 72% 88%;
     --cal-paid-fg: 230 71% 17%;
     --cal-intern: 220 8% 82%;
