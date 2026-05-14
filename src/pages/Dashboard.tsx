@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Hotel, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,8 +27,12 @@ export default function Dashboard() {
       <div className="min-h-screen bg-muted/40">
         <header className="bg-primary text-primary-foreground sticky top-0 z-30">
           <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2">
-              <Hotel className="h-5 w-5" />
+            <Link to="/" className="flex items-center gap-2.5">
+              <span
+                role="img"
+                aria-label="Landhotel Schend Logo"
+                className="schend-mark shrink-0 h-6 text-primary-foreground"
+              />
               <span className="font-semibold">Landhotel Schend · Dashboard</span>
             </Link>
             <Button variant="ghost" size="sm" onClick={logout} className="text-primary-foreground hover:bg-white/10 hover:text-primary-foreground">

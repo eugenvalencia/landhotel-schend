@@ -82,7 +82,9 @@ export default function SiteHeader() {
             aria-label="Landhotel Schend Logo"
             className={cn(
               "schend-mark shrink-0 text-foreground transition-all duration-500",
-              scrolled ? "h-10 md:h-12" : "h-12 md:h-14",
+              // Sized to match the height of the wordmark + subtitle stack on the right
+              // (Landhotel Schend at text-base/lg/xl + subtitle at text-[10/11px], leading-tight).
+              scrolled ? "h-7 md:h-8" : "h-9 md:h-10 lg:h-11",
             )}
           />
           <div className="min-w-0">

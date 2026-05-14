@@ -15,10 +15,17 @@ export default function SiteFooter() {
       <div className="container mx-auto px-4 py-20 md:py-24 grid gap-12 md:gap-16 md:grid-cols-12">
         {/* Brand */}
         <div className="md:col-span-5">
-          <p className="font-display text-3xl md:text-4xl leading-tight tracking-tight">
-            Landhotel Schend
-          </p>
-          <p className="text-[11px] tracking-[0.22em] uppercase text-[hsl(38_30%_92%)]/55 mt-2">
+          <div className="flex items-center gap-3">
+            <span
+              role="img"
+              aria-label="Landhotel Schend Logo"
+              className="schend-mark shrink-0 h-10 md:h-12 text-[hsl(38_30%_92%)]"
+            />
+            <p className="font-display text-3xl md:text-4xl leading-tight tracking-tight">
+              Landhotel Schend
+            </p>
+          </div>
+          <p className="text-[11px] tracking-[0.22em] uppercase text-[hsl(38_30%_92%)]/55 mt-3">
             Anno 1856 · Vulkaneifel
           </p>
           <p className="text-sm text-[hsl(38_30%_92%)]/75 mt-6 leading-relaxed max-w-md">
