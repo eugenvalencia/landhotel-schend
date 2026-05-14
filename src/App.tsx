@@ -16,6 +16,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const DashboardOverview = lazy(() => import("./pages/Dashboard").then((m) => ({ default: m.DashboardOverview })));
 const DashboardModule = lazy(() => import("./pages/Dashboard").then((m) => ({ default: m.DashboardModule })));
+const Operator = lazy(() => import("./pages/Operator"));
 const Impressum = lazy(() => import("./pages/Impressum"));
 const Datenschutz = lazy(() => import("./pages/Datenschutz"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -56,6 +57,7 @@ const App = () => (
               <Route index element={<DashboardOverview />} />
               <Route path=":moduleSlug" element={<DashboardModule />} />
             </Route>
+            <Route path="/operator" element={<Operator />} />
             <Route path="/impressum" element={<Impressum />} />
             <Route path="/datenschutz" element={<Datenschutz />} />
             <Route path="*" element={<NotFound />} />
