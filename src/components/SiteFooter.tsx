@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Star } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 /**
  * Footer is always dark slate regardless of theme — keeps a strong editorial
  * page-foot anchor in both light and dark modes.
- * NOTE: The Star link to /login is the discreet admin entry — must remain
- *       opacity-50 and unlabelled. Do not surface it.
  */
 export default function SiteFooter() {
   const { t } = useTranslation();
@@ -132,13 +130,6 @@ export default function SiteFooter() {
             </Link>
             <Link to="/datenschutz" className="hover:text-secondary transition-colors">
               {t("footer.privacy")}
-            </Link>
-            <Link
-              to="/login"
-              aria-label="Admin"
-              className="opacity-40 hover:opacity-100 text-[hsl(38_30%_92%)]/60 hover:text-[#d4af37] transition-all duration-300"
-            >
-              <Star className="h-4 w-4" strokeWidth={1.5} />
             </Link>
           </div>
         </div>

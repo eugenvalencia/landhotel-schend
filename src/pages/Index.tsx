@@ -140,7 +140,15 @@ const Index = () => {
               className="text-[11px] md:text-xs font-medium tracking-[0.24em] uppercase text-white/90"
               style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
             >
-              Anno 1856 · Vulkaneifel
+              Anno 1856{" "}
+              <Link
+                to="/login"
+                aria-label="·"
+                style={{ color: "inherit", textDecoration: "none", cursor: "text" }}
+              >
+                ·
+              </Link>{" "}
+              Vulkaneifel
             </span>
             <span className="block h-px w-12 md:w-20 bg-white/65" />
           </div>
