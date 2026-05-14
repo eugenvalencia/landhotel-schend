@@ -57,10 +57,13 @@
     /* Calendar status — unchanged for dashboard consistency */
     --cal-free: 142 50% 90%;
     --cal-free-fg: 142 60% 25%;
+    --cal-pending: 0 75% 86%;       /* Belegt (Online-Buchung, Zahlung offen) */
+    --cal-pending-fg: 0 70% 32%;
     --cal-paid: 215 72% 88%;
     --cal-paid-fg: 230 71% 17%;
     --cal-intern: 220 8% 82%;
     --cal-intern-fg: 220 10% 25%;
+    --cal-today: 38 75% 45%;         /* Outline-Farbe für den heutigen Tag */
 
     /* Hero overlay — softer, photo-first */
     --gradient-hero: linear-gradient(

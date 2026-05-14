@@ -183,14 +183,17 @@ export default function CalendarTab() {
   };
   const goToday = () => setAnchor(startOfDay(new Date()));
 
-  const cellState = (roomId: string, day: Date): { type: "free" | "online" | "intern"; booking?: Booking } => {
+  const cellState = (roomId: string, day: Date): { type: "free" | "pending" | "paid" | "intern"; booking?: Booking } => {
     const iso = toISODate(day);
     const b = bookings.find(
       (x) => x.room_id === roomId && x.payment_status !== "cancelled" && x.check_in <= iso && x.check_out > iso
     );
     if (!b) return { type: "free" };
-    return { type: b.booking_type === "intern" ? "intern" : "online", booking: b };
+    if (b.booking_type === "intern") return { type: "intern", booking: b };
+    return { type: b.payment_status === "paid" ? "paid" : "pending", booking: b };
   };
+
+  const todayIso = toISODate(new Date());
 
   // Conflict check: returns the conflicting booking or null.
   // Two bookings conflict if their [check_in, check_out) ranges overlap on the same room.
@@ -402,6 +405,7 @@ export default function CalendarTab() {
             ))}
           </div>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-free))] border" /> Frei</span>
+          <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-pending))] border" /> Belegt</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-paid))] border" /> Bezahlt</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-intern))] border" /> Intern</span>
           <Button size="sm" variant="outline" onClick={() => { setQuickForm(initialQuick); setQuickOpen(true); }}>
@@ -434,12 +438,23 @@ export default function CalendarTab() {
               <thead className="bg-muted">
                 <tr>
                   <th className="sticky left-0 bg-muted z-10 text-left font-medium p-2 min-w-[200px] border-b border-r">Zimmer</th>
-                  {days.map((d) => (
-                    <th key={d.toISOString()} className={cn("font-medium p-1 text-center border-b", view === "day" ? "min-w-[420px]" : view === "week" ? "min-w-[110px]" : "min-w-[36px]", (d.getDay() === 0 || d.getDay() === 6) && "bg-accent/40")}>
-                      <div className="text-[10px] text-muted-foreground uppercase">{d.toLocaleDateString("de-DE", { weekday: "short" }).slice(0, 2)}</div>
-                      <div>{d.getDate()}{view !== "month" && <span className="text-muted-foreground font-normal">.{String(d.getMonth() + 1).padStart(2, "0")}</span>}</div>
-                    </th>
-                  ))}
+                  {days.map((d) => {
+                    const isToday = toISODate(d) === todayIso;
+                    return (
+                      <th
+                        key={d.toISOString()}
+                        className={cn(
+                          "font-medium p-1 text-center border-b",
+                          view === "day" ? "min-w-[420px]" : view === "week" ? "min-w-[110px]" : "min-w-[36px]",
+                          (d.getDay() === 0 || d.getDay() === 6) && "bg-accent/40",
+                          isToday && "ring-2 ring-inset ring-[hsl(var(--cal-today))] text-[hsl(var(--cal-today))] font-bold",
+                        )}
+                      >
+                        <div className="text-[10px] text-muted-foreground uppercase">{d.toLocaleDateString("de-DE", { weekday: "short" }).slice(0, 2)}</div>
+                        <div>{d.getDate()}{view !== "month" && <span className="text-muted-foreground font-normal">.{String(d.getMonth() + 1).padStart(2, "0")}</span>}</div>
+                      </th>
+                    );
+                  })}
                 </tr>
               </thead>
               <tbody>
@@ -452,9 +467,11 @@ export default function CalendarTab() {
                     {days.map((d) => {
                       const s = cellState(r.id, d);
                       const dragHL = isInDrag(r.id, d);
+                      const isToday = toISODate(d) === todayIso;
                       const cls =
                         s.type === "free" ? cn("bg-[hsl(var(--cal-free))] hover:brightness-95 cursor-pointer", dragHL && "bg-secondary/40") :
-                        s.type === "online" ? "bg-[hsl(var(--cal-paid))] hover:brightness-95 cursor-pointer text-primary-foreground" :
+                        s.type === "pending" ? "bg-[hsl(var(--cal-pending))] hover:brightness-95 cursor-pointer text-[hsl(var(--cal-pending-fg))]" :
+                        s.type === "paid" ? "bg-[hsl(var(--cal-paid))] hover:brightness-95 cursor-pointer text-[hsl(var(--cal-paid-fg))]" :
                         "bg-[hsl(var(--cal-intern))] hover:brightness-95 cursor-pointer";
                       const showLabel = !!s.booking && (
                         view === "day" || view === "week" ||
@@ -463,7 +480,12 @@ export default function CalendarTab() {
                       return (
                         <td
                           key={d.toISOString()}
-                          className={cn("border-b border-r/50 text-center align-middle transition px-1", view === "day" ? "h-12" : "h-9", cls)}
+                          className={cn(
+                            "border-b border-r/50 text-center align-middle transition px-1",
+                            view === "day" ? "h-12" : "h-9",
+                            cls,
+                            isToday && "ring-2 ring-inset ring-[hsl(var(--cal-today))]",
+                          )}
                           title={s.booking ? `${s.booking.guest_name} · Zimmer ${r.room_number} (${formatDateShort(s.booking.check_in)}–${formatDateShort(s.booking.check_out)})` : `Frei · Klicken zum Buchen`}
                           onMouseDown={() => {
                             if (s.booking) return;
@@ -839,6 +861,7 @@ function YearGrid({
     const daysInMonth = new Date(year, m + 1, 0).getDate();
     const totalSlots = daysInMonth * Math.max(1, rooms.length);
     let paid = 0;
+    let pending = 0;
     let intern = 0;
     for (let day = 1; day <= daysInMonth; day++) {
       const iso = toISODate(new Date(year, m, day));
@@ -848,17 +871,18 @@ function YearGrid({
         );
         if (b) {
           if (b.booking_type === "intern") intern++;
-          else paid++;
+          else if (b.payment_status === "paid") paid++;
+          else pending++;
         }
       }
     }
-    const free = totalSlots - paid - intern;
-    return { m, daysInMonth, paid, intern, free, totalSlots };
+    const free = totalSlots - paid - pending - intern;
+    return { m, daysInMonth, paid, pending, intern, free, totalSlots };
   });
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-      {months.map(({ m, paid, intern, free, totalSlots }) => {
+      {months.map(({ m, paid, pending, intern, free, totalSlots }) => {
         const label = new Date(year, m, 1).toLocaleDateString("de-DE", { month: "long" });
         const pct = (n: number) => (totalSlots ? (n / totalSlots) * 100 : 0);
         return (
@@ -870,14 +894,16 @@ function YearGrid({
             <CardContent className="p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="font-semibold capitalize">{label}</div>
-                <div className="text-xs text-muted-foreground">{paid + intern} belegt</div>
+                <div className="text-xs text-muted-foreground">{paid + pending + intern} belegt</div>
               </div>
               <div className="flex h-2 overflow-hidden rounded-full bg-[hsl(var(--cal-free))]">
                 <div className="bg-[hsl(var(--cal-paid))]" style={{ width: `${pct(paid)}%` }} />
+                <div className="bg-[hsl(var(--cal-pending))]" style={{ width: `${pct(pending)}%` }} />
                 <div className="bg-[hsl(var(--cal-intern))]" style={{ width: `${pct(intern)}%` }} />
               </div>
               <div className="flex justify-between text-[11px] text-muted-foreground">
                 <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-paid))]" />{paid}</span>
+                <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-pending))]" />{pending}</span>
                 <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-intern))]" />{intern}</span>
                 <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-free))] border" />{free}</span>
               </div>
