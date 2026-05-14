@@ -70,7 +70,7 @@ export default function SiteHeader() {
       <div
         className={cn(
           "container mx-auto px-4 flex items-center justify-between gap-4 transition-all duration-500 relative z-10",
-          scrolled ? "h-14 md:h-16" : "h-16 md:h-20",
+          scrolled ? "h-16 md:h-20" : "h-20 md:h-24 lg:h-28",
         )}
       >
         <Link to="/" className="flex items-center gap-3 min-w-0" onClick={() => scrollTo("top")}>
@@ -83,7 +83,7 @@ export default function SiteHeader() {
             alt="Landhotel Schend Logo"
             className={cn(
               "logo-light w-auto shrink-0 object-contain transition-all duration-500",
-              scrolled ? "h-10 md:h-12" : "h-14 md:h-16 lg:h-[4.5rem]",
+              scrolled ? "h-12 md:h-14" : "h-16 md:h-20 lg:h-24",
             )}
           />
           <img
@@ -92,7 +92,7 @@ export default function SiteHeader() {
             aria-hidden
             className={cn(
               "logo-dark w-auto shrink-0 object-contain transition-all duration-500",
-              scrolled ? "h-10 md:h-12" : "h-14 md:h-16 lg:h-[4.5rem]",
+              scrolled ? "h-12 md:h-14" : "h-16 md:h-20 lg:h-24",
             )}
           />
           <div className="min-w-0">
