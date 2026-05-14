@@ -1,6 +1,6 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Hotel, Download, Mail, Printer } from "lucide-react";
+import { Download, Mail, Printer } from "lucide-react";
 import { eur, formatDate } from "@/lib/format";
 import { toast } from "sonner";
 
@@ -36,7 +36,11 @@ export default function InvoiceDialog({ open, onOpenChange, booking, room }: Pro
         <div className="bg-card p-8 print:p-12">
           <div className="flex items-start justify-between border-b pb-4 mb-6">
             <div className="flex items-center gap-3">
-              <Hotel className="h-9 w-9 text-primary" />
+              <span
+                role="img"
+                aria-label="Landhotel Schend Logo"
+                className="schend-mark shrink-0 h-12 text-primary print:text-black"
+              />
               <div>
                 <div className="text-lg font-bold tracking-wide text-primary">LANDHOTEL SCHEND</div>
                 <div className="text-xs text-muted-foreground">Hauptstraße 23 · 54552 Immerath</div>

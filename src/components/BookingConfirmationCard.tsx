@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CheckCircle2, Hotel, MessageCircle, Printer, MapPin, Phone, Mail } from "lucide-react";
+import { CheckCircle2, MessageCircle, Printer, MapPin, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HotelImage } from "@/components/HotelImage";
 import {
@@ -49,8 +49,12 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
         <div className="overflow-hidden rounded-sm border bg-background">
           {/* Email Header */}
           <div className="border-b bg-muted/40 px-5 py-4">
-            <div className="flex items-center gap-2 text-primary">
-              <Hotel className="h-4 w-4" strokeWidth={1.5} />
+            <div className="flex items-center gap-2.5 text-primary">
+              <span
+                role="img"
+                aria-label="Landhotel Schend Logo"
+                className="schend-mark shrink-0 h-5 text-primary"
+              />
               <span className="font-display text-base">Landhotel Schend</span>
             </div>
             <p className="mt-3 text-sm font-semibold text-foreground">
@@ -173,8 +177,12 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
 
           {/* Email Footer */}
           <div className="border-t bg-muted/40 px-5 py-4">
-            <div className="flex items-center gap-2 text-primary">
-              <Hotel className="h-4 w-4" strokeWidth={1.5} />
+            <div className="flex items-center gap-2.5 text-primary">
+              <span
+                role="img"
+                aria-label="Landhotel Schend Logo"
+                className="schend-mark shrink-0 h-5 text-primary"
+              />
               <span className="font-display text-base">Landhotel Schend</span>
             </div>
             <p className="mt-2 text-xs text-muted-foreground">
