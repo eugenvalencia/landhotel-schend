@@ -64,6 +64,8 @@
     --cal-intern: 220 8% 82%;
     --cal-intern-fg: 220 10% 25%;
     --cal-today: 38 75% 45%;         /* Outline-Farbe für den heutigen Tag */
+    --cal-holiday: 42 88% 92%;       /* warmer Sand-Ton für Feiertage */
+    --cal-holiday-fg: 25 60% 32%;
 
     /* Hero overlay — softer, photo-first */
     --gradient-hero: linear-gradient(

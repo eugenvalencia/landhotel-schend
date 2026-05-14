@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { eur, toISODate, formatDate, formatDateShort } from "@/lib/format";
 import { HotelImage } from "@/components/HotelImage";
 import { photoForRoomType } from "@/lib/photos";
+import { getHoliday } from "@/lib/holidays";
 
 type Room = {
   id: string;
@@ -440,18 +441,24 @@ export default function CalendarTab() {
                   <th className="sticky left-0 bg-muted z-10 text-left font-medium p-2 min-w-[200px] border-b border-r">Zimmer</th>
                   {days.map((d) => {
                     const isToday = toISODate(d) === todayIso;
+                    const holiday = getHoliday(d, "RP");
                     return (
                       <th
                         key={d.toISOString()}
+                        title={holiday ? `Feiertag: ${holiday.name}` : undefined}
                         className={cn(
                           "font-medium p-1 text-center border-b",
                           view === "day" ? "min-w-[420px]" : view === "week" ? "min-w-[110px]" : "min-w-[36px]",
                           (d.getDay() === 0 || d.getDay() === 6) && "bg-accent/40",
+                          holiday && "bg-[hsl(var(--cal-holiday))] text-[hsl(var(--cal-holiday-fg))]",
                           isToday && "ring-2 ring-inset ring-[hsl(var(--cal-today))] text-[hsl(var(--cal-today))] font-bold",
                         )}
                       >
                         <div className="text-[10px] text-muted-foreground uppercase">{d.toLocaleDateString("de-DE", { weekday: "short" }).slice(0, 2)}</div>
                         <div>{d.getDate()}{view !== "month" && <span className="text-muted-foreground font-normal">.{String(d.getMonth() + 1).padStart(2, "0")}</span>}</div>
+                        {holiday && (view === "day" || view === "week") && (
+                          <div className="text-[9px] font-medium leading-tight mt-0.5 truncate">{holiday.name}</div>
+                        )}
                       </th>
                     );
                   })}
