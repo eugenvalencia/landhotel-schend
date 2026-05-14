@@ -322,17 +322,19 @@ const Index = () => {
 
         {/* Food-Marquee — Hairline-Top/Bottom, mit weicher Rundung */}
         <div className="overflow-hidden border-y border-border/60 py-6 bg-background">
-          <div className="flex w-max animate-marquee gap-4">
-            {[...FOOD_PHOTOS, ...FOOD_PHOTOS].map((src, i) => (
-              <img
-                key={i}
-                src={src}
-                alt="Gericht aus dem Landhaus Restaurant"
-                loading="lazy"
-                decoding="async"
-                className="h-44 md:h-56 w-auto object-cover rounded-md shadow-card"
-              />
-            ))}
+          <div className="flex w-max animate-marquee">
+            {Array.from({ length: 4 }).flatMap((_, copy) =>
+              FOOD_PHOTOS.map((src, i) => (
+                <img
+                  key={`${copy}-${i}`}
+                  src={src}
+                  alt="Gericht aus dem Landhaus Restaurant"
+                  loading="lazy"
+                  decoding="async"
+                  className="h-44 md:h-56 w-auto object-cover rounded-md shadow-card mr-4"
+                />
+              )),
+            )}
           </div>
         </div>
 
