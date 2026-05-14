@@ -70,29 +70,19 @@ export default function SiteHeader() {
       <div
         className={cn(
           "container mx-auto px-4 flex items-center justify-between gap-4 transition-all duration-500 relative z-10",
-          scrolled ? "h-16 md:h-20" : "h-20 md:h-24 lg:h-28",
+          scrolled ? "h-14 md:h-16" : "h-16 md:h-20",
         )}
       >
         <Link to="/" className="flex items-center gap-3 min-w-0" onClick={() => scrollTo("top")}>
-          {/* The .logo-light / .logo-dark CSS swap (defined in index.css) handles all three
-              theme states: explicit Light, explicit Dark, AND system (which Tailwind's `dark:`
-              alone can't reach because it's class-based). Sized to match the height of the
-              two-line text block (Landhotel Schend + subtitle) right of the mark. */}
-          <img
-            src="/schend-logo-black.svg"
-            alt="Landhotel Schend Logo"
+          {/* CSS mask-image: the building drawing shows up in `currentColor`, so the
+              wrapper's text-foreground colour applies to the mark and the wordmark
+              identically — no more sepia-vs-cream mismatch in any theme mode. */}
+          <span
+            role="img"
+            aria-label="Landhotel Schend Logo"
             className={cn(
-              "logo-light w-auto shrink-0 object-contain transition-all duration-500",
-              scrolled ? "h-12 md:h-14" : "h-16 md:h-20 lg:h-24",
-            )}
-          />
-          <img
-            src="/schend-logo-white.svg"
-            alt=""
-            aria-hidden
-            className={cn(
-              "logo-dark w-auto shrink-0 object-contain transition-all duration-500",
-              scrolled ? "h-12 md:h-14" : "h-16 md:h-20 lg:h-24",
+              "schend-mark shrink-0 text-foreground transition-all duration-500",
+              scrolled ? "h-10 md:h-12" : "h-12 md:h-14",
             )}
           />
           <div className="min-w-0">
