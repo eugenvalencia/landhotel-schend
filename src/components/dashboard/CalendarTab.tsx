@@ -441,8 +441,9 @@ export default function CalendarTab() {
                   {days.map((d) => {
                     const isToday = toISODate(d) === todayIso;
                     const holiday = getHoliday(d, "RP");
-                    // Today-Outline nur in Woche/Monat — in Tag-View ist eh alles "heute".
+                    // Today-Outline (auf der Spalte) nur in Woche/Monat — in Tag-View ist eh alles "heute".
                     const showTodayRing = isToday && view !== "day";
+                    const dayLabel = `${d.getDate()}${view !== "month" ? `.${String(d.getMonth() + 1).padStart(2, "0")}` : ""}`;
                     return (
                       <th
                         key={d.toISOString()}
@@ -452,11 +453,24 @@ export default function CalendarTab() {
                           view === "day" ? "min-w-[420px]" : view === "week" ? "min-w-[110px]" : "min-w-[36px]",
                           (d.getDay() === 0 || d.getDay() === 6) && "bg-accent/40",
                           holiday && "bg-[hsl(var(--cal-holiday))] text-[hsl(var(--cal-holiday-fg))]",
-                          showTodayRing && "ring-1 ring-inset ring-[hsl(var(--cal-today))] text-[hsl(var(--cal-today))] font-bold",
+                          showTodayRing && "ring-1 ring-inset ring-[hsl(var(--cal-today))]",
                         )}
                       >
                         <div className="text-[10px] text-muted-foreground uppercase">{d.toLocaleDateString("de-DE", { weekday: "short" }).slice(0, 2)}</div>
-                        <div>{d.getDate()}{view !== "month" && <span className="text-muted-foreground font-normal">.{String(d.getMonth() + 1).padStart(2, "0")}</span>}</div>
+                        <div>
+                          {isToday ? (
+                            <span className="inline-flex items-center justify-center min-w-[1.5rem] h-6 px-2 rounded-full bg-[hsl(var(--cal-today))] text-[hsl(var(--cal-today-fg))] font-bold leading-none">
+                              {dayLabel}
+                            </span>
+                          ) : view !== "month" ? (
+                            <>
+                              {d.getDate()}
+                              <span className="text-muted-foreground font-normal">.{String(d.getMonth() + 1).padStart(2, "0")}</span>
+                            </>
+                          ) : (
+                            d.getDate()
+                          )}
+                        </div>
                         {holiday && (view === "day" || view === "week") && (
                           <div className="text-[9px] font-medium leading-tight mt-0.5 truncate">{holiday.name}</div>
                         )}
