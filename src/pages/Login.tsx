@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Hotel, LogIn } from "lucide-react";
+import { Eye, EyeOff, LogIn } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -24,22 +24,33 @@ export default function Login() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setBusy(false);
-    if (error) {
-      toast.error("Login fehlgeschlagen: " + error.message);
-      return;
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        toast.error("Login fehlgeschlagen: " + error.message);
+        return;
+      }
+      if (!data.session) {
+        toast.error("Login fehlgeschlagen: keine Session zurückerhalten");
+        return;
+      }
+      toast.success("Willkommen zurück!");
+      navigate("/dashboard");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error("[login] supabase signIn threw:", err);
+      toast.error("Verbindungsfehler: " + msg);
+    } finally {
+      setBusy(false);
     }
-    toast.success("Willkommen zurück!");
-    navigate("/dashboard");
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted px-4">
       <Card className="w-full max-w-md shadow-elevated">
         <CardHeader className="text-center">
-          <Link to="/" className="inline-flex items-center justify-center gap-2 text-primary mb-2">
-            <Hotel className="h-6 w-6" />
+          <Link to="/" className="inline-flex items-center justify-center gap-3 text-primary mb-2">
+            <span className="schend-mark shrink-0 h-7" aria-hidden />
             <span className="font-semibold">Landhotel Schend</span>
           </Link>
           <CardTitle>Hotel-Dashboard</CardTitle>
