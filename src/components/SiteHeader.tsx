@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "@/components/ThemeToggle";
-import logo from "@/assets/logo.png";
 
 
 export default function SiteHeader() {
@@ -75,11 +74,22 @@ export default function SiteHeader() {
         )}
       >
         <Link to="/" className="flex items-center gap-2 min-w-0" onClick={() => scrollTo("top")}>
+          {/* Black on light theme; white on dark theme. Two <img> tags swap via Tailwind dark: classes
+              so the SVG stays crisp at any size and never carries the old white background tile. */}
           <img
-            src={logo}
+            src="/schend-logo-black.svg"
             alt="Landhotel Schend Logo"
             className={cn(
-              "w-auto shrink-0 object-contain transition-all duration-500",
+              "block dark:hidden w-auto shrink-0 object-contain transition-all duration-500",
+              scrolled ? "h-8 md:h-10" : "h-10 md:h-14",
+            )}
+          />
+          <img
+            src="/schend-logo-white.svg"
+            alt=""
+            aria-hidden
+            className={cn(
+              "hidden dark:block w-auto shrink-0 object-contain transition-all duration-500",
               scrolled ? "h-8 md:h-10" : "h-10 md:h-14",
             )}
           />
