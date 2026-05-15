@@ -31,6 +31,13 @@ const DemoDatevTab      = lazy(() => import("@/components/dashboard/demo/DemoDat
 const DemoComplianceTab = lazy(() => import("@/components/dashboard/demo/DemoComplianceTab"));
 const DemoAnalyticsTab  = lazy(() => import("@/components/dashboard/demo/DemoAnalyticsTab"));
 const DemoAnomalyTab    = lazy(() => import("@/components/dashboard/demo/DemoAnomalyTab"));
+const DemoSmartPricingTab    = lazy(() => import("@/components/dashboard/demo/DemoSmartPricingTab"));
+const DemoFolioTab           = lazy(() => import("@/components/dashboard/demo/DemoFolioTab"));
+const DemoHandoverTab        = lazy(() => import("@/components/dashboard/demo/DemoHandoverTab"));
+const DemoTicketsTab         = lazy(() => import("@/components/dashboard/demo/DemoTicketsTab"));
+const DemoExpressCheckinTab  = lazy(() => import("@/components/dashboard/demo/DemoExpressCheckinTab"));
+const DemoGroupBookingsTab   = lazy(() => import("@/components/dashboard/demo/DemoGroupBookingsTab"));
+const DemoCashBookTab        = lazy(() => import("@/components/dashboard/demo/DemoCashBookTab"));
 
 const ModuleLoader = () => (
   <div className="py-16 text-center text-sm text-muted-foreground">
@@ -69,6 +76,14 @@ const MODULE_COMPONENTS: Partial<Record<FeatureKey, { real?: React.ComponentType
   datev_export:         { demo: DemoDatevTab },
   compliance_vault:     { demo: DemoComplianceTab },
   anomaly_detection:    { demo: DemoAnomalyTab },
+  // WOW-Roadmap Wave 1
+  smart_pricing:        { demo: DemoSmartPricingTab },
+  folio:                { demo: DemoFolioTab },
+  shift_handover:       { demo: DemoHandoverTab },
+  service_tickets:      { demo: DemoTicketsTab },
+  express_checkin:      { demo: DemoExpressCheckinTab },
+  group_bookings:       { demo: DemoGroupBookingsTab },
+  cash_book:            { demo: DemoCashBookTab },
 };
 
 // ---------- Wrapper: header + sidebar + outlet ----------

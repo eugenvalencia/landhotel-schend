@@ -19,6 +19,13 @@ import {
   ShieldCheck,
   Lock,
   LockOpen,
+  TrendingUp,
+  Receipt,
+  ClipboardList,
+  Wrench,
+  ScanLine,
+  Users2,
+  Banknote,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -47,6 +54,13 @@ const ICON_MAP: Record<string, LucideIcon> = {
   ShieldAlert,
   FileSpreadsheet,
   ShieldCheck,
+  TrendingUp,
+  Receipt,
+  ClipboardList,
+  Wrench,
+  ScanLine,
+  Users2,
+  Banknote,
 };
 
 interface SidebarItemProps {

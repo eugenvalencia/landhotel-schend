@@ -27,7 +27,15 @@ export type FeatureKey =
   | "datev_export"
   | "compliance_vault"
   | "analytics_revenue"
-  | "anomaly_detection";
+  | "anomaly_detection"
+  // WOW-Roadmap Wave 1
+  | "smart_pricing"
+  | "folio"
+  | "shift_handover"
+  | "service_tickets"
+  | "express_checkin"
+  | "group_bookings"
+  | "cash_book";
 
 export interface FeatureConfig {
   state: FeatureState;
@@ -107,6 +115,15 @@ export const MODULE_CATALOG: ModuleDescriptor[] = [
     whyDisabled: "Hidden für Schend — kein Online-Umsatz, kein Bedarf." },
   { key: "compliance_vault",    label: "Compliance-Vault",   iconName: "ShieldCheck",    path: "compliance",          group: "intelligence", shortPitch: "AVV, TOM-Dokumente, Subprozessoren-Liste.",
     whyDisabled: "Hidden für Schend — erst relevant für Multi-Tenant-Kunden." },
+
+  // WOW-Roadmap Wave 1 — fertig fuer Demo
+  { key: "smart_pricing",       label: "Smart-Pricing",      iconName: "TrendingUp",     path: "smart-pricing",       group: "kommerz",      shortPitch: "KI-Vorschlag pro Tag: optimaler Preis aus Vorjahr, Saison, Events." },
+  { key: "folio",               label: "Folio",              iconName: "Receipt",        path: "folio",               group: "alltag",       shortPitch: "Laufende Zimmerrechnung: Bar, Restaurant, Zusatzbett — alles auf einer Rechnung." },
+  { key: "shift_handover",      label: "Schicht-Übergabe",   iconName: "ClipboardList",  path: "handover",            group: "ops",          shortPitch: "Was die Spätschicht wissen muss — auf Knopfdruck zum Drucken." },
+  { key: "service_tickets",     label: "Service-Tickets",    iconName: "Wrench",         path: "tickets",             group: "ops",          shortPitch: "Defekte, Wartung, Inventar — Tickets fürs Personal auf dem Handy." },
+  { key: "express_checkin",     label: "Express-Check-in",   iconName: "ScanLine",       path: "express-checkin",     group: "gast",         shortPitch: "QR-Code + Pre-Check-in-Link, Empfangsdame entlastet." },
+  { key: "group_bookings",      label: "Gruppen-Buchungen",  iconName: "Users2",         path: "group-bookings",      group: "alltag",       shortPitch: "Hochzeit, Firma, Reisegruppe — 12 Zimmer auf einmal anlegen." },
+  { key: "cash_book",           label: "Tagesabschluss",     iconName: "Banknote",       path: "cash-book",           group: "intelligence", shortPitch: "Bar, Karte, Überweisung pro Tag — Kassensturz mit einem Blick." },
 ];
 
 export const MODULE_GROUP_LABEL: Record<ModuleDescriptor["group"], string> = {
