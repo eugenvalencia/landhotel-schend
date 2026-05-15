@@ -38,8 +38,11 @@ export type FeaturesMap = Partial<Record<FeatureKey, FeatureConfig>>;
 
 export interface TenantBranding {
   primary_hsl?: string;
+  primary_foreground_hsl?: string;
   secondary_hsl?: string;
+  secondary_foreground_hsl?: string;
   accent_hsl?: string;
+  accent_foreground_hsl?: string;
   logo_class?: string;
 }
 
