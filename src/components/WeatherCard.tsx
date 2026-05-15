@@ -1,12 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, MapPin, Wind, Droplets, Thermometer, Sunrise, Sunset, Compass } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Loader2, MapPin, Wind, Droplets, Thermometer, Sunrise, Sunset, Compass, Navigation } from "lucide-react";
 
-// Landhotel Schend, Immerath — Default-Position fuer Fallback
+// Landhotel Schend, Immerath — Default-Position
 const HOTEL_LAT = 50.1303;
 const HOTEL_LON = 6.9594;
 const HOTEL_LABEL = "Immerath · Hotel";
+
+// Auto-Refresh alle 15 Minuten
+const REFRESH_MS = 15 * 60 * 1000;
 
 interface WeatherData {
   current: {
@@ -34,6 +38,15 @@ interface Position {
   lon: number;
   label: string;
   source: "gps" | "hotel";
+}
+
+interface WeatherCardProps {
+  /** "hotel" (Default Immerath) oder "gps" (Browser-Standort, Fallback Hotel) */
+  defaultMode?: "hotel" | "gps";
+  /** Zeigt den GPS-Toggle-Button (sinnvoll auf der oeffentlichen Site) */
+  allowGpsToggle?: boolean;
+  /** Eigene Ueberschrift; null = keine Ueberschrift */
+  title?: string | null;
 }
 
 const buildUrl = (lat: number, lon: number) =>
@@ -68,73 +81,99 @@ const dayLabel = (iso: string): string => {
   return d.toLocaleDateString("de-DE", { weekday: "short" });
 };
 
-export default function DashboardWeatherWidget() {
+export default function WeatherCard({
+  defaultMode = "hotel",
+  allowGpsToggle = false,
+  title = null,
+}: WeatherCardProps) {
   const [pos, setPos] = useState<Position | null>(null);
   const [data, setData] = useState<WeatherData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [gpsLoading, setGpsLoading] = useState(false);
 
-  // 1. Position bestimmen: Geolocation → Fallback Hotel
-  useEffect(() => {
+  const requestGps = useCallback(() => {
     if (!("geolocation" in navigator)) {
       setPos({ lat: HOTEL_LAT, lon: HOTEL_LON, label: HOTEL_LABEL, source: "hotel" });
       return;
     }
+    setGpsLoading(true);
     navigator.geolocation.getCurrentPosition(
       (p) => {
         setPos({
           lat: p.coords.latitude,
           lon: p.coords.longitude,
-          label: "Aktueller Standort",
+          label: "Mein Standort",
           source: "gps",
         });
+        setGpsLoading(false);
       },
       () => {
         setPos({ lat: HOTEL_LAT, lon: HOTEL_LON, label: HOTEL_LABEL, source: "hotel" });
+        setGpsLoading(false);
       },
       { timeout: 4000, maximumAge: 30 * 60 * 1000 },
     );
   }, []);
 
-  // 2. Wetter fuer aktuelle Position laden
+  const setHotel = useCallback(() => {
+    setPos({ lat: HOTEL_LAT, lon: HOTEL_LON, label: HOTEL_LABEL, source: "hotel" });
+  }, []);
+
+  // Initial-Position
+  useEffect(() => {
+    if (defaultMode === "gps") requestGps();
+    else setHotel();
+  }, [defaultMode, requestGps, setHotel]);
+
+  // Wetter laden + 15-Min-Refresh
   useEffect(() => {
     if (!pos) return;
     let active = true;
     setError(null);
-    fetch(buildUrl(pos.lat, pos.lon))
-      .then((r) => r.json())
-      .then((raw) => {
-        if (!active || !raw?.current || !raw?.daily) {
-          setError("Keine Wetterdaten verfügbar");
-          return;
-        }
-        const cur = raw.current;
-        const dly = raw.daily;
-        const daily: WeatherData["daily"] = dly.time.map((d: string, i: number) => ({
-          date: d,
-          weatherCode: Number(dly.weathercode[i] ?? 0),
-          tMax: Number(dly.temperature_2m_max[i] ?? 0),
-          tMin: Number(dly.temperature_2m_min[i] ?? 0),
-          rainMm: Number(dly.precipitation_sum[i] ?? 0),
-          sunrise: String(dly.sunrise[i] ?? ""),
-          sunset: String(dly.sunset[i] ?? ""),
-        }));
-        setData({
-          current: {
-            temperature: Number(cur.temperature_2m ?? 0),
-            apparent: Number(cur.apparent_temperature ?? 0),
-            weatherCode: Number(cur.weathercode ?? 0),
-            windSpeed: Number(cur.windspeed_10m ?? 0),
-            windDirection: Number(cur.winddirection_10m ?? 0),
-            humidity: Number(cur.relative_humidity_2m ?? 0),
-            precipitation: Number(cur.precipitation ?? 0),
-          },
-          daily,
+
+    const load = () => {
+      fetch(buildUrl(pos.lat, pos.lon))
+        .then((r) => r.json())
+        .then((raw) => {
+          if (!active || !raw?.current || !raw?.daily) {
+            setError("Keine Wetterdaten verfügbar");
+            return;
+          }
+          const cur = raw.current;
+          const dly = raw.daily;
+          const daily: WeatherData["daily"] = dly.time.map((d: string, i: number) => ({
+            date: d,
+            weatherCode: Number(dly.weathercode[i] ?? 0),
+            tMax: Number(dly.temperature_2m_max[i] ?? 0),
+            tMin: Number(dly.temperature_2m_min[i] ?? 0),
+            rainMm: Number(dly.precipitation_sum[i] ?? 0),
+            sunrise: String(dly.sunrise[i] ?? ""),
+            sunset: String(dly.sunset[i] ?? ""),
+          }));
+          setData({
+            current: {
+              temperature: Number(cur.temperature_2m ?? 0),
+              apparent: Number(cur.apparent_temperature ?? 0),
+              weatherCode: Number(cur.weathercode ?? 0),
+              windSpeed: Number(cur.windspeed_10m ?? 0),
+              windDirection: Number(cur.winddirection_10m ?? 0),
+              humidity: Number(cur.relative_humidity_2m ?? 0),
+              precipitation: Number(cur.precipitation ?? 0),
+            },
+            daily,
+          });
+        })
+        .catch(() => {
+          if (active) setError("Wetter-API nicht erreichbar");
         });
-      })
-      .catch(() => {
-        if (active) setError("Wetter-API nicht erreichbar");
-      });
-    return () => { active = false; };
+    };
+
+    load();
+    const interval = window.setInterval(load, REFRESH_MS);
+    return () => {
+      active = false;
+      window.clearInterval(interval);
+    };
   }, [pos]);
 
   const today = useMemo(() => (data ? codeLabel(data.current.weatherCode) : null), [data]);
@@ -143,26 +182,46 @@ export default function DashboardWeatherWidget() {
   return (
     <Card className="shadow-card overflow-hidden">
       <CardContent className="p-0">
-        {/* Header-Streifen mit Standort */}
+        {/* Header */}
         <div className="px-4 md:px-5 py-3 border-b bg-muted/30 flex items-center justify-between gap-3 flex-wrap">
-          <div className="flex items-center gap-2 text-xs">
-            <MapPin className="h-3.5 w-3.5 text-secondary" />
-            <span className="font-medium">{pos?.label ?? "Position wird ermittelt …"}</span>
+          <div className="flex items-center gap-2 text-xs min-w-0">
+            <MapPin className="h-3.5 w-3.5 text-secondary shrink-0" />
+            <span className="font-medium truncate">
+              {title ?? pos?.label ?? "Position wird ermittelt …"}
+            </span>
             {pos?.source === "gps" && (
-              <Badge variant="outline" className="text-[9px] border-emerald-500/40 text-emerald-700 dark:text-emerald-300">
+              <Badge variant="outline" className="text-[9px] border-emerald-500/40 text-emerald-700 dark:text-emerald-300 shrink-0">
                 GPS
               </Badge>
             )}
-            {pos?.source === "hotel" && (
-              <Badge variant="outline" className="text-[9px]">Hotel-Standort</Badge>
+            {pos?.source === "hotel" && !title && (
+              <Badge variant="outline" className="text-[9px] shrink-0">Hotel-Standort</Badge>
             )}
           </div>
-          <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-            Live · Open-Meteo
-          </span>
+          <div className="flex items-center gap-2">
+            {allowGpsToggle && (
+              <Button
+                onClick={pos?.source === "gps" ? setHotel : requestGps}
+                size="sm"
+                variant="ghost"
+                className="h-7 text-[11px] gap-1.5"
+                disabled={gpsLoading}
+              >
+                {gpsLoading ? (
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                ) : (
+                  <Navigation className="h-3 w-3" />
+                )}
+                {pos?.source === "gps" ? "Eifel-Wetter zeigen" : "Mein Wetter vergleichen"}
+              </Button>
+            )}
+            <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground hidden sm:inline">
+              Live · Open-Meteo
+            </span>
+          </div>
         </div>
 
-        {/* Aktuelles Wetter + 5-Tage-Vorschau */}
+        {/* Body */}
         {!data && !error && (
           <div className="px-5 py-8 text-center text-sm text-muted-foreground">
             <Loader2 className="h-5 w-5 animate-spin mx-auto mb-2" />
@@ -202,7 +261,7 @@ export default function DashboardWeatherWidget() {
               </div>
             </div>
 
-            {/* 5-Tage-Vorschau */}
+            {/* 5-Tage */}
             <div className="px-3 md:px-5 py-4">
               <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground mb-2">
                 Vorhersage · 5 Tage
@@ -228,8 +287,7 @@ export default function DashboardWeatherWidget() {
                 })}
               </div>
               <p className="text-[10px] text-muted-foreground mt-3 leading-relaxed">
-                Standort wird via Geolocation gelesen — wenn der Browser fragt &quot;Standort teilen?&quot;,
-                bestätige für aktuelle Position. Bei Ablehnung wird das Hotel in Immerath verwendet.
+                Aktualisiert alle 15 Minuten · Datenquelle Open-Meteo
               </p>
             </div>
           </div>

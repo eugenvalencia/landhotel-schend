@@ -3,6 +3,7 @@ import eifel2 from "@/assets/eifel-2.jpg";
 import eifel3 from "@/assets/eifel-3.jpg";
 import eifel4 from "@/assets/eifel-4.jpg";
 import eifel5 from "@/assets/eifel-5.jpg";
+import WeatherCard from "@/components/WeatherCard";
 
 export default function EifelRegionSection() {
   return (
@@ -18,6 +19,11 @@ export default function EifelRegionSection() {
             Unser Hotel schmiegt sich in die Kratermulde eines erloschenen Vulkans.
             Erleben Sie die Einzigartigkeit unserer Gesundheitslandschaft Vulkaneifel.
           </p>
+        </div>
+
+        {/* Live-Wetter Immerath — Conversion-Trigger: "schaut, wie schoen es ist" */}
+        <div className="max-w-4xl mx-auto mb-14 md:mb-20">
+          <WeatherCard defaultMode="hotel" allowGpsToggle />
         </div>
 
         {/* Photo mosaic — sanfte Rundung, ruhige Schatten */}

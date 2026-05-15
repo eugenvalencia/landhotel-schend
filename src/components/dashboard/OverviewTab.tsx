@@ -10,7 +10,7 @@ import {
   CalendarClock,
 } from "lucide-react";
 import { toast } from "sonner";
-import DashboardWeatherWidget from "./DashboardWeatherWidget";
+import WeatherCard from "@/components/WeatherCard";
 
 interface BookingRow {
   id: string;
@@ -255,7 +255,7 @@ export default function OverviewTab() {
       )}
 
       {/* Wetter + Standort */}
-      <DashboardWeatherWidget />
+      <WeatherCard defaultMode="gps" />
 
       {/* Kennzahlen */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
