@@ -112,7 +112,10 @@ export default function CalendarTab() {
   const loadAll = async () => {
     const [{ data: r, error: rErr }, { data: b, error: bErr }] = await Promise.all([
       supabase.from("rooms").select("id,room_number,name,room_type,price_per_night,photos").order("room_number"),
-      supabase.from("bookings").select("*").order("check_in"),
+      // Supabase liefert per Default nur 1000 Zeilen. Mit 18 Monaten Demo-Daten
+      // sind das ~2000 Buchungen — ohne Limit fehlt die zweite Haelfte (die fuer
+      // den aktuellen Monat relevant ist, weil sortiert nach check_in ASC).
+      supabase.from("bookings").select("*").order("check_in").limit(5000),
     ]);
     if (rErr || bErr) {
       toast.error("Kalender konnte nicht geladen werden");
