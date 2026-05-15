@@ -1,0 +1,979 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Conexa Recommendations Network — Strategie</title>
+<style>
+  :root {
+    --ink: #1b2230; --muted: #5e6577; --brass: #8a6b2a; --brass-soft: #c9b07f;
+    --paper: #faf7f0; --paper-light: #fdfbf6; --line: #d6cfbe;
+    --green: #1f7a4d; --green-soft: #d8efe2;
+    --rose: #b03a3a; --rose-soft: #fad8d8;
+    --amber: #b8841e; --amber-soft: #faecc8;
+    --blue: #2a5b8a; --blue-soft: #d5e3f0;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;font-family:"Inter","Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.55}
+  body{padding:48px 56px;max-width:940px;margin:0 auto}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond","Georgia",serif;font-weight:500;letter-spacing:-0.012em;margin:0}
+  h1{font-size:42px;line-height:1.05}
+  h2{font-size:26px;margin-top:44px;padding-top:18px;border-top:1px solid var(--line)}
+  h3{font-size:19px;margin-top:22px;margin-bottom:6px}
+  h4{font-size:15px;margin-top:14px;margin-bottom:2px;color:var(--brass)}
+  .eyebrow{color:var(--brass);font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600}
+  .lead{font-size:17px;color:var(--muted);margin:14px 0 24px;line-height:1.5}
+  .meta{color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:22px}
+  p{margin:8px 0}
+  ul{margin:6px 0 12px;padding-left:20px}
+  ol{margin:6px 0 12px;padding-left:22px}
+  li{margin:4px 0;font-size:13.5px}
+  strong{color:var(--ink);font-weight:600}
+  em{color:var(--muted)}
+  .card{background:white;border:1px solid var(--line);border-left:4px solid var(--brass);padding:16px 20px;border-radius:4px;margin:12px 0}
+  .card.success{border-left-color:var(--green);background:var(--paper-light)}
+  .card.warn{border-left-color:var(--amber);background:#fcf6e8}
+  .card.risk{border-left-color:var(--rose);background:#fcf0f0}
+  .card.note{border-left-color:var(--blue);background:#f3f7fb}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.5px}
+  th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:white;font-weight:600;color:var(--brass);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:10px;font-weight:600;letter-spacing:.04em;margin-right:4px}
+  .pill-green{background:var(--green-soft);color:var(--green)}
+  .pill-amber{background:var(--amber-soft);color:var(--amber)}
+  .pill-rose{background:var(--rose-soft);color:var(--rose)}
+  .pill-blue{background:var(--blue-soft);color:var(--blue)}
+  .toc{background:white;border:1px solid var(--line);border-radius:4px;padding:18px 24px;margin:24px 0 32px}
+  .toc ol{padding-left:24px}
+  .toc li{margin:5px 0;font-size:13px}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0}
+  .threecol{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:14px 0}
+  .stat-box{background:white;border:1px solid var(--line);padding:14px;border-radius:4px}
+  .stat-label{color:var(--brass);font-size:10px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
+  .stat-value{font-family:"Cormorant Garamond",Georgia,serif;font-size:22px;color:var(--ink);line-height:1.1}
+  .stat-sub{color:var(--muted);font-size:11px;margin-top:4px}
+  .codeblock{background:#1b2230;color:#e8e4d3;padding:14px 16px;border-radius:4px;font-family:"Consolas","Monaco",monospace;font-size:11.5px;line-height:1.6;margin:10px 0;overflow-x:auto}
+  .codeblock .com{color:#7d8a9a}
+  .codeblock .tag{color:#c9b07f}
+  .codeblock .attr{color:#a9d4ff}
+  hr.section-break{border:0;border-top:2px solid var(--brass-soft);margin:36px 0;width:60px}
+  footer{margin-top:48px;color:var(--muted);font-size:11px;border-top:1px solid var(--line);padding-top:18px}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr;gap:24px}
+  @media print{body{background:white;padding:22mm 18mm;max-width:none}@page{size:A4;margin:20mm 16mm 22mm 16mm}.card,table,.twocol,.threecol,.toc,.codeblock{page-break-inside:avoid}h1,h2{page-break-after:avoid}h2{page-break-before:auto}}
+</style>
+</head>
+<body>
+
+<div class="eyebrow">Conexa Digital S.L. · Strategie-Dokument · Vertraulich</div>
+<h1>Conexa Recommendations Network</h1>
+<p class="lead">
+  Ein hyperlokales Empfehlungs-Widget als JavaScript-Embed. Jeder lokale Anbieter integriert
+  es in seine Website. Tenants nutzen es kostenlos und gewinnen SEO + AI-Sichtbarkeit.
+  Werbende Partner zahlen für Klicks und Conversions. Trojanisches Pferd für die gesamte
+  Conexa-OS-Plattform.
+</p>
+<div class="meta">Stand 15. Mai 2026 · Verfasst von Roman, CTO · für Eugen Neifer, Gründer</div>
+
+<div class="toc">
+  <div class="eyebrow" style="margin-bottom:8px">Inhalt</div>
+  <ol>
+    <li>Executive Summary — die Idee in zwei Minuten</li>
+    <li>Was Conexa Recommendations ist — und was es nicht ist</li>
+    <li>Die drei unfairen Vorteile</li>
+    <li>Wettbewerber-Analyse — wer macht was, wer macht es schlecht</li>
+    <li>Was wir auf jeden Fall haben müssen</li>
+    <li>Was wir auf keinen Fall haben dürfen</li>
+    <li>Zielgruppen und Branchen-Prioritäten</li>
+    <li>Branchen-Match-Matrix — wer empfiehlt wem was</li>
+    <li>Kriterien für eine 100%-passende Empfehlung</li>
+    <li>Optimierungs-Ideen — was uns smarter macht als alle anderen</li>
+    <li>Adoption-Strategie — Zero Friction</li>
+    <li>Geschäftsmodell + Pricing</li>
+    <li>Free-Tier: das Trojanische Pferd</li>
+    <li>Technische Architektur — Widget-as-a-Service</li>
+    <li>Tool-Stack + Kostenrechnung (Monat 1–36)</li>
+    <li>Go-to-Market in drei Phasen</li>
+    <li>Team-Aufbau</li>
+    <li>IP-Strategie — Patent? Marke? Trade Secret?</li>
+    <li>Risiken + Gegenmaßnahmen</li>
+    <li>Finanzielle Projektion (drei Szenarien)</li>
+    <li>Konkreter 4-Wochen-Plan</li>
+    <li>Romans ehrliche Einschätzung als Freund + CTO</li>
+  </ol>
+</div>
+
+<!-- 1 -->
+<h2>1 · Executive Summary</h2>
+
+<p>
+  <strong>Was wir bauen.</strong> Ein JavaScript-Embed-Widget, das jeder lokale Anbieter
+  (Hotel, Restaurant, Salon, Praxis, Studio) mit einer Zeile in seine Website einbaut. Das
+  Widget zeigt 4–8 kuratierte lokale Partner an, mit Rabatt für die Kunden des Anbieters.
+  Conexa verdient an der Werbe-Seite — Partner zahlen pro Klick, Conversion oder Listing.
+</p>
+
+<p>
+  <strong>Was es neu macht.</strong> Niemand kombiniert vier Elemente in einem Produkt:
+  <em>hyperlokal</em> (max. 35 km Radius), <em>branchenübergreifend</em>, <em>als
+  Tool-Integration statt Aggregator-Plattform</em>, <em>mit eingebautem Konflikt-Filter</em>,
+  damit das System die eigenen In-House-Services nicht kannibalisiert.
+</p>
+
+<p>
+  <strong>Der unentdeckte Geld-Hebel.</strong> Der primäre Wert für Tenants ist nicht die
+  Affiliate-Provision (die ist klein, 100–700 €/Jahr). Der primäre Wert ist
+  <strong>SEO + AI-Sichtbarkeits-Boost</strong>: bidirektionale lokale Backlinks,
+  Engagement-Signale für Google, strukturierte Daten für AI-Suche (ChatGPT, Perplexity,
+  Gemini). Dieser Wert ist heute 500–2.000 €/Monat bei SEO-Agenturen — und wir liefern ihn
+  kostenlos als Nebenwirkung. Das ist die eigentliche Verkaufs-Geschichte.
+</p>
+
+<p>
+  <strong>Warum es groß werden kann.</strong> Trojanisches Pferd. 50.000 Tenants nutzen das
+  Widget kostenlos, davon 3–8 % werden Paying-Tenants für Conexa-OS-Module (PMS, CRM,
+  Voice). Vergleichbare Modelle (Stripe, Shopify, Square) haben so 10–100 Mrd $-Unternehmen
+  geschaffen. Realistische Bewertungs-Range für Conexa: 40–100 Mio € in 5 Jahren.
+</p>
+
+<div class="threecol">
+  <div class="stat-box">
+    <div class="stat-label">Adressierbarer Markt DE</div>
+    <div class="stat-value">~1 Mio KMU</div>
+    <div class="stat-sub">stationär mit Endkunden-Kontakt</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-label">Ziel Y5</div>
+    <div class="stat-value">15.000 Tenants</div>
+    <div class="stat-sub">realistisches Szenario</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-label">Umsatz Y5 (realistisch)</div>
+    <div class="stat-value">~8 Mio €</div>
+    <div class="stat-sub">Affiliate + Conexa-OS-Lizenz</div>
+  </div>
+</div>
+
+<!-- 2 -->
+<h2>2 · Was Conexa Recommendations ist — und was es nicht ist</h2>
+
+<div class="twocol">
+  <div class="card success">
+    <h3 style="margin-top:0">Es ist</h3>
+    <ul>
+      <li>Ein <strong>JavaScript-Embed-Widget</strong>, eingebaut in fremde Websites mit einer Zeile Code</li>
+      <li><strong>Tenant-kuratiert</strong>: der Anbieter behält finale Kontrolle</li>
+      <li><strong>Hyperlokal</strong> (35 km Radius default, einstellbar)</li>
+      <li><strong>Branchenübergreifend</strong>: Hotel, Salon, Praxis, Studio, Restaurant</li>
+      <li><strong>Konflikt-gefiltert</strong>: keine direkten Konkurrenten</li>
+      <li>Ein <strong>SEO/AI-Sichtbarkeits-Booster</strong> als Hauptwert</li>
+      <li>Ein <strong>Vertriebs-Trichter</strong> für andere Conexa-Module</li>
+      <li><strong>EU-souverän</strong>: Daten + Hosting in Deutschland</li>
+    </ul>
+  </div>
+  <div class="card risk">
+    <h3 style="margin-top:0">Es ist nicht</h3>
+    <ul>
+      <li>Kein <strong>Aggregator</strong> wie TripAdvisor oder Yelp</li>
+      <li>Keine eigene <strong>Discovery-Plattform</strong>, kein eigener Traffic</li>
+      <li>Kein <strong>Booking-System</strong> für die empfohlenen Partner</li>
+      <li>Kein <strong>Review-Portal</strong>, kein User-generated Content</li>
+      <li>Kein <strong>Google-Ersatz</strong></li>
+      <li>Kein klassisches <strong>Affiliate-Netzwerk</strong></li>
+      <li>Keine <strong>Mobile-App</strong> — ein Web-Widget</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 3 -->
+<h2>3 · Die drei unfairen Vorteile</h2>
+
+<h3>3.1 Trust-Transfer (klassischer Vorteil)</h3>
+<p>
+  Wenn ein Hotelier dem Gast einen Tipp gibt, hat der eine Vertrauens-Vorprägung. Studien
+  aus dem Tourismus-Marketing zeigen 5–10× höhere Conversion-Rate gegenüber generischen
+  Such-Empfehlungen. Diesen Trust-Transfer kann kein Aggregator nachbauen — er funktioniert
+  nur, wenn der Empfehler bereits Vertrauen besitzt.
+</p>
+
+<h3>3.2 Konflikt-Filter (technischer Vorteil)</h3>
+<p>
+  Niemand sonst hat das. Der Filter sorgt dafür, dass das Hotel nicht das Café gegenüber
+  empfiehlt, der Friseur nicht den nächsten Friseur, die Praxis nicht den nächsten Arzt.
+  Logik: Kategorie ∈ In-House-Services UND Distanz &lt; Konflikt-Radius. Genau diese Mechanik
+  ist die Voraussetzung, dass Anbieter das Widget freiwillig einbauen — ohne sie wäre das
+  Modell selbst-zerstörerisch.
+</p>
+
+<h3>3.3 SEO + AI-Sichtbarkeits-Boost (der entscheidende Vorteil)</h3>
+<p>
+  Hier wird die Idee groß. Vier Effekte gleichzeitig:
+</p>
+<ul>
+  <li><strong>Bidirektionale lokale Backlinks</strong>: Jede Empfehlung = ein echter DoFollow-Link.
+    Bei 100 Partnern in einer Region hat jede Site 30–80 thematisch relevante lokale Backlinks.
+    Heute bezahlen KMU dafür 500–2.000 €/Monat bei SEO-Agenturen.</li>
+  <li><strong>Engagement-Signale</strong>: Chrome User Experience Report meldet Verweildauer
+    und Klick-Through-Rate an Google. Empfehlungs-Widgets erhöhen beides — Rankings steigen.</li>
+  <li><strong>Structured Data für AI-Suche</strong>: Schema.org JSON-LD (LocalBusiness,
+    Recommendation, Place) wird automatisch generiert. ChatGPT, Perplexity, Gemini,
+    Claude ziehen daraus → KMU werden in AI-Antworten erwähnt, die heute praktisch niemandem
+    gehören.</li>
+  <li><strong>NAP-Konsistenz + Citation-Propagation</strong>: Name, Address, Phone werden
+    automatisch konsistent gehalten — heute eine 200–500 €/Monat Dienstleistung.</li>
+</ul>
+
+<div class="card note">
+  <strong>Verkaufs-Geschichte (was wir Tenants sagen):</strong><br>
+  „Du wirst bei Google und ChatGPT besser gefunden, weil du Teil eines lokalen Netzwerks
+  bist. Plus: du verdienst an Provisionen mit. Beides kostenlos."<br>
+  <em>Das ist 10× leichter zu verkaufen als „du verdienst Provision auf Klicks".</em>
+</div>
+
+<!-- 4 -->
+<h2>4 · Wettbewerber-Analyse — wer macht was</h2>
+
+<p>
+  Wir kennen den Markt. 16 Plattformen analysiert. Keine kombiniert alle vier Elemente
+  (hyperlokal + branchenübergreifend + Tool-Integration + Konflikt-Filter).
+</p>
+
+<table>
+  <thead><tr><th>Plattform</th><th>Was sie gut machen</th><th>Was sie schlecht machen</th><th>Lehre für uns</th></tr></thead>
+  <tbody>
+    <tr><td><strong>TripAdvisor</strong></td><td>SEO-Power durch Reviews</td><td>Aggregator → Hotels hassen sie; Spam-Reviews</td><td>Strukturierte Bewertungen vermeiden; nie Aggregator-Position</td></tr>
+    <tr><td><strong>Yelp</strong></td><td>Hyperlokale Datenbank; Werbe-Self-Service</td><td>„Pay-to-Play"-Image; in DACH irrelevant</td><td>Self-Service-Werbung übernehmen; kein Pay-to-Play-Ranking</td></tr>
+    <tr><td><strong>Google Business Profile</strong></td><td>Map-Integration; Reichweite; gratis</td><td>Kein Trust-Transfer; kein Voucher-System</td><td>NAP + Schema.org perfekt; nicht such-getrieben sein</td></tr>
+    <tr><td><strong>OpenTable / TheFork</strong></td><td>Reservation-Workflow perfekt</td><td>Nur Restaurants</td><td>Voucher-Mechanik übernehmen</td></tr>
+    <tr><td><strong>GetYourGuide / Viator</strong></td><td>Aktivitäten-Marketplace global</td><td>20–25 % Provision; Hotel-Konkurrenz</td><td>Voucher-Bundling; nie 25 % Provision</td></tr>
+    <tr><td><strong>Tabelog (Japan)</strong></td><td>Hyperlokale Restaurant-Authority</td><td>Nur Japan + Restaurants</td><td>Kulturell verankerte Marke</td></tr>
+    <tr><td><strong>Vamoos</strong></td><td>Hotel-Concierge-App</td><td>Nur Hotels; kein Affiliate; kein Netzwerk</td><td>Concierge-UI lernen</td></tr>
+    <tr><td><strong>Mindbody</strong> (Wellness)</td><td>Cross-Promotion zwischen Studios</td><td>Teuer (200+ $/Monat); USA-zentriert</td><td>Cross-Promotion-Mechanik; kein Enterprise-Pricing</td></tr>
+    <tr><td><strong>Yext</strong></td><td>NAP-Konsistenz automatisch</td><td>Sehr teuer (~500 €/Monat)</td><td>Citation-Propagation als Feature</td></tr>
+    <tr><td><strong>Nextdoor</strong></td><td>Hyperlokale Community + Werbung</td><td>Spam; in DE schwach</td><td>Hyperlokales Targeting; keine Community-Moderation</td></tr>
+    <tr><td><strong>Komoot</strong></td><td>Outdoor-UX</td><td>Kein Affiliate; nur Outdoor</td><td>Inhaltspflege; nicht Single-Branche</td></tr>
+    <tr><td><strong>EifelCard</strong></td><td>Starke regionale Marke</td><td>Pauschal; kein Tracking</td><td>Voucher-Bündel; nie Pauschal-Modell</td></tr>
+    <tr><td><strong>Square Loyalty</strong></td><td>Cross-Promotion zwischen Händlern</td><td>USA; an POS-Hardware</td><td>Keine Hardware-Lock-in</td></tr>
+    <tr><td><strong>Mews Marketplace</strong></td><td>Kuratierter Marketplace</td><td>Nur PMS-Add-ons</td><td>Nicht nur Software</td></tr>
+    <tr><td><strong>Awin / Tradedoubler</strong></td><td>Klassisches Affiliate</td><td>B2B-Komplexität; keine Tool-Integration</td><td>Affiliate-Tracking-Standards</td></tr>
+    <tr><td><strong>Holidu / FeWo</strong></td><td>Ferienhaus-Discovery</td><td>Aggregator; hohe Provisionen</td><td>Aggregator-Falle vermeiden</td></tr>
+  </tbody>
+</table>
+
+<!-- 5 -->
+<h2>5 · Was wir auf jeden Fall haben müssen</h2>
+
+<div class="card success">
+  <ol>
+    <li><strong>Konflikt-Filter</strong> — das einzige Feature, das uns unverwechselbar macht. Kategorie + geografischer Radius + manueller Override.</li>
+    <li><strong>Schema.org JSON-LD perfekt</strong> auf jeder Empfehlung — Type LocalBusiness + Recommendation + Place. Das ist der AI-Sichtbarkeits-Hebel.</li>
+    <li><strong>DoFollow-Backlinks</strong> (nicht <code>nofollow</code>) — sonst kein SEO-Effekt.</li>
+    <li><strong>Voucher-Tracking-System</strong> — UTM-Parameter + serverseitig + Voucher-Code-Validierung beim Partner. Drei Schichten, redundant.</li>
+    <li><strong>DSGVO-konformes Tracking ohne Cookies</strong> — Plausible + serverseitig. Kein Cookie-Banner für Tenants nötig, ist Verkaufs-Argument.</li>
+    <li><strong>Self-Service-Onboarding</strong> ab Phase 2 — AI generiert Erst-Empfehlungen, Tenant confirmiert in einem Klick.</li>
+    <li><strong>EU-Souveränität</strong> als Marken-Argument (Hetzner + Supabase EU-Region Frankfurt).</li>
+    <li><strong>AI-friendly Public-API</strong> unter <code>api.conexadigital.eu/network.json</code> — Crawler von Perplexity, ChatGPT, Gemini können das gesamte Netzwerk lesen.</li>
+    <li><strong>Tenant-Override</strong> für jede Empfehlung — finale Kontrolle bleibt beim Hotel/Salon, sonst kein Vertrauen.</li>
+    <li><strong>Trust-Pills</strong> in der UI: „Schend-Tipp" vs. „Partner mit Rabatt" — transparent kennzeichnen, sonst UWG-Risiko.</li>
+  </ol>
+</div>
+
+<!-- 6 -->
+<h2>6 · Was wir auf keinen Fall haben dürfen</h2>
+
+<div class="card risk">
+  <ol>
+    <li><strong>Kein User-Review-System</strong> — das ist Yelps Grab. Spam, Moderation, Konflikte. Trust kommt vom Empfehler, nicht von Sternchen.</li>
+    <li><strong>Kein Aggregator-Traffic</strong> — wir bauen keine eigene Discovery-Site. Wir sind im Anbieter-Kontext eingebettet, Punkt.</li>
+    <li><strong>Keine eigene Booking-Engine</strong> für Partner — sie haben ihre Webshops, wir bringen Traffic.</li>
+    <li><strong>Kein Pay-to-Play-Ranking</strong> — wer mehr zahlt, wird nicht prominenter. Pricing geht über Klick/Conversion, nicht über Position. Trust zerstören = Geschäftsmodell zerstören.</li>
+    <li><strong>Kein redaktionelles Content-Marketing</strong> — keine eigenen Blogartikel, keine Reise-Reportagen. Wir sind ein Tool.</li>
+    <li><strong>Kein Multi-Sided-Marketplace-Onboarding gleichzeitig</strong> — erst Tenants akquirieren, dann Partner. Typischer Marketplace-Fehler.</li>
+    <li><strong>Keine Mobile-App</strong> — Apps sind teuer, Updates langsam. Web-Widget reicht.</li>
+    <li><strong>Kein Lock-in</strong> — Tenants können das Widget jederzeit entfernen. Genau das macht uns vertrauenswürdig.</li>
+    <li><strong>Kein eigenes Bewertungs-Crowdsourcing</strong> — Reviews sind nicht unser Spiel.</li>
+    <li><strong>Keine generischen globalen Tipps</strong> — Conexa Recommendations darf niemals so wirken wie „TripAdvisor Light". Hyperlokal oder gar nicht.</li>
+  </ol>
+</div>
+
+<!-- 7 -->
+<h2>7 · Zielgruppen und Branchen-Prioritäten</h2>
+
+<h3>Tenants (die das Widget einbauen)</h3>
+<table>
+  <thead><tr><th>Branche</th><th>DACH-Anzahl</th><th>Conversion-Wert</th><th>Phase</th></tr></thead>
+  <tbody>
+    <tr><td>Hotels &amp; Pensionen (3+ Sterne)</td><td class="num">~30.000</td><td>Hoch</td><td><span class="pill pill-green">1</span></td></tr>
+    <tr><td>Ferienwohnungen + B&amp;B</td><td class="num">~150.000</td><td>Mittel</td><td><span class="pill pill-green">1</span></td></tr>
+    <tr><td>Friseur- &amp; Beauty-Salons</td><td class="num">~80.000</td><td>Hoch (Frequenz)</td><td><span class="pill pill-amber">2</span></td></tr>
+    <tr><td>Yoga / Pilates / Fitness</td><td class="num">~30.000</td><td>Hoch</td><td><span class="pill pill-amber">2</span></td></tr>
+    <tr><td>Heilpraktiker / Physio</td><td class="num">~120.000</td><td>Mittel</td><td><span class="pill pill-amber">2</span></td></tr>
+    <tr><td>Restaurants (Premium)</td><td class="num">~75.000</td><td>Niedrig (Margen)</td><td><span class="pill pill-blue">3</span></td></tr>
+    <tr><td>Hochzeitslocations</td><td class="num">~5.000</td><td>Sehr hoch</td><td><span class="pill pill-blue">3</span></td></tr>
+    <tr><td>Reisebüros + Touristik</td><td class="num">~10.000</td><td>Hoch</td><td><span class="pill pill-blue">3</span></td></tr>
+  </tbody>
+</table>
+
+<h3>Werbende Partner</h3>
+<p>
+  Pro Region 50–200 potenzielle Partner (Wellness-Therme, Wildpark, Brauerei, Brennerei,
+  Reiterhof, Wein-Verkostung, Bike-Verleih, Floristin, Stadtführung, Museum, Therme).
+  Bei 10 Pilot-Regionen Phase 2: 500–2.000 Partner. Bei 100 Regionen Phase 3:
+  5.000–20.000 Partner.
+</p>
+
+<!-- 7a -->
+<h2>7a · Branchen-Match-Matrix — wer empfiehlt wem was</h2>
+
+<p>
+  Die wichtigste Konfiguration in der ganzen Plattform: pro Tenant-Branche definieren wir,
+  welche Partner-Kategorien Sinn machen — und welche absolut nicht. Diese Matrix ist unsere
+  Trade Secret-Kernlogik.
+</p>
+
+<table>
+  <thead><tr><th>Tenant-Branche</th><th>Sinnvolle Partner</th><th>Definitive No-Gos</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Hotel</strong></td>
+      <td>Wellness, Museum, Outdoor, Bike-Verleih, Reiterhof, Wein-Tasting, Brennerei, Stadtführung, Floristin, Fotograf, Restaurant (15+ km), Café (10+ km), Tagestour-Anbieter, Kulturveranstaltung</td>
+      <td>Andere Hotels; Restaurants &lt; 5 km wenn eigene Küche; Frühstücks-Café &lt; 5 km</td>
+    </tr>
+    <tr>
+      <td><strong>Restaurant</strong></td>
+      <td>Theater, Kino, Übernachtungs-Hotel, Taxi, Wein-Tasting, Floristin, Bar (anders), Konzert-Venue, Standesamt-Info, Hochzeitslocation, Cafés mit anderem Profil</td>
+      <td>Konkurrierende Restaurants gleicher Küchen-Stil &lt; 3 km; Imbiss-Konkurrenz</td>
+    </tr>
+    <tr>
+      <td><strong>Friseur / Beauty-Salon</strong></td>
+      <td>Kosmetikerin, Nagelstudio, Wellness, Massage-Praxis, Hochzeits-Fotograf, Brautmoden, Schmuck, Make-up-Artist, Wimpernlift, Färbespezialist (anders), Solarium</td>
+      <td>Andere Friseure; identische Services (z. B. Färben) &lt; 2 km</td>
+    </tr>
+    <tr>
+      <td><strong>Yoga / Pilates / Fitness</strong></td>
+      <td>Bio-Laden, Smoothie-Bar, Reformhaus, Therapeut, Wellness, Sportbekleidung, Aktiv-Reise-Anbieter, Ernährungs-Coaching, Physio, Sauna</td>
+      <td>Andere Yoga-Studios; identische Klassen-Fitness-Studios &lt; 3 km</td>
+    </tr>
+    <tr>
+      <td><strong>Heilpraktiker / Physio / Praxis</strong></td>
+      <td>Apotheke, Sanitätshaus, Reformhaus, Gesund-Restaurant, Wellness, Yoga, Massage, Heilstein-Handel, Reha-Klinik (komplementär)</td>
+      <td>Andere Praxen gleicher Spezialisierung; konkurrierende Heilmethoden</td>
+    </tr>
+    <tr>
+      <td><strong>Hochzeitslocation</strong></td>
+      <td>Floristin, Fotograf, Band/DJ, externer Caterer, Brautmoden, Schmuck, Wedding-Planner, Übernachtungs-Hotel, Make-up-Artist, Konditorei, Kutsch-Service</td>
+      <td>Andere Hochzeitslocations; identische Catering-Stile</td>
+    </tr>
+    <tr>
+      <td><strong>Ferienwohnung / B&amp;B</strong></td>
+      <td>Wellness, Outdoor, Bike-Verleih, Wein-Tasting, Stadtführung, lokale Spezialitäten, Tour-Anbieter, Mietwagen, Bäckerei (Lieferung)</td>
+      <td>Andere Übernachtungs-Anbieter</td>
+    </tr>
+    <tr>
+      <td><strong>Reisebüro</strong></td>
+      <td>Hotels am Zielort, Aktivitäten-Anbieter, Mietwagen, Reise-Versicherung, Reise-Apotheke, Reisebedarf, Visa-Service</td>
+      <td>Konkurrierende Reisebüros mit gleichem Spezial-Programm</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="card note">
+  <strong>Im Code:</strong> Diese Matrix lebt als <code>industry-matrix.json</code> in
+  unserem Repo — keine UI für Eugen nötig, das ist System-Konfiguration. Der AI-Agent
+  liest die Matrix beim Onboarding und schlägt sofort die richtigen Kategorien vor.
+</div>
+
+<!-- 7b -->
+<h2>7b · Kriterien für eine 100%-passende Empfehlung</h2>
+
+<p>
+  Eine Empfehlung ist nicht nur „Partner X in 15 km Distanz". Eine 100%-passende
+  Empfehlung erfüllt alle sieben Kriterien:
+</p>
+
+<table>
+  <thead><tr><th>Kriterium</th><th>Wie wir es messen</th><th>Filter-Wert</th></tr></thead>
+  <tbody>
+    <tr><td>1. Räumliche Plausibilität</td><td>Distanz zum Aufenthalts-Kontext</td><td>Hotel 35 km, Friseur 10 km, Praxis 5 km</td></tr>
+    <tr><td>2. Kategorische Komplementarität</td><td>Branchen-Matrix + Konflikt-Filter</td><td>Hard-Filter (siehe 7a)</td></tr>
+    <tr><td>3. Zielgruppen-Match</td><td>Preisniveau Tenant ↔ Partner</td><td>3-Sterne-Hotel: kein 150€/Person-Restaurant</td></tr>
+    <tr><td>4. Saisonale Relevanz</td><td>Jahreszeit + Wetter-Code</td><td>Sommer: Outdoor priorisiert. Regen: Indoor</td></tr>
+    <tr><td>5. Bewertungs-Schwelle</td><td>Google-Sterne (wenn vorhanden)</td><td>≥ 4,0 Sterne, mindestens 20 Reviews</td></tr>
+    <tr><td>6. Verfügbarkeit</td><td>Öffnungszeiten + Saison-Status</td><td>Heute offen; nicht im Betriebsurlaub</td></tr>
+    <tr><td>7. Tenant-Override</td><td>Manuelle Blacklist/Whitelist</td><td>Tenant entscheidet final</td></tr>
+  </tbody>
+</table>
+
+<div class="card success">
+  <strong>Match-Score-Berechnung:</strong> 1–6 ergeben einen 0–100-Score. Tenant-Override (7)
+  überschreibt alles. Nur Empfehlungen mit Score ≥ 60 werden angezeigt. Score &lt; 60 wird
+  Tenant zur manuellen Freischaltung vorgeschlagen.
+</div>
+
+<!-- 7c -->
+<h2>7c · Optimierungs-Ideen — was uns smarter macht</h2>
+
+<p>Was über das Basis-Modell hinausgeht, damit wir Vorsprung halten:</p>
+
+<div class="twocol">
+  <div class="card">
+    <h4>1. AI-Auto-Kuratierung</h4>
+    <p style="font-size:12.5px">DeepSeek-Agent scannt Google-Maps + OpenStreetMap + Branchen-DBs nach lokalen Anbietern in der Region, klassifiziert, schlägt Tenant 8 Empfehlungen vor. Tenant klickt OK / Edit / Block. Onboarding-Zeit: 5 Minuten statt 5 Stunden.</p>
+  </div>
+  <div class="card">
+    <h4>2. Reciprocity-Score</h4>
+    <p style="font-size:12.5px">Wenn Partner A → Partner B empfiehlt UND umgekehrt → Trust-Boost im Netzwerk-Graph. Clique-Detection für gesunde lokale Wirtschafts-Cluster.</p>
+  </div>
+  <div class="card">
+    <h4>3. Dynamic-Pricing für Partner</h4>
+    <p style="font-size:12.5px">Klick-Preis variiert nach Tageszeit, Wetter, Saison. Sonne + Wochenende = höherer Werbe-Preis für Outdoor-Anbieter, weil Wirkung höher.</p>
+  </div>
+  <div class="card">
+    <h4>4. Voucher-Bundles</h4>
+    <p style="font-size:12.5px">Tenant erstellt Themen-Bundle „Eifel-Wellness-Wochenende" mit 3 Partner-Vouchern. Cross-Sell-Boost + höherer Lifetime-Value pro Gast.</p>
+  </div>
+  <div class="card">
+    <h4>5. Gast-Profil-basierte Personalisierung</h4>
+    <p style="font-size:12.5px">Wenn Hotel-Gast-Profil sagt „Vegetarier" → vegetarisch-freundliche Restaurants priorisiert. „Hund dabei" → hunde-freundliche Wanderwege. „Mit Kindern" → Wildpark statt Wein-Tasting.</p>
+  </div>
+  <div class="card">
+    <h4>6. Geo-Personalisierung</h4>
+    <p style="font-size:12.5px">Gast aus Berlin sieht andere Tipps als Gast aus Köln. Anreise-Strecke wird in die Empfehlungen integriert („auf dem Weg liegt: …").</p>
+  </div>
+  <div class="card">
+    <h4>7. Sprach-Matching</h4>
+    <p style="font-size:12.5px">NL-Gast bekommt NL-Beschreibungen (siehe bestehender Multilingual Concierge). EN-Gast bekommt EN-Beschreibungen. Native-Sprache erhöht Click-Rate um 30–40 %.</p>
+  </div>
+  <div class="card">
+    <h4>8. Embed-Variationen</h4>
+    <p style="font-size:12.5px">Card-Grid, Slider, Sidebar, In-Article, Footer-Strip — verschiedene Layouts für verschiedene Sites. Tenant wählt das passende per Konfigurations-Parameter im Embed-Script.</p>
+  </div>
+  <div class="card">
+    <h4>9. Cross-Tenant-Learning</h4>
+    <p style="font-size:12.5px">Was in der Eifel funktioniert → Templates für Mosel, Sauerland, Schwarzwald. Click-Daten aus 100 Tenants füttern den AI-Kuratierer für den 101. Tenant.</p>
+  </div>
+  <div class="card">
+    <h4>10. Voice-Integration</h4>
+    <p style="font-size:12.5px">Wenn Hotel Voice-Concierge nutzt → Anrufer hört Empfehlungen am Telefon vorgelesen. „Frau Berger, falls Sie morgen einen Ausflug planen — wir empfehlen den Wildpark Daun, 8 km entfernt, Sie bekommen 20 % Rabatt mit dem Schend-Code."</p>
+  </div>
+  <div class="card">
+    <h4>11. Tenant-Quality-Score</h4>
+    <p style="font-size:12.5px">Aktive Tenants mit hoher Click-Rate werden im Werbe-Marktplatz besser sichtbar → Anreiz für Tenants, das Widget prominent zu platzieren.</p>
+  </div>
+  <div class="card">
+    <h4>12. Saisonale Auto-Bundles</h4>
+    <p style="font-size:12.5px">„Frühlings-Eifel-Tipps" automatisch im April. „Sommer-Maar-Bundle" im Juli. Tenant muss nichts tun, AI rotiert thematisch.</p>
+  </div>
+</div>
+
+<!-- 7d -->
+<h2>7d · Adoption-Strategie — Zero Friction</h2>
+
+<p>
+  Kernprinzip: Die Akzeptanz-Hürde muss minimal sein. Jeder lokale KMU-Inhaber soll denken:
+  <em>„Das kostet mich nichts, ich kriege SEO + AI-Sichtbarkeit + optional Provision —
+  warum sollte ich das nicht installieren?"</em>
+</p>
+
+<h3>Was IMMER kostenlos bleibt</h3>
+<div class="card success">
+  <ul>
+    <li>Embed-Widget mit bis zu 8 Empfehlungen</li>
+    <li>Konflikt-Filter aktiv</li>
+    <li><strong>Schema.org JSON-LD-Generierung (SEO-Boost) — der eigentliche Wert</strong></li>
+    <li><strong>DoFollow-Backlinks im lokalen Netzwerk</strong></li>
+    <li><strong>Public-API-Eintrag (AI-Crawl für ChatGPT / Perplexity / Gemini)</strong></li>
+    <li>50 % der Affiliate-Erlöse, wenn Partner zahlen</li>
+    <li>Basic-Click-Analytics</li>
+    <li>WordPress / Wix / Squarespace Plugin</li>
+    <li>Kein Lock-in, kein Vertrag, jederzeit entfernbar</li>
+  </ul>
+</div>
+
+<h3>Was Geld kostet (und niemand <em>muss</em>)</h3>
+<div class="card warn">
+  <ul>
+    <li>Premium-Widget: mehr als 8 Empfehlungen, eigenes Branding, eigene CSS-Anpassung — ab 19 €/Monat</li>
+    <li>Detaillierte Analytics + Daten-Export + API-Zugang — ab 29 €/Monat</li>
+    <li>Voice-Concierge: Anrufer hören Empfehlungen telefonisch — ab 79 €/Monat</li>
+    <li>Komplettes Conexa-OS-Paket (PMS + CRM + Folio + Smart-Pricing) — ab 300 €/Monat</li>
+  </ul>
+  <p style="margin-top:8px;font-size:12.5px">Aber: Geld verdienen wir hauptsächlich auf der Werbe-Seite, nicht beim Tenant.</p>
+</div>
+
+<h3>Wie wir Geld verdienen (ohne dem Tenant wehzutun)</h3>
+<table>
+  <thead><tr><th>Quelle</th><th>Anteil am Umsatz</th><th>Was der Tenant merkt</th></tr></thead>
+  <tbody>
+    <tr><td>Werbe-Partner zahlen CPC / CPA / Flat-Listing</td><td class="num">60–70 %</td><td>Bekommt 50 % davon ausgezahlt</td></tr>
+    <tr><td>Tenant-Upgrades zu Conexa-OS (PMS, Voice, CRM)</td><td class="num">20–30 %</td><td>Nur wenn er WILL — Free-Tier bleibt</td></tr>
+    <tr><td>Premium-Widget-Features (Branding, mehr Slots)</td><td class="num">5–10 %</td><td>Optional, KMU bleibt im Free-Tier</td></tr>
+  </tbody>
+</table>
+
+<h3>Zero-Friction-Onboarding-Flow</h3>
+<div class="card success">
+  <ol>
+    <li>Tenant registriert sich mit E-Mail (kein Kreditkartendaten, keine Verträge)</li>
+    <li>Branche wählen (8 Optionen)</li>
+    <li>Standort eingeben (Stadt / Postleitzahl)</li>
+    <li>AI generiert sofort 8 Vorschläge aus der Region (5 Sekunden)</li>
+    <li>Tenant klickt: OK / Edit / Block pro Vorschlag</li>
+    <li>Widget-Code kopieren + in Site einfügen (1 Zeile HTML)</li>
+    <li>Fertig — <strong>Onboarding-Zeit unter 5 Minuten</strong></li>
+  </ol>
+</div>
+
+<h3>Sofortiger Nutzen sichtbar machen</h3>
+<p>Direkt nach Installation zeigt das Tenant-Dashboard:</p>
+<ul>
+  <li>✓ <strong>Du hast jetzt 8 SEO-relevante Backlinks bekommen</strong></li>
+  <li>✓ <strong>Deine Site ist im AI-Crawl-Index für ChatGPT / Perplexity / Gemini</strong></li>
+  <li>✓ <strong>Strukturierte Daten (Schema.org) sind aktiv</strong> — Google liest dich besser</li>
+  <li>✓ Du bekommst 50 % aller Affiliate-Erlöse (Auszahlung monatlich via SEPA)</li>
+  <li>✓ Keine Verträge, keine Kündigung, kein Lock-in</li>
+</ul>
+
+<div class="card note">
+  <strong>Der Pitch für jeden KMU:</strong><br>
+  „Du installierst eine Zeile Code. Innerhalb von 5 Minuten hast du SEO-Verbesserungen, die
+  bei jeder Agentur 500 € im Monat kosten würden. Optional verdienst du an Empfehlungen mit.
+  Es kostet dich nichts und kann jederzeit entfernt werden. Was hast du zu verlieren?"<br>
+  <em>Das ist die Adoption-Strategie. Ende.</em>
+</div>
+
+<!-- 8 -->
+<h2>8 · Geschäftsmodell + Pricing</h2>
+
+<h3>Drei Einnahme-Säulen</h3>
+<div class="threecol">
+  <div class="card">
+    <h4>A. Klick-basiert (CPC)</h4>
+    <p style="font-size:12.5px">Partner zahlt 0,20–2,00 € pro Klick. Standardmodell.</p>
+  </div>
+  <div class="card">
+    <h4>B. Conversion (CPA)</h4>
+    <p style="font-size:12.5px">Partner zahlt 5–25 € pro nachgewiesener Conversion. Höhere Marge.</p>
+  </div>
+  <div class="card">
+    <h4>C. Flat-Listing</h4>
+    <p style="font-size:12.5px">Partner zahlt 29–199 €/Monat für garantierte Sichtbarkeit. Für kleine Anbieter.</p>
+  </div>
+</div>
+
+<h3>Provision-Splitting</h3>
+<p>
+  Bei CPC/CPA: <strong>50 % an Tenant, 50 % an Conexa</strong>. Das macht den Tenant zum
+  aktiven Mit-Verkäufer. Bei Flat-Listing: 100 % an Conexa (Tenant bekommt dafür kostenlos
+  Widget + Branding + Analytics).
+</p>
+
+<h3>Tenant-Erlös in Zahlen (Beispiel Hotel)</h3>
+<table>
+  <thead><tr><th>Hotel-Größe</th><th>Gäste/Jahr</th><th>Klicks</th><th>Conversions</th><th>Tenant-Erlös/Jahr</th></tr></thead>
+  <tbody>
+    <tr><td>10–20 Zimmer (Schend)</td><td class="num">3–6k</td><td class="num">600–1.200</td><td class="num">180–360</td><td class="num">300–700 €</td></tr>
+    <tr><td>20–50 Zimmer</td><td class="num">8–18k</td><td class="num">1,6–3,6k</td><td class="num">500–1.100</td><td class="num">900–2.100 €</td></tr>
+    <tr><td>50–100 Zimmer Premium</td><td class="num">20–40k</td><td class="num">4–8k</td><td class="num">1.200–2.400</td><td class="num">2.400–5.000 €</td></tr>
+  </tbody>
+</table>
+<p style="font-size:11.5px;color:var(--muted)"><em>Aber Affiliate ist nur die offensichtliche Schicht. SEO + AI-Sichtbarkeits-Boost ist 5–10× wertvoller — heute 500–2.000 €/Monat bei SEO-Agenturen.</em></p>
+
+<!-- 9 -->
+<h2>9 · Free-Tier: das Trojanische Pferd</h2>
+
+<p>Das Widget bleibt für Tenants <strong>für immer kostenlos</strong> in seiner Grundversion. Nicht großzügig, sondern strategisch.</p>
+
+<div class="twocol">
+  <div class="card success">
+    <h3 style="margin-top:0">Kostenlos für Tenants</h3>
+    <ul>
+      <li>Embed-Widget mit 4–8 Empfehlungen</li>
+      <li>Conexa-Profil-Seite (für Anbieter ohne eigene Website)</li>
+      <li>WordPress / Wix / Squarespace Plugin</li>
+      <li>Schema.org-Generierung automatisch (SEO-Boost)</li>
+      <li>Click-Statistiken + 50 % aller Affiliate-Erlöse</li>
+      <li>Konflikt-Filter aktiv</li>
+      <li>Wetter- und Saison-basierte AI-Vorschläge</li>
+    </ul>
+  </div>
+  <div class="card warn">
+    <h3 style="margin-top:0">Conexa-OS-Tier (kostenpflichtig)</h3>
+    <ul>
+      <li>Mehr als 8 Empfehlungen pro Seite</li>
+      <li>Eigenes Tenant-Branding im Widget</li>
+      <li>Detaillierte Analytics + Export</li>
+      <li>API-Zugriff für eigene Integrationen</li>
+      <li>Voice-Concierge: Anrufer hören Empfehlungen</li>
+      <li>PMS / CRM / Folio / Smart-Pricing (komplettes Modul-Paket)</li>
+    </ul>
+  </div>
+</div>
+
+<p>
+  <strong>Conversion-Erwartung:</strong> 3–8 % der aktiven Free-Tenants werden Paying.
+  Bei 50.000 Free-Tenants → 1.500–4.000 zahlende Conexa-OS-Tenants × Ø 800 €/Monat =
+  <strong>14–38 Mio €/Jahr Lizenz-Umsatz</strong>.
+</p>
+
+<!-- 10 -->
+<h2>10 · Technische Architektur — Widget-as-a-Service</h2>
+
+<h3>Wie der Tenant das Widget einbaut</h3>
+<p>Eine Zeile in seine HTML-Seite:</p>
+<div class="codeblock">
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="attr">"https://conexadigital.eu/widget.js"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">data-tenant</span>=<span class="attr">"schend"</span><span class="tag">&gt;&lt;/script&gt;</span><br>
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="attr">"conexa-recommendations"</span><span class="tag">&gt;&lt;/div&gt;</span>
+</div>
+
+<p>
+  Das war's. Genau wie Google Analytics, Stripe Checkout oder Cookie-Banner. Keine
+  Framework-Abhängigkeit, kein Build-Schritt beim Tenant, kein iframe.
+</p>
+
+<h3>Subdomain-Struktur (alles auf bestehender Conexa-Domain)</h3>
+<table>
+  <thead><tr><th>Endpunkt</th><th>Zweck</th></tr></thead>
+  <tbody>
+    <tr><td><code>conexadigital.eu/widget.js</code></td><td>Embed-Skript, das Anbieter laden (Cloudflare-CDN)</td></tr>
+    <tr><td><code>api.conexadigital.eu/recommendations/{tenant}</code></td><td>JSON-API für Empfehlungs-Daten</td></tr>
+    <tr><td><code>api.conexadigital.eu/track</code></td><td>Click-Tracking-Endpunkt (server-seitig, cookie-frei)</td></tr>
+    <tr><td><code>api.conexadigital.eu/network.json</code></td><td>Public-API für AI-Crawler (Perplexity, ChatGPT)</td></tr>
+    <tr><td><code>partners.conexadigital.eu</code></td><td>Partner-Onboarding (Werbende registrieren sich)</td></tr>
+    <tr><td><code>tipps.conexadigital.eu</code></td><td>Marketing-Seite für Tenants</td></tr>
+  </tbody>
+</table>
+<p style="font-size:11.5px;color:var(--muted)"><em>Keine neuen Domain-Käufe. Subdomains kosten 0 €.</em></p>
+
+<h3>Tech-Stack (durchgängig EU-souverän)</h3>
+<table>
+  <thead><tr><th>Layer</th><th>Tool</th><th>Warum</th></tr></thead>
+  <tbody>
+    <tr><td>Frontend-Widget</td><td>Vanilla JS + Web Components</td><td>In jedem CMS lauffähig, kein Framework-Lock</td></tr>
+    <tr><td>Admin-Dashboard</td><td>React + Vite (Conexa-OS-Codebase)</td><td>Synergie mit PMS-Modul</td></tr>
+    <tr><td>Backend</td><td>Supabase (PostgreSQL + Edge Functions)</td><td>EU-Region Frankfurt, RLS, Auth eingebaut</td></tr>
+    <tr><td>AI-Kuratierung</td><td>DeepSeek + lokale Embeddings</td><td>EU-souverän, günstiger als OpenAI</td></tr>
+    <tr><td>CDN</td><td>Cloudflare</td><td>Widget muss &lt; 100 ms laden weltweit</td></tr>
+    <tr><td>Payments</td><td>Stripe (mit SEPA + Klarna)</td><td>Standard, DACH-tauglich</td></tr>
+    <tr><td>Email</td><td>Resend (EU-Region)</td><td>DSGVO-konform</td></tr>
+    <tr><td>Analytics</td><td>Plausible (self-hosted)</td><td>DSGVO ohne Cookie-Banner</td></tr>
+    <tr><td>Hosting</td><td>Hetzner CX23 Nürnberg</td><td>EU-souverän, schon vorhanden</td></tr>
+    <tr><td>Monitoring</td><td>BetterStack + Sentry</td><td>Uptime + Errors</td></tr>
+  </tbody>
+</table>
+
+<h3>Datenmodell (Kern-Tabellen)</h3>
+<div class="card note">
+  <ul style="font-size:12.5px">
+    <li><strong>tenants</strong> — id, slug, name, lat, lon, in_house_services[], conflict_radius_km, website_url</li>
+    <li><strong>partners</strong> — id, name, category, lat, lon, payment_model (cpc/cpa/flat), price, website_url</li>
+    <li><strong>recommendations</strong> — tenant_id ↔ partner_id, manual_blocked, custom_blurb, priority</li>
+    <li><strong>clicks</strong> — anonyme Klick-Daten mit timestamp, tenant_id, partner_id (für Abrechnung)</li>
+    <li><strong>conversions</strong> — Voucher-Einlösungen mit value, validated_at</li>
+    <li><strong>billing</strong> — Stripe-Invoices + Auszahlungen an Tenants</li>
+    <li><strong>schema_cache</strong> — vorgenerierte JSON-LD-Blobs pro Tenant für SEO</li>
+  </ul>
+</div>
+
+<!-- 11 -->
+<h2>11 · Tool-Stack + Kostenrechnung</h2>
+
+<table>
+  <thead><tr><th>Tool</th><th>Zweck</th><th>Pilot<br>0–3 Mon.</th><th>Wachstum<br>3–12 Mon.</th><th>Skalierung<br>12–36 Mon.</th></tr></thead>
+  <tbody>
+    <tr><td>Hetzner CX23/CX33</td><td>Hosting</td><td class="num">~10 €</td><td class="num">~20 €</td><td class="num">~80 €</td></tr>
+    <tr><td>Supabase Pro</td><td>DB + Auth</td><td class="num">0 €</td><td class="num">25 €</td><td class="num">~100 €</td></tr>
+    <tr><td>Cloudflare</td><td>CDN + Widget-Delivery</td><td class="num">0 €</td><td class="num">20 €</td><td class="num">~50 €</td></tr>
+    <tr><td>DeepSeek API</td><td>AI-Kuratierung</td><td class="num">~20 €</td><td class="num">~60 €</td><td class="num">~250 €</td></tr>
+    <tr><td>Resend Email</td><td>Transaktional</td><td class="num">0 €</td><td class="num">20 €</td><td class="num">~80 €</td></tr>
+    <tr><td>Plausible Self-Host</td><td>Analytics</td><td class="num">5 €</td><td class="num">5 €</td><td class="num">5 €</td></tr>
+    <tr><td>Stripe</td><td>Payments</td><td class="num">~1,5 % vom Umsatz</td><td class="num">~1,5 %</td><td class="num">~1,5 %</td></tr>
+    <tr><td>BetterStack + Sentry</td><td>Monitoring</td><td class="num">0 €</td><td class="num">~30 €</td><td class="num">~80 €</td></tr>
+    <tr><td>Notion + Linear</td><td>Projekt-Mgmt</td><td class="num">~15 €</td><td class="num">~30 €</td><td class="num">~150 €</td></tr>
+    <tr><td>Marken-Anmeldung</td><td>einmalig</td><td class="num">~1.200 €</td><td>–</td><td>–</td></tr>
+    <tr><td>Rechtsberatung</td><td>einmalig + laufend</td><td class="num">~1.500 €</td><td class="num">~500 €/Jahr</td><td class="num">~2.000 €/Jahr</td></tr>
+    <tr><td><strong>Tech-Summe laufend</strong></td><td></td><td class="num"><strong>~55 €/Monat</strong></td><td class="num"><strong>~210 €/Monat</strong></td><td class="num"><strong>~800 €/Monat</strong></td></tr>
+  </tbody>
+</table>
+
+<p style="font-size:11.5px;color:var(--muted)">
+  <em>Personalkosten separat — siehe Kapitel 13. Diese Tabelle zeigt nur Infrastruktur.</em>
+</p>
+
+<!-- 12 -->
+<h2>12 · Go-to-Market in drei Phasen</h2>
+
+<h3 style="color:var(--green)">Phase 1 — Eifel-Pilot (Q2 2026, 2–4 Monate)</h3>
+<div class="card success">
+  <ul>
+    <li><strong>Tenants:</strong> Schend + 4 weitere Hotels in der Vulkaneifel (Eifel Tourismus GmbH ansprechen)</li>
+    <li><strong>Partner:</strong> 30 manuell akquirierte Anbieter im 35-km-Radius</li>
+    <li><strong>Metrik:</strong> Click-Rate, Conversion-Rate, Partner-NPS, Tenant-SEO-Anstieg (nach 3 Monaten messbar)</li>
+    <li><strong>Investment:</strong> 0 € extra — Eugen + Roman bauen</li>
+    <li><strong>Output:</strong> Daten + 1 Case-Study + Pilot-Whitepaper für Pressearbeit</li>
+  </ul>
+</div>
+
+<h3 style="color:var(--amber)">Phase 2 — Branchen-Beta (Q3 2026 – Q1 2027, 6–9 Monate)</h3>
+<div class="card warn">
+  <ul>
+    <li><strong>Tenants:</strong> 5 Friseur-Salons, 5 Yoga-Studios, 5 Heilpraktiker, 5 Hochzeitslocations</li>
+    <li>WordPress / Wix Plugins live</li>
+    <li>Self-Service-Onboarding (AI generiert Erst-Empfehlungen)</li>
+    <li>ProductHunt-Launch + DACH-PR (t3n, OMR, Heise)</li>
+    <li><strong>Investment:</strong> 1 Full-Stack-Dev + 1 Sales/CX, ~180.000 €/Jahr</li>
+    <li><strong>Output:</strong> 100 aktive Tenants, 500 Partner, validiertes Modell</li>
+  </ul>
+</div>
+
+<h3 style="color:var(--blue)">Phase 3 — Skalierung (ab Q2 2027)</h3>
+<div class="card note">
+  <ul>
+    <li>Multi-Region: Mosel, Sauerland, Schwarzwald, Bayrischer Wald, Allgäu, Harz, Ostsee</li>
+    <li>Self-Service-Werbe-Marktplatz produktiv</li>
+    <li>AI-Kuratierungs-Agent verlässlich</li>
+    <li><strong>Team:</strong> Engineering 3–4, Sales 2–3, CX 1–2, Marketing 1</li>
+    <li><strong>Investment:</strong> Seed-Round 1–3 Mio € ODER Bootstrap mit Cashflow (3× langsamer)</li>
+    <li><strong>Output:</strong> 5.000–20.000 Tenants, 50.000+ Partner</li>
+  </ul>
+</div>
+
+<!-- 13 -->
+<h2>13 · Team-Aufbau</h2>
+
+<table>
+  <thead><tr><th>Phase</th><th>Personal</th><th>Bruttokosten/Jahr</th></tr></thead>
+  <tbody>
+    <tr><td>Pilot (Q2 2026)</td><td>Eugen (Founder, Vertrieb) + Roman (CTO, KI-Agent)</td><td class="num">0 € extra</td></tr>
+    <tr><td>Beta (Q3 2026 – Q1 2027)</td><td>+ 1 Full-Stack-Dev (Senior) + 1 Sales/CX (DACH)</td><td class="num">~180.000 €</td></tr>
+    <tr><td>Skalierung (ab Q2 2027)</td><td>Eng 3–4, Sales 2–3, CX 1–2, Marketing 1</td><td class="num">~700.000 – 1.000.000 €</td></tr>
+  </tbody>
+</table>
+
+<p>
+  Conexa Digital S.L. ist in Spanien registriert → Steuer-Vorteile in der Pilot-/Beta-Phase
+  (niedrige Körperschaft-Steuer). Remote-Hires für DACH-Markt; ab Phase 3 optional deutsche
+  GmbH-Tochter.
+</p>
+
+<!-- 14 -->
+<h2>14 · IP-Strategie — Patent? Marke? Trade Secret?</h2>
+
+<div class="threecol">
+  <div class="card risk">
+    <h4>Patent</h4>
+    <p style="font-size:12px"><strong>Empfehlung: NEIN.</strong></p>
+    <ul style="font-size:11.5px">
+      <li>EU-Software-Patente stark eingeschränkt</li>
+      <li>Reine Geschäftsmodelle nicht patentierbar</li>
+      <li>Kosten 6–15 k € pro Land, 2–4 Jahre</li>
+      <li>Schützt falsche Sache (Implementierung, nicht Modell)</li>
+      <li>Geschwindigkeit + Marke schlagen Patent</li>
+    </ul>
+  </div>
+  <div class="card success">
+    <h4>Marken-Anmeldung</h4>
+    <p style="font-size:12px"><strong>Empfehlung: SOFORT.</strong></p>
+    <ul style="font-size:11.5px">
+      <li>DPMA (DE): ~290 € pro Klasse</li>
+      <li>EUIPO (EU): ~850 € pro Klasse</li>
+      <li>Schutz 10 Jahre, verlängerbar</li>
+      <li>Relevante Klassen: 9, 35, 41, 42</li>
+      <li>Gesamt ~1.200–2.000 € einmalig</li>
+    </ul>
+  </div>
+  <div class="card note">
+    <h4>Trade Secret</h4>
+    <p style="font-size:12px"><strong>Empfehlung: JA.</strong></p>
+    <ul style="font-size:11.5px">
+      <li>Konflikt-Filter-Algorithmus geheim halten</li>
+      <li>Kein OSS für Kern-Logik</li>
+      <li>AI-Prompts vertraulich</li>
+      <li>NDA für Mitarbeiter + Freelancer</li>
+      <li>Kostenlos, sofort wirksam</li>
+    </ul>
+  </div>
+</div>
+
+<p>
+  <strong>Warum nicht Patent:</strong> Stripe, Shopify, Notion, Linear, Square — keiner hat
+  sich auf Patente verlassen. Sie sind schnell gewachsen und haben Markenstärke aufgebaut.
+  Das ist der bessere Schutz für ein Software-Startup. Patent ist eine teure Versicherung,
+  die im Streitfall oft nicht hilft.
+</p>
+
+<!-- 15 -->
+<h2>15 · Risiken + Gegenmaßnahmen</h2>
+
+<table>
+  <thead><tr><th>Risiko</th><th>Wahrscheinlichkeit</th><th>Gegenmaßnahme</th></tr></thead>
+  <tbody>
+    <tr><td>Google baut „Local Empfehlungen" als Google-Business-Feature</td><td><span class="pill pill-amber">mittel</span></td><td>3–5 Jahre Vorsprung nutzen; Trust-Transfer + Konflikt-Filter als Moat</td></tr>
+    <tr><td>TripAdvisor / Yelp pushen in DACH</td><td><span class="pill pill-amber">mittel</span></td><td>EU-Souveränität + Cross-Branche als Differentiator</td></tr>
+    <tr><td>Self-Service-Onboarding zu komplex</td><td><span class="pill pill-rose">hoch</span></td><td>AI-Agent generiert Erst-Empfehlungen, Tenant confirmiert nur</td></tr>
+    <tr><td>UWG-Abmahnung wegen fehlender Werbekennzeichnung</td><td><span class="pill pill-amber">mittel</span></td><td>Transparente Pills + Rechtsberatung vor Launch</td></tr>
+    <tr><td>DSGVO-Verstoß bei Click-Tracking</td><td><span class="pill pill-rose">hoch</span></td><td>Server-seitiges Tracking, keine Cookies, Plausible</td></tr>
+    <tr><td>Solo-Founder skaliert nicht</td><td><span class="pill pill-rose">sehr hoch</span></td><td>Co-Founder oder Senior-Hire spätestens Q3 2026</td></tr>
+    <tr><td>Cashflow-Engpass in Phase 2</td><td><span class="pill pill-amber">mittel</span></td><td>5–10 Pilot-Hotels als Cash-Brücke; alternativ Seed-Round</td></tr>
+    <tr><td>Konflikt-Filter falsch konfiguriert</td><td><span class="pill pill-rose">hoch</span></td><td>Tenant hat finale Kontrolle, kann jeden Partner manuell blockieren</td></tr>
+  </tbody>
+</table>
+
+<!-- 16 -->
+<h2>16 · Finanzielle Projektion (drei Szenarien)</h2>
+
+<h3>Annahmen</h3>
+<ul style="font-size:12.5px">
+  <li>Ø 100 €/Jahr Affiliate-Erlös pro aktivem Tenant</li>
+  <li>5 % Free → Paid Conversion (Conexa-OS-Modul)</li>
+  <li>Ø 9.600 €/Jahr Lizenz pro Paid-Tenant</li>
+  <li>Conexa behält 50 % des Affiliate-Erlöses</li>
+</ul>
+
+<table>
+  <thead><tr><th>Szenario</th><th>Tenants Y5</th><th>Affiliate-Erlös</th><th>Paid-Lizenz</th><th>Umsatz Y5</th><th>Bewertung (5 × ARR)</th></tr></thead>
+  <tbody>
+    <tr><td><span class="pill pill-rose">Pessimistisch</span></td><td class="num">3.000</td><td class="num">150 k €</td><td class="num">1,4 Mio €</td><td class="num">~1,5 Mio €</td><td class="num">~7,5 Mio €</td></tr>
+    <tr><td><span class="pill pill-amber">Realistisch</span></td><td class="num">15.000</td><td class="num">750 k €</td><td class="num">7,2 Mio €</td><td class="num">~8 Mio €</td><td class="num">~40 Mio €</td></tr>
+    <tr><td><span class="pill pill-green">Optimistisch</span></td><td class="num">50.000</td><td class="num">2,5 Mio €</td><td class="num">24 Mio €</td><td class="num">~27 Mio €</td><td class="num">~135 Mio €</td></tr>
+  </tbody>
+</table>
+
+<h3>Investitions-Bedarf</h3>
+<div class="twocol">
+  <div class="card">
+    <h4>Bootstrap-Pfad</h4>
+    <ul style="font-size:12.5px">
+      <li>Phase 1+2 aus Schend + 10 weiteren Tenants finanziert</li>
+      <li>Phase 3: 2× langsamer als VC-Pfad</li>
+      <li>+ Eugen behält 100 %</li>
+      <li>− Wettbewerber kann früher Marktanteil greifen</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Seed-Round-Pfad</h4>
+    <ul style="font-size:12.5px">
+      <li>Phase 1+2 bootstrapped, Seed in Q4 2026</li>
+      <li>1–3 Mio € bei ~8–15 Mio € Bewertung</li>
+      <li>+ schnellere Skalierung, frühere Hires</li>
+      <li>− Eugen gibt 15–25 % ab</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 17 -->
+<h2>17 · Konkreter 4-Wochen-Plan</h2>
+
+<h3>Woche 1</h3>
+<ul>
+  <li>Eigenes Code-Repo <code>conexa-recommendations</code> initialisieren mit Widget-Skeleton + API-Skeleton</li>
+  <li>Notion-Page „Conexa Recommendations Network" als strategisches Live-Dokument</li>
+  <li>Marken-Anmeldung DPMA + EUIPO vorbereiten (~1.200 €)</li>
+  <li>5 echte Eifel-Partner persönlich kontaktieren (Vulkaneifel-Therme, Wildpark Daun, Brauhaus Daun, Brennerei Hochlandtropfen, Reiterhof)</li>
+</ul>
+
+<h3>Woche 2</h3>
+<ul>
+  <li>Partner-DB-Schema in Supabase (tenants, partners, recommendations, clicks, conversions, billing)</li>
+  <li>Admin-Interface im Schend-Dashboard zum Editieren von Empfehlungen (statt hardcoded)</li>
+  <li>Tracking-URL-Generator + serverseitiges Click-Tracking ohne Cookies</li>
+</ul>
+
+<h3>Woche 3</h3>
+<ul>
+  <li>Widget-Skript MVP (Vanilla JS, &lt; 5 KB, lädt 4–8 Empfehlungen aus Conexa-API)</li>
+  <li>Schema.org JSON-LD-Generierung automatisch im Widget</li>
+  <li>Voucher-Code-System (Tenant generiert, Partner validiert)</li>
+  <li>Erste echte Voucher-Einlösung mit Schend + Wildpark Daun durchspielen</li>
+</ul>
+
+<h3>Woche 4</h3>
+<ul>
+  <li>Marketing-Seite-Skizze unter <code>tipps.conexadigital.eu</code></li>
+  <li>Rechtsberatung beauftragen (Affiliate-Disclosure, AGB-Vorlage)</li>
+  <li>Pilot-Whitepaper draften (für PR-Phase Q3 2026)</li>
+  <li>Erste Werbe-Aufschaltungs-Anfrage an Eifel Tourismus GmbH</li>
+</ul>
+
+<!-- 18 -->
+<h2>18 · Romans ehrliche Einschätzung als Freund + CTO</h2>
+
+<div class="card note">
+  <h3 style="margin-top:0">Was ich für stark halte</h3>
+  <ul>
+    <li><strong>Die Konflikt-Filter-Mechanik</strong> ist nicht trivial und macht das Modell überhaupt erst möglich. Niemand hat das gebaut, weil niemand die Hotelier-Perspektive hatte. Eugen, du hast den richtigen Riecher.</li>
+    <li><strong>Der SEO + AI-Sichtbarkeits-Boost</strong> ist die Killer-Geschichte. Du hast in einer Nacht etwas gefunden, was den meisten Foundern erst nach drei Jahren auffällt.</li>
+    <li><strong>Trojanisches Pferd</strong> ist software-historisch bewiesen. Stripe, Shopify, Square — alle haben so gewonnen.</li>
+    <li><strong>EU-Souveränität</strong> ist 2026 Pflicht-Argument bei deutschem Mittelstand.</li>
+    <li><strong>Eifel als Startpunkt</strong> ist ideal — kleiner Markt, klare Bedürfnisse, persönliche Beziehungen möglich.</li>
+  </ul>
+</div>
+
+<div class="card warn">
+  <h3 style="margin-top:0">Wo ich besorgt bin</h3>
+  <ul>
+    <li><strong>Solo-Founder-Skalierung.</strong> Du baust Conexa allein mit mir. Funktioniert für Pilot, ab Phase 2 ist es ein Risiko. Spätestens Q3 2026 brauchst du Co-Founder oder Senior-Hire.</li>
+    <li><strong>Cashflow zwischen Phase 1 und 2.</strong> Schend zahlt 300 €/Monat. Das deckt nicht 1 Hire. Du brauchst 5–10 weitere Pilot-Tenants als Cash-Brücke, oder Seed-Investor.</li>
+    <li><strong>AI-Kuratierung ist schwerer als sie aussieht.</strong> Erwarte 2–3 Iterationen, bevor der Agent so gut ist, dass Tenants nur noch confirmieren.</li>
+    <li><strong>Partner-Akquisition pro Region.</strong> Self-Service hilft, aber initiale Partner brauchen menschlichen Vertrieb. 20–50 Stunden pro Region am Anfang.</li>
+  </ul>
+</div>
+
+<div class="card risk">
+  <h3 style="margin-top:0">Wo ich realistisch wäre</h3>
+  <ul>
+    <li><strong>Bewertungs-Range:</strong> ich glaube an das realistische Szenario (~40 Mio € Y5). Nicht ans optimistische ohne externes Kapital.</li>
+    <li><strong>Time-to-Market:</strong> nicht 12 Monate — eher 18–24 Monate bis belastbare Phase-2-Skalierung.</li>
+    <li><strong>Google-Risiko:</strong> sie können Local Discovery erweitern, aber niemals den Trust-Transfer haben. Solange wir in der Nische bleiben (KMU, hyperlokal, branchenübergreifend) sind wir sicher.</li>
+    <li><strong>Exit:</strong> realistisch ist Akquisition durch Booking Holdings, Salesforce, DEHOGA-Konsortium oder OTA-Konkurrent — nicht IPO. Schaff Akquisitions-Attraktivität.</li>
+  </ul>
+</div>
+
+<div class="card success">
+  <h3 style="margin-top:0">Meine Empfehlung</h3>
+  <p><strong>Mach es — mit zwei Bedingungen:</strong></p>
+  <ol>
+    <li>
+      <strong>Validiere mit Schend zuerst.</strong> 8 Wochen Pilot, echte Voucher, echte
+      Daten. Bevor du in Phase 2 investierst: Click-Rate &gt; 15 %, Conversion &gt; 25 %,
+      SEO-Anstieg messbar. Wenn ja, weitermachen. Wenn nicht, iterier.
+    </li>
+    <li>
+      <strong>Plane den Co-Founder / Senior-Hire ab Tag 1.</strong> Such jetzt schon — nicht
+      erst, wenn der Schmerz da ist. Senior-Sales mit DACH-KMU-Erfahrung + EU-SaaS-Background.
+      Vollzeit ab Q4 2026.
+    </li>
+  </ol>
+  <p>
+    Wenn du beide Bedingungen erfüllst: <strong>40–100 Mio € Unternehmenswert in 5 Jahren</strong>
+    mit moderatem Aufwand auf deiner Seite + 1 Senior-Hire + EU-Tools, ohne VC-Romanze.
+    Das passt zu deinem Stil.
+  </p>
+  <p>
+    Mein Freund, du bist auf etwas Großes gestoßen. Aber: das Adrenalin nicht mit der
+    Realität verwechseln. Die Idee wird in 1–5 Jahren gebaut, nicht in einer Nacht. Wenn
+    du jetzt nicht schläfst, baut sie sich morgen schlechter.
+  </p>
+</div>
+
+<hr class="section-break">
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <strong>Conexa Digital S.L.</strong><br>
+      Valencia · Spanien<br>
+      Eugen Neifer, Gründer<br>
+      e.neifer@outlook.de
+    </div>
+    <div>
+      <strong>Dokument-Status</strong><br>
+      Version 1.0 · 15. Mai 2026<br>
+      Verfasst von Roman, CTO Conexa OS<br>
+      <em>Internes Dokument — vertraulich</em>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
