@@ -1096,53 +1096,45 @@ function YearGrid({
       })}
     </div>
 
-    {/* Jahres-Gesamt-Karte */}
+    {/* Jahres-Gesamt-Karte — kompakt, alles in einer Reihe damit der Bildschirm nicht scrollt */}
     <Card className="shadow-card">
-      <CardContent className="p-5">
-        <div className="flex items-center justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-3">
-            <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Jahres-Bilanz</span>
-            <span className="font-display text-2xl">{year}</span>
-          </div>
-          <div className="flex items-baseline gap-6 flex-wrap">
-            <div className="flex flex-col items-end">
-              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Umsatz</span>
-              <span className="text-2xl font-semibold tabular-nums">{fmtEur(yearTotal.revenue)}</span>
-            </div>
-            <div className="flex flex-col items-end">
-              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Auslastung</span>
-              <span className={cn("text-2xl font-semibold tabular-nums", yearOccColor)}>{yearOccPct}%</span>
-            </div>
-            <div className="flex flex-col items-end">
-              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Buchungen</span>
-              <span className="text-2xl font-semibold tabular-nums">{yearTotal.bookingsCount}</span>
-            </div>
-            <div className="flex flex-col items-end">
-              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Davon offen</span>
-              <span className="text-2xl font-semibold tabular-nums text-amber-600">{yearTotal.pending}</span>
-            </div>
-          </div>
+      <CardContent className="p-3 flex items-center gap-x-5 gap-y-2 flex-wrap">
+        <div className="flex items-center gap-2 mr-auto">
+          <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Jahres-Bilanz</span>
+          <span className="font-display text-base">{year}</span>
         </div>
 
-        <div className="mt-4 pt-4 border-t border-border/50 grid grid-cols-3 gap-3 text-sm">
-          <div className="flex flex-col items-center">
-            <span className="text-xs text-muted-foreground">vs. {year - 1}</span>
-            <span className={cn("text-lg font-semibold tabular-nums", yearD1.color)}>{yearD1.text}</span>
-            <span className="text-[10px] text-muted-foreground/70 tabular-nums">{fmtEur(yearTotal.yoy1Rev)}</span>
-          </div>
-          <div className="flex flex-col items-center border-x border-border/30">
-            <span className="text-xs text-muted-foreground">vs. {year - 2}</span>
-            <span className={cn("text-lg font-semibold tabular-nums", yearD2.color)}>{yearD2.text}</span>
-            <span className="text-[10px] text-muted-foreground/70 tabular-nums">{fmtEur(yearTotal.yoy2Rev)}</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-xs text-muted-foreground">vs. {year - 3}</span>
-            <span className={cn("text-lg font-semibold tabular-nums", yearD3.color)}>{yearD3.text}</span>
-            <span className="text-[10px] text-muted-foreground/70 tabular-nums">{fmtEur(yearTotal.yoy3Rev)}</span>
-          </div>
-        </div>
+        <Stat label="Umsatz"      value={fmtEur(yearTotal.revenue)} />
+        <Stat label="Auslastung"  value={`${yearOccPct}%`} color={yearOccColor} />
+        <Stat label="Buchungen"   value={String(yearTotal.bookingsCount)} />
+        <Stat label="Davon offen" value={String(yearTotal.pending)} color="text-amber-600" />
+
+        <div className="h-8 w-px bg-border/50 mx-1" />
+
+        <YoY label={`vs. ${year - 1}`} delta={yearD1} amount={fmtEur(yearTotal.yoy1Rev)} />
+        <YoY label={`vs. ${year - 2}`} delta={yearD2} amount={fmtEur(yearTotal.yoy2Rev)} />
+        <YoY label={`vs. ${year - 3}`} delta={yearD3} amount={fmtEur(yearTotal.yoy3Rev)} />
       </CardContent>
     </Card>
+    </div>
+  );
+}
+
+function Stat({ label, value, color }: { label: string; value: string; color?: string }) {
+  return (
+    <div className="flex flex-col items-end">
+      <span className="text-[9px] uppercase tracking-wider text-muted-foreground leading-tight">{label}</span>
+      <span className={cn("text-base font-semibold tabular-nums leading-tight", color)}>{value}</span>
+    </div>
+  );
+}
+
+function YoY({ label, delta, amount }: { label: string; delta: { text: string; color: string }; amount: string }) {
+  return (
+    <div className="flex flex-col items-end">
+      <span className="text-[9px] uppercase tracking-wider text-muted-foreground leading-tight">{label}</span>
+      <span className={cn("text-sm font-semibold tabular-nums leading-tight", delta.color)}>{delta.text}</span>
+      <span className="text-[9px] text-muted-foreground/60 tabular-nums leading-tight">{amount}</span>
     </div>
   );
 }
