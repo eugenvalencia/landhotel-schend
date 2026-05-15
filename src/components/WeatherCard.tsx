@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Loader2, MapPin, Wind, Droplets, Thermometer, Sunrise, Sunset, Compass, Navigation } from "lucide-react";
+import { Loader2, MapPin, Wind, Droplets, Thermometer, Sunrise, Sunset, Compass, Navigation, Mountain, Footprints, Bike, Coffee, Waves, Castle, Flower2, Cloud } from "lucide-react";
 
 // Landhotel Schend, Immerath — Default-Position
 const HOTEL_LAT = 50.1303;
@@ -71,6 +71,67 @@ const codeLabel = (code: number): { icon: string; label: string; mood: string } 
 const windDirToCompass = (deg: number): string => {
   const dirs = ["N", "NO", "O", "SO", "S", "SW", "W", "NW"];
   return dirs[Math.round(deg / 45) % 8];
+};
+
+interface ActivityTip {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+}
+
+/**
+ * Vulkaneifel-spezifische Aktivitaets-Tipps abhaengig vom Wetter-Code.
+ * Bewusst hyperlokal — Maare, Eifelsteig, Manderscheid, Bad Bertrich.
+ */
+const activityTipsForCode = (code: number): { headline: string; tips: ActivityTip[] } => {
+  // Klar / Heiter (0-2) — Top Outdoor
+  if (code <= 2) return {
+    headline: "Heute perfekt für",
+    tips: [
+      { icon: Footprints, label: "Maartour Schalkenmehren (3 Maare, 8 km)" },
+      { icon: Mountain,   label: "Aussichtsplattform Steineberger Ley" },
+      { icon: Bike,       label: "Maare-Mosel-Radweg" },
+      { icon: Coffee,     label: "Maarcafé Terrasse" },
+    ],
+  };
+  // Bewoelkt (3) — Outdoor moeglich
+  if (code === 3) return {
+    headline: "Heute gut für",
+    tips: [
+      { icon: Footprints, label: "Eifelsteig Etappe 14" },
+      { icon: Waves,      label: "Spaziergang Immerather Maar" },
+      { icon: Mountain,   label: "Wildpark Daun" },
+      { icon: Coffee,     label: "Café Schneider Daun" },
+    ],
+  };
+  // Nebel (45-48) — Atmosphaerisch
+  if (code <= 48) return {
+    headline: "Heute atmosphärisch",
+    tips: [
+      { icon: Cloud,      label: "Nebelwanderung um's Maar" },
+      { icon: Castle,     label: "Burg Manderscheid mystisch" },
+      { icon: Coffee,     label: "Heißer Kaffee am Kamin" },
+    ],
+  };
+  // Niesel / Regen / Schauer / Schnee / Gewitter — Indoor & Wellness
+  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82) || code >= 95) return {
+    headline: "Heute gemütlich",
+    tips: [
+      { icon: Castle,  label: "Maarmuseum Manderscheid" },
+      { icon: Mountain, label: "Vulkanhaus Strohn" },
+      { icon: Flower2, label: "Wellness Vulkaneifel-Therme Bad Bertrich" },
+      { icon: Coffee,  label: "Kaminzimmer im Haus" },
+    ],
+  };
+  // Schnee (71-86)
+  return {
+    headline: "Heute winterlich",
+    tips: [
+      { icon: Footprints, label: "Schneewanderung Maarrunde" },
+      { icon: Castle,     label: "Burg Manderscheid im Schnee" },
+      { icon: Flower2,    label: "Wellness Bad Bertrich" },
+      { icon: Coffee,     label: "Heiße Schokolade am Kamin" },
+    ],
+  };
 };
 
 const dayLabel = (iso: string): string => {
@@ -177,7 +238,9 @@ export default function WeatherCard({
   }, [pos]);
 
   const today = useMemo(() => (data ? codeLabel(data.current.weatherCode) : null), [data]);
+  const activities = useMemo(() => (data ? activityTipsForCode(data.current.weatherCode) : null), [data]);
   const sunriseHHMM = (iso: string) => iso.slice(11, 16);
+  const isHotelLocation = pos?.source === "hotel";
 
   return (
     <Card className="shadow-card overflow-hidden">
@@ -289,6 +352,31 @@ export default function WeatherCard({
               <p className="text-[10px] text-muted-foreground mt-3 leading-relaxed">
                 Aktualisiert alle 15 Minuten · Datenquelle Open-Meteo
               </p>
+            </div>
+          </div>
+        )}
+
+        {/* Wetter-basierte Vulkaneifel-Tipps — nur wenn Hotel-Standort */}
+        {data && activities && isHotelLocation && (
+          <div className="border-t bg-muted/20 px-4 md:px-5 py-3.5">
+            <div className="flex items-baseline gap-3 mb-2 flex-wrap">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                {activities.headline}
+              </p>
+              <span className="text-[10px] italic text-secondary">
+                hyperlokale Tipps aus der Vulkaneifel
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-1.5 md:gap-2">
+              {activities.tips.map((tip) => (
+                <span
+                  key={tip.label}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/60 px-2.5 py-1 text-[11px] md:text-xs text-foreground/85 hover:border-secondary/60 hover:text-foreground transition-colors"
+                >
+                  <tip.icon className="h-3 w-3 md:h-3.5 md:w-3.5 text-secondary shrink-0" />
+                  <span>{tip.label}</span>
+                </span>
+              ))}
             </div>
           </div>
         )}

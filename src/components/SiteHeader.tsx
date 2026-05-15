@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "@/components/ThemeToggle";
+import HeaderWeather from "@/components/HeaderWeather";
 
 
 export default function SiteHeader() {
@@ -100,6 +101,9 @@ export default function SiteHeader() {
           </div>
         </Link>
 
+        <div className="flex items-center gap-4 lg:gap-5">
+          <HeaderWeather />
+
         <nav className="hidden lg:flex items-center gap-0.5">
           {MENU.map((item) => (
             <button
@@ -117,13 +121,14 @@ export default function SiteHeader() {
           </Button>
         </nav>
 
-        <button
-          aria-label="Menü"
-          onClick={() => setOpen((v) => !v)}
-          className="lg:hidden p-2 -mr-2 text-primary"
-        >
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+          <button
+            aria-label="Menü"
+            onClick={() => setOpen((v) => !v)}
+            className="lg:hidden p-2 -mr-2 text-primary"
+          >
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </div>
 
       {open && (
