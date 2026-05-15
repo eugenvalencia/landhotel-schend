@@ -52,8 +52,17 @@ export default function GuestProfileDialog({
   useEffect(() => {
     if (!open || !guestKey) return;
     (async () => {
+      // Buchungen direkt nach dem Gast filtern statt alle ziehen — schneller
+      // und umgeht das 1000-Rows-pro-Anfrage-Limit der Datenbank.
+      const filterCol = guestKey.email ? "guest_email" : "guest_name";
+      const filterVal = guestKey.email ?? guestKey.name;
       const [{ data: b }, { data: r }] = await Promise.all([
-        supabase.from("bookings").select("*").order("check_in", { ascending: false }),
+        supabase
+          .from("bookings")
+          .select("*")
+          .eq(filterCol, filterVal)
+          .order("check_in", { ascending: false })
+          .limit(500),
         supabase.from("rooms").select("id,name,room_number,room_type"),
       ]);
       setAllBookings((b as any[]) ?? []);
