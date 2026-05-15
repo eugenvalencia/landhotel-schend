@@ -112,11 +112,15 @@ export default function SiteHeader() {
               {item.label}
             </button>
           ))}
+          <HeaderWeather />
           <ThemeToggle className="ml-1.5" />
           <LanguageSwitcher />
         </nav>
 
-        <HeaderWeather />
+        {/* Tablet: Wetter sichtbar machen, weil die Nav verborgen ist */}
+        <div className="hidden md:flex lg:hidden">
+          <HeaderWeather />
+        </div>
 
           <button
             aria-label="Menü"
