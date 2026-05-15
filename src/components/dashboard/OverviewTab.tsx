@@ -96,12 +96,12 @@ export default function OverviewTab() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((s) => (
           <Card key={s.label} className="shadow-card">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-sm text-muted-foreground">{s.label}</p>
-                <s.icon className="h-4 w-4 text-secondary" />
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-1.5">
+                <p className="text-xs text-muted-foreground">{s.label}</p>
+                <s.icon className="h-3.5 w-3.5 text-secondary" />
               </div>
-              <p className="text-2xl font-bold">{s.value}</p>
+              <p className="text-lg font-semibold">{s.value}</p>
             </CardContent>
           </Card>
         ))}
