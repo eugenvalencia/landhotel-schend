@@ -18,7 +18,7 @@ import FeatureIcon from "@/components/FeatureIcon";
 import { useSEO } from "@/hooks/useSEO";
 import { cn } from "@/lib/utils";
 import {
-  SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_GALLERY, photoForRoomType,
+  SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_RESTAURANT_GALLERY, galleryForRoomType,
 } from "@/lib/photos";
 import food0 from "@/assets/food-0.jpg";
 import food1 from "@/assets/food-1.jpg";
@@ -27,7 +27,18 @@ import food3 from "@/assets/food-3.jpg";
 import feiernImg from "@/assets/feiern.jpg";
 import { PAKETE } from "@/lib/pakete";
 
-const FOOD_PHOTOS = [food0, food1, food2, food3];
+// Mische Speisen (lokale Assets) mit Restaurant-Stimmungen (Server)
+// damit das Marquee abwechslungsreich wirkt
+const FOOD_PHOTOS = [
+  food0,
+  SCHEND_RESTAURANT_GALLERY[1],
+  food1,
+  SCHEND_RESTAURANT_GALLERY[2],
+  food2,
+  SCHEND_RESTAURANT_GALLERY[3],
+  food3,
+  SCHEND_RESTAURANT_GALLERY[4],
+];
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -241,11 +252,16 @@ const Index = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-x-10 md:gap-y-14">
-            {categories.map((r) => (
+            {categories.map((r, idx) => {
+              // Pro Karte ein anderes Foto: jede Zimmer-Card zeigt eine andere Sichtrichtung
+              // aus der Galerie ihres Typs (Index rotiert über die Karten-Reihenfolge).
+              const gallery = galleryForRoomType(r.type);
+              const cardPhoto = gallery[idx % gallery.length] ?? gallery[0];
+              return (
               <Link key={r.id} to={`/rooms/${r.id}`} className="group block">
                 <div className="aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
                   <HotelImage
-                    src={photoForRoomType(r.type)}
+                    src={cardPhoto}
                     alt={r.name}
                     className="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]"
                   />
@@ -262,7 +278,8 @@ const Index = () => {
                   {TYPE_DESCRIPTIONS[r.type] ?? ""}
                 </p>
               </Link>
-            ))}
+              );
+            })}
           </div>
 
           <div className="text-center mt-16 md:mt-20">

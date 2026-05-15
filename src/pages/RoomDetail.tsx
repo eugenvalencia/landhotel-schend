@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { eur } from "@/lib/format";
 import { HotelImage } from "@/components/HotelImage";
-import { photoForRoomType } from "@/lib/photos";
+import { galleryForRoomType } from "@/lib/photos";
 import { cn } from "@/lib/utils";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -77,8 +77,11 @@ export default function RoomDetail() {
 
   const gallery = useMemo(() => {
     if (!room) return [];
-    const main = photoForRoomType(room.room_type);
-    return [main, main, main, main];
+    // Aus dem Server-Pool ziehen wir 4 verschiedene Sichtrichtungen pro Zimmer-Typ.
+    // Wenn das DB-Foto-Feld eigene URLs hat, kommen die zuerst.
+    const fromDb = (room.photos ?? []).filter(Boolean);
+    if (fromDb.length >= 2) return fromDb.slice(0, 6);
+    return galleryForRoomType(room.room_type);
   }, [room]);
 
   if (!room) {
@@ -117,10 +120,13 @@ export default function RoomDetail() {
                 className="w-full h-full object-cover transition-transform duration-[1500ms] ease-out hover:scale-[1.03]"
               />
             </div>
-            <div className="grid grid-cols-4 gap-2">
+            <div
+              className="grid gap-2"
+              style={{ gridTemplateColumns: `repeat(${Math.min(gallery.length, 6)}, minmax(0, 1fr))` }}
+            >
               {gallery.map((src, i) => (
                 <button
-                  key={i}
+                  key={`${src}-${i}`}
                   onClick={() => setActiveIdx(i)}
                   aria-label={`Foto ${i + 1}`}
                   className={cn(
@@ -130,7 +136,7 @@ export default function RoomDetail() {
                       : "border-transparent opacity-65 hover:opacity-100",
                   )}
                 >
-                  <HotelImage src={src} alt="" className="w-full h-full object-cover" />
+                  <HotelImage src={src} alt={`${room.name} – Ansicht ${i + 1}`} className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
