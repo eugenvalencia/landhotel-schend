@@ -65,18 +65,25 @@ export default function HeroWeather() {
 
   return (
     <div
-      className="absolute top-20 right-6 md:top-24 md:right-10 z-10 flex items-center gap-2.5 md:gap-3 animate-fade-up text-white/95"
-      style={{ animationDelay: "0.6s", textShadow: "0 1px 6px rgba(0,0,0,0.55)" }}
-      aria-label={`Aktuelles Wetter in Immerath: ${Math.round(w.temp)} Grad, ${codeMood(w.code)}`}
+      className="absolute top-16 md:top-20 inset-x-0 z-10 pointer-events-none"
+      style={{ animationDelay: "0.6s" }}
     >
-      <span className="text-base md:text-lg leading-none" aria-hidden>{codeIcon(w.code)}</span>
-      <span className="block h-px w-5 md:w-7 bg-white/60" aria-hidden />
-      <span className="tabular-nums font-medium text-sm md:text-base leading-none">
-        {Math.round(w.temp)}°
-      </span>
-      <span className="hidden sm:inline text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-white/85 leading-none">
-        {codeMood(w.code)} · Immerath
-      </span>
+      <div className="container mx-auto px-4 flex justify-end pt-1.5 md:pt-2">
+        <div
+          className="pointer-events-auto flex items-center gap-2.5 md:gap-3 animate-fade-up text-white/95"
+          style={{ textShadow: "0 1px 6px rgba(0,0,0,0.55)" }}
+          aria-label={`Aktuelles Wetter in Immerath: ${Math.round(w.temp)} Grad, ${codeMood(w.code)}`}
+        >
+          <span className="text-base md:text-lg leading-none" aria-hidden>{codeIcon(w.code)}</span>
+          <span className="block h-px w-5 md:w-7 bg-white/60" aria-hidden />
+          <span className="tabular-nums font-medium text-sm md:text-base leading-none">
+            {Math.round(w.temp)}°
+          </span>
+          <span className="hidden sm:inline text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-white/85 leading-none">
+            {codeMood(w.code)} · Immerath
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
