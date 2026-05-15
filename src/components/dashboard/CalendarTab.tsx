@@ -897,8 +897,10 @@ function YearGrid({
   bookings: Booking[];
   onPickMonth: (monthIndex: number) => void;
 }) {
-  const months = Array.from({ length: 12 }, (_, m) => {
-    const daysInMonth = new Date(year, m + 1, 0).getDate();
+  // Aggregiert einen Monat: Belegungs-Counter + Monats-Umsatz + Auslastung.
+  // Wir berechnen sowohl das angezeigte Jahr als auch das Vorjahr — fuer den Vergleich.
+  const computeMonth = (yr: number, m: number) => {
+    const daysInMonth = new Date(yr, m + 1, 0).getDate();
     const totalSlots = daysInMonth * Math.max(1, rooms.length);
     let paid = 0;
     let pending = 0;
@@ -906,7 +908,7 @@ function YearGrid({
     let revenue = 0;
     const countedBookings = new Set<string>();
     for (let day = 1; day <= daysInMonth; day++) {
-      const iso = toISODate(new Date(year, m, day));
+      const iso = toISODate(new Date(yr, m, day));
       for (const r of rooms) {
         const b = bookings.find(
           (x) => x.room_id === r.id && x.payment_status !== "cancelled" && x.check_in <= iso && x.check_out > iso,
@@ -915,14 +917,12 @@ function YearGrid({
           if (b.booking_type === "intern") intern++;
           else if (b.payment_status === "paid") paid++;
           else pending++;
-
-          // Umsatz pro Buchung anteilig dem Monat zurechnen
           if (b.booking_type !== "intern" && !countedBookings.has(b.id)) {
             countedBookings.add(b.id);
             const ci = new Date(b.check_in);
             const co = new Date(b.check_out);
-            const monthStart = new Date(year, m, 1);
-            const monthEnd = new Date(year, m + 1, 1);
+            const monthStart = new Date(yr, m, 1);
+            const monthEnd = new Date(yr, m + 1, 1);
             const overlapStart = ci < monthStart ? monthStart : ci;
             const overlapEnd = co > monthEnd ? monthEnd : co;
             const nightsInMonth = Math.max(0, Math.round((overlapEnd.getTime() - overlapStart.getTime()) / 86400000));
@@ -935,15 +935,41 @@ function YearGrid({
     const free = totalSlots - paid - pending - intern;
     const occupiedSlots = paid + pending + intern;
     const occupancyPct = totalSlots ? Math.round((occupiedSlots / totalSlots) * 100) : 0;
-    return { m, daysInMonth, paid, pending, intern, free, totalSlots, revenue, occupancyPct };
+    return { paid, pending, intern, free, totalSlots, revenue, occupancyPct };
+  };
+
+  const months = Array.from({ length: 12 }, (_, m) => {
+    const current = computeMonth(year, m);
+    // Vormonat: bei Januar → Dezember Vorjahr
+    const prevYear = m === 0 ? year - 1 : year;
+    const prevMonth = m === 0 ? 11 : m - 1;
+    const prev = computeMonth(prevYear, prevMonth);
+    // Selber Monat im Vorjahr
+    const yoy = computeMonth(year - 1, m);
+    return { m, ...current, prev, yoy };
   });
 
   const fmtEur = (n: number) =>
     n.toLocaleString("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
 
+  // Liefert einen Vergleichs-Text wie "+12% vs. Vormonat" mit Farbe
+  const deltaPct = (current: number, base: number): { text: string; color: string } => {
+    if (!base) {
+      return current > 0
+        ? { text: "neu", color: "text-emerald-600" }
+        : { text: "—", color: "text-muted-foreground/60" };
+    }
+    const pct = Math.round(((current - base) / base) * 100);
+    if (pct === 0) return { text: "±0%", color: "text-muted-foreground" };
+    return {
+      text: (pct > 0 ? "▲ +" : "▼ ") + pct + "%",
+      color: pct > 0 ? "text-emerald-600" : "text-rose-600",
+    };
+  };
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-      {months.map(({ m, paid, pending, intern, free, totalSlots, revenue, occupancyPct }) => {
+      {months.map(({ m, paid, pending, intern, free, totalSlots, revenue, occupancyPct, prev, yoy }) => {
         const label = new Date(year, m, 1).toLocaleDateString("de-DE", { month: "long" });
         const pct = (n: number) => (totalSlots ? (n / totalSlots) * 100 : 0);
         // Ampel-Farbe fuer die Auslastung
@@ -952,6 +978,8 @@ function YearGrid({
           occupancyPct >= 40 ? "text-amber-600" :
           occupancyPct > 0   ? "text-rose-600" :
           "text-muted-foreground";
+        const dPrev = deltaPct(revenue, prev.revenue);
+        const dYoy = deltaPct(revenue, yoy.revenue);
         return (
           <Card
             key={m}
@@ -983,6 +1011,18 @@ function YearGrid({
                 </span>
                 <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-intern))]" />{intern}</span>
                 <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-free))] border" />{free}</span>
+              </div>
+
+              {/* Vergleiche: vs. Vormonat und vs. selber Monat letztes Jahr */}
+              <div className="pt-2 border-t border-border/50 space-y-1 text-[10px]">
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">vs. Vormonat</span>
+                  <span className={cn("font-medium tabular-nums", dPrev.color)}>{dPrev.text}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">vs. {year - 1}</span>
+                  <span className={cn("font-medium tabular-nums", dYoy.color)}>{dYoy.text}</span>
+                </div>
               </div>
             </CardContent>
           </Card>
