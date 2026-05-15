@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_RESTAURANT_GALLERY, galleryForRoomType,
 } from "@/lib/photos";
+import HeroWeather from "@/components/HeroWeather";
 import food0 from "@/assets/food-0.jpg";
 import food1 from "@/assets/food-1.jpg";
 import food2 from "@/assets/food-2.jpg";
@@ -142,6 +143,9 @@ const Index = () => {
           aria-hidden
           className="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-black/55 via-black/20 to-transparent"
         />
+
+        {/* Editorial Wetter-Pille oben rechts */}
+        <HeroWeather />
 
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
           {/* Eyebrow with hairlines */}
