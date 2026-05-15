@@ -160,14 +160,31 @@ export default function DashboardSidebar({ activePath, basePath = "/dashboard" }
           })}
       </nav>
 
-      <div className="px-4 py-3 border-t border-sidebar-border/60 text-[11px] text-sidebar-foreground/50 leading-relaxed">
+      <div className="px-4 py-3 border-t border-sidebar-border/60">
         {tenant ? (
           <>
-            <div className="font-medium text-sidebar-foreground/75 truncate">{tenant.name}</div>
-            <div>Pilot · Conexa OS</div>
+            <div className="flex items-center gap-2.5">
+              <span
+                role="img"
+                aria-label={`${tenant.name} Logo`}
+                className="schend-mark shrink-0 h-5 text-sidebar-foreground/80"
+              />
+              <div className="min-w-0">
+                <div className="text-xs font-medium text-sidebar-foreground/85 truncate">{tenant.name}</div>
+                <div className="text-[10px] text-sidebar-foreground/45">Tenant · Pilot</div>
+              </div>
+            </div>
+            <div className="mt-2.5 pt-2.5 border-t border-sidebar-border/30 flex items-center gap-2">
+              <span className="inline-flex items-center justify-center h-4 w-4 rounded-sm bg-sidebar-primary/15 text-sidebar-primary text-[8px] font-bold tracking-wider">
+                C
+              </span>
+              <span className="text-[10px] text-sidebar-foreground/55 tracking-wider uppercase">
+                Powered by Conexa OS
+              </span>
+            </div>
           </>
         ) : (
-          <div>Conexa OS</div>
+          <div className="text-[11px] text-sidebar-foreground/50">Conexa OS</div>
         )}
       </div>
     </aside>
