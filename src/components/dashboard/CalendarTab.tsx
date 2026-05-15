@@ -110,13 +110,36 @@ export default function CalendarTab() {
   const [invoiceOpen, setInvoiceOpen] = useState(false);
 
   const loadAll = async () => {
-    const [{ data: r, error: rErr }, { data: b, error: bErr }] = await Promise.all([
+    // Supabase / Postgrest hat einen Server-seitigen Max-Rows-Default von 1000
+    // pro Anfrage. Wir holen die Buchungen in Seiten zu je 1000 bis nichts mehr
+    // kommt — damit funktionieren auch Mehrjahres-Vergleiche mit > 4000 Rows.
+    const fetchAllBookings = async (): Promise<Booking[]> => {
+      const all: Booking[] = [];
+      const pageSize = 1000;
+      for (let page = 0; page < 50; page++) {
+        const from = page * pageSize;
+        const to = from + pageSize - 1;
+        const { data, error } = await supabase
+          .from("bookings")
+          .select("*")
+          .order("check_in")
+          .range(from, to);
+        if (error) {
+          if (page === 0) throw error;
+          break;
+        }
+        if (!data || data.length === 0) break;
+        all.push(...(data as unknown as Booking[]));
+        if (data.length < pageSize) break;
+      }
+      return all;
+    };
+
+    const [{ data: r, error: rErr }, b] = await Promise.all([
       supabase.from("rooms").select("id,room_number,name,room_type,price_per_night,photos").order("room_number"),
-      // Supabase liefert per Default nur 1000 Zeilen. Mit 18 Monaten Demo-Daten
-      // sind das ~2000 Buchungen — ohne Limit fehlt die zweite Haelfte (die fuer
-      // den aktuellen Monat relevant ist, weil sortiert nach check_in ASC).
-      supabase.from("bookings").select("*").order("check_in").limit(10000),
+      fetchAllBookings().catch(() => null),
     ]);
+    const bErr = b === null ? new Error("Konnte Buchungen nicht laden") : null;
     if (rErr || bErr) {
       toast.error("Kalender konnte nicht geladen werden");
       return;
