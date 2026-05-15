@@ -929,6 +929,7 @@ function YearGrid({
     let pending = 0;
     let intern = 0;
     let revenue = 0;
+    let bookingsCount = 0;
     const countedBookings = new Set<string>();
     for (let day = 1; day <= daysInMonth; day++) {
       const iso = toISODate(new Date(yr, m, day));
@@ -942,6 +943,7 @@ function YearGrid({
           else pending++;
           if (b.booking_type !== "intern" && !countedBookings.has(b.id)) {
             countedBookings.add(b.id);
+            bookingsCount++;
             const ci = new Date(b.check_in);
             const co = new Date(b.check_out);
             const monthStart = new Date(yr, m, 1);
@@ -958,7 +960,7 @@ function YearGrid({
     const free = totalSlots - paid - pending - intern;
     const occupiedSlots = paid + pending + intern;
     const occupancyPct = totalSlots ? Math.round((occupiedSlots / totalSlots) * 100) : 0;
-    return { paid, pending, intern, free, totalSlots, revenue, occupancyPct };
+    return { paid, pending, intern, free, totalSlots, revenue, occupancyPct, bookingsCount };
   };
 
   const months = Array.from({ length: 12 }, (_, m) => {
@@ -992,7 +994,34 @@ function YearGrid({
     };
   };
 
+  // Jahres-Aggregate: Summe ueber alle 12 Monate
+  const yearTotal = months.reduce(
+    (acc, m) => ({
+      revenue: acc.revenue + m.revenue,
+      paid: acc.paid + m.paid,
+      pending: acc.pending + m.pending,
+      intern: acc.intern + m.intern,
+      occupied: acc.occupied + m.paid + m.pending + m.intern,
+      capacity: acc.capacity + m.totalSlots,
+      bookingsCount: acc.bookingsCount + m.bookingsCount,
+      yoy1Rev: acc.yoy1Rev + m.yoy1.revenue,
+      yoy2Rev: acc.yoy2Rev + m.yoy2.revenue,
+      yoy3Rev: acc.yoy3Rev + m.yoy3.revenue,
+    }),
+    { revenue: 0, paid: 0, pending: 0, intern: 0, occupied: 0, capacity: 0, bookingsCount: 0, yoy1Rev: 0, yoy2Rev: 0, yoy3Rev: 0 },
+  );
+  const yearOccPct = yearTotal.capacity ? Math.round((yearTotal.occupied / yearTotal.capacity) * 100) : 0;
+  const yearOccColor =
+    yearOccPct >= 70 ? "text-emerald-600" :
+    yearOccPct >= 40 ? "text-amber-600" :
+    yearOccPct > 0   ? "text-rose-600" :
+    "text-muted-foreground";
+  const yearD1 = deltaPct(yearTotal.revenue, yearTotal.yoy1Rev);
+  const yearD2 = deltaPct(yearTotal.revenue, yearTotal.yoy2Rev);
+  const yearD3 = deltaPct(yearTotal.revenue, yearTotal.yoy3Rev);
+
   return (
+    <div className="space-y-3">
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
       {months.map(({ m, paid, pending, intern, free, totalSlots, revenue, occupancyPct, prev, yoy1, yoy2, yoy3 }) => {
         const label = new Date(year, m, 1).toLocaleDateString("de-DE", { month: "long" });
@@ -1065,6 +1094,55 @@ function YearGrid({
           </Card>
         );
       })}
+    </div>
+
+    {/* Jahres-Gesamt-Karte */}
+    <Card className="shadow-card">
+      <CardContent className="p-5">
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div className="flex items-center gap-3">
+            <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Jahres-Bilanz</span>
+            <span className="font-display text-2xl">{year}</span>
+          </div>
+          <div className="flex items-baseline gap-6 flex-wrap">
+            <div className="flex flex-col items-end">
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Umsatz</span>
+              <span className="text-2xl font-semibold tabular-nums">{fmtEur(yearTotal.revenue)}</span>
+            </div>
+            <div className="flex flex-col items-end">
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Auslastung</span>
+              <span className={cn("text-2xl font-semibold tabular-nums", yearOccColor)}>{yearOccPct}%</span>
+            </div>
+            <div className="flex flex-col items-end">
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Buchungen</span>
+              <span className="text-2xl font-semibold tabular-nums">{yearTotal.bookingsCount}</span>
+            </div>
+            <div className="flex flex-col items-end">
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Davon offen</span>
+              <span className="text-2xl font-semibold tabular-nums text-amber-600">{yearTotal.pending}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 pt-4 border-t border-border/50 grid grid-cols-3 gap-3 text-sm">
+          <div className="flex flex-col items-center">
+            <span className="text-xs text-muted-foreground">vs. {year - 1}</span>
+            <span className={cn("text-lg font-semibold tabular-nums", yearD1.color)}>{yearD1.text}</span>
+            <span className="text-[10px] text-muted-foreground/70 tabular-nums">{fmtEur(yearTotal.yoy1Rev)}</span>
+          </div>
+          <div className="flex flex-col items-center border-x border-border/30">
+            <span className="text-xs text-muted-foreground">vs. {year - 2}</span>
+            <span className={cn("text-lg font-semibold tabular-nums", yearD2.color)}>{yearD2.text}</span>
+            <span className="text-[10px] text-muted-foreground/70 tabular-nums">{fmtEur(yearTotal.yoy2Rev)}</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <span className="text-xs text-muted-foreground">vs. {year - 3}</span>
+            <span className={cn("text-lg font-semibold tabular-nums", yearD3.color)}>{yearD3.text}</span>
+            <span className="text-[10px] text-muted-foreground/70 tabular-nums">{fmtEur(yearTotal.yoy3Rev)}</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
     </div>
   );
 }
