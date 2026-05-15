@@ -257,7 +257,11 @@ export default function Booking() {
 
   const insertAtSign = () => {
     const input = document.getElementById("email") as HTMLInputElement | null;
-    const cursor = input?.selectionStart ?? guest.email.length;
+    // Cursor-Position lesen waehrend Input noch Fokus hat — der @-Button
+    // muss onMouseDown preventDefault'en, sonst wird selectionStart von 0
+    // gelesen (Blur durch Buttonklick setzt Selection zurueck) und das @
+    // landet am Anfang.
+    const cursor = input?.selectionStart ?? input?.value.length ?? guest.email.length;
     const next = guest.email.slice(0, cursor) + "@" + guest.email.slice(cursor);
     setGuest({ ...guest, email: next });
     requestAnimationFrame(() => {
@@ -656,7 +660,15 @@ export default function Booking() {
             <CardContent className="space-y-4">
               <div>
                 <Label htmlFor="name">Vor- und Nachname</Label>
-                <Input id="name" value={guest.name} onChange={(e) => setGuest({ ...guest, name: e.target.value })} className="mt-1.5" maxLength={120} />
+                <Input
+                  id="name"
+                  value={guest.name}
+                  onChange={(e) => setGuest({ ...guest, name: e.target.value })}
+                  className="mt-1.5"
+                  maxLength={120}
+                  placeholder="z. B. Max Mustermann"
+                  autoComplete="name"
+                />
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
@@ -671,11 +683,12 @@ export default function Booking() {
                       autoComplete="email"
                       inputMode="email"
                       spellCheck={false}
-                      placeholder="ihre@email.de"
+                      placeholder="max.mustermann@beispiel.de"
                       className="pr-12"
                     />
                     <button
                       type="button"
+                      onMouseDown={(e) => e.preventDefault()}
                       onClick={insertAtSign}
                       title="@-Zeichen einfügen"
                       aria-label="@-Zeichen einfügen"
@@ -706,7 +719,7 @@ export default function Booking() {
                     maxLength={40}
                     autoComplete="tel"
                     inputMode="tel"
-                    placeholder="+49 …"
+                    placeholder="z. B. +49 171 1234567"
                   />
                 </div>
               </div>
