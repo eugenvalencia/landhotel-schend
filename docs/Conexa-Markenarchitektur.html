@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Conexa Digital — Markenarchitektur &amp; Naming</title>
+<style>
+  :root {
+    --ink: #1b2230;
+    --muted: #5e6577;
+    --brass: #8a6b2a;
+    --paper: #faf7f0;
+    --line: #d6cfbe;
+    --green: #1f7a4d;
+    --rose: #b03a3a;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+  }
+  body { padding: 56px 60px; max-width: 880px; margin: 0 auto; }
+
+  h1, h2, h3 {
+    font-family: "Cormorant Garamond", "Georgia", "Times New Roman", serif;
+    font-weight: 500;
+    letter-spacing: -0.012em;
+    margin: 0;
+  }
+  h1 { font-size: 38px; line-height: 1.1; }
+  h2 { font-size: 26px; line-height: 1.15; margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line); }
+  h3 { font-size: 19px; margin-top: 24px; color: var(--ink); }
+  p  { margin: 8px 0 14px; }
+  small, .meta { color: var(--muted); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .eyebrow { color: var(--brass); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; }
+  .lead { font-size: 17px; color: var(--muted); margin: 14px 0 24px; }
+  .hairline { height: 1px; background: var(--line); margin: 30px 0; }
+
+  .architecture {
+    background: white;
+    border: 1px solid var(--line);
+    padding: 24px 28px;
+    border-radius: 6px;
+    margin: 18px 0 28px;
+  }
+  .level {
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin: 6px 0;
+    border: 1px solid var(--line);
+    background: var(--paper);
+  }
+  .level.l1 { background: #fff1d6; border-color: #e7c98a; font-weight: 600; }
+  .level.l2 { background: #e5edf6; border-color: #b6c8df; font-weight: 600; margin-left: 24px; }
+  .level.l3 { margin-left: 48px; }
+  .level small { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; text-transform: none; letter-spacing: 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 18px; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-weight: 600; background: #f1ece0; }
+  td.name { font-family: "Cormorant Garamond", Georgia, serif; font-size: 17px; }
+  td.tone { font-size: 12px; color: var(--muted); }
+  td.fit  { font-size: 13px; }
+  td.score { text-align: center; font-weight: 600; }
+  .pill {
+    display: inline-block; padding: 1px 8px; border-radius: 99px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  .pill-green { background: #dff5ea; color: var(--green); }
+  .pill-amber { background: #fdf3df; color: #8a6b2a; }
+  .pill-rose  { background: #fbe6e6; color: var(--rose); }
+
+  .callout {
+    background: white;
+    border-left: 3px solid var(--brass);
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  .recommendation {
+    background: #ecf6f0;
+    border: 1px solid #b6dbc7;
+    border-left: 6px solid var(--green);
+    padding: 14px 18px;
+    margin: 20px 0;
+  }
+  .recommendation .eyebrow { color: var(--green); }
+
+  ol, ul { margin: 8px 0 14px; padding-left: 22px; }
+  li { margin: 4px 0; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 14px 0; }
+  .grid2 > div { background: white; border: 1px solid var(--line); padding: 14px 16px; border-radius: 4px; }
+
+  footer { margin-top: 60px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+  @media print {
+    body { background: white; padding: 24mm 22mm; max-width: none; }
+    h2 { page-break-after: avoid; }
+    table, .callout, .recommendation, .architecture { page-break-inside: avoid; }
+    @page { size: A4; margin: 18mm 16mm 22mm 16mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="eyebrow">Conexa Digital S.L. · Strategie-Memo</div>
+<h1>Markenarchitektur &amp; Branchen-Naming</h1>
+<p class="lead">
+  Vorschlag für die Aufteilung von Holding, Plattform und branchenspezifischen
+  SaaS-Marken — plus konkrete Namens-Optionen pro Branche, mit Bewertung.
+</p>
+<div class="meta">Erstellt am 15. Mai 2026 · Roman, CTO</div>
+
+<h2>1. Empfehlung: Drei-Ebenen-Modell</h2>
+
+<p>
+  Statt alles unter eine LAB-Klammer zu stellen, schlage ich drei klar getrennte
+  Ebenen vor — Holding, Plattform und Produkt. Damit kannst du das Vertrauen
+  des Mutter-Brands skalieren, ohne dass jede Branche denselben Namen tragen muss.
+</p>
+
+<div class="architecture">
+  <div class="level l1">CONEXA DIGITAL S.L.<small>Holding — juristische Person, Rechnungen, Verträge, Eigentümer</small></div>
+  <div class="level l2">CONEXA OS<small>Tech-Plattform für Verkauf — Multi-Tenant-Basis (Auth, RLS, Audit, Payments, Voice, Messaging, AI)</small></div>
+  <div class="level l3">▸ <strong>Empfang</strong> by Conexa<small>Hotel-SaaS — Schend ist Pilot</small></div>
+  <div class="level l3">▸ <strong>Tisch</strong> by Conexa<small>Restaurant-SaaS — Reservierung &amp; Tisch-Management</small></div>
+  <div class="level l3">▸ <strong>Termin</strong> by Conexa<small>Salon / Praxis / Wellness</small></div>
+  <div class="level l3">▸ <strong>Refugium</strong> by Conexa<small>Ferienwohnungen / Pensionen</small></div>
+  <div class="level l2" style="background:#f4ecf6; border-color:#d8c1de;">CONEXA LAB<small>Interne R&amp;D-Marke für Prototypen, KI-Experimente, Branchen-Pilots — nicht für Verkauf</small></div>
+</div>
+
+<div class="callout">
+  <strong>Warum nicht „Conexa Digital LAB" als Plattform-Name?</strong><br />
+  „LAB" signalisiert experimentell / Prototyp / R&amp;D — wenn morgen Hilton Berlin
+  auf der Demo sitzt, will der ein produktreifes Operating-System sehen, kein
+  Forschungslabor. „LAB" ist trotzdem wertvoll als <em>zweite</em> Marke für alles
+  was intern noch reift (Voice-Agent v2, neue Branchen). Wie Google ↔ Google X.
+</div>
+
+<h2>2. Naming-Modell pro Branche</h2>
+
+<p>
+  Zwei plausible Modelle. Mein Favorit ist <strong>Endorsed Brands</strong> (Modell A) —
+  jede Branche bekommt einen eigenen, sprechenden Namen, die Conexa-Herkunft steht
+  als Gütesiegel daneben („<em>Empfang by Conexa</em>"). Das ist wie „Courtyard by Marriott".
+</p>
+
+<div class="grid2">
+  <div>
+    <h3>A · Endorsed Brands (empfohlen)</h3>
+    <p style="font-size:13px;color:var(--muted);margin:0 0 8px;">Jede Branche hat einen sprechenden Namen, Conexa als Endorsement.</p>
+    <ul style="font-size:13px;">
+      <li><strong>Empfang</strong> by Conexa</li>
+      <li><strong>Tisch</strong> by Conexa</li>
+      <li><strong>Termin</strong> by Conexa</li>
+    </ul>
+    <p style="font-size:12px;color:var(--muted);">Vorteil: Marken sind eigenständig, branchen-spezifisch verkaufbar.</p>
+  </div>
+  <div>
+    <h3>B · Modular-Branded (Alternative)</h3>
+    <p style="font-size:13px;color:var(--muted);margin:0 0 8px;">Alle Produkte tragen Conexa direkt vorne, mit Branchen-Suffix.</p>
+    <ul style="font-size:13px;">
+      <li>Conexa <strong>Hotel</strong></li>
+      <li>Conexa <strong>Gastro</strong></li>
+      <li>Conexa <strong>Salon</strong></li>
+    </ul>
+    <p style="font-size:12px;color:var(--muted);">Vorteil: maximal Brand-Equity, einfacher zu erklären.<br />Nachteil: weniger emotional, austauschbar mit Wettbewerbern.</p>
+  </div>
+</div>
+
+<h2>3. Hotel-SaaS — Namens-Optionen</h2>
+<p>Schend ist Pilot. Realistisches Ziel: kleine Häuser bis Mittelklasse (10–60 Zimmer), DACH-Markt zuerst.</p>
+
+<table>
+  <thead><tr><th>Name</th><th>Tonalität</th><th>Passt für</th><th>Bewertung</th></tr></thead>
+  <tbody>
+    <tr><td class="name">Empfang</td><td class="tone">Deutsch, direkt, warm</td><td class="fit">Familienhotels, Landhotels, mittelständische Stadthotels</td><td class="score"><span class="pill pill-green">★★★★★ Top</span></td></tr>
+    <tr><td class="name">Hostly</td><td class="tone">International, modern</td><td class="fit">EU-Skalierung, Boutique-Hotels</td><td class="score"><span class="pill pill-green">★★★★ stark</span></td></tr>
+    <tr><td class="name">Stube</td><td class="tone">Regional, gemütlich</td><td class="fit">Landhotels, Gasthöfe — zu eng für Hilton</td><td class="score"><span class="pill pill-amber">★★★ Nische</span></td></tr>
+    <tr><td class="name">Hofmark</td><td class="tone">Regional-Premium, deutsch</td><td class="fit">Landhotels, Hofgüter — Stadthotels passt nicht</td><td class="score"><span class="pill pill-amber">★★★ Nische</span></td></tr>
+    <tr><td class="name">Direkt</td><td class="tone">Provisionsfrei = Direktbuchung</td><td class="fit">Anti-OTA-Statement, alle Größen</td><td class="score"><span class="pill pill-green">★★★★ stark</span></td></tr>
+    <tr><td class="name">Pulse</td><td class="tone">Tech-modern, daten-getrieben</td><td class="fit">Hotels die Revenue-Management sexy finden</td><td class="score"><span class="pill pill-amber">★★★ ok</span></td></tr>
+    <tr><td class="name">Nachts</td><td class="tone">Poetisch, kurz</td><td class="fit">Boutique, sehr stilbewusst</td><td class="score"><span class="pill pill-amber">★★★ riskant</span></td></tr>
+    <tr><td class="name">Belegt</td><td class="tone">Clever, witzig</td><td class="fit">Frech-modern, aber zweideutig (= „nicht frei")</td><td class="score"><span class="pill pill-rose">★★ vorsichtig</span></td></tr>
+  </tbody>
+</table>
+
+<div class="recommendation">
+  <div class="eyebrow">Meine Empfehlung Hotel</div>
+  <strong>„Empfang" by Conexa</strong> — sprechend, deutsch, warm, sagt sofort
+  worum es geht. Funktioniert für Schend genauso wie für ein 200-Zimmer-Stadthotel.
+  Domain <code>empfang.app</code> oder <code>empfang.io</code> prüfen.
+  Zweitfavorit: <strong>„Hostly"</strong> falls EU-Skalierung Priorität hat.
+</div>
+
+<h2>4. Restaurant / Gastro</h2>
+
+<table>
+  <thead><tr><th>Name</th><th>Tonalität</th><th>Bewertung</th></tr></thead>
+  <tbody>
+    <tr><td class="name">Tisch</td><td class="tone">Deutsch, direkt</td><td class="score"><span class="pill pill-green">★★★★★ Top</span></td></tr>
+    <tr><td class="name">Gedeckt</td><td class="tone">Deutsch, einladend, fast poetisch</td><td class="score"><span class="pill pill-green">★★★★ stark</span></td></tr>
+    <tr><td class="name">Tafel</td><td class="tone">Festlich, gehoben</td><td class="score"><span class="pill pill-green">★★★★ stark</span></td></tr>
+    <tr><td class="name">Carte</td><td class="tone">Französisch-elegant, kurz</td><td class="score"><span class="pill pill-amber">★★★ Premium-Nische</span></td></tr>
+    <tr><td class="name">Reservé</td><td class="tone">Französisch, edel</td><td class="score"><span class="pill pill-amber">★★★ Premium</span></td></tr>
+    <tr><td class="name">Bistro</td><td class="tone">Klassisch, fast generisch</td><td class="score"><span class="pill pill-rose">★★ zu generisch</span></td></tr>
+  </tbody>
+</table>
+
+<div class="recommendation">
+  <div class="eyebrow">Meine Empfehlung Gastro</div>
+  <strong>„Tisch" by Conexa</strong> — direkt das was es macht (Tisch reservieren),
+  funktioniert vom Wirtshaus bis zum Sterne-Restaurant. <strong>„Gedeckt"</strong>
+  als poetische Alternative falls etwas mehr Marken-Aura gewünscht.
+</div>
+
+<h2>5. Salon / Wellness / Praxis</h2>
+
+<table>
+  <thead><tr><th>Name</th><th>Tonalität</th><th>Bewertung</th></tr></thead>
+  <tbody>
+    <tr><td class="name">Termin</td><td class="tone">Deutsch, direkt, universell</td><td class="score"><span class="pill pill-green">★★★★★ Top</span></td></tr>
+    <tr><td class="name">Salon</td><td class="tone">Klassisch, aber zu generisch / Friseur-spezifisch</td><td class="score"><span class="pill pill-rose">★★ zu eng</span></td></tr>
+    <tr><td class="name">Atelier</td><td class="tone">Premium, kreativ</td><td class="score"><span class="pill pill-amber">★★★ Premium-Salons</span></td></tr>
+    <tr><td class="name">Sprech</td><td class="tone">Kurz für „Sprechstunde", deutsch, prägnant</td><td class="score"><span class="pill pill-green">★★★★ stark (Praxen)</span></td></tr>
+    <tr><td class="name">Pflege</td><td class="tone">Weich, fürsorglich</td><td class="score"><span class="pill pill-amber">★★★ Wellness/Senioren</span></td></tr>
+    <tr><td class="name">Flow</td><td class="tone">Englisch, Wellness-Standard</td><td class="score"><span class="pill pill-amber">★★★ ok aber generisch</span></td></tr>
+  </tbody>
+</table>
+
+<div class="recommendation">
+  <div class="eyebrow">Meine Empfehlung Salon / Wellness / Praxis</div>
+  <strong>„Termin" by Conexa</strong> als Dach für die ganze Branche (Friseur,
+  Kosmetik, Massage, Physio). Falls du Praxen <em>extra</em> bedienst:
+  <strong>„Sprech"</strong> by Conexa als getrennte Marke (= „Sprechstunde digital").
+</div>
+
+<h2>6. Ferienwohnungen / Pension / Bed-and-Breakfast</h2>
+
+<table>
+  <thead><tr><th>Name</th><th>Tonalität</th><th>Bewertung</th></tr></thead>
+  <tbody>
+    <tr><td class="name">Refugium</td><td class="tone">Lateinisch, Premium, Rückzugsort</td><td class="score"><span class="pill pill-green">★★★★★ Top</span></td></tr>
+    <tr><td class="name">Quartier</td><td class="tone">Deutsch, klassisch</td><td class="score"><span class="pill pill-green">★★★★ stark</span></td></tr>
+    <tr><td class="name">Hütte</td><td class="tone">Sehr deutsch, alpin, klein</td><td class="score"><span class="pill pill-amber">★★★ regional</span></td></tr>
+    <tr><td class="name">Logis</td><td class="tone">Französisch, gehoben</td><td class="score"><span class="pill pill-amber">★★★ Premium</span></td></tr>
+    <tr><td class="name">Heimkommen</td><td class="tone">Poetisch, lang</td><td class="score"><span class="pill pill-rose">★★ riskant</span></td></tr>
+  </tbody>
+</table>
+
+<div class="recommendation">
+  <div class="eyebrow">Meine Empfehlung Ferienwohnungen</div>
+  <strong>„Refugium" by Conexa</strong> — passt zu kleinen, persönlichen
+  Vermietern (genau die wollen Conexa = anti-Airbnb-Provision). Hat sofort
+  ein Bild im Kopf: Rückzugsort, Wohlfühlen, eigen.
+</div>
+
+<h2>7. Gesamt-Portfolio im Überblick</h2>
+
+<table>
+  <thead><tr><th>Branche</th><th>Vorgeschlagene Marke</th><th>Pilot-Kunde</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td>Hotels (10–60 Zimmer)</td><td><strong>Empfang</strong> by Conexa</td><td>Landhotel Schend</td><td><span class="pill pill-green">aktiv</span></td></tr>
+    <tr><td>Restaurants / Gastro</td><td><strong>Tisch</strong> by Conexa</td><td>—</td><td><span class="pill pill-amber">offen</span></td></tr>
+    <tr><td>Salon / Wellness</td><td><strong>Termin</strong> by Conexa</td><td>—</td><td><span class="pill pill-amber">offen</span></td></tr>
+    <tr><td>Arzt-/Heilpraxis</td><td><strong>Sprech</strong> by Conexa</td><td>—</td><td><span class="pill pill-amber">offen</span></td></tr>
+    <tr><td>Ferienwohnungen / Pensionen</td><td><strong>Refugium</strong> by Conexa</td><td>—</td><td><span class="pill pill-amber">offen</span></td></tr>
+  </tbody>
+</table>
+
+<h2>8. Was du als nächstes brauchst</h2>
+
+<ol>
+  <li><strong>Domain-Check.</strong> Sobald du eine Marke pro Branche festlegst, sofort die Domains sichern:
+    <ul>
+      <li><code>empfang.app</code>, <code>empfang.io</code>, <code>empfang-os.de</code></li>
+      <li><code>tisch.app</code>, <code>tisch.io</code>, <code>tisch-os.de</code></li>
+      <li><code>termin.app</code>, <code>refugium.app</code></li>
+    </ul>
+  </li>
+  <li><strong>Marken-Recherche.</strong> Vor offizieller Marken-Anmeldung bei DPMA/EUIPO prüfen ob die Namen frei sind (kleinere Hürde wenn „by Conexa" angehängt wird).</li>
+  <li><strong>Logo-Design.</strong> Ein gemeinsames Conexa-Logo + branchenspezifische Wortmarken im gleichen Stil — z.B. Cormorant Garamond für die Marken-Namen, Inter für Begleittext (das ist die Schend-Schrift, gut etabliert).</li>
+  <li><strong>Subdomain-Strategie.</strong> z.B. <code>empfang.conexadigital.eu</code> für die Marketing-Site jeder Branche, <code>os.conexadigital.eu</code> für die SaaS-Dashboards.</li>
+</ol>
+
+<footer>
+  Conexa Digital S.L. · 2026 · Erstellt von Roman (CTO) für Eugen (Founder &amp; CEO).
+  Lebendiges Dokument — Anpassungen erwünscht.
+</footer>
+
+</body>
+</html>

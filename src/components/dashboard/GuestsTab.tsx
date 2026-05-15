@@ -301,7 +301,6 @@ export default function GuestsTab() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Gast</TableHead>
-                  <TableHead>Status</TableHead>
                   <TableHead className="text-right">Aufenthalte</TableHead>
                   <TableHead className="text-right">Gesamt-Umsatz</TableHead>
                   <TableHead className="text-right">Ø Nächte</TableHead>
@@ -312,7 +311,7 @@ export default function GuestsTab() {
               <TableBody>
                 {filtered.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                    <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
                       Keine Gäste in dieser Auswahl
                     </TableCell>
                   </TableRow>
@@ -329,18 +328,36 @@ export default function GuestsTab() {
                       onClick={() => setProfileGuest({ name: g.name, email: g.email })}
                     >
                       <TableCell>
-                        <div className="font-medium hover:text-secondary transition-colors">{g.name}</div>
+                        <div className="flex items-center gap-1.5">
+                          {/* Tier-Icon als dezenter Vor-Indikator statt eigene Spalte */}
+                          {g.tier === "vip" && (
+                            <Crown
+                              className="h-3.5 w-3.5 text-amber-500 shrink-0"
+                              aria-label={TIER_LABEL[g.tier]}
+                            >
+                              <title>{TIER_LABEL[g.tier]}</title>
+                            </Crown>
+                          )}
+                          {g.tier === "stammgast" && (
+                            <Star
+                              className="h-3.5 w-3.5 text-secondary shrink-0"
+                              aria-label={TIER_LABEL[g.tier]}
+                            >
+                              <title>{TIER_LABEL[g.tier]}</title>
+                            </Star>
+                          )}
+                          {g.tier === "wiederkommer" && (
+                            <span
+                              className="inline-block h-2 w-2 rounded-full bg-sky-500 shrink-0"
+                              title={TIER_LABEL[g.tier]}
+                            />
+                          )}
+                          <div className="font-medium hover:text-secondary transition-colors">{g.name}</div>
+                        </div>
                         <div className="text-[11px] text-muted-foreground flex items-center gap-3 mt-0.5">
                           {g.email && <span className="inline-flex items-center gap-1"><Mail className="h-3 w-3" />{g.email}</span>}
                           {g.phone && <span className="inline-flex items-center gap-1"><Phone className="h-3 w-3" />{g.phone}</span>}
                         </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge className={TIER_BADGE_CLS[g.tier]} variant={g.tier === "neugast" ? "outline" : "default"}>
-                          {g.tier === "vip" && <Crown className="h-3 w-3 mr-1" />}
-                          {g.tier === "stammgast" && <Star className="h-3 w-3 mr-1" />}
-                          {TIER_LABEL[g.tier]}
-                        </Badge>
                       </TableCell>
                       <TableCell className="text-right tabular-nums font-medium">{g.count}</TableCell>
                       <TableCell className="text-right tabular-nums font-medium">{eur(g.totalSpent)}</TableCell>
@@ -356,7 +373,7 @@ export default function GuestsTab() {
                 })}
                 {filtered.length > 200 && (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center text-xs text-muted-foreground py-3">
+                    <TableCell colSpan={6} className="text-center text-xs text-muted-foreground py-3">
                       Erste 200 von {filtered.length} Gästen — Suche oder Filter verfeinert die Liste.
                     </TableCell>
                   </TableRow>
