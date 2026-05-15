@@ -102,8 +102,6 @@ export default function SiteHeader() {
         </Link>
 
         <div className="flex items-center gap-4 lg:gap-5">
-          <HeaderWeather />
-
         <nav className="hidden lg:flex items-center gap-0.5">
           {MENU.map((item) => (
             <button
@@ -116,10 +114,9 @@ export default function SiteHeader() {
           ))}
           <ThemeToggle className="ml-1.5" />
           <LanguageSwitcher />
-          <Button asChild size="sm" className="ml-1.5 rounded-sm h-9 px-4 text-xs tracking-[0.12em] uppercase">
-            <Link to="/booking">{t("nav.book")}</Link>
-          </Button>
         </nav>
+
+        <HeaderWeather />
 
           <button
             aria-label="Menü"
