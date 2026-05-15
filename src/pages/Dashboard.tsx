@@ -20,6 +20,15 @@ import ChannelManagerTab from "@/components/dashboard/ChannelManagerTab";
 import InternalBookingsTab from "@/components/dashboard/InternalBookingsTab";
 import HyperlocalConciergeTab from "@/components/dashboard/HyperlocalConciergeTab";
 
+import DemoPaymentsTab from "@/components/dashboard/demo/DemoPaymentsTab";
+import DemoVoiceTab from "@/components/dashboard/demo/DemoVoiceTab";
+import DemoBriefingTab from "@/components/dashboard/demo/DemoBriefingTab";
+import DemoMessagingTab from "@/components/dashboard/demo/DemoMessagingTab";
+import DemoDatevTab from "@/components/dashboard/demo/DemoDatevTab";
+import DemoComplianceTab from "@/components/dashboard/demo/DemoComplianceTab";
+import DemoAnalyticsTab from "@/components/dashboard/demo/DemoAnalyticsTab";
+import DemoAnomalyTab from "@/components/dashboard/demo/DemoAnomalyTab";
+
 import { useTenant } from "@/hooks/useTenant";
 import { applyTenantBranding } from "@/lib/applyTenantBranding";
 import {
@@ -29,44 +38,29 @@ import {
 } from "@/lib/tenant";
 
 /**
- * Map vom URL-Pfad (z.B. "calendar") auf die Komponente.
- * Wir matchen über `ModuleDescriptor.path` damit die Sidebar-Links und die
- * Routing-Map garantiert in sync bleiben.
+ * Welche Komponente zeigen wir fuer welches Modul? Wenn der Tenant-Eintrag
+ * `demo: true` setzt, wird der Demo-Variant rausgereicht — sonst die echte.
+ *
+ * Module die noch keine echte Implementierung haben (online_payments,
+ * voice_concierge, ...) zeigen IMMER ihre Demo-Variante.
  */
-const MODULE_COMPONENTS: Partial<Record<FeatureKey, React.ComponentType>> = {
-  calendar: CalendarTab,
-  internal_bookings: InternalBookingsTab,
-  housekeeping_mobile: HousekeepingTab,
-  guest_profiles: GuestsTab,
-  hyperlocal_concierge: HyperlocalConciergeTab,
-  online_payments: () => <PaymentsPlaceholder />,
-  channel_manager: ChannelManagerTab,
-  voice_concierge: () => <VoicePlaceholder />,
-  reviews_inbox: ReviewsTab,
-  daily_briefing: () => <BriefingPlaceholder />,
-  guest_messaging: () => <MessagingPlaceholder />,
-  analytics_revenue: AnalyticsTab,
-  datev_export: () => <DatevPlaceholder />,
-  compliance_vault: () => <CompliancePlaceholder />,
-  anomaly_detection: () => <AnomalyPlaceholder />,
+const MODULE_COMPONENTS: Partial<Record<FeatureKey, { real?: React.ComponentType; demo?: React.ComponentType }>> = {
+  calendar:             { real: CalendarTab },
+  internal_bookings:    { real: InternalBookingsTab },
+  housekeeping_mobile:  { real: HousekeepingTab },
+  guest_profiles:       { real: GuestsTab },
+  hyperlocal_concierge: { real: HyperlocalConciergeTab },
+  online_payments:      { demo: DemoPaymentsTab },
+  channel_manager:      { real: ChannelManagerTab, demo: ChannelManagerTab },
+  voice_concierge:      { demo: DemoVoiceTab },
+  reviews_inbox:        { real: ReviewsTab,  demo: ReviewsTab },
+  daily_briefing:       { demo: DemoBriefingTab },
+  guest_messaging:      { demo: DemoMessagingTab },
+  analytics_revenue:    { real: AnalyticsTab, demo: DemoAnalyticsTab },
+  datev_export:         { demo: DemoDatevTab },
+  compliance_vault:     { demo: DemoComplianceTab },
+  anomaly_detection:    { demo: DemoAnomalyTab },
 };
-
-// kleine Stubs für noch nicht gebaute Module — solange `disabled` werden sie nicht angezeigt
-function Placeholder({ title, sub }: { title: string; sub: string }) {
-  return (
-    <div className="max-w-xl mx-auto py-12 text-center space-y-2">
-      <h2 className="text-2xl font-display">{title}</h2>
-      <p className="text-sm text-muted-foreground">{sub}</p>
-    </div>
-  );
-}
-const PaymentsPlaceholder    = () => <Placeholder title="Online-Zahlungen" sub="Stripe-Integration kommt nach Aktivierung." />;
-const VoicePlaceholder       = () => <Placeholder title="Telefon-KI" sub="Vapi-Voice-Agent kommt nach Aktivierung." />;
-const BriefingPlaceholder    = () => <Placeholder title="Daily Briefing" sub="Morgen-Übersicht kommt nach Aktivierung." />;
-const MessagingPlaceholder   = () => <Placeholder title="Nachrichten" sub="E-Mail/WhatsApp-Inbox kommt nach Aktivierung." />;
-const DatevPlaceholder       = () => <Placeholder title="DATEV-Export" sub="Monatlicher Export kommt nach Aktivierung." />;
-const CompliancePlaceholder  = () => <Placeholder title="Compliance-Vault" sub="AVV, TOM, Subprozessoren kommt nach Aktivierung." />;
-const AnomalyPlaceholder     = () => <Placeholder title="Anomalie-Watch" sub="Fraud-Erkennung kommt nach Aktivierung." />;
 
 // ---------- Wrapper: header + sidebar + outlet ----------
 function DashboardShell({ children, activePath }: { children: React.ReactNode; activePath: string }) {
@@ -169,7 +163,13 @@ function DashboardModule() {
   if (!moduleDescriptor) return null;
 
   const state = tenant ? getFeatureState(tenant.features, moduleDescriptor.key) : "hidden";
-  const Component = MODULE_COMPONENTS[moduleDescriptor.key];
+  const config = tenant?.features[moduleDescriptor.key] as Record<string, unknown> | undefined;
+  const isDemo = config?.demo === true;
+  const slot = MODULE_COMPONENTS[moduleDescriptor.key];
+
+  // Welche Komponente? Demo-Variante hat Vorrang wenn demo-flag gesetzt und vorhanden,
+  // sonst real, sonst fallback zur Disabled-Card.
+  const Component = (isDemo ? slot?.demo ?? slot?.real : slot?.real ?? slot?.demo) ?? null;
 
   return (
     <DashboardShell activePath={moduleDescriptor.path}>

@@ -10,22 +10,25 @@ export function useFeature(key: FeatureKey): {
   isActive: boolean;
   isDisabled: boolean;
   isHidden: boolean;
+  isDemo: boolean;
   loading: boolean;
   config: Record<string, unknown> | undefined;
 } {
   const { tenant, loading } = useTenant();
 
   if (loading || !tenant) {
-    return { state: "hidden", isActive: false, isDisabled: false, isHidden: true, loading, config: undefined };
+    return { state: "hidden", isActive: false, isDisabled: false, isHidden: true, isDemo: false, loading, config: undefined };
   }
 
   const state = getFeatureState(tenant.features, key);
+  const config = tenant.features[key] as Record<string, unknown> | undefined;
   return {
     state,
     isActive: state === "active",
     isDisabled: state === "disabled",
     isHidden: state === "hidden",
+    isDemo: config?.demo === true,
     loading: false,
-    config: tenant.features[key] as Record<string, unknown> | undefined,
+    config,
   };
 }

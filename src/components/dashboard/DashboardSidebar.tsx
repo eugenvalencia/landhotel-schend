@@ -18,6 +18,7 @@ import {
   FileSpreadsheet,
   ShieldCheck,
   Lock,
+  LockOpen,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -54,9 +55,10 @@ interface SidebarItemProps {
   icon: LucideIcon;
   active: boolean;
   disabled?: boolean;
+  demo?: boolean;
 }
 
-function SidebarItem({ to, label, icon: Icon, active, disabled }: SidebarItemProps) {
+function SidebarItem({ to, label, icon: Icon, active, disabled, demo }: SidebarItemProps) {
   return (
     <Link
       to={to}
@@ -72,6 +74,12 @@ function SidebarItem({ to, label, icon: Icon, active, disabled }: SidebarItemPro
       <Icon className={cn("h-4 w-4 shrink-0", active && "text-sidebar-primary")} />
       <span className="truncate">{label}</span>
       {disabled && <Lock className="h-3 w-3 ml-auto opacity-60" aria-label="Modul gesperrt" />}
+      {!disabled && demo && (
+        <LockOpen
+          className="h-3 w-3 ml-auto text-emerald-400"
+          aria-label="Demo-Modul freigeschaltet"
+        />
+      )}
     </Link>
   );
 }
@@ -130,6 +138,8 @@ export default function DashboardSidebar({ activePath, basePath = "/dashboard" }
                 <ul className="space-y-0.5">
                   {items.map((m) => {
                     const state = tenant ? getFeatureState(tenant.features, m.key) : "hidden";
+                    const config = tenant?.features[m.key] as Record<string, unknown> | undefined;
+                    const isDemo = config?.demo === true;
                     const Icon = ICON_MAP[m.iconName] ?? LayoutDashboard;
                     return (
                       <li key={m.key}>
@@ -139,6 +149,7 @@ export default function DashboardSidebar({ activePath, basePath = "/dashboard" }
                           icon={Icon}
                           active={activePath === m.path}
                           disabled={state === "disabled"}
+                          demo={isDemo}
                         />
                       </li>
                     );
