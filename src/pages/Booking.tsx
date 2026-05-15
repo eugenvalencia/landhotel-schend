@@ -381,36 +381,59 @@ export default function Booking() {
   return (
     <div className="min-h-screen bg-background">
       <header className="bg-[hsl(220_22%_13%)] text-[hsl(38_30%_92%)]">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
+        {/* Top-Bar — auf Desktop in einer Zeile mit Titel mittig.
+            Auf Mobile/Tablet bleibt der Titel unten, damit nichts gequetscht wird. */}
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
+          <Link to="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity shrink-0">
             <span
               role="img"
               aria-label="Landhotel Schend Logo"
               className="schend-mark shrink-0 h-6 text-[hsl(38_30%_92%)]"
             />
-            <span className="font-display text-base md:text-lg">Landhotel Schend</span>
+            <span className="font-display text-base md:text-lg whitespace-nowrap">Landhotel Schend</span>
           </Link>
-          <Badge variant="secondary" className="bg-white/15 text-[hsl(38_30%_92%)] border-0 rounded-sm uppercase tracking-[0.18em] text-[10px]">
+
+          {/* Titel mittig — erst ab lg sichtbar, darunter erscheint er unter der Top-Bar */}
+          <div className="hidden lg:flex flex-1 min-w-0 flex-col items-center text-center">
+            <h1 className="font-display text-xl xl:text-2xl leading-tight truncate max-w-full">
+              {confirmed ? "Buchung bestätigt" : "Buchung abschließen"}
+            </h1>
+            <p className="opacity-75 text-xs leading-tight truncate max-w-full">
+              {confirmed
+                ? "Vielen Dank — Ihr Zimmer ist verbindlich reserviert."
+                : room
+                  ? `Zimmer ${room.room_number} · ${room.room_type}`
+                  : "Wählen Sie Ihr Zimmer und Reisedaten"}
+            </p>
+          </div>
+
+          <Badge variant="secondary" className="bg-white/15 text-[hsl(38_30%_92%)] border-0 rounded-sm uppercase tracking-[0.18em] text-[10px] shrink-0">
             Direktbuchung
           </Badge>
         </div>
-        <div className="container mx-auto px-4 pb-6 pt-1">
+
+        {/* Zurueck-Link — schlank, immer sichtbar */}
+        <div className="container mx-auto px-4 pb-3 lg:pb-4 pt-0">
           <Link
             to={room ? `/rooms/${room.id}` : "/"}
             className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] opacity-75 hover:opacity-100 transition-opacity -ml-1"
           >
             <ArrowLeft className="h-3.5 w-3.5" strokeWidth={1.5} /> Zurück
           </Link>
-          <h1 className="font-display text-2xl md:text-3xl lg:text-4xl mt-2 text-balance leading-[1.05]">
-            {confirmed ? "Buchung bestätigt" : "Buchung abschließen"}
-          </h1>
-          <p className="opacity-85 text-sm mt-1.5">
-            {confirmed
-              ? "Vielen Dank — Ihr Zimmer ist verbindlich reserviert."
-              : room
-                ? `Zimmer ${room.room_number} · ${room.room_type}`
-                : "Wählen Sie Ihr Zimmer und Reisedaten"}
-          </p>
+
+          {/* Titel-Block fuer Mobile/Tablet — Desktop versteckt das (siehe oben) */}
+          <div className="lg:hidden mt-2">
+            <h1 className="font-display text-2xl md:text-3xl text-balance leading-[1.05]">
+              {confirmed ? "Buchung bestätigt" : "Buchung abschließen"}
+            </h1>
+            <p className="opacity-85 text-sm mt-1">
+              {confirmed
+                ? "Vielen Dank — Ihr Zimmer ist verbindlich reserviert."
+                : room
+                  ? `Zimmer ${room.room_number} · ${room.room_type}`
+                  : "Wählen Sie Ihr Zimmer und Reisedaten"}
+            </p>
+          </div>
         </div>
       </header>
 
