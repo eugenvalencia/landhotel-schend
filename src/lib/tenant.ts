@@ -35,7 +35,13 @@ export type FeatureKey =
   | "service_tickets"
   | "express_checkin"
   | "group_bookings"
-  | "cash_book";
+  | "cash_book"
+  // WOW-Roadmap Wave 2
+  | "no_show_backfill"
+  | "stay_length_optimizer"
+  | "auto_upsell"
+  | "multilingual_concierge"
+  | "lost_found";
 
 export interface FeatureConfig {
   state: FeatureState;
@@ -124,6 +130,13 @@ export const MODULE_CATALOG: ModuleDescriptor[] = [
   { key: "express_checkin",     label: "Express-Check-in",   iconName: "ScanLine",       path: "express-checkin",     group: "gast",         shortPitch: "QR-Code + Pre-Check-in-Link, Empfangsdame entlastet." },
   { key: "group_bookings",      label: "Gruppen-Buchungen",  iconName: "Users2",         path: "group-bookings",      group: "alltag",       shortPitch: "Hochzeit, Firma, Reisegruppe — 12 Zimmer auf einmal anlegen." },
   { key: "cash_book",           label: "Tagesabschluss",     iconName: "Banknote",       path: "cash-book",           group: "intelligence", shortPitch: "Bar, Karte, Überweisung pro Tag — Kassensturz mit einem Blick." },
+
+  // WOW-Roadmap Wave 2 — fertig fuer Demo
+  { key: "no_show_backfill",      label: "No-Show-Backfill",   iconName: "CalendarX2",     path: "no-show-backfill",    group: "kommerz",      shortPitch: "Erkennt No-Shows in Echtzeit und schlägt Walk-in- oder Last-Minute-Akquise vor." },
+  { key: "stay_length_optimizer", label: "Aufenthalts-Optimum",iconName: "CalendarClock",  path: "stay-length",         group: "intelligence", shortPitch: "Erkennt Lücken zwischen Buchungen und schlägt Verlängerungen vor." },
+  { key: "auto_upsell",           label: "Auto-Up-Sell",       iconName: "Gift",           path: "upsell",              group: "kommerz",      shortPitch: "Frühstück-Upgrade, Spa, Late-Check-out — Vorschläge pro Anreise auf Knopfdruck." },
+  { key: "multilingual_concierge",label: "Sprach-Concierge",   iconName: "Languages",      path: "multilingual",        group: "gast",         shortPitch: "Concierge-Tipps automatisch in DE/EN/NL/FR/IT für jeden Gast." },
+  { key: "lost_found",            label: "Lost & Found",       iconName: "PackageSearch",  path: "lost-found",          group: "ops",          shortPitch: "Vergessene Sachen aufnehmen, Eigentümer finden, Rückversand verfolgen." },
 ];
 
 export const MODULE_GROUP_LABEL: Record<ModuleDescriptor["group"], string> = {

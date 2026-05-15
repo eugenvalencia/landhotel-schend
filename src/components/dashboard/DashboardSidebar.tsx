@@ -26,6 +26,11 @@ import {
   ScanLine,
   Users2,
   Banknote,
+  CalendarX2,
+  CalendarClock,
+  Gift,
+  Languages,
+  PackageSearch,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -61,6 +66,11 @@ const ICON_MAP: Record<string, LucideIcon> = {
   ScanLine,
   Users2,
   Banknote,
+  CalendarX2,
+  CalendarClock,
+  Gift,
+  Languages,
+  PackageSearch,
 };
 
 interface SidebarItemProps {

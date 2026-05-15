@@ -38,6 +38,11 @@ const DemoTicketsTab         = lazy(() => import("@/components/dashboard/demo/De
 const DemoExpressCheckinTab  = lazy(() => import("@/components/dashboard/demo/DemoExpressCheckinTab"));
 const DemoGroupBookingsTab   = lazy(() => import("@/components/dashboard/demo/DemoGroupBookingsTab"));
 const DemoCashBookTab        = lazy(() => import("@/components/dashboard/demo/DemoCashBookTab"));
+const DemoNoShowBackfillTab  = lazy(() => import("@/components/dashboard/demo/DemoNoShowBackfillTab"));
+const DemoStayLengthTab      = lazy(() => import("@/components/dashboard/demo/DemoStayLengthTab"));
+const DemoAutoUpsellTab      = lazy(() => import("@/components/dashboard/demo/DemoAutoUpsellTab"));
+const DemoMultilingualTab    = lazy(() => import("@/components/dashboard/demo/DemoMultilingualTab"));
+const DemoLostFoundTab       = lazy(() => import("@/components/dashboard/demo/DemoLostFoundTab"));
 
 const ModuleLoader = () => (
   <div className="py-16 text-center text-sm text-muted-foreground">
@@ -84,6 +89,12 @@ const MODULE_COMPONENTS: Partial<Record<FeatureKey, { real?: React.ComponentType
   express_checkin:      { demo: DemoExpressCheckinTab },
   group_bookings:       { demo: DemoGroupBookingsTab },
   cash_book:            { demo: DemoCashBookTab },
+  // WOW-Roadmap Wave 2
+  no_show_backfill:        { demo: DemoNoShowBackfillTab },
+  stay_length_optimizer:   { demo: DemoStayLengthTab },
+  auto_upsell:             { demo: DemoAutoUpsellTab },
+  multilingual_concierge:  { demo: DemoMultilingualTab },
+  lost_found:              { demo: DemoLostFoundTab },
 };
 
 // ---------- Wrapper: header + sidebar + outlet ----------
