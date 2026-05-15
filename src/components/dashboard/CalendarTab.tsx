@@ -903,6 +903,8 @@ function YearGrid({
     let paid = 0;
     let pending = 0;
     let intern = 0;
+    let revenue = 0;
+    const countedBookings = new Set<string>();
     for (let day = 1; day <= daysInMonth; day++) {
       const iso = toISODate(new Date(year, m, day));
       for (const r of rooms) {
@@ -913,18 +915,43 @@ function YearGrid({
           if (b.booking_type === "intern") intern++;
           else if (b.payment_status === "paid") paid++;
           else pending++;
+
+          // Umsatz pro Buchung anteilig dem Monat zurechnen
+          if (b.booking_type !== "intern" && !countedBookings.has(b.id)) {
+            countedBookings.add(b.id);
+            const ci = new Date(b.check_in);
+            const co = new Date(b.check_out);
+            const monthStart = new Date(year, m, 1);
+            const monthEnd = new Date(year, m + 1, 1);
+            const overlapStart = ci < monthStart ? monthStart : ci;
+            const overlapEnd = co > monthEnd ? monthEnd : co;
+            const nightsInMonth = Math.max(0, Math.round((overlapEnd.getTime() - overlapStart.getTime()) / 86400000));
+            const totalNights = Math.max(1, Math.round((co.getTime() - ci.getTime()) / 86400000));
+            revenue += Number(b.total_price) * (nightsInMonth / totalNights);
+          }
         }
       }
     }
     const free = totalSlots - paid - pending - intern;
-    return { m, daysInMonth, paid, pending, intern, free, totalSlots };
+    const occupiedSlots = paid + pending + intern;
+    const occupancyPct = totalSlots ? Math.round((occupiedSlots / totalSlots) * 100) : 0;
+    return { m, daysInMonth, paid, pending, intern, free, totalSlots, revenue, occupancyPct };
   });
+
+  const fmtEur = (n: number) =>
+    n.toLocaleString("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-      {months.map(({ m, paid, pending, intern, free, totalSlots }) => {
+      {months.map(({ m, paid, pending, intern, free, totalSlots, revenue, occupancyPct }) => {
         const label = new Date(year, m, 1).toLocaleDateString("de-DE", { month: "long" });
         const pct = (n: number) => (totalSlots ? (n / totalSlots) * 100 : 0);
+        // Ampel-Farbe fuer die Auslastung
+        const occColor =
+          occupancyPct >= 70 ? "text-emerald-600" :
+          occupancyPct >= 40 ? "text-amber-600" :
+          occupancyPct > 0   ? "text-rose-600" :
+          "text-muted-foreground";
         return (
           <Card
             key={m}
@@ -932,9 +959,15 @@ function YearGrid({
             onClick={() => onPickMonth(m)}
           >
             <CardContent className="p-4 space-y-3">
-              <div className="flex items-center justify-between">
+              <div className="flex items-start justify-between gap-2">
                 <div className="font-semibold capitalize">{label}</div>
-                <div className="text-xs text-muted-foreground">{paid + pending + intern} belegt</div>
+                <div className={cn("text-xl font-semibold tabular-nums leading-none", occColor)}>
+                  {occupancyPct}%
+                </div>
+              </div>
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="text-[11px] uppercase tracking-wider text-muted-foreground">Umsatz</span>
+                <span className="text-sm font-medium tabular-nums">{fmtEur(revenue)}</span>
               </div>
               <div className="flex h-2 overflow-hidden rounded-full bg-[hsl(var(--cal-free))]">
                 <div className="bg-[hsl(var(--cal-paid))]" style={{ width: `${pct(paid)}%` }} />
@@ -943,7 +976,11 @@ function YearGrid({
               </div>
               <div className="flex justify-between text-[11px] text-muted-foreground">
                 <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-paid))]" />{paid}</span>
-                <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-pending))]" />{pending}</span>
+                <span className="inline-flex items-center gap-1 relative">
+                  <span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-paid))]" />
+                  <span className="absolute left-1 -top-0.5 w-1.5 h-1.5 rounded-full bg-amber-500" />
+                  {pending}
+                </span>
                 <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-intern))]" />{intern}</span>
                 <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-free))] border" />{free}</span>
               </div>
