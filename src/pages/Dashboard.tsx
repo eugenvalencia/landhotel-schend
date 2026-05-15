@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
-import { LogOut, Menu } from "lucide-react";
+import { LogOut, Menu, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,26 +8,34 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 import DisabledModuleCard from "@/components/dashboard/DisabledModuleCard";
 
+// Overview eager (kommt zuerst, schnellster Eindruck), Rest lazy
 import OverviewTab from "@/components/dashboard/OverviewTab";
-import CalendarTab from "@/components/dashboard/CalendarTab";
-import BookingsTab from "@/components/dashboard/BookingsTab";
-import GuestsTab from "@/components/dashboard/GuestsTab";
-import ReviewsTab from "@/components/dashboard/ReviewsTab";
-import AnalyticsTab from "@/components/dashboard/AnalyticsTab";
-import PricingTab from "@/components/dashboard/PricingTab";
-import HousekeepingTab from "@/components/dashboard/HousekeepingTab";
-import ChannelManagerTab from "@/components/dashboard/ChannelManagerTab";
-import InternalBookingsTab from "@/components/dashboard/InternalBookingsTab";
-import HyperlocalConciergeTab from "@/components/dashboard/HyperlocalConciergeTab";
 
-import DemoPaymentsTab from "@/components/dashboard/demo/DemoPaymentsTab";
-import DemoVoiceTab from "@/components/dashboard/demo/DemoVoiceTab";
-import DemoBriefingTab from "@/components/dashboard/demo/DemoBriefingTab";
-import DemoMessagingTab from "@/components/dashboard/demo/DemoMessagingTab";
-import DemoDatevTab from "@/components/dashboard/demo/DemoDatevTab";
-import DemoComplianceTab from "@/components/dashboard/demo/DemoComplianceTab";
-import DemoAnalyticsTab from "@/components/dashboard/demo/DemoAnalyticsTab";
-import DemoAnomalyTab from "@/components/dashboard/demo/DemoAnomalyTab";
+const CalendarTab            = lazy(() => import("@/components/dashboard/CalendarTab"));
+const BookingsTab            = lazy(() => import("@/components/dashboard/BookingsTab"));
+const GuestsTab              = lazy(() => import("@/components/dashboard/GuestsTab"));
+const ReviewsTab             = lazy(() => import("@/components/dashboard/ReviewsTab"));
+const AnalyticsTab           = lazy(() => import("@/components/dashboard/AnalyticsTab"));
+const PricingTab             = lazy(() => import("@/components/dashboard/PricingTab"));
+const HousekeepingTab        = lazy(() => import("@/components/dashboard/HousekeepingTab"));
+const ChannelManagerTab      = lazy(() => import("@/components/dashboard/ChannelManagerTab"));
+const InternalBookingsTab    = lazy(() => import("@/components/dashboard/InternalBookingsTab"));
+const HyperlocalConciergeTab = lazy(() => import("@/components/dashboard/HyperlocalConciergeTab"));
+
+const DemoPaymentsTab   = lazy(() => import("@/components/dashboard/demo/DemoPaymentsTab"));
+const DemoVoiceTab      = lazy(() => import("@/components/dashboard/demo/DemoVoiceTab"));
+const DemoBriefingTab   = lazy(() => import("@/components/dashboard/demo/DemoBriefingTab"));
+const DemoMessagingTab  = lazy(() => import("@/components/dashboard/demo/DemoMessagingTab"));
+const DemoDatevTab      = lazy(() => import("@/components/dashboard/demo/DemoDatevTab"));
+const DemoComplianceTab = lazy(() => import("@/components/dashboard/demo/DemoComplianceTab"));
+const DemoAnalyticsTab  = lazy(() => import("@/components/dashboard/demo/DemoAnalyticsTab"));
+const DemoAnomalyTab    = lazy(() => import("@/components/dashboard/demo/DemoAnomalyTab"));
+
+const ModuleLoader = () => (
+  <div className="py-16 text-center text-sm text-muted-foreground">
+    <Loader2 className="h-5 w-5 animate-spin mx-auto mb-2" /> Lade …
+  </div>
+);
 
 import { useTenant } from "@/hooks/useTenant";
 import { applyTenantBranding } from "@/lib/applyTenantBranding";
@@ -176,7 +184,9 @@ function DashboardModule() {
       {state === "disabled" || !Component ? (
         <DisabledModuleCard module={moduleDescriptor} />
       ) : (
-        <Component />
+        <Suspense fallback={<ModuleLoader />}>
+          <Component />
+        </Suspense>
       )}
     </DashboardShell>
   );
