@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Conexa OS — WOW-Features Roadmap</title>
+<style>
+  :root { --ink:#1b2230; --muted:#5e6577; --brass:#8a6b2a; --paper:#faf7f0; --line:#d6cfbe; --green:#1f7a4d; --rose:#b03a3a; }
+  *{box-sizing:border-box}
+  html,body{margin:0;font-family:"Inter","Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.5}
+  body{padding:48px 56px;max-width:900px;margin:0 auto}
+  h1,h2,h3{font-family:"Cormorant Garamond","Georgia",serif;font-weight:500;letter-spacing:-0.012em;margin:0}
+  h1{font-size:36px;line-height:1.1}
+  h2{font-size:24px;margin-top:36px;padding-top:16px;border-top:1px solid var(--line)}
+  h3{font-size:18px;margin-top:18px}
+  .eyebrow{color:var(--brass);font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600}
+  .lead{font-size:16px;color:var(--muted);margin:12px 0 22px}
+  .meta{color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px}
+  .feature{background:white;border:1px solid var(--line);border-left:4px solid var(--brass);padding:14px 18px;border-radius:4px;margin:10px 0}
+  .feature.done{border-left-color:var(--green);background:#f4faf6}
+  .feature.next{border-left-color:#d97706;background:#fff8eb}
+  .feature.later{border-left-color:#6b7280;background:#f3f4f6}
+  .ftitle{font-weight:600;margin-bottom:4px}
+  .fmeta{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .pill{display:inline-block;padding:1px 8px;border-radius:99px;font-size:10px;font-weight:600;letter-spacing:.04em;margin-right:4px;vertical-align:middle}
+  .pill-done{background:#dff5ea;color:var(--green)}
+  .pill-next{background:#fbe8c1;color:#92590a}
+  .pill-later{background:#e5e7eb;color:#374151}
+  .pill-effort{background:#e0e7ff;color:#3730a3}
+  ul{margin:6px 0 0;padding-left:20px;font-size:13px}
+  li{margin:3px 0}
+  footer{margin-top:48px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+  @media print{body{background:white;padding:22mm 18mm;max-width:none}@page{size:A4;margin:18mm 16mm 22mm 16mm}.feature{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div class="eyebrow">Conexa OS · Strategie</div>
+<h1>WOW-Features Roadmap</h1>
+<p class="lead">
+  Was bei Hotelier-Demos die Reaktion „<em>genau das hat uns gefehlt</em>" auslöst.
+  Sortiert nach Priorität, mit Aufwand-Schätzung. Lebendiges Dokument — wird laufend erweitert.
+</p>
+<div class="meta">Stand 15. Mai 2026 · Roman, CTO</div>
+
+<h2>Bereits live (heute eingebaut)</h2>
+
+<div class="feature done">
+  <div class="ftitle"><span class="pill pill-done">live</span>Smarte Übersichts-Seite — der WOW-Moment beim Einloggen</div>
+  <ul>
+    <li>Smart-Alert-Banner oben: offene Zahlungen heute, Geburtstage in 7 Tagen, Anreisen morgen</li>
+    <li>Anreisen / im Haus / Abreisen — mit Diät-Warnung beim Gast, Zahlungs-Status beim Auschecken</li>
+    <li><strong>Frühstück morgen</strong>: Anzahl Gedecke + Diäten aus Gast-Profil (Vegetarisch, Allergien) — Küche weiß sofort Bescheid</li>
+    <li><strong>Geburtstage in 30 Tagen</strong>: VIP-Stammgäste mit Reminder-Badge wenn in &lt; 7 Tagen</li>
+    <li><strong>Reaktivierungs-Liste</strong>: Top-5 Stammgäste die seit &gt; 1 Jahr nicht da waren, sortiert nach Lifetime-Value</li>
+    <li>Pace-Karte: nächste 14 Tage vs. Vorjahres-Zeitraum (Wachstum sofort sichtbar)</li>
+    <li>Wachstums-Vergleich: Buchungen diese Woche vs. letzte Woche</li>
+  </ul>
+</div>
+
+<div class="feature done">
+  <div class="ftitle"><span class="pill pill-done">live</span>Gäste-CRM-Profile mit Geburtstag, Diät, Vorlieben</div>
+  <ul>
+    <li>Tier-System: VIP (≥8 Aufenthalte), Stammgast, Wiederkommer, Neugast</li>
+    <li>Profil-Dialog mit aufklappbarer Historie (sauber, nicht überladen)</li>
+    <li>Editierbare Vorlieben mit DB-Persistenz</li>
+  </ul>
+</div>
+
+<h2>Nächste Welle (Top-Priorität)</h2>
+
+<div class="feature next">
+  <div class="ftitle"><span class="pill pill-next">nächste</span><span class="pill pill-effort">M</span>Smart-Pricing-Vorschlag pro Tag</div>
+  <ul>
+    <li>Algorithmus berechnet pro Tag optimalen Preis aus: Vorjahres-Auslastung, Wochentag, Feiertag/Brückentag, lokale Events, aktuelle Belegung</li>
+    <li>Im Kalender beim freien Slot: kleines „Tipp: 115 €" statt nur Standardpreis</li>
+    <li>1-Klick-Übernehmen oder ignorieren</li>
+    <li><strong>Conexa-USP</strong>: Mews macht das, aber kompliziert. Wir machen es 1-Klick.</li>
+  </ul>
+</div>
+
+<div class="feature next">
+  <div class="ftitle"><span class="pill pill-next">nächste</span><span class="pill pill-effort">S</span>Pre-Stay-Mail-Workflow (Automation-Preview)</div>
+  <ul>
+    <li>Im Daily Briefing sichtbar: welche Mails heute automatisch rausgehen (Bestätigung, 3-Tage-vor-Anreise, 1-Tag-vor-Anreise)</li>
+    <li>Wetter-Prognose wird in die 1-Tag-vor-Anreise-Mail eingeflochten</li>
+    <li>Hotelier sieht und kann Mails personalisieren oder unterdrücken</li>
+  </ul>
+</div>
+
+<div class="feature next">
+  <div class="ftitle"><span class="pill pill-next">nächste</span><span class="pill pill-effort">M</span>Folio: laufendes Rechnungs-Building während Aufenthalt</div>
+  <ul>
+    <li>Bar-Rechnung 18 €, Restaurant 45 €, Zusatzbett 30 € → Posten landen auf Zimmer 14</li>
+    <li>Beim Check-out: 1-Klick-Gesamtrechnung mit allen Posten, MwSt-Splitting (7% Übernachtung / 19% Speisen)</li>
+    <li>Stadttaxe / Kurkarten-Pflichtfeld eingebaut</li>
+  </ul>
+</div>
+
+<div class="feature next">
+  <div class="ftitle"><span class="pill pill-next">nächste</span><span class="pill pill-effort">S</span>Express-Check-in via QR / Pre-Check-in-Link</div>
+  <ul>
+    <li>Mit der 3-Tage-vor-Anreise-Mail: Link zum Pre-Check-in (Personalien, Ausweis-Foto, ETA)</li>
+    <li>Bei Anreise: QR scannen → Zimmernummer + Schlüssel-Box-Code aufs Handy</li>
+    <li>Empfangsdame entlastet, Gast freut sich über Selbstständigkeit</li>
+  </ul>
+</div>
+
+<div class="feature next">
+  <div class="ftitle"><span class="pill pill-next">nächste</span><span class="pill pill-effort">S</span>Gruppen-Buchungen-Modul</div>
+  <ul>
+    <li>Hochzeit für 12 Zimmer auf einmal anlegen — gemeinsame Rechnung oder einzeln</li>
+    <li>Status pro Person: angemeldet / abgemeldet / Diät-Wunsch</li>
+    <li>Sammel-Rechnung an Brautpaar oder Firma</li>
+  </ul>
+</div>
+
+<h2>Mittelfristig (3–6 Monate)</h2>
+
+<div class="feature">
+  <div class="ftitle"><span class="pill pill-effort">M</span>No-Show / Last-Minute Backfill</div>
+  <ul>
+    <li>Wenn Gast nicht erscheint: nach 22:00 Telefon-KI bietet das Zimmer automatisch auf der Marketing-Site als „Last-Minute heute, -30%" an</li>
+    <li>Kein leeres Zimmer durch No-Shows mehr</li>
+  </ul>
+</div>
+
+<div class="feature">
+  <div class="ftitle"><span class="pill pill-effort">M</span>Service-Tickets für Personal</div>
+  <ul>
+    <li>Gast meldet defekte Heizung → Reinigungsmitarbeiter sieht Ticket auf Mobile</li>
+    <li>Wartungs-Schedule, Mängel-Liste, Hochladen von Fotos vor/nach Reparatur</li>
+    <li>Inventar-Verwaltung: was muss bestellt werden?</li>
+  </ul>
+</div>
+
+<div class="feature">
+  <div class="ftitle"><span class="pill pill-effort">M</span>Schicht-Übergabe-Protokoll Theke</div>
+  <ul>
+    <li>Spätschicht muss wissen: angekündigte Späteinchecker, Bezahl-Notizen, Beschwerden, ungewöhnliche Anrufe</li>
+    <li>Auf Knopfdruck als Print-Page generiert</li>
+    <li>Bei Schichtwechsel: kurze Quittierung „gelesen, übernommen"</li>
+  </ul>
+</div>
+
+<div class="feature">
+  <div class="ftitle"><span class="pill pill-effort">M</span>Cash-Buch / Tagesabschluss</div>
+  <ul>
+    <li>Heute bar kassiert, heute Karte, heute Überweisung — getrennt aufgeführt</li>
+    <li>Kassensturz-Differenz wird automatisch berechnet</li>
+    <li>Tagessumme passt zum Z-Bericht der Kasse</li>
+  </ul>
+</div>
+
+<div class="feature">
+  <div class="ftitle"><span class="pill pill-effort">L</span>Stay-Length-Optimierung (KI-gestützt)</div>
+  <ul>
+    <li>System erkennt: Zimmer 8 hat ein 1-Nacht-Loch zwischen zwei Buchungen, schwer verkäuflich</li>
+    <li>Vorschlag: „Last-Minute 1-Nacht-Special für 89 € via Booking.com pushen" oder „Aktuelle Buchung um 1 Nacht verlängern mit Rabatt anbieten"</li>
+    <li>Schließt aktiv Auslastungs-Lücken</li>
+  </ul>
+</div>
+
+<div class="feature">
+  <div class="ftitle"><span class="pill pill-effort">S</span>Auto-Up-Sell beim Check-in</div>
+  <ul>
+    <li>System sieht beim Check-in: „Beim letzten Mal hatten Sie Halbpension — möchten Sie wieder?"</li>
+    <li>Klassischer Stammgast-Move den Hotels manuell oft vergessen</li>
+  </ul>
+</div>
+
+<div class="feature">
+  <div class="ftitle"><span class="pill pill-effort">M</span>Multilingual Guest Concierge</div>
+  <ul>
+    <li>Vulkaneifel-Tipps und Hauseigene Infos automatisch in DE / EN / FR / NL via DeepSeek-LLM</li>
+    <li>QR-Code im Zimmer → Gast sieht alles in eigener Sprache</li>
+  </ul>
+</div>
+
+<div class="feature">
+  <div class="ftitle"><span class="pill pill-effort">L</span>Schlüssel-/Lost-&amp;-Found-Verwaltung</div>
+  <ul>
+    <li>Wer hat welchen Schlüssel, wer hat noch nicht zurückgegeben</li>
+    <li>Gast vergisst Sache → eintragen, später automatisch Mail „Wir haben Ihre Brille gefunden"</li>
+  </ul>
+</div>
+
+<h2>Langfristig — Conexa OS Differenzierer</h2>
+
+<div class="feature later">
+  <div class="ftitle"><span class="pill pill-later">später</span><span class="pill pill-effort">L</span>Hyperlokaler RAG-Chat für Gäste</div>
+  <ul>
+    <li>Gast scannt QR im Zimmer → spricht / tippt: „Wo kann ich heute bei dem Wetter wandern?"</li>
+    <li>RAG zieht aus: kuratierte Concierge-Tipps + Wetter + Öffnungszeiten heute + Tagesempfehlung</li>
+    <li>Antwortet in Sprache des Gastes</li>
+    <li><strong>Conexa-USP</strong>: Mews kann das nicht, Apaleo kann das nicht. Wir können das.</li>
+  </ul>
+</div>
+
+<div class="feature later">
+  <div class="ftitle"><span class="pill pill-later">später</span><span class="pill pill-effort">L</span>Voice-Concierge mit Anruf-zu-Buchung</div>
+  <ul>
+    <li>Vapi-Agent nimmt nachts Anrufe an, spricht Eifeler Dialekt</li>
+    <li>Kann direkt buchen, verweisen, Sonderwünsche notieren</li>
+    <li>Transkript landet im CRM</li>
+  </ul>
+</div>
+
+<div class="feature later">
+  <div class="ftitle"><span class="pill pill-later">später</span><span class="pill pill-effort">M</span>Wetter+Belegungs-Korrelations-KI</div>
+  <ul>
+    <li>Bei Regen kommen Gäste 2h früher zurück → Restaurant-Slots automatisch umverteilen</li>
+    <li>Schlechtwetter-Empfehlungen werden automatisch im Concierge bevorzugt</li>
+  </ul>
+</div>
+
+<div class="feature later">
+  <div class="ftitle"><span class="pill pill-later">später</span><span class="pill pill-effort">L</span>POS-Integration Restaurant → Folio</div>
+  <ul>
+    <li>Tisch 4 Rechnung im Restaurant → 1-Klick „auf Zimmer 14"</li>
+    <li>Lightspeed / vectron / orderbird Anbindung</li>
+  </ul>
+</div>
+
+<div class="feature later">
+  <div class="ftitle"><span class="pill pill-later">später</span><span class="pill pill-effort">L</span>Kapazitäts-Forecasting nächste 6 Monate</div>
+  <ul>
+    <li>System sagt: „In 6 Wochen ist Brückentag, basierend auf Vorjahres-Daten erwarten wir 95% Auslastung"</li>
+    <li>Empfiehlt frühzeitiges Pricing-Update, eventuelles Mitarbeiter-Aufstocken</li>
+  </ul>
+</div>
+
+<h2>Aufwand-Legende</h2>
+<p style="font-size:13px">
+  <span class="pill pill-effort">S</span> = wenige Stunden ·
+  <span class="pill pill-effort">M</span> = ein bis mehrere Tage ·
+  <span class="pill pill-effort">L</span> = 1+ Wochen
+</p>
+
+<footer>
+  Conexa Digital S.L. · 2026 · Roman (CTO) für Eugen (Founder &amp; CEO).
+  Diese Roadmap wird bei jeder Hotelier-Erkenntnis erweitert.
+</footer>
+
+</body>
+</html>
