@@ -115,7 +115,7 @@ export default function CalendarTab() {
       // Supabase liefert per Default nur 1000 Zeilen. Mit 18 Monaten Demo-Daten
       // sind das ~2000 Buchungen — ohne Limit fehlt die zweite Haelfte (die fuer
       // den aktuellen Monat relevant ist, weil sortiert nach check_in ASC).
-      supabase.from("bookings").select("*").order("check_in").limit(5000),
+      supabase.from("bookings").select("*").order("check_in").limit(10000),
     ]);
     if (rErr || bErr) {
       toast.error("Kalender konnte nicht geladen werden");
@@ -944,9 +944,11 @@ function YearGrid({
     const prevYear = m === 0 ? year - 1 : year;
     const prevMonth = m === 0 ? 11 : m - 1;
     const prev = computeMonth(prevYear, prevMonth);
-    // Selber Monat im Vorjahr
-    const yoy = computeMonth(year - 1, m);
-    return { m, ...current, prev, yoy };
+    // Selber Monat in den letzten 3 Vorjahren
+    const yoy1 = computeMonth(year - 1, m);
+    const yoy2 = computeMonth(year - 2, m);
+    const yoy3 = computeMonth(year - 3, m);
+    return { m, ...current, prev, yoy1, yoy2, yoy3 };
   });
 
   const fmtEur = (n: number) =>
@@ -969,7 +971,7 @@ function YearGrid({
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-      {months.map(({ m, paid, pending, intern, free, totalSlots, revenue, occupancyPct, prev, yoy }) => {
+      {months.map(({ m, paid, pending, intern, free, totalSlots, revenue, occupancyPct, prev, yoy1, yoy2, yoy3 }) => {
         const label = new Date(year, m, 1).toLocaleDateString("de-DE", { month: "long" });
         const pct = (n: number) => (totalSlots ? (n / totalSlots) * 100 : 0);
         // Ampel-Farbe fuer die Auslastung
@@ -979,7 +981,9 @@ function YearGrid({
           occupancyPct > 0   ? "text-rose-600" :
           "text-muted-foreground";
         const dPrev = deltaPct(revenue, prev.revenue);
-        const dYoy = deltaPct(revenue, yoy.revenue);
+        const dY1 = deltaPct(revenue, yoy1.revenue);
+        const dY2 = deltaPct(revenue, yoy2.revenue);
+        const dY3 = deltaPct(revenue, yoy3.revenue);
         return (
           <Card
             key={m}
@@ -1013,15 +1017,25 @@ function YearGrid({
                 <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(var(--cal-free))] border" />{free}</span>
               </div>
 
-              {/* Vergleiche: vs. Vormonat und vs. selber Monat letztes Jahr */}
-              <div className="pt-2 border-t border-border/50 space-y-1 text-[10px]">
+              {/* Vergleiche: vs. Vormonat + Mehrjahres-Vergleich */}
+              <div className="pt-2 border-t border-border/50 space-y-1.5 text-[10px]">
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">vs. Vormonat</span>
                   <span className={cn("font-medium tabular-nums", dPrev.color)}>{dPrev.text}</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">vs. {year - 1}</span>
-                  <span className={cn("font-medium tabular-nums", dYoy.color)}>{dYoy.text}</span>
+                <div className="grid grid-cols-3 gap-1 pt-1 border-t border-border/30">
+                  <div className="flex flex-col items-center">
+                    <span className="text-muted-foreground">{year - 1}</span>
+                    <span className={cn("font-medium tabular-nums", dY1.color)}>{dY1.text}</span>
+                  </div>
+                  <div className="flex flex-col items-center border-x border-border/30">
+                    <span className="text-muted-foreground">{year - 2}</span>
+                    <span className={cn("font-medium tabular-nums", dY2.color)}>{dY2.text}</span>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <span className="text-muted-foreground">{year - 3}</span>
+                    <span className={cn("font-medium tabular-nums", dY3.color)}>{dY3.text}</span>
+                  </div>
                 </div>
               </div>
             </CardContent>
