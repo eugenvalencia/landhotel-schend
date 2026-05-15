@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import {
-  CalendarIcon, Hotel, ArrowLeft, CheckCircle2, CreditCard, Lock,
+  CalendarIcon, ArrowLeft, CheckCircle2, CreditCard, Lock,
   Landmark, ClipboardList, ChevronDown, Loader2, Star, AlertCircle, CheckCircle,
 } from "lucide-react";
 import { z } from "zod";
@@ -381,26 +381,30 @@ export default function Booking() {
   return (
     <div className="min-h-screen bg-background">
       <header className="bg-[hsl(220_22%_13%)] text-[hsl(38_30%_92%)]">
-        <div className="container mx-auto px-4 py-5 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-            <Hotel className="h-4 w-4" strokeWidth={1.5} />
-            <span className="font-display text-lg">Landhotel Schend</span>
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
+            <span
+              role="img"
+              aria-label="Landhotel Schend Logo"
+              className="schend-mark shrink-0 h-6 text-[hsl(38_30%_92%)]"
+            />
+            <span className="font-display text-base md:text-lg">Landhotel Schend</span>
           </Link>
           <Badge variant="secondary" className="bg-white/15 text-[hsl(38_30%_92%)] border-0 rounded-sm uppercase tracking-[0.18em] text-[10px]">
             Direktbuchung
           </Badge>
         </div>
-        <div className="container mx-auto px-4 pb-10 pt-2">
+        <div className="container mx-auto px-4 pb-6 pt-1">
           <Link
             to={room ? `/rooms/${room.id}` : "/"}
             className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] opacity-75 hover:opacity-100 transition-opacity -ml-1"
           >
             <ArrowLeft className="h-3.5 w-3.5" strokeWidth={1.5} /> Zurück
           </Link>
-          <h1 className="font-display text-3xl md:text-4xl lg:text-5xl mt-3 text-balance leading-[1.05]">
+          <h1 className="font-display text-2xl md:text-3xl lg:text-4xl mt-2 text-balance leading-[1.05]">
             {confirmed ? "Buchung bestätigt" : "Buchung abschließen"}
           </h1>
-          <p className="opacity-85 text-sm md:text-base mt-2">
+          <p className="opacity-85 text-sm mt-1.5">
             {confirmed
               ? "Vielen Dank — Ihr Zimmer ist verbindlich reserviert."
               : room
