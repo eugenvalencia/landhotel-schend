@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 import DisabledModuleCard from "@/components/dashboard/DisabledModuleCard";
+import ThemeToggle from "@/components/ThemeToggle";
 
 // Overview eager (kommt zuerst, schnellster Eindruck), Rest lazy
 import OverviewTab from "@/components/dashboard/OverviewTab";
@@ -113,14 +114,17 @@ function DashboardShell({ children, activePath }: { children: React.ReactNode; a
               </span>
             </Link>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={logout}
-            className="text-primary-foreground hover:bg-white/10 hover:text-primary-foreground"
-          >
-            <LogOut className="h-4 w-4" /> <span className="hidden sm:inline ml-1">Abmelden</span>
-          </Button>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={logout}
+              className="text-primary-foreground hover:bg-white/10 hover:text-primary-foreground"
+            >
+              <LogOut className="h-4 w-4" /> <span className="hidden sm:inline ml-1">Abmelden</span>
+            </Button>
+          </div>
         </div>
       </header>
 
