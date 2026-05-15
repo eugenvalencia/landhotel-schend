@@ -408,8 +408,13 @@ export default function CalendarTab() {
               </button>
             ))}
           </div>
-          <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded ring-2 ring-inset ring-[hsl(var(--cal-pending-fg))]" /> Belegt</span>
-          <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-paid))] border" /> Bezahlt</span>
+          <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-paid))] border" /> Belegt</span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="relative w-3 h-3 rounded bg-[hsl(var(--cal-paid))] border">
+              <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-amber-500" />
+            </span>
+            Zahlung offen
+          </span>
           <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-[hsl(var(--cal-intern))] border" /> Intern</span>
           <Button size="sm" variant="outline" onClick={() => { setQuickForm(initialQuick); setQuickOpen(true); }}>
             <Plus className="h-4 w-4" /> Neue Buchung
@@ -494,27 +499,28 @@ export default function CalendarTab() {
                       const dragHL = isInDrag(r.id, d);
                       const isToday = toISODate(d) === todayIso;
                       const showTodayRing = isToday && view !== "day";
+                      // Alle Belegungen einheitlich blau — "Belegt ist belegt", egal ob bezahlt oder noch offen.
+                      // Pending kriegt zusaetzlich einen kleinen orangenen Punkt als Hinweis "Geld noch holen".
                       const cls =
                         s.type === "free" ? cn("bg-[hsl(var(--cal-free))] hover:bg-muted/40 cursor-pointer", dragHL && "bg-secondary/40") :
-                        s.type === "pending" ? "bg-white hover:brightness-95 cursor-pointer text-[hsl(var(--cal-pending-fg))] ring-2 ring-inset ring-[hsl(var(--cal-pending-fg))] font-semibold" :
-                        s.type === "paid" ? "bg-[hsl(var(--cal-paid))] hover:brightness-95 cursor-pointer text-[hsl(var(--cal-paid-fg))]" :
-                        "bg-[hsl(var(--cal-intern))] hover:brightness-95 cursor-pointer";
+                        s.type === "intern" ? "bg-[hsl(var(--cal-intern))] hover:brightness-95 cursor-pointer" :
+                        "bg-[hsl(var(--cal-paid))] hover:brightness-95 cursor-pointer text-[hsl(var(--cal-paid-fg))]";
                       const showLabel = !!s.booking && (
                         view === "day" || view === "week" ||
                         toISODate(d) === s.booking.check_in
                       );
+                      // Pending-Indikator nur am ersten Tag der Buchung (sonst staffelt sich der Punkt ueber alle Naechte)
+                      const showPendingDot = s.type === "pending" && s.booking && toISODate(d) === s.booking.check_in;
                       return (
                         <td
                           key={d.toISOString()}
                           className={cn(
-                            "border-b border-r/50 text-center align-middle transition px-1",
+                            "relative border-b border-r/50 text-center align-middle transition px-1",
                             view === "day" ? "h-12" : "h-9",
                             cls,
-                            // Today-Ring nur in Woche/Monat, und nur wenn die Zelle nicht schon ihren eigenen
-                            // Ring trägt (Pending). Verhindert Ring-on-Ring-Konflikt.
-                            showTodayRing && s.type !== "pending" && "ring-1 ring-inset ring-[hsl(var(--cal-today))]",
+                            showTodayRing && "ring-1 ring-inset ring-[hsl(var(--cal-today))]",
                           )}
-                          title={s.booking ? `${s.booking.guest_name} · Zimmer ${r.room_number} (${formatDateShort(s.booking.check_in)}–${formatDateShort(s.booking.check_out)})` : `Frei · Klicken zum Buchen`}
+                          title={s.booking ? `${s.booking.guest_name} · Zimmer ${r.room_number} (${formatDateShort(s.booking.check_in)}–${formatDateShort(s.booking.check_out)})${s.type === "pending" ? " · Zahlung offen" : ""}` : `Frei · Klicken zum Buchen`}
                           onMouseDown={() => {
                             if (s.booking) return;
                             setDragStart({ roomId: r.id, date: d });
@@ -532,6 +538,12 @@ export default function CalendarTab() {
                               {s.booking.guest_name.split(" ").map((p, i, a) => i === a.length - 1 || a.length === 1 ? p : `${p[0]}.`).join(" ")}
                               <span className="opacity-75"> #{r.room_number}</span>
                             </span>
+                          )}
+                          {showPendingDot && (
+                            <span
+                              className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_0_1px_white]"
+                              aria-label="Zahlung offen"
+                            />
                           )}
                         </td>
                       );
