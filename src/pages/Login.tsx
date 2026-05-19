@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,11 +9,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
 
+const DEMO_EMAIL = "admin@landhotel-schend.de";
+const DEMO_PASSWORD = "Demo2026";
+
 export default function Login() {
   const navigate = useNavigate();
   const { user, isAdmin, loading } = useAuth();
-  const [email, setEmail] = useState("admin@landhotel-schend.de");
-  const [password, setPassword] = useState("Demo2026");
+  const [searchParams] = useSearchParams();
+  const demoMode = import.meta.env.DEV || searchParams.get("demo") === "1";
+  const [email, setEmail] = useState(demoMode ? DEMO_EMAIL : "");
+  const [password, setPassword] = useState(demoMode ? DEMO_PASSWORD : "");
   const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
 
@@ -56,11 +61,13 @@ export default function Login() {
           <CardTitle>Hotel-Dashboard</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="mb-4 rounded-md border border-primary/20 bg-primary/5 p-3 text-sm">
-            <div className="font-semibold text-primary mb-1">Demo-Zugangsdaten</div>
-            <div><span className="text-muted-foreground">E-Mail:</span> admin@landhotel-schend.de</div>
-            <div><span className="text-muted-foreground">Passwort:</span> Demo2026</div>
-          </div>
+          {demoMode && (
+            <div className="mb-4 rounded-md border border-primary/20 bg-primary/5 p-3 text-sm">
+              <div className="font-semibold text-primary mb-1">Demo-Zugangsdaten</div>
+              <div><span className="text-muted-foreground">E-Mail:</span> {DEMO_EMAIL}</div>
+              <div><span className="text-muted-foreground">Passwort:</span> {DEMO_PASSWORD}</div>
+            </div>
+          )}
           <form onSubmit={submit} className="space-y-4">
             <div>
               <Label htmlFor="email">E-Mail</Label>
