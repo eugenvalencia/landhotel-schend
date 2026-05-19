@@ -32,3 +32,6 @@ dist/brand-pack/
 
 # Supabase CLI workspace
 supabase/.temp/
+
+# Claude Code per-developer settings
+.claude/settings.local.json
