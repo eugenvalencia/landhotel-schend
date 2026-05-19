@@ -1,0 +1,22 @@
+:80 {
+	root * /usr/share/caddy
+	encode gzip zstd
+	try_files {path} /index.html
+	file_server
+	header {
+		# Banner so previews are never mistaken for production
+		X-Preview "conexa-nas"
+		X-Robots-Tag "noindex, nofollow, noarchive"
+		# CDN cache off — Cloudflare already in front; we want fresh on every push
+		Cache-Control "public, max-age=60, must-revalidate"
+	}
+	# Long-cache hashed Vite assets
+	@assets path /assets/*
+	header @assets Cache-Control "public, max-age=31536000, immutable"
+	log {
+		output file /var/log/caddy/access.log {
+			roll_size 10mb
+			roll_keep 3
+		}
+	}
+}
