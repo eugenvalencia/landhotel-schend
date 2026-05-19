@@ -6,6 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import CookieBanner from "./components/CookieBanner";
 import StickyMobileCTA from "./components/StickyMobileCTA";
+import ErrorBoundary from "./components/ErrorBoundary";
+import SiteOffline from "./components/SiteOffline";
 
 const Index = lazy(() => import("./pages/Index"));
 const Booking = lazy(() => import("./pages/Booking"));
@@ -35,16 +37,8 @@ const App = () => (
         >
           Zum Hauptinhalt springen
         </a>
-        <Suspense
-          fallback={
-            <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
-              <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                <div className="h-4 w-4 rounded-full border-2 border-primary border-t-transparent animate-spin" />
-                Seite wird geladen …
-              </div>
-            </div>
-          }
-        >
+        <ErrorBoundary>
+        <Suspense fallback={<SiteOffline variant="loading" />}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/rooms/:id" element={<RoomDetail />} />
@@ -63,6 +57,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
+        </ErrorBoundary>
         <StickyMobileCTA />
         <CookieBanner />
       </BrowserRouter>
