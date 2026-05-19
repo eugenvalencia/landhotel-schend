@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Einen Moment – Landhotel Schend</title>
+  <style>
+    :root { color-scheme: dark; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #1a1d2c;
+      color: #f5f1e8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: hidden;
+    }
+    .frame {
+      max-width: 640px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #b9905a;
+      margin-bottom: 18px;
+    }
+    h1 {
+      font-family: "Cormorant Garamond", "Times New Roman", serif;
+      font-size: clamp(36px, 6vw, 64px);
+      line-height: 1.05;
+      color: #f5f1e8;
+      margin: 0 0 18px;
+    }
+    p.lead {
+      color: rgba(245, 241, 232, 0.8);
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto 32px;
+      font-size: 17px;
+    }
+    .stage {
+      position: relative;
+      height: 140px;
+      margin: 0 auto 32px;
+      max-width: 560px;
+    }
+    .horizon { position: absolute; bottom: 28px; left: 0; right: 0; height: 1px; background: rgba(245,241,232,0.15); }
+    .mountains { position: absolute; bottom: 28px; left: 0; right: 0; width: 100%; height: 36px; opacity: 0.18; color: #f5f1e8; }
+    .runner { position: absolute; bottom: 26px; }
+    .runner.hase { color: #b9905a; height: 70px; animation: runner 6s linear infinite; }
+    .runner.wolf { color: #f5f1e8; height: 88px; animation: runner 6s linear infinite; animation-delay: 1.8s; }
+    @keyframes runner {
+      0%   { left: -100px; transform: translateY(0); }
+      48%  { transform: translateY(-6px); }
+      50%  { transform: translateY(0); }
+      100% { left: calc(100% + 30px); }
+    }
+    .leg-l { transform-origin: 32px 60px; animation: leg 0.35s ease-in-out infinite alternate; }
+    .leg-r { transform-origin: 44px 60px; animation: leg 0.35s ease-in-out infinite alternate-reverse; }
+    .leg-c { transform-origin: 56px 70px; animation: leg 0.35s ease-in-out infinite alternate; }
+    @keyframes leg { from { transform: rotate(-22deg); } to { transform: rotate(22deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      .runner, .leg-l, .leg-r, .leg-c { animation: none !important; }
+      .runner.hase { left: 22%; }
+      .runner.wolf { left: 60%; }
+    }
+    .actions { display: flex; flex-direction: column; gap: 12px; justify-content: center; align-items: stretch; }
+    @media (min-width: 480px) { .actions { flex-direction: row; align-items: center; } }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+      padding: 0 28px;
+      border-radius: 4px;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: opacity 200ms;
+      cursor: pointer;
+    }
+    .btn.primary { background: #b9905a; color: #1a1d2c; }
+    .btn.primary:hover { opacity: 0.9; }
+    .btn.ghost { border-color: rgba(185, 144, 90, 0.4); color: #f5f1e8; background: transparent; }
+    .btn.ghost:hover { background: rgba(185, 144, 90, 0.08); }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Landhotel Schend</p>
+    <h1>Einen Moment, bitte</h1>
+    <p class="lead">Wir polieren gerade die Vulkaneifel-Aussicht. Gleich da — danke fürs Geduldhaben.</p>
+
+    <div class="stage" aria-hidden="true">
+      <div class="horizon"></div>
+      <svg class="mountains" viewBox="0 0 600 36" preserveAspectRatio="none">
+        <path d="M0,36 L60,18 L120,28 L190,10 L260,24 L330,8 L410,22 L490,14 L600,28 L600,36 Z" fill="currentColor" />
+      </svg>
+
+      <svg class="runner hase" viewBox="0 0 80 80">
+        <g fill="currentColor">
+          <rect x="22" y="6" width="6" height="22" rx="3" />
+          <rect x="34" y="4" width="6" height="24" rx="3" />
+          <ellipse cx="36" cy="46" rx="22" ry="14" />
+          <circle cx="30" cy="32" r="11" />
+          <circle cx="58" cy="44" r="3.5" />
+          <g class="leg-l"><rect x="28" y="56" width="5" height="14" rx="2" /></g>
+          <g class="leg-r"><rect x="42" y="56" width="5" height="14" rx="2" /></g>
+        </g>
+        <circle cx="26" cy="30" r="1.6" fill="#0d0d0d" />
+        <g transform="translate(8 38) rotate(-25)" fill="currentColor" opacity="0.85">
+          <rect x="0" y="0" width="14" height="3" rx="1.5" />
+          <circle cx="-1" cy="1.5" r="3" />
+        </g>
+      </svg>
+
+      <svg class="runner wolf" viewBox="0 0 100 90">
+        <g fill="currentColor">
+          <path d="M82 38 Q98 30 92 22 Q88 30 78 44 Z" />
+          <ellipse cx="48" cy="54" rx="28" ry="16" />
+          <path d="M14 52 Q4 50 10 38 Q18 30 30 36 L34 52 Z" />
+          <path d="M28 30 L24 18 L34 28 Z" />
+          <g class="leg-l"><rect x="36" y="64" width="6" height="18" rx="2" /></g>
+          <g class="leg-r"><rect x="54" y="64" width="6" height="18" rx="2" /></g>
+          <g class="leg-c"><rect x="68" y="64" width="6" height="18" rx="2" /></g>
+        </g>
+        <circle cx="22" cy="42" r="1.8" fill="#fafaf7" />
+        <g transform="translate(2 36) rotate(15)" fill="currentColor" opacity="0.9">
+          <rect x="0" y="6" width="12" height="2.5" rx="1" />
+          <rect x="-3" y="2" width="5" height="10" rx="1" />
+        </g>
+      </svg>
+    </div>
+
+    <div class="actions">
+      <a href="/" class="btn ghost">Zur Startseite</a>
+      <button type="button" class="btn primary" onclick="location.reload()">Nochmal versuchen</button>
+    </div>
+  </div>
+</body>
+</html>

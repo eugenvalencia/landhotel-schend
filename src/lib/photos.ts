@@ -1,7 +1,10 @@
-// Bilder vom Original-Server des Landhaus Schend (landhaus-schend.de).
+// Bilder vom Original-Server des Landhaus Schend.
+// Auf der Preview-Site reverse-proxyt Caddy /pics/* -> landhaus-schend.de und
+// Cloudflare cached danach am Edge -> Same-Origin + 0 Roundtrip.
+// In Vite-Dev haben wir keinen reverse-proxy, also greift man direkt zur Quelle.
 // HotelImage zeigt einen LS-Platzhalter, falls eine URL nicht erreichbar ist.
 
-const BASE = "https://landhaus-schend.de/pics";
+const BASE = import.meta.env.DEV ? "https://landhaus-schend.de/pics" : "/pics";
 
 export const SCHEND_HEROES = [
   `${BASE}/01_startseite/b0_1.jpg`,

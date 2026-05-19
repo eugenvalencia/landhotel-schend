@@ -57,6 +57,10 @@
       rel="stylesheet"
     />
 
+    <!-- Hero-Bild fuer LCP vorladen. Auf NAS-Preview wird /pics ueber Caddy
+         proxied + Cloudflare-edge-gecacht; auf landhaus-schend.de direkt. -->
+    <link rel="preload" as="image" href="/pics/01_startseite/b0_1.jpg" fetchpriority="high" />
+
     <meta property="og:type" content="hotel" />
     <meta property="og:site_name" content="Landhotel Schend" />
     <meta property="og:locale" content="de_DE" />

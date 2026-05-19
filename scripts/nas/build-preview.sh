@@ -15,7 +15,13 @@ LOG_DIR="$ROOT/logs"
 LOG="$LOG_DIR/preview-build.log"
 BRANCH=preview
 GIT_REMOTE=https://github.com/eugenvalencia/landhotel-schend.git
-DOCKER=/var/packages/ContainerManager/target/usr/bin/docker
+# Script laeuft INNERHALB preview-builder Container, dort wird docker-cli via apk
+# installiert (siehe preview-loop.sh). Auf der Host-Seite waere der Pfad
+# /var/packages/ContainerManager/target/usr/bin/docker — den gibt's hier nicht.
+DOCKER=docker
+# Synology DSM 7.3 nutzt Docker API 1.43; alpine docker-cli ist neuer und faellt
+# sonst mit "client version too new" auf die Nase.
+export DOCKER_API_VERSION=1.43
 
 mkdir -p "$PREVIEW" "$DIST" "$LOG_DIR"
 exec >> "$LOG" 2>&1
@@ -23,9 +29,11 @@ exec >> "$LOG" 2>&1
 echo ""
 echo "=== Preview build $(date +'%Y-%m-%d %H:%M:%S') ==="
 
-# Determine if work is needed
+# Determine if work is needed (Container hat /volume1 als Host-Bind, daher
+# funktionieren sowohl FS-Checks als auch Docker-Volume-Mounts mit demselben Pfad)
 if [ -d "$REPO/.git" ]; then
-  $DOCKER run --rm -v "$REPO:/repo" -w /repo alpine/git fetch origin "$BRANCH" >/dev/null 2>&1
+  # --force, weil mirror-preview.yml mit --force-with-lease pusht
+  $DOCKER run --rm -v "$REPO:/repo" -w /repo alpine/git fetch --force origin "$BRANCH" >/dev/null 2>&1
   REMOTE_SHA=$($DOCKER run --rm -v "$REPO:/repo" -w /repo alpine/git rev-parse "origin/$BRANCH" 2>/dev/null || echo "")
   LOCAL_SHA=$($DOCKER run --rm -v "$REPO:/repo" -w /repo alpine/git rev-parse HEAD 2>/dev/null || echo "")
   if [ -n "$REMOTE_SHA" ] && [ "$REMOTE_SHA" = "$LOCAL_SHA" ] && [ -f "$DIST/index.html" ]; then

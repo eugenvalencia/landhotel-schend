@@ -25,6 +25,21 @@ http://preview.conexadigital.eu {
 
 # <customer>-preview.conexadigital.eu -> /srv/<customer>
 http:// {
+	# /pics/* faengt Schend-Bilder ab und proxied sie als Same-Origin durch.
+	# Cloudflare cached danach am Edge -> 0 Roundtrip fuer alle weiteren Hits.
+	@pics_preview {
+		header_regexp customer Host (?i)^([a-z0-9][a-z0-9-]{0,32})-preview\.conexadigital\.eu$
+		path /pics/*
+	}
+	handle @pics_preview {
+		header X-Mirror "schend-origin"
+		header Cache-Control "public, max-age=2592000, immutable"
+		reverse_proxy https://landhaus-schend.de {
+			header_up Host landhaus-schend.de
+			header_down -Set-Cookie
+		}
+	}
+
 	@preview header_regexp customer Host (?i)^([a-z0-9][a-z0-9-]{0,32})-preview\.conexadigital\.eu$
 	handle @preview {
 		root * /srv/{re.customer.1}
@@ -41,5 +56,12 @@ http:// {
 	}
 	handle {
 		respond "Not a registered Conexa preview host. Use <customer>-preview.conexadigital.eu" 404
+	}
+
+	# Bei jedem 404/5xx zeigen wir die statische Wolf-jagt-Hase-Seite
+	# statt eines stumpfen Caddy-Default-Errors.
+	handle_errors {
+		rewrite * /offline.html
+		file_server
 	}
 }
