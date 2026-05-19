@@ -1,0 +1,29 @@
+name: Mirror main to preview
+
+# Sobald ein Commit auf main landet, wird preview im Fast-Forward mit main synchronisiert.
+# Der NAS-Preview-Builder pollt preview, daher ist das die Brücke main -> Schend-Vorschau.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mirror-preview
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Push main to preview
+        run: |
+          git push origin HEAD:refs/heads/preview --force-with-lease

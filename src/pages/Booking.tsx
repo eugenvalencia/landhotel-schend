@@ -358,7 +358,7 @@ export default function Booking() {
         roomType: room.room_type,
         roomNumber: room.room_number,
         roomPrice: Number(room.price_per_night),
-        roomPhoto: room.photos?.[0] || photoForRoomType(room.room_type),
+        roomPhoto: (Array.isArray(room.photos) ? room.photos[0] : undefined) || photoForRoomType(room.room_type),
         roomSubtotal: Number(result.room_total),
         extras: confirmationExtras,
         extrasTotal: Number(result.extras_total),

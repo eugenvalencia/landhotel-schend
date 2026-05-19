@@ -79,7 +79,8 @@ export default function RoomDetail() {
     if (!room) return [];
     // Aus dem Server-Pool ziehen wir 4 verschiedene Sichtrichtungen pro Zimmer-Typ.
     // Wenn das DB-Foto-Feld eigene URLs hat, kommen die zuerst.
-    const fromDb = (room.photos ?? []).filter(Boolean);
+    // DB-Spalte ist jsonb — kann {} (Default) statt [] sein, deshalb defensiv pruefen
+    const fromDb = Array.isArray(room.photos) ? room.photos.filter(Boolean) : [];
     if (fromDb.length >= 2) return fromDb.slice(0, 6);
     return galleryForRoomType(room.room_type);
   }, [room]);

@@ -16,7 +16,10 @@ export default function Login() {
   const navigate = useNavigate();
   const { user, isAdmin, loading } = useAuth();
   const [searchParams] = useSearchParams();
-  const demoMode = import.meta.env.DEV || searchParams.get("demo") === "1";
+  const demoMode =
+    import.meta.env.DEV ||
+    import.meta.env.VITE_DEMO_MODE === "1" ||
+    searchParams.get("demo") === "1";
   const [email, setEmail] = useState(demoMode ? DEMO_EMAIL : "");
   const [password, setPassword] = useState(demoMode ? DEMO_PASSWORD : "");
   const [showPassword, setShowPassword] = useState(false);
