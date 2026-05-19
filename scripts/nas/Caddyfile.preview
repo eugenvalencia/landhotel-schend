@@ -1,6 +1,7 @@
 # Conexa Multi-Customer Preview Caddyfile
-# Wildcard subdomain routing: <customer>.preview.conexadigital.eu -> /srv/<customer>
-# Bare preview.conexadigital.eu -> landing page in /srv/_index
+# Routing: <customer>-preview.conexadigital.eu -> /srv/<customer>
+# Landing: preview.conexadigital.eu -> /srv/_index
+# Cloudflare Universal SSL deckt diese 1-Level-Subdomains kostenlos ab.
 # Managed by Roman (CTO).
 
 {
@@ -10,7 +11,7 @@
 	}
 }
 
-# Bare preview.conexadigital.eu -> Conexa-branded landing page
+# Bare preview.conexadigital.eu -> Conexa-branded Landing
 http://preview.conexadigital.eu {
 	root * /srv/_index
 	try_files {path} /index.html
@@ -22,22 +23,23 @@ http://preview.conexadigital.eu {
 	}
 }
 
-# Wildcard: <customer>.preview.conexadigital.eu -> /srv/<customer>
-http://*.preview.conexadigital.eu {
-	root * /srv/{labels.3}
-	try_files {path} /index.html
-	file_server
-	encode gzip zstd
-	header {
-		X-Preview "conexa-nas-{labels.3}"
-		X-Robots-Tag "noindex, nofollow, noarchive"
-		Cache-Control "public, max-age=60, must-revalidate"
-	}
-	@assets path /assets/*
-	header @assets Cache-Control "public, max-age=31536000, immutable"
-}
-
-# Catch-all for unmatched hosts
+# <customer>-preview.conexadigital.eu -> /srv/<customer>
 http:// {
-	respond "Not a registered Conexa preview host. Use <customer>.preview.conexadigital.eu" 404
+	@preview header_regexp customer Host (?i)^([a-z0-9][a-z0-9-]{0,32})-preview\.conexadigital\.eu$
+	handle @preview {
+		root * /srv/{re.customer.1}
+		try_files {path} /index.html
+		file_server
+		encode gzip zstd
+		header {
+			X-Preview "conexa-nas-{re.customer.1}"
+			X-Robots-Tag "noindex, nofollow, noarchive"
+			Cache-Control "public, max-age=60, must-revalidate"
+		}
+		@assets path /assets/*
+		header @assets Cache-Control "public, max-age=31536000, immutable"
+	}
+	handle {
+		respond "Not a registered Conexa preview host. Use <customer>-preview.conexadigital.eu" 404
+	}
 }
