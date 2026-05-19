@@ -6,10 +6,12 @@
 
 set -e
 
-PREVIEW="/volume1/Conexa Digital/Kunden/Landhotel Schend/preview"
+ROOT="/volume1/Conexa Digital/Kunden/Landhotel Schend"
+PREVIEW="$ROOT/preview"
 REPO="$PREVIEW/repo"
 DIST="$PREVIEW/dist"
-LOG_DIR="/volume1/Conexa Digital/Kunden/Landhotel Schend/logs"
+SECRETS="$ROOT/secrets"
+LOG_DIR="$ROOT/logs"
 LOG="$LOG_DIR/preview-build.log"
 BRANCH=preview
 GIT_REMOTE=https://github.com/eugenvalencia/landhotel-schend.git
@@ -38,7 +40,16 @@ else
   $DOCKER run --rm -v "$PREVIEW:/work" alpine/git clone --depth 1 -b "$BRANCH" "$GIT_REMOTE" /work/repo
 fi
 
-# Vite build via Node + npm (devDeps inkl. vite mit installieren — sonst keine Vite-CLI)
+# Vite liest VITE_* nur aus .env-Files im Projekt-Root. Direkt in den Repo-Tree kopieren
+# (Bind-Mount mit Spaces im Host-Pfad ist fragil in shell-Variablen-Expansion)
+ENV_FILE="$SECRETS/schend.env"
+if [ -f "$ENV_FILE" ]; then
+  cp "$ENV_FILE" "$REPO/.env"
+  echo "Injected $(wc -l < "$ENV_FILE") env vars from $ENV_FILE"
+else
+  echo "WARNING: $ENV_FILE missing -> Supabase-Init crasht zur Laufzeit (createClient(undefined))"
+fi
+
 echo "Building with node + npm..."
 $DOCKER run --rm \
   -v "$REPO:/src" \
