@@ -1,8 +1,12 @@
 // Charmante Fallback-Seite fuer Crashes, Suspense-Loading und 404.
 // Wolf jagt Hase nach links durch das Bild — Hommage an "Nu pogodi"
-// (eigenes Zeichen, keine 1:1-Kopie der Soyuzmultfilm-IP).
-// Keine Router-Hooks und keine Datenquellen, damit's auch dann rendert
-// wenn drumherum alles brennt.
+// (eigene Zeichnung im Geiste der Vorlage, keine 1:1-Kopie der Soyuzmultfilm-IP).
+//
+// Charakter-Treue zum Original:
+//   Wolf  — grau, schwarze wirre Haare unter Bowler-Hut, rosa Hemd ueber Bauch,
+//           schwarze Hose, gelber Hauerzahn, Schurken-Look (Hooligan)
+//   Hase  — klein, hellbraun, gruener Rollkragen mit weissem Dreieck,
+//           weisser Guertel, weisse Schuhe, dunkelgruene Shorts, blaue Augen
 
 type Props = {
   variant?: "error" | "loading" | "notfound";
@@ -62,202 +66,250 @@ export default function SiteOffline({ variant = "error", title, message }: Props
   );
 }
 
-/**
- * Cartoon-Sequenz: Hase rennt vor, Wolf hinterher — beide von rechts nach links.
- * Charakter-Palette:
- *   Hase  — Fell #d8c6a8, Pulli #2f7a4f mit weissem Dreieck, Shorts #1f5d3a
- *   Wolf  — Fell #6e7484, Hut/Hose #1a1d2c, Hemd #d97296, Krawatte #d83a5e
- * Beide haben Schatten und animierte Beine, der Wolf streckt die Pfoten nach
- * dem Hasen aus.
- */
 function Cartoon() {
   return (
-    <div className="relative h-40 md:h-48 w-full max-w-2xl mx-auto" aria-hidden>
-      {/* Himmel-Glow */}
-      <div className="absolute inset-x-0 bottom-12 h-px bg-foreground/10" />
-
-      {/* Vulkaneifel-Silhouette */}
+    <div className="relative h-44 md:h-52 w-full max-w-2xl mx-auto" aria-hidden>
+      {/* Vulkaneifel-Silhouette im Hintergrund */}
       <svg
-        className="absolute bottom-12 left-0 right-0 w-full opacity-20"
-        height="40"
-        viewBox="0 0 600 40"
+        className="absolute bottom-14 left-0 right-0 w-full opacity-25"
+        height="44"
+        viewBox="0 0 600 44"
         preserveAspectRatio="none"
       >
         <path
-          d="M0,40 L60,20 L120,30 L190,10 L260,26 L330,8 L410,24 L490,14 L600,30 L600,40 Z"
+          d="M0,44 L50,18 L110,32 L180,8 L260,28 L340,6 L420,24 L500,12 L600,32 L600,44 Z"
           fill="#5d6c4e"
         />
       </svg>
 
-      {/* Bodenschatten unter den Charakteren */}
-      <div className="absolute bottom-10 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-foreground/15 to-transparent" />
+      {/* Boden-Linie */}
+      <div className="absolute bottom-12 left-0 right-0 h-px bg-foreground/20" />
+      <div className="absolute bottom-10 left-0 right-0 h-2 bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
 
-      {/* Hase (laeuft vor, panisch) */}
+      {/* HASE — laeuft vor, panisch nach hinten schauend */}
       <svg
-        className="absolute bottom-10 h-20 md:h-24"
-        viewBox="0 0 100 110"
+        className="absolute bottom-12 h-24 md:h-28"
+        viewBox="0 0 100 130"
         style={{
           right: "-110px",
           animation: "schend-runner 7s linear infinite",
         }}
       >
-        {/* Schatten am Boden */}
-        <ellipse cx="50" cy="105" rx="22" ry="2.5" fill="#000" opacity="0.18" />
+        {/* Schatten */}
+        <ellipse cx="50" cy="125" rx="22" ry="2.5" fill="#000" opacity="0.2" />
 
-        {/* Hintere Pfote */}
-        <g style={{ transformOrigin: "62px 92px", animation: "schend-leg-back 0.3s ease-in-out infinite alternate" }}>
-          <path d="M55 84 Q72 78 70 94 Q66 100 56 96 Z" fill="#d8c6a8" />
-          <ellipse cx="62" cy="96" rx="7" ry="3" fill="#c9b292" />
+        {/* HINTERES BEIN (im Sprung nach hinten gestreckt) */}
+        <g style={{ transformOrigin: "60px 100px", animation: "schend-leg-back 0.28s ease-in-out infinite alternate" }}>
+          <path d="M52 92 Q72 88 78 100 Q72 110 54 104 Z" fill="#d8c6a8" />
+          <ellipse cx="70" cy="106" rx="9" ry="3.5" fill="#ffffff" />
+          <ellipse cx="70" cy="105" rx="9" ry="1.2" fill="#e8e2d4" />
         </g>
 
-        {/* Shorts (dunkelgruen) */}
-        <path d="M28 70 Q28 86 42 88 L60 88 Q72 86 70 70 Z" fill="#1f5d3a" />
+        {/* DUNKELGRUENE SHORTS */}
+        <path d="M28 78 Q24 95 38 100 L60 100 Q74 95 70 78 Z" fill="#1f5d3a" />
+        {/* Shorts-Fuge */}
+        <line x1="49" y1="80" x2="49" y2="100" stroke="#143d24" strokeWidth="1.2" />
 
-        {/* Pulli (gruen mit weissem Dreieck) */}
-        <ellipse cx="46" cy="58" rx="22" ry="18" fill="#2f7a4f" />
-        <path d="M40 50 L52 50 L46 62 Z" fill="#f5f1e8" />
+        {/* WEISSER GUERTEL — klassisches Detail */}
+        <rect x="26" y="74" width="46" height="6" fill="#f5f1e8" />
+        <rect x="44" y="74" width="6" height="6" fill="#b9905a" />
+        <rect x="46" y="76" width="2" height="2" fill="#1a1d2c" />
 
-        {/* Schwanz */}
-        <circle cx="74" cy="68" r="5" fill="#f5f1e8" />
+        {/* GRUENER ROLLKRAGEN-PULLI */}
+        <path d="M22 62 Q22 50 30 46 L66 46 Q76 50 76 62 L76 76 Q76 78 74 78 L24 78 Q22 78 22 76 Z" fill="#2f7a4f" />
+        {/* Rollkragen am Hals */}
+        <ellipse cx="34" cy="44" rx="11" ry="6" fill="#246238" />
+        <ellipse cx="34" cy="42" rx="9" ry="4" fill="#2f7a4f" />
 
-        {/* Vordere Pfote (greift nach vorn) */}
-        <g style={{ transformOrigin: "30px 70px", animation: "schend-arm-front 0.4s ease-in-out infinite alternate" }}>
-          <path d="M30 64 Q22 58 16 64 Q18 70 28 70 Z" fill="#d8c6a8" />
+        {/* WEISSES UMGEKEHRTES DREIECK auf der Brust — Markenzeichen */}
+        <path d="M44 54 L60 54 L52 70 Z" fill="#f5f1e8" />
+
+        {/* Schwanzpuschel */}
+        <circle cx="74" cy="76" r="6" fill="#f5f1e8" />
+
+        {/* VORDERE PFOTE (im Sprung nach vorn ausgestreckt) */}
+        <g style={{ transformOrigin: "26px 70px", animation: "schend-arm-front 0.36s ease-in-out infinite alternate" }}>
+          <path d="M26 64 Q14 58 8 64 Q10 72 24 72 Z" fill="#d8c6a8" />
+          {/* Drei kleine Finger */}
+          <path d="M8 64 L4 62 M9 66 L4 66 M10 68 L6 70" stroke="#a8957a" strokeWidth="0.8" />
         </g>
 
-        {/* Kopf (links, schaut zurueck mit Panik) */}
-        <ellipse cx="26" cy="42" rx="14" ry="13" fill="#d8c6a8" />
+        {/* KOPF — rund, etwas tropfenfoermig zur Schnauze hin */}
+        <ellipse cx="28" cy="36" rx="15" ry="14" fill="#d8c6a8" />
 
-        {/* Schnauze */}
-        <ellipse cx="16" cy="46" rx="6" ry="4" fill="#e8d8b8" />
-        <circle cx="13" cy="45" r="1.5" fill="#1a1d2c" />
+        {/* Schnauze (helleres Fell) */}
+        <ellipse cx="16" cy="42" rx="7" ry="5" fill="#ece1c9" />
+        {/* Nase */}
+        <ellipse cx="11" cy="41" rx="2" ry="1.6" fill="#1a1d2c" />
 
-        {/* Auge (schaut nach hinten, weit aufgerissen) */}
-        <circle cx="28" cy="40" r="3.5" fill="#fff" />
-        <circle cx="30" cy="41" r="2" fill="#3a6fa8" />
-        <circle cx="30.5" cy="40" r="0.8" fill="#fff" />
+        {/* WANGEN-FELL */}
+        <ellipse cx="22" cy="46" rx="4" ry="2" fill="#ece1c9" opacity="0.6" />
 
-        {/* Maul (offen vor Schreck) */}
-        <path d="M14 50 Q18 53 22 51" stroke="#a8503a" strokeWidth="1.2" fill="none" />
+        {/* AUGE — gross, blaues Iris, panisch nach hinten schauend */}
+        <circle cx="32" cy="34" r="5" fill="#ffffff" />
+        <circle cx="35" cy="35" r="3" fill="#3a6fa8" />
+        <circle cx="36" cy="34" r="1.2" fill="#ffffff" />
+        {/* Augenbraue — hochgezogen vor Schreck */}
+        <path d="M28 27 Q34 24 38 26" stroke="#1a1d2c" strokeWidth="1.4" fill="none" strokeLinecap="round" />
 
-        {/* Ohren — eines aufrecht, eines im Wind nach hinten */}
-        <path d="M22 30 Q20 14 24 8 Q28 16 26 30 Z" fill="#d8c6a8" />
-        <path d="M24 28 Q23 18 26 12 Q27 20 26 28 Z" fill="#f5c8d0" opacity="0.7" />
-        <path d="M32 30 Q40 22 44 14 Q44 24 38 32 Z" fill="#d8c6a8" />
-        <path d="M34 30 Q40 24 42 18 Q42 25 38 30 Z" fill="#f5c8d0" opacity="0.7" />
+        {/* MAUL — leicht geoeffnet vor Schreck */}
+        <ellipse cx="14" cy="46" rx="3" ry="2" fill="#a8503a" />
+        <ellipse cx="14" cy="45" rx="2" ry="1" fill="#d8c6a8" />
 
-        {/* Schweiss-Tropfen */}
-        <ellipse cx="22" cy="20" rx="1.5" ry="3" fill="#7fc1ff" opacity="0.85" />
+        {/* SCHNURRHAARE */}
+        <path d="M9 43 L2 41 M9 45 L2 45 M9 47 L2 49" stroke="#a8957a" strokeWidth="0.5" />
+
+        {/* OHREN — lang, aufrecht, eines im Wind nach hinten geneigt */}
+        <path d="M22 22 Q18 4 22 0 Q28 6 26 22 Z" fill="#d8c6a8" />
+        <path d="M23 20 Q21 8 24 4 Q26 10 25 20 Z" fill="#f5c8d0" opacity="0.85" />
+
+        <path d="M34 22 Q42 14 46 4 Q46 18 38 24 Z" fill="#d8c6a8" />
+        <path d="M35 22 Q40 16 43 8 Q43 18 38 22 Z" fill="#f5c8d0" opacity="0.85" />
+
+        {/* Schweiss-Tropfen ueber dem Kopf */}
+        <ellipse cx="44" cy="14" rx="2" ry="3.5" fill="#7fc1ff" />
+        <ellipse cx="42" cy="13" rx="0.6" ry="1" fill="#a8dfff" />
       </svg>
 
-      {/* Wolf (jagt, schon nah dran) */}
+      {/* WOLF — Hooligan-Look, Bauch, jagt mit Krallen */}
       <svg
-        className="absolute bottom-10 h-24 md:h-28"
-        viewBox="0 0 120 120"
+        className="absolute bottom-12 h-28 md:h-32"
+        viewBox="0 0 140 140"
         style={{
-          right: "-200px",
+          right: "-220px",
           animation: "schend-runner 7s linear infinite",
           animationDelay: "0.9s",
         }}
       >
         {/* Schatten */}
-        <ellipse cx="60" cy="115" rx="30" ry="3" fill="#000" opacity="0.2" />
+        <ellipse cx="70" cy="135" rx="34" ry="3" fill="#000" opacity="0.22" />
 
-        {/* Hintere Beine (schwarze Hose) */}
-        <g style={{ transformOrigin: "80px 100px", animation: "schend-leg-back 0.3s ease-in-out infinite alternate" }}>
-          <path d="M72 88 L78 110 L88 110 L86 88 Z" fill="#1a1d2c" />
-          <ellipse cx="83" cy="112" rx="8" ry="2.5" fill="#0e1018" />
+        {/* HINTERES BEIN — schwarze Hose, gestreckt */}
+        <g style={{ transformOrigin: "94px 110px", animation: "schend-leg-back 0.28s ease-in-out infinite alternate" }}>
+          <path d="M86 96 L92 130 L104 130 L102 96 Z" fill="#1a1d2c" />
+          {/* Hosen-Falte */}
+          <line x1="94" y1="98" x2="97" y2="128" stroke="#000" strokeWidth="0.8" opacity="0.5" />
+          {/* SCHUH */}
+          <ellipse cx="98" cy="132" rx="11" ry="3" fill="#000" />
+          <path d="M88 132 Q90 128 100 128 Q108 128 108 132 Z" fill="#1f2435" />
         </g>
 
-        {/* Rosa Hemd (Korpus) */}
+        {/* ROSA HEMD MIT BAUCH — Hooligan-Charakter, ausgebeult */}
         <path
-          d="M30 60 Q28 50 38 46 L80 46 Q92 50 90 64 L92 88 Q90 96 80 96 L40 96 Q30 96 28 88 Z"
+          d="M28 70
+             Q22 56 38 52
+             L92 52
+             Q108 56 108 72
+             L112 100
+             Q108 110 96 110
+             L44 110
+             Q28 110 26 100
+             Q24 88 28 70 Z"
           fill="#d97296"
         />
+        {/* Bauch-Auswoelbung */}
+        <ellipse cx="70" cy="92" rx="42" ry="18" fill="#d97296" />
+        <ellipse cx="70" cy="95" rx="40" ry="14" fill="#c5618a" opacity="0.3" />
 
-        {/* Hemd-Detail: Knopfleiste */}
-        <line x1="60" y1="50" x2="60" y2="92" stroke="#a8456c" strokeWidth="1.2" />
-        <circle cx="60" cy="58" r="1.5" fill="#a8456c" />
-        <circle cx="60" cy="70" r="1.5" fill="#a8456c" />
-        <circle cx="60" cy="82" r="1.5" fill="#a8456c" />
+        {/* Knopfleiste */}
+        <line x1="70" y1="56" x2="70" y2="106" stroke="#a8456c" strokeWidth="1.3" />
+        <circle cx="70" cy="64" r="1.6" fill="#a8456c" />
+        <circle cx="70" cy="76" r="1.6" fill="#a8456c" />
+        <circle cx="70" cy="88" r="1.6" fill="#a8456c" />
+        <circle cx="70" cy="100" r="1.6" fill="#a8456c" />
 
         {/* Krawatte */}
-        <path d="M56 46 L64 46 L62 56 Z" fill="#d83a5e" />
-        <path d="M58 56 L66 56 L62 76 Z" fill="#d83a5e" />
+        <path d="M66 52 L74 52 L72 64 Z" fill="#d83a5e" />
+        <path d="M68 64 L76 64 L72 84 Z" fill="#d83a5e" />
+        <ellipse cx="70" cy="52" rx="4" ry="1.5" fill="#a82846" />
 
-        {/* Vordere Hose */}
-        <g style={{ transformOrigin: "40px 100px", animation: "schend-leg-front 0.3s ease-in-out infinite alternate-reverse" }}>
-          <path d="M36 88 L34 110 L46 110 L44 88 Z" fill="#1a1d2c" />
-          <ellipse cx="40" cy="112" rx="8" ry="2.5" fill="#0e1018" />
+        {/* VORDERE HOSE */}
+        <g style={{ transformOrigin: "46px 110px", animation: "schend-leg-front 0.28s ease-in-out infinite alternate-reverse" }}>
+          <path d="M40 96 L36 130 L52 130 L50 96 Z" fill="#1a1d2c" />
+          <line x1="44" y1="98" x2="46" y2="128" stroke="#000" strokeWidth="0.8" opacity="0.5" />
+          {/* SCHUH */}
+          <ellipse cx="44" cy="132" rx="11" ry="3" fill="#000" />
+          <path d="M34 132 Q36 128 46 128 Q54 128 54 132 Z" fill="#1f2435" />
         </g>
 
-        {/* Vordere Pfote (greift nach Hasen) */}
-        <g style={{ transformOrigin: "32px 60px", animation: "schend-arm-front 0.4s ease-in-out infinite alternate-reverse" }}>
-          <path d="M30 60 Q14 56 8 62 Q10 70 26 70 Z" fill="#6e7484" />
-          {/* Krallen */}
-          <path d="M8 62 L4 60 M10 64 L4 66 M12 68 L8 72" stroke="#1a1d2c" strokeWidth="1" />
+        {/* VORDERE PFOTE — graue Hand mit Krallen, greift nach dem Hasen */}
+        <g style={{ transformOrigin: "32px 68px", animation: "schend-arm-grab 0.4s ease-in-out infinite alternate-reverse" }}>
+          {/* Ärmel-Manschette */}
+          <ellipse cx="32" cy="68" rx="5" ry="6" fill="#a8456c" />
+          {/* Unterarm grau */}
+          <path d="M30 64 Q14 60 6 66 Q8 76 26 76 Z" fill="#6e7484" />
+          {/* Pfote */}
+          <ellipse cx="8" cy="70" rx="6" ry="4" fill="#6e7484" />
+          {/* KRALLEN — drei spitze, hervorgestreckt */}
+          <path d="M3 67 L0 64 M2 70 L-2 70 M3 73 L0 76" stroke="#1a1d2c" strokeWidth="1.6" strokeLinecap="round" />
         </g>
 
         {/* Hintere Pfote (im Hemd-Bereich) */}
-        <path d="M85 70 Q98 66 102 74 Q98 80 88 78 Z" fill="#6e7484" />
+        <ellipse cx="98" cy="76" rx="10" ry="6" fill="#6e7484" />
+        <ellipse cx="106" cy="78" rx="5" ry="3" fill="#6e7484" />
 
-        {/* Kopf (graues Fell) */}
-        <ellipse cx="34" cy="34" rx="20" ry="18" fill="#6e7484" />
+        {/* KOPF — grauer Wolf */}
+        <ellipse cx="38" cy="34" rx="22" ry="20" fill="#6e7484" />
 
-        {/* Schnauze */}
-        <path d="M18 38 Q8 36 4 44 Q8 50 22 46 Z" fill="#6e7484" />
-        <ellipse cx="6" cy="43" rx="3" ry="2" fill="#1a1d2c" />
+        {/* Backe leicht heller */}
+        <ellipse cx="32" cy="40" rx="10" ry="6" fill="#8088a0" opacity="0.4" />
 
-        {/* Maul (boese grinsen, Zaehne) */}
-        <path d="M8 46 Q18 52 26 48" stroke="#1a1d2c" strokeWidth="1.5" fill="none" />
-        <path d="M14 48 L14 51 L16 51 Z M19 48 L19 51 L21 51 Z" fill="#fff" />
+        {/* SCHNAUZE — lang, hervorstehend */}
+        <path d="M20 38 Q6 36 2 46 Q8 54 24 50 Z" fill="#6e7484" />
+        <ellipse cx="14" cy="44" rx="6" ry="4" fill="#8088a0" />
+        {/* Nase — schwarz, glaenzend */}
+        <ellipse cx="4" cy="44" rx="3" ry="2.2" fill="#1a1d2c" />
+        <ellipse cx="3" cy="43" rx="0.8" ry="0.5" fill="#5a5e72" />
 
-        {/* Auge (boeser Blick auf Hasen) */}
-        <circle cx="28" cy="30" r="4" fill="#fff" />
-        <ellipse cx="22" cy="31" rx="2.2" ry="2.8" fill="#1a1d2c" />
-        <circle cx="22" cy="29.5" r="0.6" fill="#fff" />
+        {/* MAUL — boese grinsen */}
+        <path d="M6 48 Q14 54 26 50" stroke="#1a1d2c" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+        {/* GELBER HAUERZAHN — klassisches Detail */}
+        <path d="M11 49 L11 54 L14 54 L14 49 Z" fill="#f0d97a" stroke="#a88a3a" strokeWidth="0.4" />
+        <path d="M18 49 L18 52 L20 52 L20 49 Z" fill="#f5f1e8" />
 
-        {/* Augenbraue (gerunzelt) */}
-        <path d="M18 24 L30 27" stroke="#1a1d2c" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+        {/* AUGE — gemein, fokussiert auf Hasen */}
+        <ellipse cx="32" cy="28" rx="5" ry="4" fill="#ffffff" />
+        <ellipse cx="26" cy="30" rx="2.6" ry="3.2" fill="#1a1d2c" />
+        <circle cx="26" cy="28" r="0.8" fill="#ffffff" />
 
-        {/* Ohr (gespitzt nach hinten) */}
-        <path d="M40 22 L50 8 L48 24 Z" fill="#6e7484" />
-        <path d="M42 22 L48 14 L46 22 Z" fill="#f5c8d0" opacity="0.7" />
+        {/* Augenbraue — schwer, gerunzelt */}
+        <path d="M22 20 Q28 16 36 22" stroke="#1a1d2c" strokeWidth="2.4" fill="none" strokeLinecap="round" />
 
-        {/* Schwarzes wirres Haar (Stirn) */}
-        <path d="M22 18 Q26 12 32 16 Q36 10 42 18 Q46 14 50 22 L46 26 Q40 22 36 24 Q30 20 26 24 Q22 22 22 18 Z" fill="#1a1d2c" />
+        {/* OHR — gespitzt nach hinten */}
+        <path d="M46 18 L56 2 L54 22 Z" fill="#6e7484" />
+        <path d="M48 18 L54 10 L52 20 Z" fill="#f5c8d0" opacity="0.7" />
 
-        {/* BOWLER HUT */}
-        <ellipse cx="36" cy="14" rx="20" ry="3" fill="#1a1d2c" />
-        <path d="M22 14 Q22 4 36 4 Q50 4 50 14 Z" fill="#1a1d2c" />
-        <ellipse cx="36" cy="13" rx="14" ry="2" fill="#2a2d40" />
+        {/* WIRRE SCHWARZE HAARE — unter und um den Hut */}
+        <path d="M18 18 Q22 8 28 12 Q32 4 38 14 Q44 6 48 16 Q54 10 56 22 L52 28 Q46 22 42 24 Q36 18 32 22 Q26 16 22 24 Q18 22 18 18 Z" fill="#1a1d2c" />
+        {/* Haare die unter dem Hut hervorschauen — wirr */}
+        <path d="M20 22 L16 28 M24 22 L20 32 M30 20 L28 30 M42 22 L46 30 M48 24 L52 30" stroke="#1a1d2c" strokeWidth="1.6" strokeLinecap="round" />
 
-        {/* Schweiss (Verfolgung anstrengend) */}
-        <ellipse cx="55" cy="18" rx="2" ry="4" fill="#7fc1ff" opacity="0.85" />
+        {/* BOWLER-HUT — Halbkugel + duenne Krempe */}
+        <ellipse cx="38" cy="14" rx="24" ry="3.5" fill="#0e1018" />
+        <path d="M20 14 Q20 -2 38 -2 Q56 -2 56 14 Z" fill="#1a1d2c" />
+        {/* Hut-Band */}
+        <rect x="20" y="11" width="36" height="3" fill="#0e1018" />
+        {/* Glanz auf der Hut-Kuppel */}
+        <ellipse cx="32" cy="6" rx="6" ry="2" fill="#3a3e4f" opacity="0.6" />
+
+        {/* Schweisstropfen vor lauter Anstrengung */}
+        <ellipse cx="62" cy="22" rx="2" ry="4" fill="#7fc1ff" />
+        <ellipse cx="60" cy="20" rx="0.6" ry="1.2" fill="#a8dfff" />
       </svg>
 
-      {/* Animation-Definitionen */}
       <style>{`
         @keyframes schend-runner {
-          0%   { right: -110px; transform: translateY(0); }
-          15%  { transform: translateY(-3px); }
+          0%   { right: -120px; transform: translateY(0); }
+          15%  { transform: translateY(-5px); }
           30%  { transform: translateY(0); }
-          45%  { transform: translateY(-3px); }
+          45%  { transform: translateY(-5px); }
           60%  { transform: translateY(0); }
           100% { right: calc(100% + 30px); transform: translateY(0); }
         }
-        @keyframes schend-leg-back {
-          from { transform: rotate(-32deg); }
-          to   { transform: rotate(28deg); }
-        }
-        @keyframes schend-leg-front {
-          from { transform: rotate(-28deg); }
-          to   { transform: rotate(32deg); }
-        }
-        @keyframes schend-arm-front {
-          from { transform: rotate(-12deg); }
-          to   { transform: rotate(18deg); }
-        }
+        @keyframes schend-leg-back  { from { transform: rotate(-36deg); } to { transform: rotate(30deg); } }
+        @keyframes schend-leg-front { from { transform: rotate(-32deg); } to { transform: rotate(36deg); } }
+        @keyframes schend-arm-front { from { transform: rotate(-14deg); } to { transform: rotate(22deg); } }
+        @keyframes schend-arm-grab  { from { transform: rotate(-8deg); }  to { transform: rotate(14deg); } }
         @media (prefers-reduced-motion: reduce) {
           [style*="schend-runner"] { animation: none !important; right: 30% !important; }
           [style*="schend-leg"], [style*="schend-arm"] { animation: none !important; }
