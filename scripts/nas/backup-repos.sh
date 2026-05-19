@@ -10,6 +10,8 @@ ROOT=/volume1/CONEXA-SCHEND
 BACKUP_ROOT=$ROOT/backups
 LOG_DIR=$ROOT/logs
 LOG=$LOG_DIR/backup-$DAY.log
+SECRETS=$ROOT/secrets
+DOCKER=/var/packages/ContainerManager/target/usr/bin/docker
 
 mkdir -p $LOG_DIR
 exec >> $LOG 2>&1
@@ -17,10 +19,10 @@ exec >> $LOG 2>&1
 echo ""
 echo "=== Backup run $DATE ==="
 
-# Public repos — direct tarball, no git needed
-REPOS="eugenvalencia/landhotel-schend:schend-site"
+# Public repos — direct tarball via codeload, no auth needed
+PUBLIC_REPOS="eugenvalencia/landhotel-schend:schend-site"
 
-for entry in $REPOS; do
+for entry in $PUBLIC_REPOS; do
   REPO=$(echo $entry | cut -d: -f1)
   TARGET=$(echo $entry | cut -d: -f2)
   OUT_DIR=$BACKUP_ROOT/$TARGET
@@ -29,7 +31,7 @@ for entry in $REPOS; do
   TARBALL=$OUT_DIR/$TARGET-$DATE.tar.gz
   URL="https://codeload.github.com/$REPO/tar.gz/refs/heads/main"
 
-  echo "[$DATE] Fetching $REPO -> $TARBALL"
+  echo "[$DATE] Fetching public $REPO -> $TARBALL"
   if curl -sL -f -o $TARBALL "$URL"; then
     SIZE=$(stat -c%s $TARBALL 2>/dev/null || echo 0)
     if [ "$SIZE" -lt 10000 ]; then
@@ -43,7 +45,40 @@ for entry in $REPOS; do
     rm -f $TARBALL
   fi
 
-  # Retention: keep last 14
+  ls -1t $OUT_DIR/*.tar.gz 2>/dev/null | tail -n +15 | xargs -r rm -f
+done
+
+# Private repos — clone via Deploy-Key in alpine/git container
+# Format: "<ssh-url>:<target-folder>:<deploy-key-filename>"
+PRIVATE_REPOS="git@github.com:eugenvalencia/conexa-recommendations.git:conexa-recommendations:conexa-recs-deploy-key"
+
+for entry in $PRIVATE_REPOS; do
+  REPO_SSH=$(echo $entry | cut -d: -f1-2)
+  TARGET=$(echo $entry | cut -d: -f3)
+  KEY=$(echo $entry | cut -d: -f4)
+  KEY_PATH=$SECRETS/$KEY
+
+  if [ ! -f "$KEY_PATH" ]; then
+    echo "[$DATE] SKIP private $REPO_SSH — deploy key $KEY_PATH not found"
+    continue
+  fi
+
+  OUT_DIR=$BACKUP_ROOT/$TARGET
+  mkdir -p $OUT_DIR
+
+  echo "[$DATE] Cloning private $REPO_SSH"
+  $DOCKER run --rm \
+    -v "$KEY_PATH:/key:ro" \
+    -v "$OUT_DIR:/out" \
+    --entrypoint sh \
+    alpine/git \
+    -c "cp /key /tmp/id_ed25519 && chmod 600 /tmp/id_ed25519 && \
+        mkdir -p /root/.ssh && ssh-keyscan -t ed25519 github.com > /root/.ssh/known_hosts 2>/dev/null && \
+        GIT_SSH_COMMAND='ssh -i /tmp/id_ed25519 -o UserKnownHostsFile=/root/.ssh/known_hosts' \
+        git clone --depth 1 $REPO_SSH /tmp/repo && \
+        tar czf /out/$TARGET-$DATE.tar.gz -C /tmp/repo --exclude=.git . && \
+        echo SIZE=\$(stat -c%s /out/$TARGET-$DATE.tar.gz)" 2>&1 | tail -5
+
   ls -1t $OUT_DIR/*.tar.gz 2>/dev/null | tail -n +15 | xargs -r rm -f
 done
 
