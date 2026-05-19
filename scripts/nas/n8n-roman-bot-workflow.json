@@ -1,0 +1,119 @@
+{
+  "name": "Roman Inbox Bot (Telegram)",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": ["message"],
+        "additionalFields": {}
+      },
+      "id": "tg-trigger",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 300],
+      "webhookId": "roman-inbox",
+      "credentials": { "telegramApi": { "name": "Roman Bot" } }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "rules": [
+            { "value2": "/status", "output": 0 },
+            { "value2": "/deploy", "output": 1 },
+            { "value2": "/preview", "output": 2 },
+            { "value2": "/inbox", "output": 3 }
+          ]
+        },
+        "value1": "={{ $json.message.text }}",
+        "fallbackOutput": 4
+      },
+      "id": "router",
+      "name": "Befehl?",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "command": "echo \"Schend-Preview: $(curl -s -o /dev/null -w %{http_code} https://schend-preview.conexadigital.eu/)\\nLetzter Build: $(stat -c %y '/volume1/Conexa Digital/Kunden/Landhotel Schend/preview/dist/index.html')\\nInbox: $(find '/volume1/Conexa Digital/Inbox' -type f -name '*.md' | wc -l) Nachrichten\""
+      },
+      "id": "status-cmd",
+      "name": "Status",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [680, 100]
+    },
+    {
+      "parameters": {
+        "command": "sudo /var/packages/ContainerManager/target/usr/bin/docker exec preview-builder sh /scripts/build-preview.sh 2>&1 | tail -5"
+      },
+      "id": "deploy-cmd",
+      "name": "Deploy",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [680, 200]
+    },
+    {
+      "parameters": {
+        "command": "echo 'https://schend-preview.conexadigital.eu/'"
+      },
+      "id": "preview-cmd",
+      "name": "Preview-URL",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "command": "find '/volume1/Conexa Digital/Inbox' -type f -name '*.md' -mtime -7 | sort -r | head -20"
+      },
+      "id": "inbox-cmd",
+      "name": "Letzte Inbox",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [680, 400]
+    },
+    {
+      "parameters": {
+        "command": "=TG_TEXT='{{ $json.message.text || $json.message.voice ? \"[Voice-Nachricht]\" : \"\" }}' TG_FROM='{{ $json.message.from.username || $json.message.from.first_name }}' TG_KIND='{{ $json.message.voice ? \"voice\" : \"text\" }}' TG_DATE='{{ $now }}' sh '/volume1/Conexa Digital/Kunden/Landhotel Schend/scripts/telegram-roman-bot.sh'"
+      },
+      "id": "inbox-save",
+      "name": "Inbox speichern",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [680, 500]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.stdout || 'OK gespeichert' }}",
+        "additionalFields": {}
+      },
+      "id": "reply",
+      "name": "Antwort an Eugen",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.1,
+      "position": [900, 300],
+      "credentials": { "telegramApi": { "name": "Roman Bot" } }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": { "main": [[{ "node": "Befehl?", "type": "main", "index": 0 }]] },
+    "Befehl?": {
+      "main": [
+        [{ "node": "Status", "type": "main", "index": 0 }],
+        [{ "node": "Deploy", "type": "main", "index": 0 }],
+        [{ "node": "Preview-URL", "type": "main", "index": 0 }],
+        [{ "node": "Letzte Inbox", "type": "main", "index": 0 }],
+        [{ "node": "Inbox speichern", "type": "main", "index": 0 }]
+      ]
+    },
+    "Status": { "main": [[{ "node": "Antwort an Eugen", "type": "main", "index": 0 }]] },
+    "Deploy": { "main": [[{ "node": "Antwort an Eugen", "type": "main", "index": 0 }]] },
+    "Preview-URL": { "main": [[{ "node": "Antwort an Eugen", "type": "main", "index": 0 }]] },
+    "Letzte Inbox": { "main": [[{ "node": "Antwort an Eugen", "type": "main", "index": 0 }]] },
+    "Inbox speichern": { "main": [[{ "node": "Antwort an Eugen", "type": "main", "index": 0 }]] }
+  },
+  "settings": {},
+  "_comment": "Importieren via n8n UI: Workflows -> Import from File. Danach: Credentials 'Roman Bot' anlegen mit Bot-Token aus @BotFather. Bot in Telegram suchen, /start, dann sind alle Befehle live."
+}

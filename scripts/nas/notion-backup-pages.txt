@@ -1,0 +1,8 @@
+# Notion-Pages die taeglich gesichert werden (Format: page_id|dateiname)
+# Page-IDs ohne Dashes. Lines mit # werden ignoriert.
+# Pflege: hier neue Pages erganzen wenn sie wichtig genug fuer Backup sind.
+
+351bc6c9ffe5815282fcd6dbaaa40da7|conexa-os-master-architecture
+32abc6c9ffe5802293c4c3e3d4a17700|conexa-digital
+347bc6c9ffe58126b67fea7bacbc2034|conexa-os-master-plan
+345bc6c9ffe581e3bcf1d2b4a60c8dc7|conexa-os-kommandozentrale
