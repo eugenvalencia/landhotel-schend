@@ -67,8 +67,14 @@ export default function RoomDetail() {
       .select("*")
       .eq("id", id)
       .maybeSingle()
-      .then(({ data }) => {
-        if (active) setRoom(data as Room | null);
+      .then(({ data, error }) => {
+        if (!active) return;
+        if (error) {
+          console.warn("[RoomDetail] load failed", error);
+          setRoom(null);
+          return;
+        }
+        setRoom(data as Room | null);
       });
     return () => {
       active = false;

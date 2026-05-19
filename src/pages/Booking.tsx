@@ -174,31 +174,38 @@ export default function Booking() {
   }, [room, rooms, checkIn, checkOut, allBookings]);
 
   useEffect(() => {
-    supabase
-      .from("rooms")
-      .select("*")
-      .eq("status", "aktiv")
-      .order("room_number")
-      .then(({ data, error }) => {
-        const list = !error && data?.length ? (data as Room[]) : FALLBACK_ROOMS;
-        setRooms(list);
-        if (roomIdParam) {
-          const found = list.find((r) => r.id === roomIdParam);
-          if (found) setRoom(found);
-        }
-      });
-    supabase
-      .from("extras")
-      .select("*")
-      .eq("active", true)
-      .order("sort_order")
-      .then(({ data, error }) => {
-        const list = !error && data?.length ? (data as Extra[]) : FALLBACK_EXTRAS;
-        setExtras(list);
-      });
-    supabase
-      .rpc("get_booked_ranges")
-      .then(({ data }) => setAllBookings((data as any[]) ?? []));
+    // Cleanup-Flag verhindert setState auf unmounted Component bei schnellem Routenwechsel
+    let active = true;
+    Promise.allSettled([
+      supabase.from("rooms").select("*").eq("status", "aktiv").order("room_number"),
+      supabase.from("extras").select("*").eq("active", true).order("sort_order"),
+      supabase.rpc("get_booked_ranges"),
+    ]).then(([roomsRes, extrasRes, bookingsRes]) => {
+      if (!active) return;
+
+      const roomsOk = roomsRes.status === "fulfilled" && !roomsRes.value.error && roomsRes.value.data?.length;
+      const list = roomsOk ? (roomsRes.value.data as Room[]) : FALLBACK_ROOMS;
+      setRooms(list);
+      if (roomIdParam) {
+        const found = list.find((r) => r.id === roomIdParam);
+        if (found) setRoom(found);
+      }
+
+      const extrasOk = extrasRes.status === "fulfilled" && !extrasRes.value.error && extrasRes.value.data?.length;
+      setExtras(extrasOk ? (extrasRes.value.data as Extra[]) : FALLBACK_EXTRAS);
+
+      const bookingsOk = bookingsRes.status === "fulfilled" && !bookingsRes.value.error;
+      setAllBookings(bookingsOk ? ((bookingsRes.value.data as any[]) ?? []) : []);
+
+      if (!roomsOk || !extrasOk || !bookingsOk) {
+        console.warn("[booking] partial load — using fallbacks where needed", {
+          rooms: roomsRes, extras: extrasRes, bookings: bookingsRes,
+        });
+      }
+    });
+    return () => {
+      active = false;
+    };
   }, [roomIdParam]);
 
   // Refresh per-room bookings whenever the selected room changes

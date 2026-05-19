@@ -86,13 +86,14 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
+    let active = true;
     supabase
       .from("rooms")
       .select("id, name, room_type, price_per_night")
       .eq("status", "aktiv")
       .order("price_per_night")
-      .then(({ data }) => {
-        if (!data) return;
+      .then(({ data, error }) => {
+        if (!active || error || !data) return;
         const seen = new Set<string>();
         const cats: RoomCategory[] = [];
         for (const r of data) {
@@ -102,6 +103,9 @@ const Index = () => {
         }
         setCategories(cats);
       });
+    return () => {
+      active = false;
+    };
   }, []);
 
   return (
