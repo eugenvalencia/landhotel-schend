@@ -58,7 +58,16 @@ export default function Login() {
       <Card className="w-full max-w-md shadow-elevated">
         <CardHeader className="text-center">
           <Link to="/" className="inline-flex items-center justify-center gap-3 text-primary mb-2">
-            <span className="schend-mark shrink-0 h-7" aria-hidden />
+            <img
+              src="/schend-logo-black.svg"
+              alt="Landhotel Schend Logo"
+              className="h-10 w-auto dark:hidden"
+            />
+            <img
+              src="/schend-logo-white.svg"
+              alt="Landhotel Schend Logo"
+              className="hidden h-10 w-auto dark:block"
+            />
             <span className="font-semibold">Landhotel Schend</span>
           </Link>
           <CardTitle>Hotel-Dashboard</CardTitle>

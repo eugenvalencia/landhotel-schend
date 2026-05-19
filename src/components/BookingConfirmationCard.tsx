@@ -49,13 +49,21 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
         <div className="overflow-hidden rounded-sm border bg-background">
           {/* Email Header */}
           <div className="border-b bg-muted/40 px-5 py-4">
-            <div className="flex items-center gap-2.5 text-primary">
-              <span
-                role="img"
-                aria-label="Landhotel Schend Logo"
-                className="schend-mark shrink-0 h-5 text-primary"
+            <div className="flex items-center gap-3">
+              <img
+                src="/schend-logo-black.svg"
+                alt="Landhotel Schend Logo"
+                className="h-10 w-auto dark:hidden"
               />
-              <span className="font-display text-base">Landhotel Schend</span>
+              <img
+                src="/schend-logo-white.svg"
+                alt="Landhotel Schend Logo"
+                className="hidden h-10 w-auto dark:block"
+              />
+              <div className="flex flex-col leading-tight">
+                <span className="font-display text-base text-primary">Landhotel Schend</span>
+                <span className="text-xs text-muted-foreground">Vulkaneifel · seit 1856</span>
+              </div>
             </div>
             <p className="mt-3 text-sm font-semibold text-foreground">
               Betreff: Buchungsbestätigung {displayBookingNumber} — Landhotel Schend
@@ -177,13 +185,18 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
 
           {/* Email Footer */}
           <div className="border-t bg-muted/40 px-5 py-4">
-            <div className="flex items-center gap-2.5 text-primary">
-              <span
-                role="img"
-                aria-label="Landhotel Schend Logo"
-                className="schend-mark shrink-0 h-5 text-primary"
+            <div className="flex items-center gap-3">
+              <img
+                src="/schend-logo-black.svg"
+                alt="Landhotel Schend Logo"
+                className="h-8 w-auto dark:hidden"
               />
-              <span className="font-display text-base">Landhotel Schend</span>
+              <img
+                src="/schend-logo-white.svg"
+                alt="Landhotel Schend Logo"
+                className="hidden h-8 w-auto dark:block"
+              />
+              <span className="font-display text-base text-primary">Landhotel Schend</span>
             </div>
             <p className="mt-2 text-xs text-muted-foreground">
               Ihr Familienhotel in der Vulkaneifel · landhaus-schend.de
