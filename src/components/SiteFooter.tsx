@@ -124,12 +124,18 @@ export default function SiteFooter() {
               </span>
             </p>
           </div>
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-5 gap-y-2">
             <Link to="/impressum" className="hover:text-secondary transition-colors">
               {t("footer.impressum")}
             </Link>
             <Link to="/datenschutz" className="hover:text-secondary transition-colors">
               {t("footer.privacy")}
+            </Link>
+            <Link to="/agb" className="hover:text-secondary transition-colors">
+              {t("footer.terms")}
+            </Link>
+            <Link to="/barrierefreiheit" className="hover:text-secondary transition-colors">
+              {t("footer.accessibility")}
             </Link>
           </div>
         </div>

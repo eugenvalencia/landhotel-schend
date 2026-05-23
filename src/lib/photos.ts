@@ -1,4 +1,4 @@
-// Bilder vom Original-Server des Landhaus Schend.
+// Bilder vom Original-Server des Landhotel Schend (Domain bleibt landhaus-schend.de).
 // Auf der Preview-Site reverse-proxyt Caddy /pics/* -> landhaus-schend.de und
 // Cloudflare cached danach am Edge -> Same-Origin + 0 Roundtrip.
 // In Vite-Dev haben wir keinen reverse-proxy, also greift man direkt zur Quelle.

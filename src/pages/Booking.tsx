@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import i18n from "@/i18n";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import {
@@ -321,6 +322,8 @@ export default function Booking() {
         p_guest_phone: guest.phone,
         p_extras: selectedExtras,
         p_notes: notes.trim() || null,
+        // UI-Sprache des Gasts mitsenden — triggert mehrsprachige Auto-Reply (DE/EN/FR/NL)
+        p_preferred_language: i18n.language?.split("-")[0] ?? null,
       });
 
       if (error || !data) {

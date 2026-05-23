@@ -326,3 +326,53 @@
     animation: fade-up 0.7s ease-out both;
   }
 }
+
+/* ===========================================================================
+   Barrierefreiheits-Komfort-Panel (A11yPanel.tsx) — globale Wirkung via
+   HTML-Root-Klassen + CSS-Variablen-Overrides.
+   Wird gesteuert über localStorage-Key 'schend_a11y_v1'.
+   =========================================================================== */
+
+/* Schriftgröße — Tailwind-rem-basiert, wirkt überall.
+   Booking-Form-Felder bleiben bei 16px (iOS-Auto-Zoom-Schutz, oben definiert). */
+html.a11y-large {
+  font-size: 112.5%;
+}
+html.a11y-larger {
+  font-size: 125%;
+}
+
+/* Hoher Kontrast — verstärkt Text/Border, dämpft Soft-Greys.
+   Werte sind HSL-Komponenten (Tailwind-Konvention). */
+html.a11y-high-contrast {
+  --foreground: 220 30% 5%;
+  --muted-foreground: 220 25% 18%;
+  --border: 220 30% 15%;
+  --primary: 220 35% 8%;
+  --secondary: 38 70% 22%;
+}
+html.dark.a11y-high-contrast {
+  --foreground: 38 50% 98%;
+  --muted-foreground: 38 40% 88%;
+  --border: 38 40% 75%;
+}
+/* Links + Buttons bekommen Unterstreichung im High-Contrast (zusätzliches Signal neben Farbe) */
+html.a11y-high-contrast a:not([class*="no-underline"]):not(.schend-mark) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+/* Focus-Ring im High-Contrast deutlich verstärken */
+html.a11y-high-contrast *:focus-visible {
+  outline: 3px solid currentColor !important;
+  outline-offset: 2px !important;
+}
+
+/* Bewegung reduzieren — alle Animationen + Transitions auf ~0. */
+html.a11y-reduced-motion *,
+html.a11y-reduced-motion *::before,
+html.a11y-reduced-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}

@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import CookieBanner from "./components/CookieBanner";
 import StickyMobileCTA from "./components/StickyMobileCTA";
+import A11yPanel from "./components/A11yPanel";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SiteOffline from "./components/SiteOffline";
 
@@ -21,6 +22,8 @@ const DashboardModule = lazy(() => import("./pages/Dashboard").then((m) => ({ de
 const Operator = lazy(() => import("./pages/Operator"));
 const Impressum = lazy(() => import("./pages/Impressum"));
 const Datenschutz = lazy(() => import("./pages/Datenschutz"));
+const AGB = lazy(() => import("./pages/AGB"));
+const Barrierefreiheit = lazy(() => import("./pages/Barrierefreiheit"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -54,11 +57,14 @@ const App = () => (
             <Route path="/operator" element={<Operator />} />
             <Route path="/impressum" element={<Impressum />} />
             <Route path="/datenschutz" element={<Datenschutz />} />
+            <Route path="/agb" element={<AGB />} />
+            <Route path="/barrierefreiheit" element={<Barrierefreiheit />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
         </ErrorBoundary>
         <StickyMobileCTA />
+        <A11yPanel />
         <CookieBanner />
       </BrowserRouter>
     </TooltipProvider>

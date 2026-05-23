@@ -1,0 +1,182 @@
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
+import { useSEO } from "@/hooks/useSEO";
+
+const Barrierefreiheit = () => {
+  useSEO({
+    title: "Erklärung zur Barrierefreiheit",
+    description: "Erklärung zur Barrierefreiheit nach BFSG / BFSGV § 14 für das Landhotel Schend.",
+    canonical: "/barrierefreiheit",
+    noindex: false,
+  });
+  return (
+  <div className="min-h-screen flex flex-col bg-background">
+    <SiteHeader />
+    <main id="main" className="flex-1 container mx-auto px-4 pt-28 md:pt-32 pb-16 max-w-3xl">
+      <p className="eyebrow mb-4">Rechtliches</p>
+      <h1 className="font-display text-4xl md:text-5xl mb-12 text-balance leading-[1.05]">
+        Erklärung zur Barrierefreiheit
+      </h1>
+
+      <div className="space-y-10 text-foreground/90 leading-relaxed">
+
+        <section>
+          <p>
+            Das Landhotel Schend ist bemüht, seine Website im Einklang mit dem
+            Barrierefreiheitsstärkungsgesetz (BFSG) sowie der Barrierefreie-Informationstechnik-Verordnung
+            (BFSGV) für alle Gäste barrierefrei zugänglich zu machen.
+          </p>
+          <p className="mt-3">
+            Diese Erklärung gilt für die Website unter <strong>landhaus-schend.de</strong>.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl md:text-2xl mb-3">1. Stand der Vereinbarkeit mit den Anforderungen</h2>
+          <p>
+            Diese Website ist mit dem BFSG und der zugrunde liegenden technischen Norm
+            <strong> EN 301 549 V3.2.1</strong> (Konformitätsstufe WCAG 2.1 Level AA)
+            <strong> teilweise vereinbar</strong>. Die nachfolgend aufgeführten Inhalte sind aus
+            den genannten Gründen nicht oder noch nicht vollständig barrierefrei.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl md:text-2xl mb-3">2. Nicht barrierefreie Inhalte</h2>
+          <p>
+            Folgende Inhalte sind aus den nachfolgenden Gründen nicht barrierefrei:
+          </p>
+          <ul className="list-disc pl-6 mt-3 space-y-2">
+            <li>
+              <strong>Eingebettete Karten:</strong> Karten-Darstellungen sind für blinde
+              Nutzer ohne Screen-Reader-Vorlesen schwer erfassbar. Alternative: die vollständige
+              Anschrift ist als Plain-Text neben der Karte angegeben.
+            </li>
+            <li>
+              <strong>PDF-Dokumente:</strong> Ältere PDF-Dokumente (z.B. archivierte
+              Speisekarten oder Hausprospekte vor dem 28.06.2025) sind nicht vollständig
+              barrierefrei (PDF/UA). Wir stellen aktuelle Inhalte bei Bedarf auf Anfrage in
+              barrierefreier Form bereit.
+            </li>
+            <li>
+              <strong>Galerie-Bilder:</strong> Wo Bilder ausschließlich dekorativ sind, haben sie
+              keinen Alternativtext. Aussagekräftige Bilder (Zimmer, Restaurant, Wellness)
+              tragen einen beschreibenden Alternativtext.
+            </li>
+          </ul>
+          <p className="mt-3">
+            Wir arbeiten kontinuierlich daran, identifizierte Barrieren zu beheben.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl md:text-2xl mb-3">3. Erstellung dieser Erklärung</h2>
+          <p>
+            Diese Erklärung wurde am
+            {" "}<strong>{new Date().toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })}</strong>{" "}
+            erstellt.
+          </p>
+          <p className="mt-3">
+            Die Bewertung basiert auf einer Eigenprüfung mit automatischen Tools (Lighthouse,
+            axe-core) sowie manueller Sichtung wesentlicher Seitenbereiche durch unseren
+            Web-Dienstleister Conexa Digital.
+          </p>
+          <p className="mt-3">
+            Eine erneute Überprüfung erfolgt mindestens jährlich, zuletzt am
+            {" "}<strong>{new Date().toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })}</strong>.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl md:text-2xl mb-3">4. Feedback und Kontakt</h2>
+          <p>
+            Sie sind auf nicht barrierefreie Inhalte gestoßen oder haben Verbesserungsvorschläge?
+            Wir nehmen Ihre Rückmeldung gerne entgegen:
+          </p>
+          <ul className="list-none pl-0 mt-3 space-y-2">
+            <li>
+              <strong>E-Mail:</strong>{" "}
+              <a
+                href="mailto:info@landhaus-schend.de?subject=Barrierefreiheit"
+                className="text-secondary hover:underline"
+              >
+                info@landhaus-schend.de
+              </a>{" "}
+              (Betreff: „Barrierefreiheit")
+            </li>
+            <li>
+              <strong>Telefon:</strong>{" "}
+              <a href="tel:+4965731306" className="text-secondary hover:underline">
+                +49 6573 306
+              </a>
+            </li>
+            <li>
+              <strong>Post:</strong>{" "}
+              Landhotel Schend, Hauptstraße 9, 54552 Immerath
+            </li>
+          </ul>
+          <p className="mt-3">
+            Wir bemühen uns, Ihre Rückmeldung innerhalb von <strong>10 Werktagen</strong> zu
+            beantworten und Barrieren zeitnah zu beheben.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl md:text-2xl mb-3">5. Schlichtungsverfahren</h2>
+          <p>
+            Wenn auch nach Ihrem Feedback an uns keine zufriedenstellende Lösung gefunden wurde,
+            können Sie sich an die Schlichtungsstelle nach § 16 Behindertengleichstellungsgesetz
+            (BGG) wenden:
+          </p>
+          <p className="mt-3">
+            Schlichtungsstelle nach dem Behindertengleichstellungsgesetz<br />
+            bei dem Beauftragten der Bundesregierung für die Belange von Menschen mit Behinderungen<br />
+            Mauerstraße 53, 10117 Berlin<br />
+            Telefon: <a href="tel:+493018527-2805" className="text-secondary hover:underline">+49 30 18527-2805</a><br />
+            E-Mail: <a href="mailto:info@schlichtungsstelle-bgg.de" className="text-secondary hover:underline">info@schlichtungsstelle-bgg.de</a><br />
+            <a
+              href="https://www.schlichtungsstelle-bgg.de"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-secondary hover:underline"
+            >
+              www.schlichtungsstelle-bgg.de
+            </a>
+          </p>
+          <p className="mt-3">
+            Das Schlichtungsverfahren ist für Sie kostenfrei.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl md:text-2xl mb-3">6. Durchsetzungsverfahren</h2>
+          <p>
+            Die Marktüberwachung in Rheinland-Pfalz ist zuständig für die Überwachung der
+            Einhaltung des BFSG bei Dienstleistungen. Sie können sich auch direkt an die
+            zuständige Marktüberwachungsbehörde wenden:
+          </p>
+          <p className="mt-3">
+            Landesamt für Soziales, Jugend und Versorgung Rheinland-Pfalz<br />
+            Baedekerstr. 2-20, 56073 Koblenz<br />
+            <a
+              href="https://lsjv.rlp.de"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-secondary hover:underline"
+            >
+              lsjv.rlp.de
+            </a>
+          </p>
+        </section>
+
+        <p className="text-xs text-muted-foreground pt-4">
+          Stand: {new Date().toLocaleDateString("de-DE", { year: "numeric", month: "long" })}
+        </p>
+      </div>
+    </main>
+    <SiteFooter />
+  </div>
+  );
+};
+
+export default Barrierefreiheit;

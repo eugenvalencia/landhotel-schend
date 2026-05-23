@@ -187,6 +187,14 @@ const FlagFR = () => (
   </svg>
 );
 
+const FlagNL = () => (
+  <svg viewBox="0 0 3 2" className="w-full h-full block" preserveAspectRatio="none" aria-hidden>
+    <rect width="3" height="0.667" y="0" fill="#AE1C28" />
+    <rect width="3" height="0.667" y="0.667" fill="#fff" />
+    <rect width="3" height="0.667" y="1.333" fill="#21468B" />
+  </svg>
+);
+
 function LanguageSwitcher() {
   const { i18n } = useTranslation();
   const lang = i18n.language?.slice(0, 2).toUpperCase() || "DE";
@@ -194,6 +202,7 @@ function LanguageSwitcher() {
     { code: "DE", name: "Deutsch", Flag: FlagDE },
     { code: "EN", name: "English", Flag: FlagGB },
     { code: "FR", name: "Français", Flag: FlagFR },
+    { code: "NL", name: "Nederlands", Flag: FlagNL },
   ];
   return (
     <div className="ml-1.5 flex items-center gap-1.5">
