@@ -123,6 +123,15 @@
           "checkinTime": "15:00",
           "checkoutTime": "11:00",
           "numberOfRooms": 21,
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "validFrom": "2026-03-01",
+              "validThrough": "2026-09-30",
+              "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+              "description": "Saisonbetrieb März bis September. Oktober bis Februar geschlossen."
+            }
+          ],
           "petsAllowed": "Hunde sind in der Dorfgaststätte erlaubt",
           "smokingAllowed": false,
           "amenityFeature": [
@@ -134,7 +143,7 @@
             { "@type": "LocationFeatureSpecification", "name": "Frühstücksbuffet", "value": true },
             { "@type": "LocationFeatureSpecification", "name": "Kostenloses WLAN", "value": true },
             { "@type": "LocationFeatureSpecification", "name": "Kostenloser Parkplatz – videoüberwacht", "value": true },
-            { "@type": "LocationFeatureSpecification", "name": "Garage für Motorräder – videoüberwacht", "value": true },
+            { "@type": "LocationFeatureSpecification", "name": "Mehrere Motorrad-Stellplätze im Hof", "value": true },
             { "@type": "LocationFeatureSpecification", "name": "Balkon oder Terrasse", "value": true },
             { "@type": "LocationFeatureSpecification", "name": "Aufzug", "value": true },
             { "@type": "LocationFeatureSpecification", "name": "Familienzimmer", "value": true },
@@ -149,10 +158,41 @@
           "containsPlace": [
             {
               "@type": "Restaurant",
+              "@id": "https://landhaus-schend.de/#restaurant",
               "name": "Landhaus Restaurant & Terrasse",
+              "url": "https://landhaus-schend.de/#restaurant",
+              "telephone": "+49-6573-306",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Hauptstraße 9",
+                "addressLocality": "Immerath",
+                "addressRegion": "Rheinland-Pfalz",
+                "postalCode": "54552",
+                "addressCountry": "DE"
+              },
               "servesCuisine": ["Eifeler Landküche", "Deutsch", "Regional"],
               "acceptsReservations": "True",
-              "priceRange": "€€"
+              "priceRange": "€€",
+              "openingHoursSpecification": [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+                  "opens": "17:30",
+                  "closes": "20:00"
+                },
+                {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": ["Sunday"],
+                  "opens": "12:00",
+                  "closes": "14:00"
+                },
+                {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": ["Sunday"],
+                  "opens": "17:30",
+                  "closes": "20:00"
+                }
+              ]
             }
           ],
           "potentialAction": {
