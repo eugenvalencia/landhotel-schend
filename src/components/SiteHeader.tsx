@@ -15,11 +15,11 @@ export default function SiteHeader() {
   const location = useLocation();
   const { t } = useTranslation();
 
-  const MENU = [
+  const MENU: { label: string; id?: string; href?: string }[] = [
     { label: t("nav.home"), id: "top" },
     { label: t("nav.rooms"), id: "rooms" },
     { label: t("nav.pakete"), id: "pakete" },
-    { label: t("nav.gastro"), id: "restaurant" },
+    { label: t("nav.gastro"), href: "/restaurant" }, // eigene Page für Tagesgäste + SEO
     { label: t("nav.about"), id: "about" },
     { label: t("nav.faq"), id: "faq" },
   ];
@@ -100,15 +100,25 @@ export default function SiteHeader() {
 
         <div className="flex items-center gap-4 lg:gap-5">
         <nav className="hidden lg:flex items-center gap-0.5">
-          {MENU.map((item) => (
-            <button
-              key={item.label}
-              onClick={() => handleNav(item.id)}
-              className="px-2 xl:px-2.5 py-2 text-[11px] xl:text-xs font-semibold text-primary hover:text-secondary transition-colors tracking-[0.08em] whitespace-nowrap"
-            >
-              {item.label}
-            </button>
-          ))}
+          {MENU.map((item) =>
+            item.href ? (
+              <Link
+                key={item.label}
+                to={item.href}
+                className="px-2 xl:px-2.5 py-2 text-[11px] xl:text-xs font-semibold text-primary hover:text-secondary transition-colors tracking-[0.08em] whitespace-nowrap"
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <button
+                key={item.label}
+                onClick={() => item.id && handleNav(item.id)}
+                className="px-2 xl:px-2.5 py-2 text-[11px] xl:text-xs font-semibold text-primary hover:text-secondary transition-colors tracking-[0.08em] whitespace-nowrap"
+              >
+                {item.label}
+              </button>
+            ),
+          )}
           <HeaderWeather />
           <ThemeToggle className="ml-1.5" />
           <LanguageSwitcher />
@@ -163,15 +173,26 @@ export default function SiteHeader() {
               </div>
             </a>
 
-            {MENU.map((item) => (
-              <button
-                key={item.label}
-                onClick={() => handleNav(item.id)}
-                className="text-left px-4 py-4 text-base font-semibold text-primary hover:text-secondary hover:bg-muted rounded-md transition-colors tracking-wide"
-              >
-                {item.label}
-              </button>
-            ))}
+            {MENU.map((item) =>
+              item.href ? (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  onClick={() => setOpen(false)}
+                  className="text-left px-4 py-4 text-base font-semibold text-primary hover:text-secondary hover:bg-muted rounded-md transition-colors tracking-wide"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button
+                  key={item.label}
+                  onClick={() => item.id && handleNav(item.id)}
+                  className="text-left px-4 py-4 text-base font-semibold text-primary hover:text-secondary hover:bg-muted rounded-md transition-colors tracking-wide"
+                >
+                  {item.label}
+                </button>
+              ),
+            )}
             <div className="flex items-center justify-center gap-3 mt-3 mb-1">
               <ThemeToggle />
               <LanguageSwitcher />

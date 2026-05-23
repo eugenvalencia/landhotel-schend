@@ -414,6 +414,20 @@ const Index = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Brücke zur Standalone-Restaurant-Page */}
+              <div className="mt-10 pt-6 border-t border-border/60">
+                <Link
+                  to="/restaurant"
+                  className="group inline-flex items-center gap-2 text-xs font-medium tracking-[0.2em] uppercase text-secondary hover:text-foreground transition-colors"
+                >
+                  Volle Restaurant-Seite ansehen
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </Link>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Mit Speisekarte, Festtafel-Anfrage, Anfahrt für Tagesgäste
+                </p>
+              </div>
             </div>
           </div>
         </div>
