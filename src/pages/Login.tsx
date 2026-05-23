@@ -54,10 +54,10 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted px-4">
-      <Card className="w-full max-w-md shadow-elevated">
-        <CardHeader className="text-center">
-          <Link to="/" className="inline-flex items-center justify-center gap-3 text-primary mb-2">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background via-muted/40 to-background px-4 py-12">
+      <Card className="w-full max-w-md shadow-elevated border-border/40">
+        <CardHeader className="text-center pb-2">
+          <Link to="/" className="inline-flex items-center justify-center gap-3 text-primary mb-4 hover:opacity-80 transition-opacity">
             <img
               src="/schend-logo-black.svg"
               alt="Landhotel Schend Logo"
@@ -68,9 +68,15 @@ export default function Login() {
               alt="Landhotel Schend Logo"
               className="hidden h-10 w-auto dark:block"
             />
-            <span className="font-semibold">Landhotel Schend</span>
+            <span className="font-display text-xl">Landhotel Schend</span>
           </Link>
-          <CardTitle>Hotel-Dashboard</CardTitle>
+          <p className="text-[11px] font-medium tracking-[0.22em] uppercase text-secondary mb-2">
+            Hotelier-Bereich
+          </p>
+          <CardTitle className="font-display text-3xl">Anmelden</CardTitle>
+          <p className="text-sm text-muted-foreground mt-2">
+            Für Familie Beimler und Mitarbeitende
+          </p>
         </CardHeader>
         <CardContent>
           {demoMode && (
@@ -106,10 +112,20 @@ export default function Login() {
                 </button>
               </div>
             </div>
-            <Button type="submit" className="w-full" disabled={busy}>
+            <Button type="submit" className="w-full h-12" disabled={busy}>
               <LogIn className="h-4 w-4" /> {busy ? "Anmelden..." : "Anmelden"}
             </Button>
           </form>
+
+          <div className="hairline mt-8 mb-5" />
+          <div className="flex flex-col items-center gap-2 text-xs text-muted-foreground">
+            <Link to="/" className="hover:text-secondary transition-colors">
+              ← Zurück zur Website
+            </Link>
+            <p className="text-[10px] tracking-wider uppercase opacity-70 mt-1">
+              Verschlüsselt · Supabase Auth · EU-Hosting
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>
