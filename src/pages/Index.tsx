@@ -181,7 +181,7 @@ const Index = () => {
 
           {/* Italic subhead */}
           <p
-            className="font-display-italic text-balance text-white/95 text-lg md:text-2xl max-w-2xl leading-snug mb-12 md:mb-14 animate-fade-up"
+            className="font-display-italic text-balance text-white/95 text-lg md:text-2xl max-w-2xl leading-snug mb-9 md:mb-11 animate-fade-up"
             style={{
               animationDelay: "0.3s",
               textShadow: "0 1px 8px rgba(0,0,0,0.55), 0 1px 2px rgba(0,0,0,0.4)",
@@ -190,19 +190,55 @@ const Index = () => {
             {t("hero.text")}
           </p>
 
-          {/* Single primary CTA + phone link */}
+          {/* Trust-Pills — subtle proof line, white-on-overlay */}
+          <div
+            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 mb-10 md:mb-12 animate-fade-up text-white/80"
+            style={{
+              animationDelay: "0.4s",
+              textShadow: "0 1px 4px rgba(0,0,0,0.5)",
+            }}
+          >
+            <span className="text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium">
+              <span className="text-secondary">★</span> Tripadvisor #1
+            </span>
+            <span className="text-white/40" aria-hidden>·</span>
+            <span className="text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium">
+              8,5 / 10 Booking
+            </span>
+            <span className="text-white/40" aria-hidden>·</span>
+            <span className="text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium">
+              165 Jahre Familie
+            </span>
+            <span className="text-white/40 hidden sm:inline" aria-hidden>·</span>
+            <span className="hidden sm:inline text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium">
+              21 Zimmer mit Balkon
+            </span>
+          </div>
+
+          {/* Primary + Secondary CTA + phone link */}
           <div
             className="flex flex-col items-center gap-5 animate-fade-up"
-            style={{ animationDelay: "0.45s" }}
+            style={{ animationDelay: "0.55s" }}
           >
-            <Link
-              to="/booking"
-              className="group inline-flex items-center gap-3 px-9 py-3.5 bg-white text-zinc-900 text-xs font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300 shadow-sm"
-            >
-              <CalendarCheck className="h-4 w-4" />
-              {t("hero.bookDirect")}
-              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </Link>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+              <Link
+                to="/booking"
+                className="group inline-flex items-center justify-center gap-3 px-9 py-3.5 bg-white text-zinc-900 text-xs font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300 shadow-sm"
+              >
+                <CalendarCheck className="h-4 w-4" />
+                {t("hero.bookDirect")}
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </Link>
+              <a
+                href="#restaurant"
+                className="group inline-flex items-center justify-center gap-3 px-9 py-3.5 border border-white/60 text-white text-xs font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-white/10 hover:border-white transition-all duration-300"
+                style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
+              >
+                <UtensilsCrossed className="h-4 w-4" />
+                Im Restaurant essen
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </a>
+            </div>
             <a
               href="tel:+4965731306"
               className="text-white/85 text-sm tracking-wide hover:text-white transition-colors"
