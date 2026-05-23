@@ -309,6 +309,16 @@
   }
 }
 
+/* Option C: Mobile-Lesbarkeit für 60+ Zielgruppe
+   Body-Text einen Tick größer (17px statt 16px) damit Schriftgröße-Panel
+   nicht zwingend gebraucht wird. Buttons/Inputs separat (s.o.). */
+@media (max-width: 767px) {
+  body {
+    font-size: 17px;
+    line-height: 1.55;
+  }
+}
+
 @layer utilities {
   @keyframes marquee-x {
     from { transform: translateX(0); }

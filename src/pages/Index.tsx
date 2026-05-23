@@ -173,9 +173,9 @@ const Index = () => {
             <span className="block h-px w-12 md:w-20 bg-white/65" />
           </div>
 
-          {/* Display headline — Fraunces, balanced */}
+          {/* Display headline — Fraunces, balanced. Mobile bewusst kleiner für 60+ Lesbarkeit. */}
           <h1
-            className="font-display text-balance text-white text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] mb-7 md:mb-9 max-w-4xl animate-fade-up"
+            className="font-display text-balance text-white text-[2.5rem] sm:text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] mb-7 md:mb-9 max-w-4xl animate-fade-up"
             style={{
               animationDelay: "0.15s",
               textShadow: "0 2px 14px rgba(0,0,0,0.55), 0 1px 2px rgba(0,0,0,0.4)",
@@ -229,19 +229,19 @@ const Index = () => {
               <Link
                 ref={magneticPrimary}
                 to="/booking"
-                className="glow-border group inline-flex items-center justify-center gap-3 px-9 py-3.5 bg-white text-zinc-900 text-xs font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300 shadow-sm"
+                className="glow-border group inline-flex items-center justify-center gap-3 px-9 py-4 min-h-[56px] bg-white text-zinc-900 text-xs sm:text-sm font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300 shadow-sm"
               >
-                <CalendarCheck className="h-4 w-4" />
+                <CalendarCheck className="h-4 w-4 sm:h-5 sm:w-5" />
                 {t("hero.bookDirect")}
                 <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </Link>
               <a
                 ref={magneticSecondary}
                 href="#restaurant"
-                className="group inline-flex items-center justify-center gap-3 px-9 py-3.5 border border-white/60 text-white text-xs font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-white/10 hover:border-white transition-all duration-300"
+                className="group inline-flex items-center justify-center gap-3 px-9 py-4 min-h-[56px] border border-white/60 text-white text-xs sm:text-sm font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-white/10 hover:border-white transition-all duration-300"
                 style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
               >
-                <UtensilsCrossed className="h-4 w-4" />
+                <UtensilsCrossed className="h-4 w-4 sm:h-5 sm:w-5" />
                 Im Restaurant essen
                 <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </a>

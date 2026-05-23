@@ -49,15 +49,15 @@ export default function StickyMobileCTA() {
         aria-label="Schnellaktion Anruf und Buchung"
       >
         <div className="bg-background/95 backdrop-blur border-t shadow-elevated p-2 grid grid-cols-2 gap-2 pb-[max(env(safe-area-inset-bottom),0.5rem)]">
-          <Button asChild variant="outline" size="lg" className="h-12 rounded-sm">
+          <Button asChild variant="outline" size="lg" className="h-14 rounded-sm text-base">
             <a href="tel:+4965731306" aria-label="Hotel anrufen unter +49 6573 306">
-              <Phone className="h-4 w-4" />
+              <Phone className="h-5 w-5" />
               Anrufen
             </a>
           </Button>
-          <Button asChild size="lg" className="h-12 rounded-sm">
+          <Button asChild size="lg" className="h-14 rounded-sm text-base">
             <Link to="/booking" aria-label="Direkt online buchen">
-              <CalendarCheck className="h-4 w-4" />
+              <CalendarCheck className="h-5 w-5" />
               Buchen
             </Link>
           </Button>
