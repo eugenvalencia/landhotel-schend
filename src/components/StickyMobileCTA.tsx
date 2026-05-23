@@ -64,13 +64,14 @@ export default function StickyMobileCTA() {
         </div>
       </div>
 
-      {/* Desktop — floating editorial pill, rechts etwas unter der Mitte */}
+      {/* Desktop — floating Editorial-Pill, rechts etwas unter der Mitte.
+          Style: Stamp-Look mit Hairline-Border + Backdrop-Blur, "stempelt" sich beim Hover. */}
       <div
         className={cn(
-          "hidden md:block fixed right-6 lg:right-8 z-40 transition-all duration-500 ease-out",
+          "hidden md:block fixed right-6 lg:right-8 z-40 transition-all duration-700 ease-out",
           show
-            ? "opacity-100 translate-x-0"
-            : "opacity-0 translate-x-10 pointer-events-none",
+            ? "opacity-100 translate-x-0 rotate-0"
+            : "opacity-0 translate-x-10 -rotate-3 pointer-events-none",
         )}
         style={{ top: "58%" }}
         aria-hidden={!show}
@@ -78,15 +79,19 @@ export default function StickyMobileCTA() {
         <Link
           to="/booking"
           aria-label="Direkt buchen — provisionsfrei"
-          className="group flex items-center gap-3 px-6 py-4 bg-primary text-primary-foreground rounded-sm shadow-elevated hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300"
+          className="group relative flex flex-col items-center justify-center gap-1.5 px-4 py-5 min-w-[64px] bg-card/95 backdrop-blur-md border-2 border-foreground/15 rounded-md shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:border-secondary hover:shadow-[0_12px_28px_rgba(0,0,0,0.18)] hover:-translate-y-0.5 hover:rotate-[-2deg] transition-all duration-300"
         >
-          <CalendarCheck className="h-4 w-4 shrink-0" strokeWidth={1.6} />
-          <span className="text-[11px] font-medium tracking-[0.22em] uppercase whitespace-nowrap">
+          {/* Inner Hairline-Frame für Stempel-Optik */}
+          <span aria-hidden className="absolute inset-1.5 border border-foreground/10 rounded-sm pointer-events-none transition-colors group-hover:border-secondary/30" />
+          <CalendarCheck
+            className="h-5 w-5 text-foreground group-hover:text-secondary transition-colors"
+            strokeWidth={1.6}
+          />
+          <span className="[writing-mode:vertical-rl] [transform:rotate(180deg)] text-[10px] font-medium tracking-[0.32em] uppercase text-foreground group-hover:text-secondary transition-colors leading-none py-1">
             Direkt buchen
           </span>
-          <span className="text-base leading-none transition-transform duration-300 group-hover:translate-x-1">
-            →
-          </span>
+          {/* Schmaler Goldakzent als visueller Anker */}
+          <span aria-hidden className="block h-px w-6 bg-secondary/50 group-hover:bg-secondary transition-colors" />
         </Link>
       </div>
     </>
