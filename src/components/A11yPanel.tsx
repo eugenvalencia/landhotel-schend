@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { Accessibility, X, Type, Contrast, ZapOff, RotateCcw } from "lucide-react";
+import { X, Type, Contrast, ZapOff, RotateCcw, Settings2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 /**
@@ -131,10 +131,10 @@ export default function A11yPanel() {
         aria-label={t("a11y.openPanel")}
         aria-expanded={open}
         aria-haspopup="dialog"
-        className="fixed left-4 md:left-6 z-40 h-12 w-12 md:h-[52px] md:w-[52px] rounded-full bg-primary text-primary-foreground shadow-elevated flex items-center justify-center hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-secondary transition-colors
+        className="fixed left-4 md:left-6 z-40 h-11 w-11 md:h-12 md:w-12 rounded-full bg-card/95 backdrop-blur-sm text-foreground/70 border border-border shadow-md flex items-center justify-center hover:bg-card hover:text-foreground hover:scale-105 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-secondary transition-all
                    bottom-[max(5rem,calc(env(safe-area-inset-bottom)+5rem))] md:bottom-6"
       >
-        <Accessibility className="h-5 w-5 md:h-6 md:w-6" strokeWidth={1.75} aria-hidden="true" />
+        <Type className="h-4 w-4 md:h-[18px] md:w-[18px]" strokeWidth={2} aria-hidden="true" />
       </button>
 
       {/* Panel + Backdrop */}
@@ -163,7 +163,7 @@ export default function A11yPanel() {
                 id="a11y-panel-title"
                 className="font-display text-xl flex items-center gap-2"
               >
-                <Accessibility className="h-5 w-5 text-secondary" strokeWidth={1.5} aria-hidden="true" />
+                <Settings2 className="h-5 w-5 text-secondary" strokeWidth={1.5} aria-hidden="true" />
                 {t("a11y.title")}
               </h2>
               <button
