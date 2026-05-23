@@ -100,13 +100,13 @@ function Cartoon() {
 
         {/* HINTERES BEIN (im Sprung nach hinten gestreckt) */}
         <g style={{ transformOrigin: "60px 100px", animation: "schend-leg-back 0.28s ease-in-out infinite alternate" }}>
-          <path d="M52 92 Q72 88 78 100 Q72 110 54 104 Z" fill="#d8c6a8" />
+          <path d="M52 92 Q72 88 78 100 Q72 110 54 104 Z" fill="#f5f1e8" />
           <ellipse cx="70" cy="106" rx="9" ry="3.5" fill="#ffffff" />
           <ellipse cx="70" cy="105" rx="9" ry="1.2" fill="#e8e2d4" />
         </g>
 
         {/* DUNKELGRUENE SHORTS */}
-        <path d="M28 78 Q24 95 38 100 L60 100 Q74 95 70 78 Z" fill="#1f5d3a" />
+        <path d="M28 78 Q24 95 38 100 L60 100 Q74 95 70 78 Z" fill="#2c5d9a" />
         {/* Shorts-Fuge */}
         <line x1="49" y1="80" x2="49" y2="100" stroke="#143d24" strokeWidth="1.2" />
 
@@ -143,7 +143,7 @@ function Cartoon() {
         <ellipse cx="11" cy="41" rx="2" ry="1.6" fill="#1a1d2c" />
 
         {/* WANGEN-FELL */}
-        <ellipse cx="22" cy="46" rx="4" ry="2" fill="#ece1c9" opacity="0.6" />
+        <ellipse cx="22" cy="46" rx="4" ry="2" fill="#e6e0d0" opacity="0.6" />
 
         {/* AUGE — gross, blaues Iris, panisch nach hinten schauend */}
         <circle cx="32" cy="34" r="5" fill="#ffffff" />
@@ -159,12 +159,12 @@ function Cartoon() {
         {/* SCHNURRHAARE */}
         <path d="M9 43 L2 41 M9 45 L2 45 M9 47 L2 49" stroke="#a8957a" strokeWidth="0.5" />
 
-        {/* OHREN — lang, aufrecht, eines im Wind nach hinten geneigt */}
-        <path d="M22 22 Q18 4 22 0 Q28 6 26 22 Z" fill="#d8c6a8" />
-        <path d="M23 20 Q21 8 24 4 Q26 10 25 20 Z" fill="#f5c8d0" opacity="0.85" />
+        {/* OHREN — lang, aufrecht, eines im Wind nach hinten geneigt. Aussen weiss, Innen rosa */}
+        <path d="M22 22 Q18 4 22 0 Q28 6 26 22 Z" fill="#f5f1e8" stroke="#d8d2c4" strokeWidth="0.4" />
+        <path d="M23 20 Q21 8 24 4 Q26 10 25 20 Z" fill="#f5b5c2" opacity="0.95" />
 
-        <path d="M34 22 Q42 14 46 4 Q46 18 38 24 Z" fill="#d8c6a8" />
-        <path d="M35 22 Q40 16 43 8 Q43 18 38 22 Z" fill="#f5c8d0" opacity="0.85" />
+        <path d="M34 22 Q42 14 46 4 Q46 18 38 24 Z" fill="#f5f1e8" stroke="#d8d2c4" strokeWidth="0.4" />
+        <path d="M35 22 Q40 16 43 8 Q43 18 38 22 Z" fill="#f5b5c2" opacity="0.95" />
 
         {/* Schweiss-Tropfen ueber dem Kopf */}
         <ellipse cx="44" cy="14" rx="2" ry="3.5" fill="#7fc1ff" />
@@ -184,17 +184,20 @@ function Cartoon() {
         {/* Schatten */}
         <ellipse cx="70" cy="135" rx="34" ry="3" fill="#000" opacity="0.22" />
 
-        {/* HINTERES BEIN — schwarze Hose, gestreckt */}
+        {/* HINTERES BEIN — rote Schlaghose im Nu-Pogodi-Stil, gestreckt */}
         <g style={{ transformOrigin: "94px 110px", animation: "schend-leg-back 0.28s ease-in-out infinite alternate" }}>
-          <path d="M86 96 L92 130 L104 130 L102 96 Z" fill="#1a1d2c" />
+          {/* Schlaghose: breiter unten = bell-bottom */}
+          <path d="M84 96 L88 130 L108 130 L102 96 Z" fill="#b8342a" />
           {/* Hosen-Falte */}
-          <line x1="94" y1="98" x2="97" y2="128" stroke="#000" strokeWidth="0.8" opacity="0.5" />
+          <line x1="94" y1="98" x2="98" y2="128" stroke="#7a1f18" strokeWidth="0.8" opacity="0.6" />
+          {/* Weisse Socke schaut raus */}
+          <rect x="89" y="128" width="18" height="3" fill="#f5f1e8" />
           {/* SCHUH */}
-          <ellipse cx="98" cy="132" rx="11" ry="3" fill="#000" />
-          <path d="M88 132 Q90 128 100 128 Q108 128 108 132 Z" fill="#1f2435" />
+          <ellipse cx="98" cy="133" rx="11" ry="3" fill="#1a1d2c" />
+          <path d="M88 133 Q90 128 100 128 Q108 128 108 133 Z" fill="#0e1018" />
         </g>
 
-        {/* ROSA HEMD MIT BAUCH — Hooligan-Charakter, ausgebeult */}
+        {/* HAWAII-HEMD GELB/ROT/VIOLETT — Nu-Pogodi Wolk-Look mit Bauch */}
         <path
           d="M28 70
              Q22 56 38 52
@@ -205,37 +208,39 @@ function Cartoon() {
              L44 110
              Q28 110 26 100
              Q24 88 28 70 Z"
-          fill="#d97296"
+          fill="#e8b840"
         />
-        {/* Bauch-Auswoelbung */}
-        <ellipse cx="70" cy="92" rx="42" ry="18" fill="#d97296" />
-        <ellipse cx="70" cy="95" rx="40" ry="14" fill="#c5618a" opacity="0.3" />
+        {/* Hawaii-Muster: rote Streifen + violette Blüten-Dots */}
+        <path d="M28 64 L112 64" stroke="#c8442d" strokeWidth="2.5" opacity="0.7" />
+        <path d="M26 84 L113 84" stroke="#c8442d" strokeWidth="2.5" opacity="0.7" />
+        <path d="M28 102 L112 102" stroke="#c8442d" strokeWidth="2" opacity="0.6" />
+        <circle cx="42" cy="74" r="2" fill="#7c5fa6" opacity="0.85" />
+        <circle cx="60" cy="74" r="2" fill="#7c5fa6" opacity="0.85" />
+        <circle cx="86" cy="74" r="2" fill="#7c5fa6" opacity="0.85" />
+        <circle cx="50" cy="94" r="2" fill="#7c5fa6" opacity="0.85" />
+        <circle cx="76" cy="94" r="2" fill="#7c5fa6" opacity="0.85" />
+        <circle cx="100" cy="94" r="2" fill="#7c5fa6" opacity="0.85" />
+        {/* Bauch-Auswoelbung — leicht dunkler */}
+        <ellipse cx="70" cy="92" rx="42" ry="18" fill="#d4a838" opacity="0.4" />
 
         {/* Knopfleiste */}
-        <line x1="70" y1="56" x2="70" y2="106" stroke="#a8456c" strokeWidth="1.3" />
-        <circle cx="70" cy="64" r="1.6" fill="#a8456c" />
-        <circle cx="70" cy="76" r="1.6" fill="#a8456c" />
-        <circle cx="70" cy="88" r="1.6" fill="#a8456c" />
-        <circle cx="70" cy="100" r="1.6" fill="#a8456c" />
+        <line x1="70" y1="56" x2="70" y2="106" stroke="#a88a3a" strokeWidth="1" opacity="0.7" />
 
-        {/* Krawatte */}
-        <path d="M66 52 L74 52 L72 64 Z" fill="#d83a5e" />
-        <path d="M68 64 L76 64 L72 84 Z" fill="#d83a5e" />
-        <ellipse cx="70" cy="52" rx="4" ry="1.5" fill="#a82846" />
-
-        {/* VORDERE HOSE */}
+        {/* VORDERE HOSE — rote Schlaghose */}
         <g style={{ transformOrigin: "46px 110px", animation: "schend-leg-front 0.28s ease-in-out infinite alternate-reverse" }}>
-          <path d="M40 96 L36 130 L52 130 L50 96 Z" fill="#1a1d2c" />
-          <line x1="44" y1="98" x2="46" y2="128" stroke="#000" strokeWidth="0.8" opacity="0.5" />
+          <path d="M38 96 L32 130 L54 130 L50 96 Z" fill="#b8342a" />
+          <line x1="44" y1="98" x2="44" y2="128" stroke="#7a1f18" strokeWidth="0.8" opacity="0.6" />
+          {/* Weisse Socke */}
+          <rect x="33" y="128" width="20" height="3" fill="#f5f1e8" />
           {/* SCHUH */}
-          <ellipse cx="44" cy="132" rx="11" ry="3" fill="#000" />
-          <path d="M34 132 Q36 128 46 128 Q54 128 54 132 Z" fill="#1f2435" />
+          <ellipse cx="44" cy="133" rx="11" ry="3" fill="#1a1d2c" />
+          <path d="M34 133 Q36 128 46 128 Q54 128 54 133 Z" fill="#0e1018" />
         </g>
 
         {/* VORDERE PFOTE — graue Hand mit Krallen, greift nach dem Hasen */}
         <g style={{ transformOrigin: "32px 68px", animation: "schend-arm-grab 0.4s ease-in-out infinite alternate-reverse" }}>
-          {/* Ärmel-Manschette */}
-          <ellipse cx="32" cy="68" rx="5" ry="6" fill="#a8456c" />
+          {/* Ärmel-Manschette gelb (Hemd-Farbe) */}
+          <ellipse cx="32" cy="68" rx="5" ry="6" fill="#c89c30" />
           {/* Unterarm grau */}
           <path d="M30 64 Q14 60 6 66 Q8 76 26 76 Z" fill="#6e7484" />
           {/* Pfote */}
