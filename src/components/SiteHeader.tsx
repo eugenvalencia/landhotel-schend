@@ -138,23 +138,36 @@ export default function SiteHeader() {
         </div>
 
           <button
-            aria-label="Menü"
+            aria-label={open ? "Menü schließen" : "Menü öffnen"}
             onClick={() => setOpen((v) => !v)}
-            className="lg:hidden p-2 -mr-2 text-primary"
+            className="lg:hidden p-3 -mr-2 text-primary rounded-md hover:bg-muted transition-colors"
           >
-            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {open ? <X className="h-7 w-7" strokeWidth={2} /> : <Menu className="h-7 w-7" strokeWidth={2} />}
           </button>
         </div>
       </div>
 
       {open && (
-        <div className="lg:hidden border-t bg-background">
-          <div className="container mx-auto px-4 py-3 flex flex-col gap-1">
+        <div className="lg:hidden border-t bg-background animate-fade-up">
+          <div className="container mx-auto px-4 py-4 flex flex-col gap-1">
+            {/* Phone-Link prominent oben — wichtigste 60+ Action */}
+            <a
+              href="tel:+4965731306"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-4 py-4 mb-2 bg-secondary/10 border border-secondary/25 rounded-md hover:bg-secondary hover:text-secondary-foreground transition-colors"
+            >
+              <Phone className="h-5 w-5 text-secondary" strokeWidth={1.75} />
+              <div>
+                <p className="text-base font-semibold tracking-tight">+49 6573 306</p>
+                <p className="text-xs text-muted-foreground">Direkt anrufen — wir sind für Sie da</p>
+              </div>
+            </a>
+
             {MENU.map((item) => (
               <button
                 key={item.label}
                 onClick={() => handleNav(item.id)}
-                className="text-left px-3 py-3 text-sm font-semibold text-primary hover:text-secondary hover:bg-muted rounded-md transition-colors tracking-wider"
+                className="text-left px-4 py-4 text-base font-semibold text-primary hover:text-secondary hover:bg-muted rounded-md transition-colors tracking-wide"
               >
                 {item.label}
               </button>
@@ -163,9 +176,13 @@ export default function SiteHeader() {
               <ThemeToggle />
               <LanguageSwitcher />
             </div>
-            <Button asChild className="mt-2 h-12 rounded-sm">
+            <Button asChild className="mt-3 h-14 rounded-sm text-base">
               <Link to="/booking" onClick={() => setOpen(false)}>{t("nav.book")}</Link>
             </Button>
+            {/* Saison-Hint */}
+            <p className="text-center text-xs text-muted-foreground mt-3 mb-1">
+              Saison März – September · Sonst geschlossen
+            </p>
           </div>
         </div>
       )}
