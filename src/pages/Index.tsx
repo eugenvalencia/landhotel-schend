@@ -16,6 +16,7 @@ import AboutSection from "@/components/AboutSection";
 import FAQSection from "@/components/FAQSection";
 import FeatureIcon from "@/components/FeatureIcon";
 import { useSEO } from "@/hooks/useSEO";
+import { useMagnetic, useSpotlight, useReveal } from "@/hooks/useMagnetic";
 import { cn } from "@/lib/utils";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_RESTAURANT_GALLERY, galleryForRoomType,
@@ -69,6 +70,8 @@ const Index = () => {
   const [categories, setCategories] = useState<RoomCategory[]>([]);
   const [heroIdx, setHeroIdx] = useState(0);
   const { t } = useTranslation();
+  const magneticPrimary = useMagnetic<HTMLAnchorElement>(0.18, 12);
+  const magneticSecondary = useMagnetic<HTMLAnchorElement>(0.15, 10);
 
   useSEO({
     title: "3-Sterne-Superior Hotel in der Vulkaneifel",
@@ -128,6 +131,8 @@ const Index = () => {
             className={cn(
               "absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ease-out",
               i === heroIdx ? "opacity-100" : "opacity-0",
+              // Ken-Burns: subtiler Zoom über 14s, jedes Bild alterniert in/out für Variation.
+              i % 2 === 0 ? "ken-burns-in" : "ken-burns-out",
             )}
           />
         ))}
@@ -222,14 +227,16 @@ const Index = () => {
           >
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <Link
+                ref={magneticPrimary}
                 to="/booking"
-                className="group inline-flex items-center justify-center gap-3 px-9 py-3.5 bg-white text-zinc-900 text-xs font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300 shadow-sm"
+                className="glow-border group inline-flex items-center justify-center gap-3 px-9 py-3.5 bg-white text-zinc-900 text-xs font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300 shadow-sm"
               >
                 <CalendarCheck className="h-4 w-4" />
                 {t("hero.bookDirect")}
                 <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </Link>
               <a
+                ref={magneticSecondary}
                 href="#restaurant"
                 className="group inline-flex items-center justify-center gap-3 px-9 py-3.5 border border-white/60 text-white text-xs font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-white/10 hover:border-white transition-all duration-300"
                 style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
@@ -299,7 +306,15 @@ const Index = () => {
               const cardPhoto = gallery[idx % gallery.length] ?? gallery[0];
               return (
               <Link key={r.id} to={`/rooms/${r.id}`} className="group block">
-                <div className="aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
+                <div
+                  className="spotlight aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500"
+                  onMouseMove={(e) => {
+                    const el = e.currentTarget;
+                    const r = el.getBoundingClientRect();
+                    el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+                    el.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
+                  }}
+                >
                   <HotelImage
                     src={cardPhoto}
                     alt={r.name}
