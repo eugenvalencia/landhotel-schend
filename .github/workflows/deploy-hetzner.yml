@@ -1,0 +1,51 @@
+name: Deploy zu Hetzner (schend.conexadigital.eu)
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - ".github/**"
+  workflow_dispatch: # manueller Trigger im GitHub-UI
+
+jobs:
+  deploy:
+    name: Build + SCP zu Hetzner
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install deps
+        run: bun install --frozen-lockfile
+
+      - name: Vite build
+        run: bun run build
+
+      - name: SSH-Key einrichten
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.HETZNER_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H 128.140.101.82 >> ~/.ssh/known_hosts
+
+      - name: Upload zu Hetzner via rsync
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no" \
+            dist/ \
+            eugen-admin@128.140.101.82:/srv/conexa/sites/landhotel-schend/
+
+      - name: Verifikation HTTPS
+        run: |
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" https://schend.conexadigital.eu)
+          TITLE=$(curl -s https://schend.conexadigital.eu | grep -oE '<title[^>]*>[^<]+</title>' | head -1 | sed 's/<[^>]*>//g')
+          echo "::notice::HTTP $HTTP — $TITLE"
+          [ "$HTTP" = "200" ]
