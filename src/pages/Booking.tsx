@@ -332,7 +332,7 @@ export default function Booking() {
         const msg =
           error?.message?.includes("Room not available")
             ? "Zimmer in diesem Zeitraum leider nicht mehr verfügbar."
-            : "Reservierungsanfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder rufen Sie uns an: +49 6573 306";
+            : "Buchung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut oder rufen Sie uns an: +49 6573 306";
         toast.error(msg);
         setSubmitting(false);
         return;
@@ -377,7 +377,7 @@ export default function Booking() {
       };
 
       await minDelay(startedAt);
-      toast.success("Anfrage angekommen — wir melden uns telefonisch zur Bestätigung.");
+      toast.success("Buchung bestätigt — Sie erhalten gleich eine Email mit allen Details.");
       showConfirmation(confirmationData);
       setSubmitting(false);
     } catch (e) {
@@ -406,11 +406,11 @@ export default function Booking() {
           {/* Titel mittig — erst ab lg sichtbar, darunter erscheint er unter der Top-Bar */}
           <div className="hidden lg:flex flex-1 min-w-0 flex-col items-center text-center">
             <h1 className="font-display text-xl xl:text-2xl leading-tight truncate max-w-full">
-              {confirmed ? "Anfrage angekommen" : "Reservierung anfragen"}
+              {confirmed ? "Buchung bestätigt" : "Buchung abschließen"}
             </h1>
             <p className="opacity-75 text-xs leading-tight truncate max-w-full">
               {confirmed
-                ? "Vielen Dank — wir melden uns persönlich zur Bestätigung."
+                ? "Vielen Dank — Ihre Bestätigung kommt gleich per Email."
                 : room
                   ? `Zimmer ${room.room_number} · ${room.room_type}`
                   : "Wählen Sie Ihr Zimmer und Reisedaten"}
@@ -434,11 +434,11 @@ export default function Booking() {
           {/* Titel-Block fuer Mobile/Tablet — Desktop versteckt das (siehe oben) */}
           <div className="lg:hidden mt-2">
             <h1 className="font-display text-2xl md:text-3xl text-balance leading-[1.05]">
-              {confirmed ? "Anfrage angekommen" : "Reservierung anfragen"}
+              {confirmed ? "Buchung bestätigt" : "Buchung abschließen"}
             </h1>
             <p className="opacity-85 text-sm mt-1">
               {confirmed
-                ? "Vielen Dank — wir melden uns persönlich zur Bestätigung."
+                ? "Vielen Dank — Ihre Bestätigung kommt gleich per Email."
                 : room
                   ? `Zimmer ${room.room_number} · ${room.room_type}`
                   : "Wählen Sie Ihr Zimmer und Reisedaten"}
@@ -779,7 +779,7 @@ export default function Booking() {
           <Card className="shadow-card border-secondary/30">
             <CardHeader>
               <CardTitle className="font-display text-xl md:text-2xl flex items-center gap-2">
-                <ClipboardList className="h-4 w-4 text-secondary" strokeWidth={1.5} /> 4. Reservierung anfragen
+                <ClipboardList className="h-4 w-4 text-secondary" strokeWidth={1.5} /> 4. Buchung abschließen
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
@@ -787,11 +787,11 @@ export default function Booking() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-success shrink-0 mt-0.5" />
                   <div className="space-y-1">
-                    <p className="font-semibold text-sm">Persönliche Bestätigung — keine Algorithmen</p>
+                    <p className="font-semibold text-sm">Sofortige Buchungsbestätigung</p>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Ihr Zimmer wird im Belegungskalender für Sie blockiert.
-                      Familie Beimler ruft Sie persönlich an, um die Reservierung
-                      zu bestätigen — meist am selben Tag, spätestens innerhalb von 24 Stunden.
+                      Ihr Zimmer wird im Belegungskalender direkt für Sie blockiert.
+                      Sie erhalten in wenigen Minuten eine Bestätigung per E-Mail —
+                      auf Wunsch zusätzlich per WhatsApp. Keine Wartezeit, kein Rückruf nötig.
                     </p>
                   </div>
                 </div>
@@ -815,7 +815,7 @@ export default function Booking() {
                 className="w-full text-base"
               >
                 {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle className="h-4 w-4" />}
-                {submitting ? "Anfrage wird gesendet..." : "Jetzt Zimmer anfragen"}
+                {submitting ? "Buchung wird verarbeitet..." : "Jetzt buchen"}
               </Button>
               <p className="text-xs text-muted-foreground text-center">
                 Bei Änderungen oder Stornierung einfach anrufen: <a href="tel:+4965731306" className="font-medium text-foreground hover:text-primary">+49 6573 306</a>
@@ -829,7 +829,7 @@ export default function Booking() {
           <Card className="shadow-elevated border-primary/20">
             <CardHeader className="pb-3">
               <CardTitle className="font-display text-lg md:text-xl flex items-center gap-2">
-                <ClipboardList className="h-4 w-4 text-secondary" strokeWidth={1.5} /> Ihre Reservierung
+                <ClipboardList className="h-4 w-4 text-secondary" strokeWidth={1.5} /> Ihre Buchung
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm">
@@ -912,7 +912,7 @@ export default function Booking() {
           className="w-full h-12 text-base"
         >
           {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle className="h-4 w-4" />}
-          {submitting ? "Anfrage wird gesendet..." : "Jetzt Zimmer anfragen"}
+          {submitting ? "Buchung wird verarbeitet..." : "Jetzt buchen"}
         </Button>
       </div>
       )}
