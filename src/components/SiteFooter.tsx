@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, Star, CalendarRange } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 /**
@@ -24,10 +24,30 @@ export default function SiteFooter() {
             </p>
           </div>
           <p className="text-[11px] tracking-[0.22em] uppercase text-[hsl(38_30%_92%)]/55 mt-3">
-            Anno 1856 · Vulkaneifel
+            Anno 1856 · Vulkaneifel · Familie Beimler
           </p>
           <p className="text-sm text-[hsl(38_30%_92%)]/75 mt-6 leading-relaxed max-w-md">
             {t("footer.tagline")}
+          </p>
+
+          {/* Trust-Strip — Bewertungs-Aggregat als Social-Proof */}
+          <div className="mt-6 inline-flex flex-wrap items-center gap-3 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/5">
+            <div className="flex gap-0.5">
+              {[1, 2, 3, 4].map((i) => (
+                <Star key={i} className="h-3 w-3 fill-secondary text-secondary" strokeWidth={1.5} />
+              ))}
+              <Star className="h-3 w-3 fill-secondary/60 text-secondary" strokeWidth={1.5} />
+            </div>
+            <span className="text-xs text-[hsl(38_30%_92%)]/85">
+              <strong className="font-bold text-secondary">4,5</strong> Ø ·
+              <strong className="mx-1 font-bold">501</strong> Bewertungen
+            </span>
+          </div>
+
+          {/* Saison-Hint — verhindert Winter-Anfragen */}
+          <p className="mt-5 inline-flex items-center gap-2 text-xs text-[hsl(38_30%_92%)]/65">
+            <CalendarRange className="h-3.5 w-3.5 text-secondary" strokeWidth={1.5} />
+            <span>Saison März – September · Oktober – Februar geschlossen</span>
           </p>
         </div>
 
