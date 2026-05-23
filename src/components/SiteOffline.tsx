@@ -115,30 +115,30 @@ function Cartoon() {
         <rect x="44" y="74" width="6" height="6" fill="#b9905a" />
         <rect x="46" y="76" width="2" height="2" fill="#1a1d2c" />
 
-        {/* GRUENER ROLLKRAGEN-PULLI */}
-        <path d="M22 62 Q22 50 30 46 L66 46 Q76 50 76 62 L76 76 Q76 78 74 78 L24 78 Q22 78 22 76 Z" fill="#2f7a4f" />
-        {/* Rollkragen am Hals */}
-        <ellipse cx="34" cy="44" rx="11" ry="6" fill="#246238" />
-        <ellipse cx="34" cy="42" rx="9" ry="4" fill="#2f7a4f" />
+        {/* ROTES T-SHIRT (Saich-Style) */}
+        <path d="M22 62 Q22 50 30 46 L66 46 Q76 50 76 62 L76 76 Q76 78 74 78 L24 78 Q22 78 22 76 Z" fill="#c8442d" />
+        {/* Halsausschnitt / Kragen */}
+        <ellipse cx="34" cy="44" rx="11" ry="6" fill="#a83622" />
+        <ellipse cx="34" cy="42" rx="9" ry="4" fill="#c8442d" />
 
-        {/* WEISSES UMGEKEHRTES DREIECK auf der Brust — Markenzeichen */}
+        {/* WEISSER BRUST-STREIFEN */}
         <path d="M44 54 L60 54 L52 70 Z" fill="#f5f1e8" />
 
-        {/* Schwanzpuschel */}
+        {/* Schwanzpuschel — weiss */}
         <circle cx="74" cy="76" r="6" fill="#f5f1e8" />
 
-        {/* VORDERE PFOTE (im Sprung nach vorn ausgestreckt) */}
+        {/* VORDERE PFOTE — weiss (im Sprung nach vorn ausgestreckt) */}
         <g style={{ transformOrigin: "26px 70px", animation: "schend-arm-front 0.36s ease-in-out infinite alternate" }}>
-          <path d="M26 64 Q14 58 8 64 Q10 72 24 72 Z" fill="#d8c6a8" />
+          <path d="M26 64 Q14 58 8 64 Q10 72 24 72 Z" fill="#f5f1e8" />
           {/* Drei kleine Finger */}
-          <path d="M8 64 L4 62 M9 66 L4 66 M10 68 L6 70" stroke="#a8957a" strokeWidth="0.8" />
+          <path d="M8 64 L4 62 M9 66 L4 66 M10 68 L6 70" stroke="#d8d2c4" strokeWidth="0.8" />
         </g>
 
-        {/* KOPF — rund, etwas tropfenfoermig zur Schnauze hin */}
-        <ellipse cx="28" cy="36" rx="15" ry="14" fill="#d8c6a8" />
+        {/* KOPF — weiss, rund, etwas tropfenfoermig zur Schnauze hin */}
+        <ellipse cx="28" cy="36" rx="15" ry="14" fill="#f5f1e8" />
 
         {/* Schnauze (helleres Fell) */}
-        <ellipse cx="16" cy="42" rx="7" ry="5" fill="#ece1c9" />
+        <ellipse cx="16" cy="42" rx="7" ry="5" fill="#fbf8f0" />
         {/* Nase */}
         <ellipse cx="11" cy="41" rx="2" ry="1.6" fill="#1a1d2c" />
 
@@ -153,11 +153,11 @@ function Cartoon() {
         <path d="M28 27 Q34 24 38 26" stroke="#1a1d2c" strokeWidth="1.4" fill="none" strokeLinecap="round" />
 
         {/* MAUL — leicht geoeffnet vor Schreck */}
-        <ellipse cx="14" cy="46" rx="3" ry="2" fill="#a8503a" />
-        <ellipse cx="14" cy="45" rx="2" ry="1" fill="#d8c6a8" />
+        <ellipse cx="14" cy="46" rx="3" ry="2" fill="#d4756a" />
+        <ellipse cx="14" cy="45" rx="2" ry="1" fill="#f5b5c2" />
 
         {/* SCHNURRHAARE */}
-        <path d="M9 43 L2 41 M9 45 L2 45 M9 47 L2 49" stroke="#a8957a" strokeWidth="0.5" />
+        <path d="M9 43 L2 41 M9 45 L2 45 M9 47 L2 49" stroke="#7a7a7a" strokeWidth="0.6" />
 
         {/* OHREN — lang, aufrecht, eines im Wind nach hinten geneigt. Aussen weiss, Innen rosa */}
         <path d="M22 22 Q18 4 22 0 Q28 6 26 22 Z" fill="#f5f1e8" stroke="#d8d2c4" strokeWidth="0.4" />
