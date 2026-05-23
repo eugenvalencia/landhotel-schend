@@ -5,34 +5,37 @@ import { useSEO } from "@/hooks/useSEO";
 const Datenschutz = () => {
   useSEO({
     title: "Datenschutz",
-    description: "Datenschutzerklärung gemäß DSGVO für die Website des Landhotel Schend.",
+    description: "Datenschutzerklärung gemäß DSGVO für das Landhotel Schend, Hauptstraße 9, 54552 Immerath.",
     canonical: "/datenschutz",
     noindex: true,
   });
   return (
   <div className="min-h-screen flex flex-col bg-background">
     <SiteHeader />
-    <main className="flex-1 container mx-auto px-4 pt-28 md:pt-32 pb-16 max-w-3xl">
+    <main id="main" className="flex-1 container mx-auto px-4 pt-28 md:pt-32 pb-16 max-w-3xl">
       <p className="eyebrow mb-4">Rechtliches</p>
       <h1 className="font-display text-4xl md:text-5xl mb-12 text-balance leading-[1.05]">Datenschutzerklärung</h1>
 
-      <div className="space-y-8 text-foreground/90 leading-relaxed">
+      <div className="space-y-10 text-foreground/90 leading-relaxed">
+
         <section>
           <h2 className="font-display text-xl md:text-2xl mb-3">1. Datenschutz auf einen Blick</h2>
           <h3 className="font-semibold mt-4 mb-1">Allgemeine Hinweise</h3>
           <p>
             Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren
-            personenbezogenen Daten passiert, wenn Sie unsere Website besuchen. Personenbezogene Daten
-            sind alle Daten, mit denen Sie persönlich identifiziert werden können. Ausführliche
-            Informationen zum Thema Datenschutz entnehmen Sie unserer unter diesem Text aufgeführten
-            Datenschutzerklärung.
+            personenbezogenen Daten passiert, wenn Sie unsere Website besuchen oder eine
+            Zimmer-Anfrage senden. Personenbezogene Daten sind alle Daten, mit denen Sie
+            persönlich identifiziert werden können. Ausführliche Informationen finden Sie in
+            den nachfolgenden Abschnitten.
           </p>
         </section>
 
         <section>
           <h2 className="font-display text-xl md:text-2xl mb-3">2. Verantwortliche Stelle</h2>
           <p>
-            Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br />
+            Verantwortlich für die Datenverarbeitung auf dieser Website ist (Art. 4 Nr. 7 DSGVO):
+          </p>
+          <p className="mt-3">
             Eugen Beimler<br />
             Landhotel Schend<br />
             Hauptstraße 9<br />
@@ -40,123 +43,240 @@ const Datenschutz = () => {
             Telefon: <a href="tel:+4965731306" className="text-secondary hover:underline">+49 6573 306</a><br />
             E-Mail: <a href="mailto:info@landhaus-schend.de" className="text-secondary hover:underline">info@landhaus-schend.de</a>
           </p>
-          <p className="mt-3">
-            Verantwortliche Stelle ist die natürliche oder juristische Person, die allein oder
-            gemeinsam mit anderen über die Zwecke und Mittel der Verarbeitung von personenbezogenen
-            Daten (z. B. Namen, E-Mail-Adressen o. Ä.) entscheidet.
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl md:text-2xl mb-3">3. Datenschutzbeauftragter</h2>
+          <p>
+            Aufgrund unserer Betriebsgröße sind wir nicht zur Bestellung eines
+            Datenschutzbeauftragten verpflichtet (§ 38 BDSG). Bei datenschutzrechtlichen
+            Anliegen wenden Sie sich bitte direkt an die unter Ziffer 2 genannte
+            verantwortliche Stelle.
           </p>
         </section>
 
         <section>
-          <h2 className="font-display text-xl md:text-2xl mb-3">3. Hosting</h2>
+          <h2 className="font-display text-xl md:text-2xl mb-3">4. Ihre Rechte</h2>
           <p>
-            Wir hosten die Inhalte unserer Website bei folgendem Anbieter:
+            Sie haben jederzeit das Recht (Art. 15-22 DSGVO):
           </p>
-          <h3 className="font-semibold mt-4 mb-1">IONOS</h3>
+          <ul className="list-disc pl-6 mt-2 space-y-1">
+            <li>Auskunft über Ihre bei uns gespeicherten personenbezogenen Daten zu erhalten (Art. 15)</li>
+            <li>unrichtige Daten berichtigen zu lassen (Art. 16)</li>
+            <li>die Löschung Ihrer Daten zu verlangen (Art. 17)</li>
+            <li>die Einschränkung der Verarbeitung zu verlangen (Art. 18)</li>
+            <li>die Datenübertragbarkeit zu verlangen (Art. 20)</li>
+            <li>Widerspruch gegen die Verarbeitung einzulegen (Art. 21)</li>
+            <li>eine erteilte Einwilligung jederzeit zu widerrufen (Art. 7 Abs. 3) — die Rechtmäßigkeit
+              der bis zum Widerruf erfolgten Verarbeitung bleibt unberührt</li>
+            <li>sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77)</li>
+          </ul>
+          <p className="mt-4">
+            <strong>Zuständige Aufsichtsbehörde:</strong><br />
+            Der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Rheinland-Pfalz<br />
+            Hintere Bleiche 34, 55116 Mainz<br />
+            <a href="https://www.datenschutz.rlp.de" target="_blank" rel="noopener noreferrer" className="text-secondary hover:underline">www.datenschutz.rlp.de</a>
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl md:text-2xl mb-3">5. Allgemeine Hinweise und Pflichtinformationen</h2>
+
+          <h3 className="font-semibold mt-4 mb-1">Datenschutz</h3>
           <p>
-            Anbieter ist die IONOS SE, Elgendorfer Str. 57, 56410 Montabaur (nachfolgend „IONOS"). Wenn
-            Sie unsere Website besuchen, erfasst IONOS verschiedene Logfiles inklusive Ihrer
-            IP-Adressen. Details entnehmen Sie der Datenschutzerklärung von IONOS:{" "}
+            Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir
+            behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen
+            Datenschutzvorschriften (DSGVO, BDSG, TDDDG) sowie dieser Datenschutzerklärung.
+          </p>
+
+          <h3 className="font-semibold mt-4 mb-1">SSL- bzw. TLS-Verschlüsselung</h3>
+          <p>
+            Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher
+            Inhalte (z.B. Buchungs-Anfragen) eine SSL- bzw. TLS-Verschlüsselung. Eine verschlüsselte
+            Verbindung erkennen Sie daran, dass die Adresszeile des Browsers „https://" zeigt.
+          </p>
+
+          <h3 className="font-semibold mt-4 mb-1">Speicherdauer</h3>
+          <p>
+            Soweit innerhalb dieser Datenschutzerklärung keine speziellere Speicherdauer genannt
+            wurde, verbleiben Ihre personenbezogenen Daten bei uns, bis der Zweck für die
+            Datenverarbeitung entfällt. Gesetzliche Aufbewahrungspflichten bleiben unberührt
+            (insbesondere § 257 HGB, § 147 AO — bis zu 10 Jahre für Buchungsbelege).
+          </p>
+
+          <h3 className="font-semibold mt-4 mb-1">Empfänger / Auftragsverarbeiter</h3>
+          <p>
+            Eine Übermittlung personenbezogener Daten an Dritte erfolgt nur, soweit dies zur
+            Vertragserfüllung erforderlich ist oder eine gesetzliche Verpflichtung besteht.
+            Auftragsverarbeiter (Art. 28 DSGVO) — siehe Ziffer 6.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl md:text-2xl mb-3">6. Auftragsverarbeiter und eingebundene Dienste</h2>
+
+          <h3 className="font-semibold mt-4 mb-1">a) Hosting & CDN</h3>
+          <p>
+            Diese Website wird auf einer Infrastruktur betrieben, die unser Auftragsverarbeiter
+            <strong> Conexa Digital</strong> (Conexadigital, Inhaber Eugen Neifer) verwaltet. Die
+            Auslieferung der Inhalte erfolgt zusätzlich über das Content Delivery Network von
+            <strong> Cloudflare Inc.</strong> (101 Townsend St, San Francisco, CA 94107, USA).
+            Cloudflare erhebt dabei verarbeitungstechnisch notwendige Server-Log-Daten
+            (insb. IP-Adresse, Zeitstempel, Browsertyp). Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO
+            (berechtigtes Interesse an sicherem und schnellem Webhosting).
+            Drittlandtransfer USA: gestützt auf EU-Standard­datenschutz­klauseln (Art. 46 Abs. 2 lit. c DSGVO).
+            Cloudflare ist DPF-zertifiziert (Data Privacy Framework).
+          </p>
+
+          <h3 className="font-semibold mt-4 mb-1">b) Backend / Buchungsanfragen — Supabase</h3>
+          <p>
+            Ihre Buchungs-Anfrage und Kontodaten (sofern Sie ein Konto erstellen) werden in einer
+            verschlüsselten Datenbank des Anbieters <strong>Supabase Inc.</strong>
+            (970 Toa Payoh North, #07-04, Singapore 318992) gespeichert. Die Server-Region ist
+            <strong> Frankfurt/Deutschland (eu-central-1)</strong>. Mit Supabase besteht ein
+            Auftragsverarbeitungsvertrag nach Art. 28 DSGVO sowie EU-SCC für etwaigen
+            Konzernzugriff aus den USA. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche
+            Maßnahmen, Vertragsanbahnung).
+          </p>
+
+          <h3 className="font-semibold mt-4 mb-1">c) E-Mail-Versand & -Empfang — IONOS</h3>
+          <p>
+            E-Mail-Korrespondenz an <em>info@landhaus-schend.de</em> wird über die Mail-Infrastruktur
+            der <strong>IONOS SE</strong> (Elgendorfer Str. 57, 56410 Montabaur) abgewickelt.
+            IONOS erfasst dabei verarbeitungstechnisch notwendige Daten (Absender, Zeitstempel,
+            E-Mail-Inhalt). Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung) oder
+            Art. 6 Abs. 1 lit. f DSGVO bei sonstigen Anfragen.
+            Datenschutz IONOS:
+            {" "}
             <a
               href="https://www.ionos.de/terms-gtc/terms-privacy"
               target="_blank"
               rel="noopener noreferrer"
               className="text-secondary hover:underline break-all"
             >
-              https://www.ionos.de/terms-gtc/terms-privacy
+              ionos.de/terms-gtc/terms-privacy
             </a>
-            .
+          </p>
+
+          <h3 className="font-semibold mt-4 mb-1">d) Wetter-Anzeige — Open-Meteo</h3>
+          <p>
+            Im Seitenkopf wird das aktuelle Wetter in der Vulkaneifel angezeigt. Die Daten kommen
+            von <strong>Open-Meteo</strong> (open-meteo.com, Open-Meteo Bart Roosens, Zürich/Schweiz).
+            Beim Aufruf werden lediglich der Standort des Hotels (Längen-/Breitengrad — keine
+            Nutzer-Position) und Ihre IP-Adresse an Open-Meteo übermittelt. Rechtsgrundlage:
+            Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse, ansprechende Wetter-Information
+            bereitzustellen). Die Schweiz besitzt einen Angemessenheitsbeschluss der EU-Kommission
+            (Art. 45 DSGVO) — kein zusätzlicher Drittland-Schutz nötig.
+          </p>
+
+          <h3 className="font-semibold mt-4 mb-1">e) Karten-Darstellung</h3>
+          <p>
+            Karten werden — sofern eingebunden — über <strong>OpenStreetMap</strong>
+            (OpenStreetMap Foundation, Vereinigtes Königreich) bereitgestellt. Das Vereinigte
+            Königreich besitzt einen Angemessenheitsbeschluss der EU-Kommission. Rechtsgrundlage:
+            Art. 6 Abs. 1 lit. f DSGVO.
+          </p>
+
+          <h3 className="font-semibold mt-4 mb-1">f) Schend-Partner-Empfehlungs-Tool</h3>
+          <p>
+            Auf unserer Seite finden Sie persönliche Partner-Empfehlungen im Umkreis von 35 km
+            (Wellness, Familie, E-Bike, Erlebnis-Museum etc.). Das technische Tool dahinter wird
+            betrieben von unserem Auftragsverarbeiter <strong>Conexa Digital</strong> (Inhaber
+            Eugen Neifer) auf Server-Infrastruktur der <strong>Hetzner Online GmbH</strong>
+            (Industriestraße 25, 91710 Gunzenhausen, Server-Standort Deutschland) als Sub-Auftragsverarbeiter.
+            Mit beiden Anbietern bestehen Auftragsverarbeitungsverträge nach Art. 28 DSGVO; die
+            Sub-AV-Beauftragung Hetzner ist im AVV mit Conexa Digital ausdrücklich freigegeben.
           </p>
           <p className="mt-3">
-            Die Verwendung von IONOS erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Wir haben
-            ein berechtigtes Interesse an einer möglichst zuverlässigen Darstellung unserer Website.
+            <strong>Verarbeitete Daten:</strong>
           </p>
-        </section>
-
-        <section>
-          <h2 className="font-display text-xl md:text-2xl mb-3">4. Allgemeine Hinweise und Pflichtinformationen</h2>
-          <h3 className="font-semibold mt-4 mb-1">Datenschutz</h3>
-          <p>
-            Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir
-            behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen
-            Datenschutzvorschriften sowie dieser Datenschutzerklärung.
-          </p>
-          <p className="mt-3">
-            Wenn Sie diese Website benutzen, werden verschiedene personenbezogene Daten erhoben.
-            Personenbezogene Daten sind Daten, mit denen Sie persönlich identifiziert werden können.
-            Die vorliegende Datenschutzerklärung erläutert, welche Daten wir erheben und wofür wir
-            sie nutzen. Sie erläutert auch, wie und zu welchem Zweck das geschieht.
-          </p>
-
-          <h3 className="font-semibold mt-4 mb-1">Hinweis zur verantwortlichen Stelle</h3>
-          <p>Siehe Abschnitt 2.</p>
-
-          <h3 className="font-semibold mt-4 mb-1">Speicherdauer</h3>
-          <p>
-            Soweit innerhalb dieser Datenschutzerklärung keine speziellere Speicherdauer genannt
-            wurde, verbleiben Ihre personenbezogenen Daten bei uns, bis der Zweck für die
-            Datenverarbeitung entfällt. Wenn Sie ein berechtigtes Löschersuchen geltend machen oder
-            eine Einwilligung zur Datenverarbeitung widerrufen, werden Ihre Daten gelöscht, sofern wir
-            keine anderen rechtlich zulässigen Gründe für die Speicherung Ihrer personenbezogenen
-            Daten haben.
-          </p>
-
-          <h3 className="font-semibold mt-4 mb-1">SSL- bzw. TLS-Verschlüsselung</h3>
-          <p>
-            Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher
-            Inhalte eine SSL- bzw. TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie
-            daran, dass die Adresszeile des Browsers von „http://" auf „https://" wechselt und an dem
-            Schloss-Symbol in Ihrer Browserzeile.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="font-display text-xl md:text-2xl mb-3">5. Ihre Rechte</h2>
-          <p>Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht auf:</p>
           <ul className="list-disc pl-6 mt-2 space-y-1">
-            <li>unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren
-              Herkunft, Empfänger und den Zweck der Datenverarbeitung</li>
-            <li>Berichtigung oder Löschung dieser Daten</li>
-            <li>Widerruf einer einmal erteilten Einwilligung mit Wirkung für die Zukunft</li>
-            <li>Einschränkung der Verarbeitung</li>
-            <li>Datenübertragbarkeit</li>
-            <li>Beschwerde bei der zuständigen Aufsichtsbehörde</li>
+            <li>
+              <strong>Schend-Code-Anfrage:</strong> Wenn Sie einen Rabatt-Code für einen Partner
+              anfordern, speichern wir Ihre E-Mail-Adresse, Ihren Namen und den gewählten Partner.
+              Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung) bzw. Art. 6 Abs. 1 lit. b
+              DSGVO (Vertragsanbahnung Beherbergungsvertrag mit Mehrwert-Leistung).
+            </li>
+            <li>
+              <strong>Klick-Statistik:</strong> Wir erfassen pseudonymisiert, welche Partner-Karten
+              geklickt werden, um unsere Empfehlungen zu verbessern. Es werden keine Cookies
+              gesetzt, die eine Wiedererkennung über mehrere Sitzungen hinweg ermöglichen. Rechtsgrundlage:
+              Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Verbesserung des Empfehlungs-Services).
+            </li>
+            <li>
+              <strong>Termin-im-Hotel-Anfrage:</strong> Wenn Sie über das Partner-Modul eine
+              Terminvermittlung anfragen, übermitteln wir Name, Wunschtermin und gewünschten
+              Partner an unsere Rezeption. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.
+            </li>
+            <li>
+              <strong>Code-Einlöse:</strong> Bei Einlösung des Rabatt-Codes vor Ort beim Partner
+              meldet der Partner an uns / Conexa Digital die Einlöse zurück (anonyme Code-Nummer,
+              kein Personenbezug). Zweck: Abrechnung Provision Conexa↔Partner.
+            </li>
           </ul>
           <p className="mt-3">
-            Hierzu sowie zu weiteren Fragen zum Thema personenbezogener Daten können Sie sich jederzeit
-            an uns wenden.
+            <strong>Speicherdauer:</strong> Code-Anfragen und Termin-Anfragen 12 Monate nach
+            Aufenthalt; pseudonyme Klick-Statistiken 24 Monate (danach Aggregation und Anonymisierung).
+          </p>
+          <p className="mt-3">
+            <strong>Empfänger:</strong> Conexa Digital (AV), Hetzner Online GmbH (Sub-AV),
+            sowie der jeweilige Partner, wenn Sie aktiv einen Termin oder Code anfragen.
+            Keine sonstige Weitergabe.
+          </p>
+          <p className="mt-3">
+            <strong>Drittland-Transfer:</strong> Keiner — Verarbeitung erfolgt vollständig in
+            Deutschland (Hetzner-Rechenzentren Falkenstein/Nürnberg/Gunzenhausen).
+          </p>
+
+          <h3 className="font-semibold mt-4 mb-1">g) KI-gestützte Inhalts-Generierung</h3>
+          <p>
+            Einzelne Texte und Empfehlungen auf dieser Website (z.B. „Heute gut für…"-Tipps unter
+            dem Wetter-Widget, generierte Bild-Beschreibungen) werden mit Unterstützung
+            Künstlicher Intelligenz (Anthropic Claude API über Conexa Digital) erstellt und vor
+            Veröffentlichung redaktionell geprüft. Bei der Generierung werden keine
+            personen­bezogenen Gäste-Daten verarbeitet. Rechtsgrundlage des Anbieter-Einsatzes:
+            Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an ansprechender,
+            hyperlokaler Information). Die Anthropic-Dienste werden in der EU-Region betrieben.
+            Hinweis nach EU-AI-Act (VO 2024/1689, anwendbar ab 02.08.2026): KI-unterstützte
+            Inhalte werden als solche gekennzeichnet, sobald die Markierungs-Pflicht greift.
           </p>
         </section>
 
         <section>
-          <h2 className="font-display text-xl md:text-2xl mb-3">6. Datenerfassung auf dieser Website</h2>
-          <h3 className="font-semibold mt-4 mb-1">Cookies</h3>
+          <h2 className="font-display text-xl md:text-2xl mb-3">7. Datenerfassung auf dieser Website</h2>
+
+          <h3 className="font-semibold mt-4 mb-1">Cookies und lokale Speicherung</h3>
           <p>
-            Unsere Internetseiten verwenden so genannte „Cookies". Cookies sind kleine Textdateien und
-            richten auf Ihrem Endgerät keinen Schaden an. Sie werden entweder vorübergehend für die
-            Dauer einer Sitzung (Session-Cookies) oder dauerhaft (permanente Cookies) auf Ihrem
-            Endgerät gespeichert. Session-Cookies werden nach Ende Ihres Besuchs automatisch gelöscht.
+            Unsere Internetseiten verwenden so genannte „Cookies" und ähnliche Speicher-Techniken
+            (localStorage). Konkret speichern wir:
           </p>
+          <ul className="list-disc pl-6 mt-2 space-y-1">
+            <li>
+              <strong>Cookie-Consent-Status</strong> (<code>schend_cookie_consent_v1</code>, localStorage) —
+              speichert Ihre Entscheidung zum Cookie-Hinweis. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG
+              (unbedingt erforderlich für die Funktion des Hinweises).
+            </li>
+            <li>
+              <strong>Auth-Session</strong> (sofern Sie ein Konto erstellt haben) — Supabase-Auth-Token,
+              gespeichert in localStorage. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO + § 25 Abs. 2
+              Nr. 2 TDDDG.
+            </li>
+            <li>
+              <strong>Sprach-/Theme-Präferenz</strong> — Ihre Sprach-Wahl (DE/EN/FR/NL) und Theme
+              (Light/Dark) werden in localStorage gespeichert. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG.
+            </li>
+          </ul>
           <p className="mt-3">
-            Cookies, die zur Durchführung des elektronischen Kommunikationsvorgangs, zur
-            Bereitstellung bestimmter, von Ihnen erwünschter Funktionen oder zur Optimierung der
-            Website erforderlich sind (z. B. Cookies zur Messung des Webpublikums), werden auf
-            Grundlage von Art. 6 Abs. 1 lit. f DSGVO gespeichert, sofern keine andere Rechtsgrundlage
-            angegeben wird. Soweit eine Einwilligung zur Speicherung von Cookies abgefragt wurde,
-            erfolgt die Speicherung der betreffenden Cookies ausschließlich auf Grundlage dieser
-            Einwilligung (Art. 6 Abs. 1 lit. a DSGVO); die Einwilligung ist jederzeit widerrufbar.
-          </p>
-          <p className="mt-3">
-            Sie können Ihren Browser so einstellen, dass Sie über das Setzen von Cookies informiert
-            werden und Cookies nur im Einzelfall erlauben, die Annahme von Cookies für bestimmte Fälle
-            oder generell ausschließen sowie das automatische Löschen der Cookies beim Schließen des
-            Browsers aktivieren.
+            Wir nutzen <strong>kein Tracking</strong>, <strong>keine Werbe-Cookies</strong> und keine
+            Drittanbieter-Analytics. Sie können Ihre Browser-Einstellungen so anpassen, dass
+            Cookies / localStorage komplett blockiert werden — das kann jedoch die Funktion der
+            Website einschränken (z.B. Anmeldung nicht möglich).
           </p>
 
           <h3 className="font-semibold mt-4 mb-1">Server-Log-Dateien</h3>
           <p>
-            Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten
-            Server-Log-Dateien, die Ihr Browser automatisch an uns übermittelt. Dies sind:
+            Unser Hosting-Anbieter (siehe Ziffer 6 a) erhebt und speichert automatisch
+            Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch übermittelt:
           </p>
           <ul className="list-disc pl-6 mt-2 space-y-1">
             <li>Browsertyp und Browserversion</li>
@@ -164,18 +284,87 @@ const Datenschutz = () => {
             <li>Referrer URL</li>
             <li>Hostname des zugreifenden Rechners</li>
             <li>Uhrzeit der Serveranfrage</li>
-            <li>IP-Adresse</li>
+            <li>IP-Adresse (gekürzt nach Verarbeitung)</li>
           </ul>
           <p className="mt-3">
             Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen.
+            Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Betriebs­sicherheit).
+            Speicherdauer: 7 Tage, danach automatische Löschung bzw. Anonymisierung.
           </p>
 
-          <h3 className="font-semibold mt-4 mb-1">Anfrage per E-Mail oder Telefon</h3>
+          <h3 className="font-semibold mt-4 mb-1">Zimmer-Anfrage / Booking-Formular</h3>
           <p>
-            Wenn Sie uns per E-Mail oder Telefon kontaktieren, wird Ihre Anfrage inklusive aller
-            daraus hervorgehenden personenbezogenen Daten (Name, Anfrage) zum Zwecke der Bearbeitung
-            Ihres Anliegens bei uns gespeichert und verarbeitet. Diese Daten geben wir nicht ohne
-            Ihre Einwilligung weiter.
+            Über das Buchungsformular erheben wir folgende Daten:
+          </p>
+          <ul className="list-disc pl-6 mt-2 space-y-1">
+            <li>Name (Vor- und Nachname)</li>
+            <li>E-Mail-Adresse</li>
+            <li>Telefonnummer (optional)</li>
+            <li>Anreise- und Abreise-Datum</li>
+            <li>Zimmer-Typ und Anzahl Gäste</li>
+            <li>etwaige Sonderwünsche (Freitext)</li>
+          </ul>
+          <p className="mt-3">
+            <strong>Zweck:</strong> Bearbeitung Ihrer Anfrage, Vertragsanbahnung, Zimmer-Reservierung
+            und Kommunikation rund um Ihren Aufenthalt.
+            <br />
+            <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung und
+            -durchführung).
+            <br />
+            <strong>Speicherdauer:</strong> Bis zur vollständigen Abwicklung der Anfrage / des
+            Aufenthalts. Buchungsrelevante Belege (Rechnungen) werden nach § 257 HGB / § 147 AO bis
+            zu 10 Jahre aufbewahrt.
+            <br />
+            <strong>Empfänger:</strong> Supabase (siehe Ziffer 6 b) als Auftragsverarbeiter.
+          </p>
+
+          <h3 className="font-semibold mt-4 mb-1">Anfrage per E-Mail, Telefon oder Fax</h3>
+          <p>
+            Wenn Sie uns per E-Mail (info@landhaus-schend.de), Telefon (+49 6573 306) oder Fax
+            (+49 6573 99815) kontaktieren, wird Ihre Anfrage inklusive aller daraus hervorgehenden
+            personenbezogenen Daten (Name, Anfrage-Inhalt, Kontaktdaten) zum Zwecke der Bearbeitung
+            bei uns gespeichert. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO bei
+            Vertragsanbahnung, sonst Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an
+            zügiger Bearbeitung). Daten werden nicht ohne Ihre Einwilligung weitergegeben.
+          </p>
+
+          <h3 className="font-semibold mt-4 mb-1">Kundenkonto (optional)</h3>
+          <p>
+            Sie können freiwillig ein Kundenkonto anlegen, um Buchungs-Anfragen schneller zu
+            stellen und Ihre Aufenthalts-Historie einzusehen. Dabei verarbeiten wir Ihre
+            E-Mail-Adresse und ein verschlüsselt gespeichertes Passwort. Rechtsgrundlage:
+            Art. 6 Abs. 1 lit. a DSGVO (Einwilligung); Sie können Ihr Konto jederzeit löschen,
+            indem Sie sich an uns wenden oder die Selbstlöschung im Dashboard nutzen.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl md:text-2xl mb-3">8. Meldepflicht bei Übernachtung</h2>
+          <p>
+            Aufgrund des Bundesmeldegesetzes (BMG) sind wir verpflichtet, bei ausländischen Gästen
+            erweiterte Meldedaten zu erheben (§§ 29 und 30 BMG). Für deutsche Staatsangehörige
+            entfällt seit dem 01.01.2025 die Meldescheinpflicht. Die erhobenen Daten werden ein
+            Jahr nach der Abreise aufbewahrt und anschließend gelöscht. Rechtsgrundlage:
+            Art. 6 Abs. 1 lit. c DSGVO (rechtliche Verpflichtung).
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl md:text-2xl mb-3">9. Keine automatisierte Entscheidungsfindung</h2>
+          <p>
+            Eine automatisierte Entscheidungsfindung im Sinne von Art. 22 DSGVO (z.B. Profiling
+            mit rechtlicher Wirkung) findet nicht statt. Sie werden ausschließlich durch
+            menschliche Sachbearbeitung betreut.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl md:text-2xl mb-3">10. Aktualität dieser Datenschutzerklärung</h2>
+          <p>
+            Wir behalten uns vor, diese Datenschutzerklärung anzupassen, falls sich rechtliche
+            Anforderungen oder unsere Verarbeitungen ändern. Die jeweils aktuelle Fassung finden
+            Sie stets auf dieser Seite. Wesentliche Änderungen werden zusätzlich auf der Startseite
+            angekündigt.
           </p>
         </section>
 

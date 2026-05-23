@@ -12,7 +12,7 @@ const Impressum = () => {
   return (
   <div className="min-h-screen flex flex-col bg-background">
     <SiteHeader />
-    <main className="flex-1 container mx-auto px-4 pt-28 md:pt-32 pb-16 max-w-3xl">
+    <main id="main" className="flex-1 container mx-auto px-4 pt-28 md:pt-32 pb-16 max-w-3xl">
       <p className="eyebrow mb-4">Rechtliches</p>
       <h1 className="font-display text-4xl md:text-5xl mb-12 text-balance leading-[1.05]">Impressum</h1>
 
@@ -23,7 +23,8 @@ const Impressum = () => {
             Eugen Beimler<br />
             Landhotel Schend<br />
             Hauptstraße 9<br />
-            54552 Immerath
+            54552 Immerath<br />
+            Deutschland
           </p>
         </section>
 
@@ -45,7 +46,14 @@ const Impressum = () => {
         </section>
 
         <section>
-          <h2 className="font-display text-xl md:text-2xl mb-3">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+          <h2 className="font-display text-xl md:text-2xl mb-3">Aufsichtsbehörde</h2>
+          <p>
+            Verbandsgemeindeverwaltung Daun, Leopoldstraße 29, 54550 Daun
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl md:text-2xl mb-3">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
           <p>
             Eugen Beimler<br />
             Hauptstraße 9<br />
@@ -54,33 +62,17 @@ const Impressum = () => {
         </section>
 
         <section>
-          <h2 className="font-display text-xl md:text-2xl mb-3">EU-Streitschlichtung</h2>
-          <p>
-            Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:{" "}
-            <a
-              href="https://ec.europa.eu/consumers/odr/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-secondary hover:underline break-all"
-            >
-              https://ec.europa.eu/consumers/odr/
-            </a>
-            . Unsere E-Mail-Adresse finden Sie oben im Impressum.
-          </p>
-        </section>
-
-        <section>
           <h2 className="font-display text-xl md:text-2xl mb-3">Verbraucher­streit­beilegung / Universal­schlichtungs­stelle</h2>
           <p>
             Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
-            Verbraucherschlichtungsstelle teilzunehmen.
+            Verbraucherschlichtungsstelle teilzunehmen (§ 36 VSBG).
           </p>
         </section>
 
         <section>
           <h2 className="font-display text-xl md:text-2xl mb-3">Haftung für Inhalte</h2>
           <p>
-            Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach
+            Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach
             den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter
             jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen
             oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
@@ -114,7 +106,7 @@ const Impressum = () => {
         </section>
 
         <p className="text-xs text-muted-foreground pt-4">
-          Quelle der Vorlage: e-recht24.de
+          Stand: {new Date().toLocaleDateString("de-DE", { year: "numeric", month: "long" })}
         </p>
       </div>
     </main>
