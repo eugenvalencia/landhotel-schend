@@ -68,7 +68,7 @@ export default function SiteFooter() {
               </Link>
             </li>
             <li>
-              <Link to="/" className="hover:text-secondary transition-colors">
+              <Link to="/restaurant" className="hover:text-secondary transition-colors">
                 {t("footer.gastro")}
               </Link>
             </li>

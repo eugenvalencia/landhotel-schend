@@ -11,6 +11,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import SiteOffline from "./components/SiteOffline";
 
 const Index = lazy(() => import("./pages/Index"));
+const Restaurant = lazy(() => import("./pages/Restaurant"));
 const Booking = lazy(() => import("./pages/Booking"));
 const RoomDetail = lazy(() => import("./pages/RoomDetail"));
 const PaketDetail = lazy(() => import("./pages/PaketDetail"));
@@ -44,6 +45,7 @@ const App = () => (
         <Suspense fallback={<SiteOffline variant="loading" />}>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/restaurant" element={<Restaurant />} />
             <Route path="/rooms/:id" element={<RoomDetail />} />
             <Route path="/pakete/:slug" element={<PaketDetail />} />
             <Route path="/booking" element={<Booking />} />
