@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, BadgeCheck, ExternalLink } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import { cn } from "@/lib/utils";
 
@@ -163,7 +163,7 @@ export default function ReviewsSection() {
     <section className="bg-gradient-to-b from-background via-muted/50 to-background">
       <JsonLd id="reviews" data={reviewsJsonLd} />
       <div className="container mx-auto px-4 py-20 md:py-28">
-        {/* Header */}
+        {/* Header — mit aggregated Trust-Strip */}
         <div className="text-center mb-14 md:mb-20 max-w-3xl mx-auto">
           <p className="eyebrow">Bewertungen</p>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">
@@ -172,6 +172,19 @@ export default function ReviewsSection() {
           <p className="text-muted-foreground mt-5 leading-relaxed">
             Landhotel Schend — bewertet auf allen großen Plattformen
           </p>
+          <div className="mt-7 inline-flex flex-wrap items-center justify-center gap-3 px-4 py-2 rounded-full bg-secondary/10 border border-secondary/25">
+            <div className="flex gap-0.5">
+              {[1, 2, 3, 4].map((i) => (
+                <Star key={i} className="h-3.5 w-3.5 fill-secondary text-secondary" strokeWidth={1.5} />
+              ))}
+              <Star className="h-3.5 w-3.5 fill-secondary/60 text-secondary" strokeWidth={1.5} />
+            </div>
+            <span className="text-sm font-medium text-foreground">
+              <strong className="font-bold">4,5</strong> Ø aus
+              <strong className="ml-1 font-bold">501</strong> verifizierten Bewertungen
+            </span>
+            <BadgeCheck className="h-4 w-4 text-secondary" />
+          </div>
         </div>
 
         {/* Platform grid — hairline-divided, sanfte Rundung */}
@@ -223,6 +236,16 @@ export default function ReviewsSection() {
               <span className="mx-2 opacity-50">·</span>
               {REVIEWS[idx].date}
             </p>
+            <a
+              href={PLATFORMS.find((p) => p.name === REVIEWS[idx].source)?.href || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs text-secondary hover:text-foreground transition-colors mt-1"
+            >
+              <BadgeCheck className="h-3.5 w-3.5" />
+              Verifiziert auf {REVIEWS[idx].source}
+              <ExternalLink className="h-3 w-3" />
+            </a>
           </div>
 
           {/* Navigation: arrows + dots */}
