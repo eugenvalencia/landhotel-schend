@@ -1,6 +1,17 @@
 import { HotelImage } from "@/components/HotelImage";
 import historyPhoto from "@/assets/landhotel-history-bw.jpg";
 
+const TIMELINE = [
+  { year: "1856", event: "Grundhaus erbaut — Gasthaus & Poststelle" },
+  { year: "1954", event: "Eheleute Schneiders übernehmen" },
+  { year: "1970", event: "Erste 3 Gästezimmer mit Warmwasser" },
+  { year: "1976", event: "Tochter Roswitha steigt ein" },
+  { year: "1993", event: "Übernahme durch die Tochter" },
+  { year: "1997", event: "Neueröffnung als „Landhaus Schend\"" },
+  { year: "1999", event: "Erste 3-Sterne-Klassifizierung" },
+  { year: "Heute", event: "21 Zimmer, ★★★ Superior, 5. Generation" },
+];
+
 const VALUES = [
   {
     num: "01",
@@ -67,6 +78,59 @@ export default function AboutSection() {
               Schend mit 3 Sternen der Deutschen Hotelklassifizierung ausgezeichnet.
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* Timeline — 1856 bis heute, sepia-Linie mit Marker-Punkten */}
+      <div className="container mx-auto px-4 py-16 md:py-24 border-t border-border/40">
+        <div className="text-center mb-12 md:mb-16">
+          <p className="eyebrow">165+ Jahre Gastfreundschaft</p>
+          <h3 className="font-display text-2xl md:text-3xl lg:text-4xl mt-4 text-balance">
+            <span className="font-display-italic font-light">Vom</span> Gasthaus 1856{" "}
+            <span className="font-display-italic font-light">bis</span> heute
+          </h3>
+        </div>
+
+        {/* Desktop Timeline — horizontal */}
+        <div className="hidden md:block relative max-w-6xl mx-auto">
+          <div
+            aria-hidden
+            className="absolute left-0 right-0 top-1.5 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent"
+          />
+          <ol className="relative grid grid-cols-8 gap-2">
+            {TIMELINE.map((item) => (
+              <li key={item.year} className="flex flex-col items-center text-center">
+                <span
+                  aria-hidden
+                  className="block h-3 w-3 rounded-full bg-secondary ring-4 ring-background relative z-10 transition-transform hover:scale-125"
+                />
+                <p className="font-display text-secondary text-xl lg:text-2xl mt-4 mb-2">
+                  {item.year}
+                </p>
+                <p className="text-[10px] lg:text-[11px] text-muted-foreground leading-tight tracking-wide px-1">
+                  {item.event}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        {/* Mobile Timeline — vertical */}
+        <div className="md:hidden max-w-md mx-auto">
+          <ol className="relative border-l-2 border-secondary/30 ml-3 space-y-6 pl-6">
+            {TIMELINE.map((item) => (
+              <li key={item.year} className="relative">
+                <span
+                  aria-hidden
+                  className="absolute -left-[1.85rem] top-1 h-3 w-3 rounded-full bg-secondary ring-4 ring-background"
+                />
+                <p className="font-display text-secondary text-xl">{item.year}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {item.event}
+                </p>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
 
