@@ -354,8 +354,26 @@ const Index = () => {
         </div>
       </section>
 
-      {/* RESTAURANT — asymmetrischer Magazin-Spread */}
+      {/* RESTAURANT — asymmetrischer Magazin-Spread + Tagesgäste-Hook */}
       <section id="restaurant" className="bg-gradient-to-b from-muted/40 via-muted/20 to-muted/40">
+        {/* Tagesgäste-Banner — Einheimische und Vorbeireisende ansprechen */}
+        <div className="bg-secondary/8 border-b border-border/60">
+          <div className="container mx-auto px-4 py-4 md:py-5">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center">
+              <span className="inline-flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
+                <UtensilsCrossed className="h-4 w-4 text-secondary shrink-0" strokeWidth={1.75} />
+                Auch ohne Übernachtung — Tagesgäste herzlich willkommen
+              </span>
+              <a
+                href="tel:+4965731306"
+                className="inline-flex items-center gap-2 text-sm font-medium text-secondary hover:text-foreground transition-colors underline underline-offset-4 decoration-secondary/40 hover:decoration-foreground"
+              >
+                Tisch reservieren: +49 6573 306 →
+              </a>
+            </div>
+          </div>
+        </div>
+
         <div className="grid lg:grid-cols-12 items-stretch">
           {/* Bild bricht aus dem Container aus */}
           <div className="lg:col-span-7 lg:order-last">
@@ -415,6 +433,74 @@ const Index = () => {
                 />
               )),
             )}
+          </div>
+        </div>
+
+        {/* Specials der Woche — drei Stempel-Karten für Aktionen */}
+        <div className="container mx-auto px-4 py-14 md:py-20">
+          <div className="text-center mb-10 md:mb-12">
+            <p className="eyebrow">Im Restaurant</p>
+            <h3 className="font-display text-2xl md:text-3xl mt-3 text-balance">
+              Was Sie diese Saison erwartet
+            </h3>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border/50 max-w-5xl mx-auto">
+            <div className="bg-background p-6 md:p-8 flex flex-col">
+              <p className="text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">
+                Wochen-Hit
+              </p>
+              <h4 className="font-display text-xl md:text-2xl mb-3 leading-tight">
+                Hamburgertag
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                Ein Mal pro Woche unser Eifeler Burger mit Heim­pommes — Treffpunkt
+                für Einheimische und Hotelgäste.
+              </p>
+              <div className="hairline mt-6 mb-3" />
+              <p className="text-xs text-muted-foreground">
+                Tag und Uhrzeit erfragen — wir freuen uns über Reservierung.
+              </p>
+            </div>
+            <div className="bg-background p-6 md:p-8 flex flex-col">
+              <p className="text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">
+                Eifeler Klassiker
+              </p>
+              <h4 className="font-display text-xl md:text-2xl mb-3 leading-tight">
+                Halbpension nach Eifeler Art
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                3-Gang-Menü mit regionalen Zutaten — wildgerichte im Herbst,
+                Spargel im Frühjahr, eigene Forellen wenn die Bäche zulassen.
+              </p>
+              <div className="hairline mt-6 mb-3" />
+              <p className="text-xs text-muted-foreground">
+                +23 €/Person/Tag — zur Übernachtung zubuchbar.
+              </p>
+            </div>
+            <div className="bg-background p-6 md:p-8 flex flex-col">
+              <p className="text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">
+                Für Gruppen
+              </p>
+              <h4 className="font-display text-xl md:text-2xl mb-3 leading-tight">
+                Festtafel & Feiern
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                Hochzeiten, runde Geburtstage, Firmenessen — der Festsaal fasst
+                bis 80 Gäste, eingerichtet wie aus Großmutters Zeit.
+              </p>
+              <div className="hairline mt-6 mb-3" />
+              <p className="text-xs text-muted-foreground">
+                Auf Anfrage, gerne mit individuellem Menü.
+              </p>
+            </div>
+          </div>
+          <div className="text-center mt-10">
+            <a
+              href="tel:+4965731306"
+              className="inline-flex items-center gap-3 px-7 py-3.5 min-h-[52px] bg-primary text-primary-foreground rounded-sm text-xs sm:text-sm font-medium tracking-[0.2em] uppercase hover:bg-secondary hover:text-secondary-foreground transition-colors"
+            >
+              Reservieren · +49 6573 306
+            </a>
           </div>
         </div>
 
