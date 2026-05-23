@@ -543,7 +543,15 @@ const Index = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-x-10 md:gap-y-14">
             {PAKETE.map((p) => (
               <Link key={p.slug} to={`/pakete/${p.slug}`} className="group block">
-                <div className="aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
+                <div
+                  className="spotlight relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500"
+                  onMouseMove={(e) => {
+                    const el = e.currentTarget;
+                    const r = el.getBoundingClientRect();
+                    el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+                    el.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
+                  }}
+                >
                   <img
                     src={p.cover}
                     alt={t(`paketDetails.${p.slug}.title`, p.title)}
@@ -551,10 +559,27 @@ const Index = () => {
                     decoding="async"
                     className="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]"
                   />
+                  {/* Preis-Tag als Stamp oben-rechts auf dem Bild */}
+                  {p.price && (
+                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-sm shadow-md border border-foreground/10">
+                      <span className="text-[10px] font-medium tracking-[0.15em] uppercase text-foreground/60">
+                        Paket
+                      </span>
+                      <p className="font-display text-secondary text-base leading-tight">
+                        {p.price.replace(/^ab\s+/i, '')}
+                      </p>
+                    </div>
+                  )}
                 </div>
-                <h3 className="font-display text-xl md:text-2xl mb-3 group-hover:text-secondary transition-colors text-balance">
+                <h3 className="font-display text-xl md:text-2xl mb-2 group-hover:text-secondary transition-colors text-balance">
                   {t(`paketDetails.${p.slug}.title`, p.title)}
                 </h3>
+                {/* Highlight-Bullet aus erstem highlights-Eintrag — quick value-preview */}
+                {p.highlights?.[0] && (
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
+                    {p.highlights[0]}
+                  </p>
+                )}
                 <span className="text-xs font-medium tracking-[0.2em] uppercase text-secondary inline-flex items-center gap-2 transition-all group-hover:gap-3">
                   {t("pakete.more")}
                   <span>→</span>
