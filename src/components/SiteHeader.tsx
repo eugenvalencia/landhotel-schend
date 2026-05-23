@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -71,21 +71,18 @@ export default function SiteHeader() {
       <div
         className={cn(
           "container mx-auto px-4 flex items-center justify-between gap-4 transition-all duration-500 relative z-10",
-          scrolled ? "h-14 md:h-16" : "h-16 md:h-20",
+          scrolled ? "h-16 md:h-[68px]" : "h-16 md:h-20",
         )}
       >
-        <Link to="/" className="flex items-center gap-3 min-w-0" onClick={() => scrollTo("top")}>
-          {/* CSS mask-image: the building drawing shows up in `currentColor`, so the
-              wrapper's text-foreground colour applies to the mark and the wordmark
-              identically — no more sepia-vs-cream mismatch in any theme mode. */}
+        <Link to="/" className="group flex items-center gap-3 min-w-0" onClick={() => scrollTo("top")}>
+          {/* Logo bleibt beim Scroll prominent — Brand-Wiedererkennung > Platz sparen.
+              Subtle hover-scale für Lebendigkeit. */}
           <span
             role="img"
             aria-label="Landhotel Schend Logo"
             className={cn(
-              "schend-mark shrink-0 text-foreground transition-all duration-500",
-              // Sized to match the height of the wordmark + subtitle stack on the right
-              // (Landhotel Schend at text-base/lg/xl + subtitle at text-[10/11px], leading-tight).
-              scrolled ? "h-7 md:h-8" : "h-9 md:h-10 lg:h-11",
+              "schend-mark shrink-0 text-foreground transition-all duration-500 group-hover:scale-105",
+              scrolled ? "h-8 md:h-9" : "h-9 md:h-10 lg:h-11",
             )}
           />
           <div className="min-w-0">
@@ -94,7 +91,7 @@ export default function SiteHeader() {
             </p>
             <p className={cn(
               "text-[10px] xl:text-[11px] tracking-[0.18em] uppercase text-muted-foreground leading-tight truncate transition-all duration-500",
-              scrolled ? "hidden" : "hidden xl:block",
+              "hidden xl:block",
             )}>
               {t("nav.subtitle")}
             </p>
@@ -115,11 +112,29 @@ export default function SiteHeader() {
           <HeaderWeather />
           <ThemeToggle className="ml-1.5" />
           <LanguageSwitcher />
+          {/* Phone-Pill — direkt anrufen ohne Scroll, wichtig für 60+ */}
+          <a
+            href="tel:+4965731306"
+            className="ml-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-secondary/40 text-[11px] xl:text-xs font-semibold text-secondary hover:bg-secondary hover:text-secondary-foreground hover:border-secondary transition-all whitespace-nowrap"
+            aria-label="Hotel anrufen +49 6573 306"
+          >
+            <Phone className="h-3 w-3" strokeWidth={2} />
+            <span className="hidden xl:inline">+49 6573 306</span>
+            <span className="xl:hidden">06573 306</span>
+          </a>
         </nav>
 
         {/* Tablet: Wetter sichtbar machen, weil die Nav verborgen ist */}
-        <div className="hidden md:flex lg:hidden">
+        <div className="hidden md:flex lg:hidden items-center gap-3">
           <HeaderWeather />
+          <a
+            href="tel:+4965731306"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-secondary/40 text-[11px] font-semibold text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all"
+            aria-label="Hotel anrufen +49 6573 306"
+          >
+            <Phone className="h-3 w-3" strokeWidth={2} />
+            06573 306
+          </a>
         </div>
 
           <button
