@@ -1,0 +1,7 @@
+# Cloudflare Pages Redirects — wirkt auf dist/ nach Deploy
+# Format: https://developers.cloudflare.com/pages/configuration/redirects/
+
+# SPA-Fallback: jede unbekannte URL liefert index.html mit HTTP 200,
+# damit React-Router clientseitig die Route auflöst.
+# Muss als LETZTE Regel stehen — alles davor hat Vorrang.
+/*    /index.html   200

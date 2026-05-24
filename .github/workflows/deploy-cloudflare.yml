@@ -1,0 +1,66 @@
+name: Deploy zu Cloudflare Pages
+
+# Bei jedem Push auf main wird gebaut und nach Cloudflare Pages deployed.
+# Branches/PRs werden als Preview-Deploys publiziert (preview-URL im PR-Comment).
+#
+# Voraussetzungen (Repo-Secrets):
+#   CLOUDFLARE_API_TOKEN — Account-Token mit Permission "Account.Cloudflare Pages: Edit"
+#                          (zone-scoped Token reicht NICHT — Pages braucht Account-Level)
+#   CLOUDFLARE_ACCOUNT_ID — 93a6fc988f6bf06f077c05fa630cd5df
+#   (Beide einmalig setzen unter Settings → Secrets and variables → Actions)
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+  pull-requests: write
+
+concurrency:
+  group: cloudflare-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build + Cloudflare Pages Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install deps
+        run: bun install --frozen-lockfile
+
+      - name: Vite build
+        run: bun run build
+
+      - name: Deploy zu Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=landhotel-schend --branch=${{ github.head_ref || github.ref_name }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verifikation HTTPS (nur auf main)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          sleep 8
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" https://schend.conexadigital.eu)
+          TITLE=$(curl -s https://schend.conexadigital.eu | grep -oE '<title[^>]*>[^<]+</title>' | head -1 | sed 's/<[^>]*>//g')
+          echo "::notice::HTTP $HTTP — $TITLE"
+          [ "$HTTP" = "200" ]

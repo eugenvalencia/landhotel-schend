@@ -1,13 +1,16 @@
-name: Deploy zu Hetzner (schend.conexadigital.eu)
+name: Deploy zu Hetzner (Fallback)
+
+# Hetzner-Deploy ist seit der Cloudflare-Pages-Migration kein Auto-Push mehr,
+# sondern reiner Fallback (Disaster-Recovery, lokales Debug-Hosting).
+# Nur manuell triggerbar im GitHub-Actions-UI.
+#
+# Wann verwenden:
+#   - Cloudflare Pages ist down / nicht verfügbar
+#   - Schneller Vergleich Hetzner-Origin vs Cloudflare-Edge
+#   - DNS-Cutback zu Hetzner nötig (Notfall)
 
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - "**.md"
-      - "docs/**"
-      - ".github/**"
-  workflow_dispatch: # manueller Trigger im GitHub-UI
+  workflow_dispatch:
 
 jobs:
   deploy:
