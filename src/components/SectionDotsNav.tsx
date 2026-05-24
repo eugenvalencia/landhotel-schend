@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 
 // Vertikale Editorial-Navigation rechts am Bildschirmrand.
-// Beobachtet Sections via IntersectionObserver, markiert aktiven Dot.
+// Aktive Section wird über die Viewport-Mitte bestimmt (nicht IntersectionRatio,
+// weil hohe Sektionen wie Pakete/Restaurant nie 75% Ratio erreichen können —
+// sie sind höher als das Viewport).
 // Click → smooth scroll zur Section (Lenis fängt Anchor-Klicks automatisch ab).
-// Auf Touch-Geräten ausgeblendet (kein hover, geringer Nutzen).
 
 interface SectionEntry {
   id: string;
@@ -26,43 +27,47 @@ export default function SectionDotsNav() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Erst zeigen, wenn Hero verlassen wurde — sonst stört's beim First-Impression
-    const onScroll = () => {
+    let rafId = 0;
+
+    const tick = () => {
+      // Anchor-Punkt: 40% des Viewports von oben.
+      // Höher als Mitte, damit die Section "early" als aktiv markiert wird —
+      // fühlt sich natürlicher an beim Scroll.
+      const anchorY = window.scrollY + window.innerHeight * 0.4;
+
+      // Welche Section enthält den Anchor-Punkt?
+      let bestId = "top";
+      let bestStart = -Infinity;
+      for (const { id } of SECTIONS) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        const start = rect.top + window.scrollY;
+        const end = start + rect.height;
+        // Section enthält Anchor — und hat den höchsten Start (also die unterste passende)
+        if (anchorY >= start && anchorY < end && start > bestStart) {
+          bestStart = start;
+          bestId = id;
+        }
+      }
+      setActiveId(bestId);
+
+      // Sichtbarkeit erst nach 60% Hero-Scroll
       setVisible(window.scrollY > window.innerHeight * 0.6);
     };
-    onScroll();
+
+    const onScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(tick);
+    };
+
+    tick();
     window.addEventListener("scroll", onScroll, { passive: true });
-
-    // IntersectionObserver pro Section. Wer am meisten im Viewport ist, gewinnt.
-    const visibleRatios = new Map<string, number>();
-
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const id = (entry.target as HTMLElement).id;
-          visibleRatios.set(id, entry.isIntersecting ? entry.intersectionRatio : 0);
-        }
-        let bestId = "top";
-        let bestRatio = 0;
-        for (const [id, ratio] of visibleRatios) {
-          if (ratio > bestRatio) {
-            bestRatio = ratio;
-            bestId = id;
-          }
-        }
-        if (bestRatio > 0) setActiveId(bestId);
-      },
-      { threshold: [0.15, 0.35, 0.55, 0.75] },
-    );
-
-    SECTIONS.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) obs.observe(el);
-    });
-
+    window.addEventListener("resize", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
-      obs.disconnect();
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
