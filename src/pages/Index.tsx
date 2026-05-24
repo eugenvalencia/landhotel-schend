@@ -33,17 +33,22 @@ import food3 from "@/assets/food-3.jpg";
 import feiernImg from "@/assets/feiern.jpg";
 import { PAKETE } from "@/lib/pakete";
 
-// Mische Speisen (lokale Assets) mit Restaurant-Stimmungen (Server)
-// damit das Marquee abwechslungsreich wirkt
+// Marquee zeigt lokale Speisen + Restaurant-Stimmungen aus /public/fotos/
+// (NICHT die SCHEND_RESTAURANT_GALLERY-Server-URLs — die zeigen auf /pics/
+// im Production-Build und liefern 404 → leere Kästchen).
 const FOOD_PHOTOS = [
   food0,
-  SCHEND_RESTAURANT_GALLERY[1],
+  "/fotos/haehnchen-mit-wedges-landhotel-schend.jpg",
   food1,
-  SCHEND_RESTAURANT_GALLERY[2],
+  "/fotos/schnitzelteller-mit-pommes-landhotel-schend.jpg",
   food2,
-  SCHEND_RESTAURANT_GALLERY[3],
+  "/fotos/rouladen-mit-rotkohl-und-kroketten-landhotel-schend.jpg",
   food3,
-  SCHEND_RESTAURANT_GALLERY[4],
+  "/fotos/schlemmerplatte-landhotel-schend.jpg",
+  "/fotos/salat-buffet-mit-tomatenherz-landhotel-schend.jpg",
+  "/fotos/warmes-buffet-mit-chafing-dishes-landhotel-schend.jpg",
+  "/fotos/schnitzel-mit-salat-landhotel-schend.jpg",
+  "/fotos/tagesgericht-mit-salat-landhotel-schend.jpg",
 ];
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";

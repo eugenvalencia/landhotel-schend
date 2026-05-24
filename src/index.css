@@ -325,7 +325,13 @@
     to { transform: translateX(-50%); }
   }
   .animate-marquee {
-    animation: marquee-x 30s linear infinite;
+    animation: marquee-x 60s linear infinite;
+  }
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee { animation: none; }
   }
 
   @keyframes fade-up {
