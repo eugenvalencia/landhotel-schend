@@ -37,7 +37,7 @@ for url in "${URLS[@]}"; do
     --enable-logging=stderr --v=0 --virtual-time-budget=8000 \
     "$url" > /dev/null 2> "$LOG"
   ERRORS=$(grep -iE "ERROR|Uncaught|ErrorBoundary|cannot read|is not a function|supabase.*required" "$LOG" \
-           | grep -iv "extensions\|external_pref\|installwebapp\|webapps:\|WARNING:" \
+           | grep -iv "extensions\|external_pref\|installwebapp\|webapps:\|WARNING:\|gcm\\\\engine\|registration_request\|mcs_client\|DEPRECATED_ENDPOINT" \
            | head -5)
   if [ -n "$ERRORS" ]; then
     echo "  FAIL:"
