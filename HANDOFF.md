@@ -1,82 +1,103 @@
 # Handoff — nächste Session
 
-**Stand:** 2026-05-23 ~22:00 Uhr
-**Schend-Site live:** https://schend.conexadigital.eu/ (Tag `schend-site-v2`)
-**Conexa V2 live:** https://demo.conexadigital.eu/ + Discovery: https://demo.conexadigital.eu/discovery/schend
+**Stand:** 2026-05-24 ~16:10
+**Live:** https://schend.conexadigital.eu/ — auf **Cloudflare Pages** (global Edge-CDN)
+**Letzter Commit:** `86f149f` (mega-menu Bilder entfernt nach V2.3 Polish-Welle)
+**Rollback-Tags:** `pre-design-polish-2026-05-24`, `pre-design-polish-v22-2026-05-24`, `pre-image-opt-2026-05-24`, `schend-site-v2`
 
 ---
 
-## Was heute fertig wurde
+## Was sich seit gestern (V2 → heute) geändert hat
 
-22 Commits seit `schend-site-v1` (siehe `git log schend-site-v1..schend-site-v2 --oneline`):
+### Polish-Wellen V2.1, V2.2, V2.3 (14 neue Komponenten/Hooks)
 
-- **Hero**: Trust-Pills + Restaurant-CTA + Ken-Burns + Magnetic + Glow-Border
-- **Restaurant**: Tagesgäste-Banner + Specials-Cards + Standalone `/restaurant` Page (SEO-eigenständig)
-- **Pakete**: Spotlight + Preis-Stamp + Highlight
-- **About**: Visuelle Timeline 1856 → Heute
-- **Reviews**: Trust-Strip + Verifiziert-Badges
-- **Header**: Logo + Phone-Pill (Desktop/Tablet)
-- **Mobile-Menu**: Phone-Pill prominent oben, größere Touch-Targets, Saison-Hint
-- **Footer**: Trust-Strip + Saison-Hint + Familie Beimler
-- **Floating-CTA Desktop**: Stamp-Look
-- **Login**: editorial Brand-Polish
-- **Booking**: "Buchung" konsistent + KEIN "verbindlich" + Auto-Email/WhatsApp-Versprechen
-- **404**: Wolf+Hase Nu-Pogodi-Look (gelb Hawaii vs. weiß+rot)
-- **SEO**: Title/Description ohne Wellness/Motorradgarage, Saison im Schema
-- **A11y-FAB**: Type-Icon (statt Rollstuhl)
-- **Restaurant-Link** prominent an 4 Stellen: Header-Nav, Mobile-Menu, Footer, Homepage-Section-Brücke
+**V2.1** — Lenis Smooth-Scroll + Number-Counter (Trust-Pills) + Tilt-on-Hover (Zimmer/Pakete-Cards) + Hairline-Section-Divider
 
-**Conexa parallel:** Discovery-Tool, 3 Master-Agents, n8n-Workflow-JSONs, BFSG-Doc, V2-Promote-Plan, CONEXA-AGENT-MAP.
+**V2.2** — Hero-Crossfade verfeinert (2s + frischer Ken-Burns pro Slide) + Reading-Progress-Bar (Brass-Linie oben) + Section-Dots-Nav (rechts, 6 Sections) + Nav-Underline (symmetrisch scaleX) + Page-Fade-In bei Route-Wechsel
 
----
+**V2.3** — Header verschwindet beim Runterscrollen + Mega-Menu für Zimmer/Pakete (Hover-Dropdown, OHNE Preview-Bild auf Eugen-Wunsch) + Cursor-Lupe auf Card-Bildern + Card-Caption-Slide-Up bei Hover + Footer-Brass-Underline (wandert von links)
 
-## Wichtige Memory-Fixes von heute
+### Infrastruktur: Hetzner → Cloudflare Pages
 
-| Was | Vorher | Jetzt |
-|---|---|---|
-| **Wellness/Sauna** bei Schend | "Wellness-Urlauber" Hauptzielgruppe | KEIN Wellness, KEIN Sauna — explizit dokumentiert |
-| **Motorradgarage** | "videoüberwachte Garage" | Mehrere Stellplätze im offenen Hof, kein Dach |
-| **Saison** | nicht spezifiziert | März – September (Winter geschlossen) |
-| **Schend-Site Zweck** | unklar | Demo-Stack für Hotel-SaaS — Online-Buchung MIT Auto-Bestätigung ist Feature |
-| **Buchungs-Wording** | "verbindlich buchen" | "Buchung" OK, "verbindlich" NIE (juristisch sauber) |
+- Schend-Frontend jetzt auf Cloudflare Pages (~45 s deploy bei push, global Edge)
+- `git push main` → GitHub Action `deploy-cloudflare.yml` baut & deployed automatisch
+- Hetzner CX23 (`128.140.101.82`) bleibt für n8n, Umami, Supabase-Proxy, künftige APIs — kein Auto-Deploy mehr (Workflow nur noch `workflow_dispatch`)
+- Page-Rules: `/assets/*` 1 y immutable, `/fotos/*` 30 d, restliche Tier-Defaults
+- Cache-Purge bei Bedarf: `bash ~/.conexa/cf.sh purge conexadigital.eu --all`
+
+### Image-Optimization (perf-Welle)
+
+- 27 Fotos in `public/fotos/` durch mozjpeg recompressed: **−7,45 MB (−47 %)**
+- Hero-/Zimmer-Bilder teils −86 % (waren oversized)
+- Visuell kaum sichtbar (q78), `npm run optimize:images` jederzeit re-runnable
+
+### Booking Auto-Confirmation-Mail (vorbereitet, noch nicht aktiv)
+
+- `notify-schend` Edge-Function erweitert: macht parallel n8n + Resend-Mail
+- Templates in `supabase/functions/_shared/booking-email.ts` (DE/EN/FR/NL HTML + Text)
+- Setup-Doku in `docs/BOOKING-AUTO-CONFIRMATION-SETUP.md`
+- **Aktivieren**: Resend-Account anlegen, `landhaus-schend.de` als Sender verifizieren (DNS bei Cloudflare), `RESEND_API_KEY` + `RESEND_FROM_EMAIL` im Supabase-Dashboard setzen, `supabase functions deploy notify-schend`
 
 ---
 
-## TODO für nächste Session
+## Regel: erst überprüfen, dann live
+
+**Memory-Eintrag `feedback-verify-before-deploy.md` erzwingt:** vor jedem Production-Deploy lokal bauen + im Browser smoke-testen. Heute gabs einen ErrorBoundary-Crash auf prod weil CI-Build ohne `VITE_SUPABASE_*` env-vars deployed wurde — der Build lief grün, aber Runtime crashte.
+
+**Tool dafür**: `scripts/smoke.sh` — Headless-Chrome-Wrapper ohne Node-Deps.
+
+```bash
+bash scripts/smoke.sh https://schend.conexadigital.eu/ https://schend.conexadigital.eu/restaurant
+```
+
+---
+
+## Was als nächstes ansteht
 
 ### User-Aufgaben (Eugen)
-- [ ] n8n-Owner-Setup abschließen (5 Min, https://n8n.conexadigital.eu)
-- [ ] Notion-Database "Conexa-Leads" + "Conexa-Kunden" anlegen (15 Min, Schema in N8N-WORKFLOWS.md)
-- [ ] Telegram-Bot bei @BotFather anlegen ("ConexaOpsBot")
-- [ ] SUPABASE_ACCESS_TOKEN in `c:\Projekte\landhotel-schend\.env` setzen
-- [ ] Discovery-Tool selbst testen + Familie Beimler zeigen
-- [ ] conexadigital.eu Title `&amp;`-Bug in Framer-UI fixen (2 Min)
-- [ ] Schend selbst durch die V2 klicken (Desktop + Handy)
 
-### Claude-Aufgaben (für nächstes Fenster)
-- [ ] Cartoon (Wolf+Hase) Detail-Refinement falls Eugen nochmal hingucken will
-- [ ] Image-Optimization (WebP/AVIF) wenn Hero-Original-Files lokal beschaffbar
-- [ ] Operator + Dashboard Brand-Polish (heute übersprungen, interne Tools)
-- [ ] Booking Auto-Email/WhatsApp-Flow in Supabase Edge-Function bauen (passt zur SaaS-Demo)
-- [ ] Conexa V2 nach conexadigital.eu promoten (Plan: docs/V2-PROMOTE-PLAN.md)
+- [ ] Resend-Account anlegen + DNS für Mail-Sender bei Cloudflare einrichten
+- [ ] Notion-Database für 3 n8n-Workflows (bekannt seit 2026-05-21)
+- [ ] Telegram-Bot bei @BotFather
+- [ ] Discovery-Tool selbst testen + Familie Beimler zeigen
+- [ ] Schend auf Handy + Desktop durchklicken (V2.3 Polish-Test, Feedback was zu doll/zu subtil)
+
+### Claude-Aufgaben (für nächste Session)
+
+- [ ] Motorradgarage-Wording in `src/i18n.ts:21,27` korrigieren — Memory sagt: NUR offener Hof, kein Dach/keine Überwachung (heute bewusst nicht angefasst, war "kein Text-Polish" Session)
+- [ ] Saison-Hint im Booking-Calendar visuell stärker (Oktober-Februar sollten sichtbar nicht auswählbar wirken)
+- [ ] Cartoon-Refinement Wolf+Hase auf 404 falls Lust drauf
+- [ ] Operator + Dashboard Brand-Polish (interne Tools, niedrige Prio)
+- [ ] Conexa V2 Promote zu conexadigital.eu (`docs/V2-PROMOTE-PLAN.md` im conexa-os Repo)
 - [ ] `/conexa-akquise` Live-Demo mit fremder Hotel-URL
-- [ ] Mastra-Playground aktivieren
 
 ### Strategische Themen
-- BFSG-Reel auf TikTok produzieren (taniprokamni-Hook übernehmen)
-- llms.txt + robots.txt + Discovery sind beim nächsten Conexa-Deploy live
-- Lighthouse-Audit für reale Performance-Werte
+
+- BFSG-Reel auf TikTok (taniprokamni-Hook übernehmen)
+- conexadigital.eu HTML-Entity-Bug `&amp;` im Framer-Title fixen
+- Lighthouse-Audit für reale Performance-Werte nach allen Polish-Wellen
 
 ---
 
-## Rollback wenn nötig
+## Rollback (falls nötig)
 
 ```bash
 cd c:/Projekte/landhotel-schend
-git reset --hard schend-site-v1   # Stand vor heutigem Polish
-# oder
-git reset --hard schend-site-v2   # falls zwischendurch was kaputt geht
-bash deploy.sh
+
+# Mega-Menu mit Bildern wieder
+git reset --hard e0d6f5d
+
+# Letzte Polish-Welle V2.3 rückgängig (V2.2 bleibt)
+git reset --hard pre-design-polish-v22-2026-05-24
+
+# V2.2 + V2.3 rückgängig (V2.1 bleibt)
+git reset --hard pre-design-polish-2026-05-24
+
+# Ganz vor Polish-Welle (vor V2.1)
+git reset --hard schend-site-v2
+
+# DNS-Rollback zu Hetzner (Cloudflare Pages umgehen):
+bash ~/.conexa/cf.sh dns update conexadigital.eu d2f965931d9a06be7bf02e585191f674 A schend.conexadigital.eu 128.140.101.82 false
 ```
 
 ---
@@ -84,34 +105,39 @@ bash deploy.sh
 ## Wichtige Pfade & URLs
 
 **Repos:**
-- `c:\Projekte\landhotel-schend\` — Hotel-Site
+- `c:\Projekte\landhotel-schend\` — Hotel-Site (Vite + React)
 - `c:\Projekte\conexa-os\` — Marketing-Site V2 + Discovery + Docs + n8n-Workflows
 - `c:\Projekte\conexa-marketing-skills\skills\orchestration\` — 3 Master-Agents
 
 **Live:**
-- Schend: https://schend.conexadigital.eu (Tag schend-site-v2)
-- Conexa V2: https://demo.conexadigital.eu
-- Discovery Schend: https://demo.conexadigital.eu/discovery/schend
-- n8n: https://n8n.conexadigital.eu (Owner-Setup ausstehend)
+- Schend: https://schend.conexadigital.eu (Cloudflare Pages, `landhotel-schend.pages.dev`)
+- Conexa V2: https://demo.conexadigital.eu (Hetzner)
+- Discovery: https://demo.conexadigital.eu/discovery/schend
+- n8n: https://n8n.conexadigital.eu (Hetzner, Owner-Setup ausstehend)
 
-**Memory:**
-- `C:\Users\info\.claude\projects\c--Projekte-conexa-agents\memory\session-2026-05-23-schend-polish.md` — diese Session
-- `C:\Users\info\.claude\projects\c--Projekte-conexa-agents\memory\project-landhaus-schend.md` — Schend-Stammdaten (heute aktualisiert)
-- `C:\Users\info\.claude\projects\c--Projekte-conexa-agents\memory\MEMORY.md` — Master-Index
+**Cloudflare-Verwaltung autonom (von Claude nutzbar):**
+- `c:\Users\info\.conexa\cf.sh` — Bash CLI
+- `c:\Users\info\.conexa\cf.ps1` — PowerShell CLI
+- `c:\Users\info\.conexa\CF-CLI.md` — Doku + Permissions-Liste
+- Token: `c:\Users\info\.conexa\cloudflare-token` (Account-Level mit allen Permissions)
 
-**Doku:**
-- `c:\Projekte\conexa-os\docs\CONEXA-AGENT-MAP.md` — welcher Agent für was
-- `c:\Projekte\conexa-os\docs\N8N-WORKFLOWS.md` — Setup-Guide
-- `c:\Projekte\conexa-os\docs\BFSG-AUDIT-SERVICE.md` — Service-Skizze
-- `c:\Projekte\conexa-os\docs\V2-PROMOTE-PLAN.md` — Conexa-Site-Switch
-- `c:\Projekte\conexa-os\docs\DAC7-BRIEFING-SCHEND.md` — Gesprächs-Leitfaden
+**Memory (für neue Chat-Session):**
+- `C:\Users\info\.claude\projects\c--Projekte-conexa-agents\memory\session-2026-05-24.md` — heute komplett
+- `feedback-verify-before-deploy.md` — die heute geborene Regel
+- `cf-cli-helper.md` — CF-CLI Doku
+- `project-landhaus-schend.md` — Stammdaten
+- `MEMORY.md` — Index
+
+**Doku im Repo:**
+- `docs/BOOKING-AUTO-CONFIRMATION-SETUP.md` — Resend-Setup
+- `docs/CLOUDFLARE-PAGES-MIGRATION.md` — Wie Schend nach CF Pages migriert wurde
+- `scripts/smoke.sh` — Headless-Chrome-Smoke-Test (vor jedem Deploy benutzen)
+- `scripts/optimize-images.mjs` — mozjpeg-Recompression
 
 ---
 
 ## Einstieg im neuen Chat-Fenster
 
-Öffne ein neues Claude-Code-Fenster im Verzeichnis `c:/Projekte/conexa-agents` und sag einfach:
+Öffne ein neues Claude-Code-Fenster im Verzeichnis `c:/Projekte/conexa-agents` und sag:
 
-> "Lies HANDOFF.md im landhotel-schend Repo und session-2026-05-23-schend-polish.md aus Memory. Wir machen weiter wo wir gestern aufgehört haben."
-
-Claude (das werde wieder ich sein, aber ohne Erinnerung an heute) wird damit alles aufholen können.
+> "Lies HANDOFF.md im landhotel-schend Repo + session-2026-05-24.md und feedback-verify-before-deploy.md aus Memory. Wir machen weiter wo wir aufgehört haben."
