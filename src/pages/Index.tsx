@@ -329,7 +329,7 @@ const Index = () => {
               return (
               <Link key={r.id} to={`/rooms/${r.id}`} className="group block">
                 <div
-                  className="spotlight tilt-card aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500"
+                  className="spotlight tilt-card card-reveal aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500 cursor-zoom-in"
                   onMouseMove={handleSpotlightTilt}
                   onMouseLeave={handleSpotlightTiltReset}
                 >
@@ -338,6 +338,15 @@ const Index = () => {
                     alt={r.name}
                     className="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]"
                   />
+                  {/* Slide-up Caption — erscheint nur bei Hover */}
+                  <div className="card-caption">
+                    <p className="text-[10px] tracking-[0.2em] uppercase text-white/80 mb-1">
+                      Zimmer ansehen
+                    </p>
+                    <p className="font-display text-white text-lg leading-snug">
+                      {TYPE_DESCRIPTIONS[r.type]?.split(" ").slice(0, 6).join(" ") ?? r.type}
+                    </p>
+                  </div>
                 </div>
                 <div className="flex items-baseline justify-between gap-4 mb-2">
                   <h3 className="font-display text-xl md:text-2xl group-hover:text-secondary transition-colors">
@@ -579,7 +588,7 @@ const Index = () => {
             {PAKETE.map((p) => (
               <Link key={p.slug} to={`/pakete/${p.slug}`} className="group block">
                 <div
-                  className="spotlight tilt-card relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500"
+                  className="spotlight tilt-card card-reveal relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500 cursor-zoom-in"
                   onMouseMove={handleSpotlightTilt}
                   onMouseLeave={handleSpotlightTiltReset}
                 >

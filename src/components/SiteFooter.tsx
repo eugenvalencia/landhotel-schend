@@ -59,22 +59,22 @@ export default function SiteFooter() {
           </p>
           <ul className="space-y-3 text-sm">
             <li>
-              <Link to="/" className="hover:text-secondary transition-colors">
+              <Link to="/" className="footer-link hover:text-secondary transition-colors">
                 {t("footer.home")}
               </Link>
             </li>
             <li>
-              <Link to="/booking" className="hover:text-secondary transition-colors">
+              <Link to="/booking" className="footer-link hover:text-secondary transition-colors">
                 {t("footer.bookRoom")}
               </Link>
             </li>
             <li>
-              <Link to="/restaurant" className="hover:text-secondary transition-colors">
+              <Link to="/restaurant" className="footer-link hover:text-secondary transition-colors">
                 {t("footer.gastro")}
               </Link>
             </li>
             <li>
-              <a href="tel:+4965731306" className="hover:text-secondary transition-colors">
+              <a href="tel:+4965731306" className="footer-link hover:text-secondary transition-colors">
                 {t("footer.contact")}
               </a>
             </li>
@@ -89,7 +89,7 @@ export default function SiteFooter() {
           <ul className="space-y-3 text-sm">
             <li className="flex items-center gap-3">
               <Phone className="h-3.5 w-3.5 shrink-0 opacity-60" strokeWidth={1.5} />
-              <a href="tel:+4965731306" className="hover:text-secondary transition-colors">
+              <a href="tel:+4965731306" className="footer-link hover:text-secondary transition-colors">
                 +49 6573 306
               </a>
             </li>
@@ -97,7 +97,7 @@ export default function SiteFooter() {
               <Mail className="h-3.5 w-3.5 shrink-0 opacity-60" strokeWidth={1.5} />
               <a
                 href="mailto:info@landhaus-schend.de"
-                className="hover:text-secondary transition-colors break-all"
+                className="footer-link hover:text-secondary transition-colors break-all"
               >
                 info@landhaus-schend.de
               </a>
@@ -146,16 +146,16 @@ export default function SiteFooter() {
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-5 gap-y-2">
-            <Link to="/impressum" className="hover:text-secondary transition-colors">
+            <Link to="/impressum" className="footer-link hover:text-secondary transition-colors">
               {t("footer.impressum")}
             </Link>
-            <Link to="/datenschutz" className="hover:text-secondary transition-colors">
+            <Link to="/datenschutz" className="footer-link hover:text-secondary transition-colors">
               {t("footer.privacy")}
             </Link>
-            <Link to="/agb" className="hover:text-secondary transition-colors">
+            <Link to="/agb" className="footer-link hover:text-secondary transition-colors">
               {t("footer.terms")}
             </Link>
-            <Link to="/barrierefreiheit" className="hover:text-secondary transition-colors">
+            <Link to="/barrierefreiheit" className="footer-link hover:text-secondary transition-colors">
               {t("footer.accessibility")}
             </Link>
           </div>

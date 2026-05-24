@@ -6,11 +6,29 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "@/components/ThemeToggle";
 import HeaderWeather from "@/components/HeaderWeather";
+import HeaderMegaMenu from "@/components/HeaderMegaMenu";
+import { PAKETE } from "@/lib/pakete";
+import { SCHEND_HEROES } from "@/lib/photos";
+
+const ROOMS_MEGA = [
+  { label: "Einzelzimmer", to: "/rooms/d47bcebd-a254-4880-8952-72a2929d2520", hint: "Gemütlich für Reisende — ab 65 €" },
+  { label: "Doppelzimmer Standard", to: "/rooms/8e3d91a0-0711-4cdf-a580-c2debb684d0c", hint: "Komfort mit Doppelbett und Balkon — ab 95 €" },
+  { label: "Doppelzimmer Komfort", to: "/rooms/5af7abab-0811-4e14-9b71-923c3afafbeb", hint: "Geräumig mit Terrasse — ab 105 €" },
+  { label: "Familienzimmer", to: "/rooms/2dffe866-7b1a-42d5-8ea9-29c9f2975994", hint: "Bis 4 Personen — ab 145 €" },
+  { label: "Junior Suite & Eifel-Suite", to: "/rooms/06183ce9-3314-4f82-aab9-40e8c7d32d86", hint: "Wohnbereich und Panoramablick — ab 165 €" },
+];
+
+const PAKETE_MEGA = PAKETE.slice(0, 5).map((p) => ({
+  label: p.title,
+  to: `/pakete/${p.slug}`,
+  hint: p.price ? `${p.price.replace(/^ab\s+/i, "ab ")}` : undefined,
+}));
 
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
@@ -25,11 +43,27 @@ export default function SiteHeader() {
   ];
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    let lastY = window.scrollY;
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        setScrolled(y > 20);
+        // Auto-hide: scrolling down past 120px hides header, scrolling up shows it.
+        // Mobile-Menü offen oder ganz oben? Immer sichtbar.
+        if (open || y < 120) setHidden(false);
+        else if (y > lastY + 6) setHidden(true);
+        else if (y < lastY - 4) setHidden(false);
+        lastY = y;
+        ticking = false;
+      });
+    };
     onScroll();
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [open]);
 
   const handleNav = (id: string) => {
     setOpen(false);
@@ -57,6 +91,7 @@ export default function SiteHeader() {
         scrolled
           ? "bg-background/55 backdrop-blur-xl backdrop-saturate-150 border-b border-white/30 shadow-[0_8px_30px_rgb(0_0_0_/0.08)]"
           : "bg-background border-b border-transparent",
+        hidden ? "-translate-y-full" : "translate-y-0",
       )}
     >
       {/* subtle gradient sheen — only when scrolled */}
@@ -100,8 +135,34 @@ export default function SiteHeader() {
 
         <div className="flex items-center gap-4 lg:gap-5">
         <nav className="hidden lg:flex items-center gap-0.5">
-          {MENU.map((item) =>
-            item.href ? (
+          {MENU.map((item) => {
+            if (item.id === "rooms") {
+              return (
+                <HeaderMegaMenu
+                  key={item.label}
+                  label={item.label}
+                  anchorId="rooms"
+                  items={ROOMS_MEGA}
+                  previewImage={SCHEND_HEROES[1]}
+                  previewCaption="21 Zimmer mit Balkon"
+                  onAnchorClick={handleNav}
+                />
+              );
+            }
+            if (item.id === "pakete") {
+              return (
+                <HeaderMegaMenu
+                  key={item.label}
+                  label={item.label}
+                  anchorId="pakete"
+                  items={PAKETE_MEGA}
+                  previewImage="/fotos/maar-blick-mit-kindern-landhotel-schend.jpg"
+                  previewCaption="Eifel-Auszeit"
+                  onAnchorClick={handleNav}
+                />
+              );
+            }
+            return item.href ? (
               <Link
                 key={item.label}
                 to={item.href}
@@ -117,8 +178,8 @@ export default function SiteHeader() {
               >
                 {item.label}
               </button>
-            ),
-          )}
+            );
+          })}
           <HeaderWeather />
           <ThemeToggle className="ml-1.5" />
           <LanguageSwitcher />

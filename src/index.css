@@ -467,6 +467,56 @@
     .nav-underline::after { transition: none; }
   }
 
+  /* Footer-Link — Brass-Hairline wandert beim Hover von links nach rechts.
+     Funktioniert auf dunklem Footer-Background; ersetzt simplen Color-Switch. */
+  .footer-link {
+    position: relative;
+    display: inline-block;
+  }
+  .footer-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: hsl(var(--secondary));
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .footer-link:hover::after,
+  .footer-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .footer-link::after { transition: none; }
+  }
+
+  /* Card-Caption — slide-up Beschreibung bei Hover.
+     Wirkt nur in Verbindung mit .card-reveal (parent). */
+  .card-reveal { position: relative; }
+  .card-caption {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 1rem 1rem 0.9rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 60%, transparent 100%);
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .card-reveal:hover .card-caption,
+  .group:hover .card-reveal .card-caption {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  @media (hover: none), (prefers-reduced-motion: reduce) {
+    .card-caption { transform: translateY(0); opacity: 0.95; transition: none; }
+  }
+
   /* Tilt-Card — 3D-Hover-Drehung, kombiniert sich mit .spotlight.
      CSS-Variablen --tilt-x/--tilt-y werden vom JS-Handler gesetzt (siehe
      handleSpotlightTilt). Touch-Geräte und reduced-motion overriden auf 0.
