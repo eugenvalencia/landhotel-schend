@@ -105,7 +105,7 @@ export default function SiteHeader() {
               <Link
                 key={item.label}
                 to={item.href}
-                className="px-2 xl:px-2.5 py-2 text-[11px] xl:text-xs font-semibold text-primary hover:text-secondary transition-colors tracking-[0.08em] whitespace-nowrap"
+                className="nav-underline px-2 xl:px-2.5 py-2 text-[11px] xl:text-xs font-semibold text-primary hover:text-secondary transition-colors tracking-[0.08em] whitespace-nowrap"
               >
                 {item.label}
               </Link>
@@ -113,7 +113,7 @@ export default function SiteHeader() {
               <button
                 key={item.label}
                 onClick={() => item.id && handleNav(item.id)}
-                className="px-2 xl:px-2.5 py-2 text-[11px] xl:text-xs font-semibold text-primary hover:text-secondary transition-colors tracking-[0.08em] whitespace-nowrap"
+                className="nav-underline px-2 xl:px-2.5 py-2 text-[11px] xl:text-xs font-semibold text-primary hover:text-secondary transition-colors tracking-[0.08em] whitespace-nowrap"
               >
                 {item.label}
               </button>

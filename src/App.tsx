@@ -9,6 +9,8 @@ import StickyMobileCTA from "./components/StickyMobileCTA";
 import A11yPanel from "./components/A11yPanel";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SiteOffline from "./components/SiteOffline";
+import MarketingChrome from "./components/MarketingChrome";
+import PageFadeIn from "./components/PageFadeIn";
 import { useLenisScroll } from "./hooks/useLenisScroll";
 
 const Index = lazy(() => import("./pages/Index"));
@@ -44,8 +46,10 @@ const App = () => {
         >
           Zum Hauptinhalt springen
         </a>
+        <MarketingChrome />
         <ErrorBoundary>
         <Suspense fallback={<SiteOffline variant="loading" />}>
+          <PageFadeIn>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/restaurant" element={<Restaurant />} />
@@ -66,6 +70,7 @@ const App = () => {
             <Route path="/barrierefreiheit" element={<Barrierefreiheit />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </PageFadeIn>
         </Suspense>
         </ErrorBoundary>
         <StickyMobileCTA />

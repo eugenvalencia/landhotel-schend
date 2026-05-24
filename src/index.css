@@ -421,6 +421,46 @@
     .spotlight:hover::after { opacity: 0.4; transition: none; }
   }
 
+  /* Page-Transition — sanfter Fade-in bei jedem Route-Wechsel.
+     Wrapper-Div hat key={pathname}, React remountet bei Wechsel und
+     die Animation läuft einmal. Subtil: 6px translateY + opacity 0.45s. */
+  @keyframes page-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .page-fade-in {
+    animation: page-fade-in 0.45s ease-out both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .page-fade-in { animation: none; }
+  }
+
+  /* Editorial Nav-Underline — wandert beim Hover symmetrisch nach außen.
+     transform-origin: center, scaleX(0 → 1). Hover-color-change bleibt zusätzlich. */
+  .nav-underline {
+    position: relative;
+  }
+  .nav-underline::after {
+    content: "";
+    position: absolute;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0.35rem;
+    height: 1px;
+    background: hsl(var(--secondary));
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .nav-underline:hover::after,
+  .nav-underline:focus-visible::after {
+    transform: scaleX(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav-underline::after { transition: none; }
+  }
+
   /* Tilt-Card — 3D-Hover-Drehung, kombiniert sich mit .spotlight.
      CSS-Variablen --tilt-x/--tilt-y werden vom JS-Handler gesetzt (siehe
      handleSpotlightTilt). Touch-Geräte und reduced-motion overriden auf 0.

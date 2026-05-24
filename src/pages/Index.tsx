@@ -126,21 +126,32 @@ const Index = () => {
         id="top"
         className="relative h-[100vh] min-h-[640px] max-h-[1100px] overflow-hidden"
       >
-        {SCHEND_HEROES.map((src, i) => (
-          <HotelImage
-            key={src}
-            src={src}
-            alt="Landhotel Schend in der Vulkaneifel"
-            loading={i === 0 ? "eager" : "lazy"}
-            decoding={i === 0 ? "sync" : "async"}
-            className={cn(
-              "absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ease-out",
-              i === heroIdx ? "opacity-100" : "opacity-0",
-              // Ken-Burns: subtiler Zoom über 14s, jedes Bild alterniert in/out für Variation.
-              i % 2 === 0 ? "ken-burns-in" : "ken-burns-out",
-            )}
-          />
-        ))}
+        {SCHEND_HEROES.map((src, i) => {
+          // Eager-Load: aktuelles + nächstes Bild — damit der Crossfade nicht auf ein noch ladendes Bild trifft
+          const isNext = i === (heroIdx + 1) % SCHEND_HEROES.length;
+          const isActive = i === heroIdx;
+          return (
+            <HotelImage
+              key={src}
+              src={src}
+              alt="Landhotel Schend in der Vulkaneifel"
+              loading={i === 0 || isNext || isActive ? "eager" : "lazy"}
+              decoding={i === 0 ? "sync" : "async"}
+              className={cn(
+                "absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-[cubic-bezier(0.4,0,0.2,1)]",
+                isActive ? "opacity-100" : "opacity-0",
+              )}
+              // Ken-Burns nur auf aktiven Slide. Beim Inaktivieren auf 'none'
+              // setzen, damit React beim nächsten Aktivieren die Animation als
+              // Wechsel sieht und neu triggert (sonst würde sie nur einmal laufen).
+              style={{
+                animation: isActive
+                  ? `${i % 2 === 0 ? "ken-burns-in" : "ken-burns-out"} 7s ease-out forwards`
+                  : "none",
+              }}
+            />
+          );
+        })}
 
         {/* Cinematic editorial overlay — three layers ensure legibility on ANY photo */}
         <div aria-hidden className="absolute inset-0 bg-black/25" />
