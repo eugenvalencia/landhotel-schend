@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Star, CalendarRange } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import CountUp from "@/components/CountUp";
 
 /**
  * Footer is always dark slate regardless of theme — keeps a strong editorial
@@ -39,8 +40,8 @@ export default function SiteFooter() {
               <Star className="h-3 w-3 fill-secondary/60 text-secondary" strokeWidth={1.5} />
             </div>
             <span className="text-xs text-[hsl(38_30%_92%)]/85">
-              <strong className="font-bold text-secondary">4,5</strong> Ø ·
-              <strong className="mx-1 font-bold">501</strong> Bewertungen
+              <CountUp to={4.5} decimals={1} duration={1400} className="font-bold text-secondary" /> Ø ·
+              <CountUp to={501} duration={1800} className="mx-1 font-bold" /> Bewertungen
             </span>
           </div>
 

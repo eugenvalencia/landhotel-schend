@@ -15,8 +15,13 @@ import EifelRegionSection from "@/components/EifelRegionSection";
 import AboutSection from "@/components/AboutSection";
 import FAQSection from "@/components/FAQSection";
 import FeatureIcon from "@/components/FeatureIcon";
+import CountUp from "@/components/CountUp";
+import HairlineDivider from "@/components/HairlineDivider";
 import { useSEO } from "@/hooks/useSEO";
-import { useMagnetic, useSpotlight, useReveal } from "@/hooks/useMagnetic";
+import {
+  useMagnetic, useSpotlight, useReveal,
+  handleSpotlightTilt, handleSpotlightTiltReset,
+} from "@/hooks/useMagnetic";
 import { cn } from "@/lib/utils";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_RESTAURANT_GALLERY, galleryForRoomType,
@@ -208,15 +213,15 @@ const Index = () => {
             </span>
             <span className="text-white/40" aria-hidden>·</span>
             <span className="text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium">
-              8,5 / 10 Booking
+              <CountUp to={8.5} decimals={1} startOnMount delay={600} duration={1400} /> / 10 Booking
             </span>
             <span className="text-white/40" aria-hidden>·</span>
             <span className="text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium">
-              165 Jahre Familie
+              <CountUp to={165} startOnMount delay={800} duration={1600} /> Jahre Familie
             </span>
             <span className="text-white/40 hidden sm:inline" aria-hidden>·</span>
             <span className="hidden sm:inline text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium">
-              21 Zimmer mit Balkon
+              <CountUp to={21} startOnMount delay={1000} duration={1200} /> Zimmer mit Balkon
             </span>
           </div>
 
@@ -289,6 +294,7 @@ const Index = () => {
       <section id="rooms" className="bg-gradient-to-b from-background via-muted/20 to-background">
         <div className="container mx-auto px-4 py-20 md:py-28">
           <div className="text-center mb-14 md:mb-20">
+            <HairlineDivider className="mb-6 justify-center" />
             <p className="eyebrow">{t("rooms.eyebrow")}</p>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">
               {t("rooms.title")}
@@ -307,13 +313,9 @@ const Index = () => {
               return (
               <Link key={r.id} to={`/rooms/${r.id}`} className="group block">
                 <div
-                  className="spotlight aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500"
-                  onMouseMove={(e) => {
-                    const el = e.currentTarget;
-                    const r = el.getBoundingClientRect();
-                    el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
-                    el.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
-                  }}
+                  className="spotlight tilt-card aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500"
+                  onMouseMove={handleSpotlightTilt}
+                  onMouseLeave={handleSpotlightTiltReset}
                 >
                   <HotelImage
                     src={cardPhoto}
@@ -387,6 +389,7 @@ const Index = () => {
           </div>
 
           <div className="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center">
+            <HairlineDivider align="left" className="mb-5" />
             <p className="eyebrow">{t("restaurant.eyebrow")}</p>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">
               {t("restaurant.title")}
@@ -532,6 +535,7 @@ const Index = () => {
             </div>
           </div>
           <div className="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center">
+            <HairlineDivider align="left" className="mb-5" />
             <p className="eyebrow">{t("feiern.eyebrow")}</p>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">
               {t("feiern.title")}
@@ -545,6 +549,7 @@ const Index = () => {
       <section id="pakete" className="bg-gradient-to-b from-muted/30 via-background to-muted/15">
         <div className="container mx-auto px-4 py-20 md:py-28">
           <div className="text-center mb-14 md:mb-20">
+            <HairlineDivider className="mb-6 justify-center" />
             <p className="eyebrow">{t("pakete.eyebrow")}</p>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">
               {t("pakete.title")}
@@ -558,13 +563,9 @@ const Index = () => {
             {PAKETE.map((p) => (
               <Link key={p.slug} to={`/pakete/${p.slug}`} className="group block">
                 <div
-                  className="spotlight relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500"
-                  onMouseMove={(e) => {
-                    const el = e.currentTarget;
-                    const r = el.getBoundingClientRect();
-                    el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
-                    el.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
-                  }}
+                  className="spotlight tilt-card relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500"
+                  onMouseMove={handleSpotlightTilt}
+                  onMouseLeave={handleSpotlightTiltReset}
                 >
                   <img
                     src={p.cover}

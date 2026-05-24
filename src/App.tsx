@@ -9,6 +9,7 @@ import StickyMobileCTA from "./components/StickyMobileCTA";
 import A11yPanel from "./components/A11yPanel";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SiteOffline from "./components/SiteOffline";
+import { useLenisScroll } from "./hooks/useLenisScroll";
 
 const Index = lazy(() => import("./pages/Index"));
 const Restaurant = lazy(() => import("./pages/Restaurant"));
@@ -29,7 +30,9 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  useLenisScroll();
+  return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -71,6 +74,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;

@@ -82,6 +82,33 @@ export function useSpotlight<T extends HTMLElement = HTMLElement>() {
 }
 
 /**
+ * Tilt-on-Hover-Handler — kombiniert Spotlight (--mx/--my) UND
+ * 3D-Tilt (--tilt-x/--tilt-y). Funktioniert mit `.spotlight.tilt-card`-Klasse.
+ * Max ±6° Drehung, ease-out beim mouseleave.
+ *
+ * Touch-Geräte und prefers-reduced-motion sind durch CSS-Media-Queries entkoppelt
+ * (siehe .tilt-card-Regeln in index.css) — keine JS-Detection nötig, der
+ * Listener läuft trotzdem aber ohne sichtbare Wirkung.
+ */
+export function handleSpotlightTilt(e: React.MouseEvent<HTMLElement>) {
+  const el = e.currentTarget;
+  const r = el.getBoundingClientRect();
+  const xPct = (e.clientX - r.left) / r.width;
+  const yPct = (e.clientY - r.top) / r.height;
+  el.style.setProperty("--mx", `${xPct * 100}%`);
+  el.style.setProperty("--my", `${yPct * 100}%`);
+  // ±6° um Card-Mitte. Y-Maus oben → X-Achse positive Rotation (kippt nach hinten oben)
+  el.style.setProperty("--tilt-x", `${(0.5 - yPct) * 6}deg`);
+  el.style.setProperty("--tilt-y", `${(xPct - 0.5) * 6}deg`);
+}
+
+export function handleSpotlightTiltReset(e: React.MouseEvent<HTMLElement>) {
+  const el = e.currentTarget;
+  el.style.setProperty("--tilt-x", "0deg");
+  el.style.setProperty("--tilt-y", "0deg");
+}
+
+/**
  * Reveal-on-Scroll Hook — fügt `.visible` zur Klasse hinzu wenn Element ins
  * Viewport scrollt. Wirkt zusammen mit `.reveal`-CSS-Klasse.
  */

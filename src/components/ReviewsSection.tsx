@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Star, ChevronLeft, ChevronRight, BadgeCheck, ExternalLink } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
+import CountUp from "@/components/CountUp";
+import HairlineDivider from "@/components/HairlineDivider";
 import { cn } from "@/lib/utils";
 
 type Platform = {
@@ -165,6 +167,7 @@ export default function ReviewsSection() {
       <div className="container mx-auto px-4 py-20 md:py-28">
         {/* Header — mit aggregated Trust-Strip */}
         <div className="text-center mb-14 md:mb-20 max-w-3xl mx-auto">
+          <HairlineDivider className="mb-6 justify-center" />
           <p className="eyebrow">Bewertungen</p>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">
             Was unsere Gäste sagen
@@ -180,8 +183,8 @@ export default function ReviewsSection() {
               <Star className="h-3.5 w-3.5 fill-secondary/60 text-secondary" strokeWidth={1.5} />
             </div>
             <span className="text-sm font-medium text-foreground">
-              <strong className="font-bold">4,5</strong> Ø aus
-              <strong className="ml-1 font-bold">501</strong> verifizierten Bewertungen
+              <CountUp to={4.5} decimals={1} duration={1400} className="font-bold" /> Ø aus
+              <CountUp to={501} duration={1800} className="ml-1 font-bold" /> verifizierten Bewertungen
             </span>
             <BadgeCheck className="h-4 w-4 text-secondary" />
           </div>

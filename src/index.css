@@ -421,6 +421,20 @@
     .spotlight:hover::after { opacity: 0.4; transition: none; }
   }
 
+  /* Tilt-Card — 3D-Hover-Drehung, kombiniert sich mit .spotlight.
+     CSS-Variablen --tilt-x/--tilt-y werden vom JS-Handler gesetzt (siehe
+     handleSpotlightTilt). Touch-Geräte und reduced-motion overriden auf 0.
+     transform-style: preserve-3d und perspective gehen auf den Parent. */
+  .tilt-card {
+    transform-style: preserve-3d;
+    transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+  @media (hover: none), (prefers-reduced-motion: reduce) {
+    .tilt-card { transform: none !important; transition: none; }
+  }
+
   /* Scroll-Reveal — sanftes hochfaden, getriggert via IntersectionObserver-Hook
      .reveal: initial-state. .reveal.visible: end-state. */
   .reveal {
