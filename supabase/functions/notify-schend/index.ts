@@ -1,21 +1,30 @@
 // Edge Function: notify-schend
-// Wird nach erfolgreichem INSERT in bookings aufgerufen (Trigger oder RPC-Erweiterung).
-// Sendet Payload an n8n-Webhook → n8n qualifiziert via Claude + benachrichtigt Inhaber.
+// Wird nach erfolgreichem INSERT in bookings vom Postgres-Trigger asynchron aufgerufen.
+// Macht zwei Dinge PARALLEL und unabhängig voneinander:
+//   1. Push an n8n-Webhook → n8n qualifiziert + benachrichtigt den Inhaber
+//   2. Direkt-Bestätigungsmail an den Gast via Resend (DSGVO-konform via EU-Region)
+//
+// Fehler in einem Pfad sollen den anderen Pfad NICHT blockieren.
 //
 // Aufruf-Pfad:
 //   POST /functions/v1/notify-schend
 //   Body: { booking_id: string }
 //
 // ENV (in Supabase Dashboard setzen):
-//   N8N_WEBHOOK_URL      = https://n8n.conexadigital.eu/webhook/landhaus-schend-lead
-//   N8N_WEBHOOK_SECRET   = <shared secret zwischen Edge Function und n8n>
-//   SUPABASE_URL         = (auto)
+//   N8N_WEBHOOK_URL           = https://n8n.conexadigital.eu/webhook/landhaus-schend-lead
+//   N8N_WEBHOOK_SECRET        = <shared secret zwischen Edge Function und n8n>
+//   RESEND_API_KEY            = re_xxxxxxxxxxxx  (https://resend.com/api-keys)
+//   RESEND_FROM_EMAIL         = buchung@landhaus-schend.de  (verifizierte Sender-Domain)
+//   SUPABASE_URL              = (auto)
 //   SUPABASE_SERVICE_ROLE_KEY = (auto)
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { renderBookingEmail } from "../_shared/booking-email.ts";
 
-const N8N_WEBHOOK_URL = Deno.env.get("N8N_WEBHOOK_URL")!;
+const N8N_WEBHOOK_URL = Deno.env.get("N8N_WEBHOOK_URL") ?? "";
 const N8N_WEBHOOK_SECRET = Deno.env.get("N8N_WEBHOOK_SECRET") ?? "";
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
+const RESEND_FROM_EMAIL = Deno.env.get("RESEND_FROM_EMAIL") ?? "buchung@landhaus-schend.de";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
@@ -23,6 +32,58 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
 interface BookingPayload {
   booking_id: string;
+}
+
+interface BranchResult {
+  ok: boolean;
+  status: number;
+  detail?: string;
+}
+
+async function pushToN8n(payload: unknown): Promise<BranchResult> {
+  if (!N8N_WEBHOOK_URL) return { ok: false, status: 0, detail: "N8N_WEBHOOK_URL not configured" };
+  try {
+    const r = await fetch(N8N_WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Webhook-Secret": N8N_WEBHOOK_SECRET,
+      },
+      body: JSON.stringify(payload),
+    });
+    return { ok: r.status >= 200 && r.status < 300, status: r.status, detail: await r.text().catch(() => "") };
+  } catch (e) {
+    return { ok: false, status: -1, detail: String(e) };
+  }
+}
+
+async function sendGuestConfirmation(args: {
+  guestEmail: string;
+  payload: ReturnType<typeof renderBookingEmail>;
+}): Promise<BranchResult> {
+  if (!RESEND_API_KEY) return { ok: false, status: 0, detail: "RESEND_API_KEY not configured" };
+  try {
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from: `${args.payload.fromName} <${RESEND_FROM_EMAIL}>`,
+        to: [args.guestEmail],
+        reply_to: args.payload.replyTo,
+        subject: args.payload.subject,
+        html: args.payload.html,
+        text: args.payload.text,
+        headers: { "Content-Language": args.payload.language },
+        tags: [{ name: "type", value: "booking-confirmation" }, { name: "lang", value: args.payload.language }],
+      }),
+    });
+    return { ok: r.status >= 200 && r.status < 300, status: r.status, detail: await r.text().catch(() => "") };
+  } catch (e) {
+    return { ok: false, status: -1, detail: String(e) };
+  }
 }
 
 Deno.serve(async (req) => {
@@ -61,12 +122,15 @@ Deno.serve(async (req) => {
   const co = new Date(booking.check_out);
   const nights = Math.max(1, Math.round((co.getTime() - ci.getTime()) / 86_400_000));
 
-  // Payload an n8n — preferred_language ist Top-Level damit der Prompt es leicht findet
-  const payload = {
+  // n8n-Payload (für Owner-Qualification über Claude)
+  const room = booking.rooms as { name?: string; room_type?: string; bed_description?: string } | null;
+  const extras = (booking.extras ?? []) as Array<{ name: string; price: number; per_night: boolean }>;
+
+  const n8nPayload = {
     source: "landhaus-schend.de",
     booking_id: booking.id,
     booking_number: booking.booking_number,
-    preferred_language: booking.preferred_language, // 'de' | 'en' | 'fr' | 'nl' | null
+    preferred_language: booking.preferred_language,
     guest: {
       name: booking.guest_name,
       email: booking.guest_email,
@@ -78,43 +142,50 @@ Deno.serve(async (req) => {
       nights,
     },
     room: booking.rooms,
-    extras: booking.extras ?? [],
+    extras,
     notes: booking.notes ?? "",
     total_price: booking.total_price,
     created_at: booking.created_at,
   };
 
-  // POST an n8n
-  let n8nStatus = 0;
-  let n8nResponse = "";
-  try {
-    const r = await fetch(N8N_WEBHOOK_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Webhook-Secret": N8N_WEBHOOK_SECRET,
-      },
-      body: JSON.stringify(payload),
-    });
-    n8nStatus = r.status;
-    n8nResponse = await r.text();
-  } catch (e) {
-    n8nStatus = -1;
-    n8nResponse = String(e);
-  }
+  // Gast-Email Payload rendern
+  const emailPayload = renderBookingEmail({
+    language: booking.preferred_language,
+    bookingNumber: booking.booking_number,
+    guestName: booking.guest_name,
+    roomName: room?.name ?? "Zimmer",
+    roomType: room?.room_type ?? null,
+    checkIn: booking.check_in,
+    checkOut: booking.check_out,
+    nights,
+    extras,
+    totalPrice: Number(booking.total_price ?? 0),
+    notes: booking.notes ?? "",
+  });
 
-  // Audit-Log in bookings.notes ergänzen wäre invasiv — wir nutzen optional eine Tabelle "webhook_log"
-  // Wenn nicht vorhanden, einfach via console.log (Supabase-Logs reichen für MVP)
+  // Parallel: n8n + Gast-Email. Beide Pfade sind voneinander unabhängig.
+  const [n8nResult, mailResult] = await Promise.all([
+    pushToN8n(n8nPayload),
+    sendGuestConfirmation({ guestEmail: booking.guest_email, payload: emailPayload }),
+  ]);
+
   console.log(
     JSON.stringify({
       booking_id: booking.id,
-      n8n_status: n8nStatus,
+      booking_number: booking.booking_number,
+      lang: emailPayload.language,
+      n8n: { ok: n8nResult.ok, status: n8nResult.status },
+      mail: { ok: mailResult.ok, status: mailResult.status, detail: mailResult.ok ? undefined : mailResult.detail?.slice(0, 200) },
       ts: new Date().toISOString(),
     }),
   );
 
   return new Response(
-    JSON.stringify({ ok: n8nStatus >= 200 && n8nStatus < 300, n8n_status: n8nStatus }),
+    JSON.stringify({
+      ok: n8nResult.ok && mailResult.ok,
+      n8n: { ok: n8nResult.ok, status: n8nResult.status },
+      mail: { ok: mailResult.ok, status: mailResult.status },
+    }),
     { headers: { "Content-Type": "application/json" } },
   );
 });

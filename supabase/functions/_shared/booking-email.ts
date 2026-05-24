@@ -1,0 +1,258 @@
+// Mehrsprachige Gast-Bestätigungs-Email für eine Buchung.
+// Sprachen: DE (default), EN, FR, NL — match auf preferred_language.
+// Reine String-Templates; HTML ist bewusst inline (max. Kompatibilität in Mail-Clients).
+
+export type SupportedLang = "de" | "en" | "fr" | "nl";
+
+export interface BookingEmailInput {
+  language: string | null | undefined;
+  bookingNumber: string;
+  guestName: string;
+  roomName: string;
+  roomType: string | null;
+  checkIn: string; // ISO yyyy-mm-dd
+  checkOut: string;
+  nights: number;
+  extras: Array<{ name: string; price: number; per_night: boolean }>;
+  totalPrice: number;
+  notes: string;
+}
+
+const HOTEL = {
+  name: "Landhotel Schend",
+  street: "Auf der Heide 1",
+  city: "54552 Immerath / Vulkaneifel",
+  phone: "+49 6573 306",
+  email: "info@landhaus-schend.de",
+  web: "https://landhaus-schend.de",
+};
+
+const pickLang = (raw: string | null | undefined): SupportedLang => {
+  const code = (raw ?? "de").toLowerCase().split("-")[0];
+  if (code === "en" || code === "fr" || code === "nl") return code;
+  return "de";
+};
+
+const fmtDate = (iso: string, lang: SupportedLang): string => {
+  const d = new Date(iso + "T00:00:00Z");
+  const locale = { de: "de-DE", en: "en-GB", fr: "fr-FR", nl: "nl-NL" }[lang];
+  return d.toLocaleDateString(locale, { weekday: "long", day: "2-digit", month: "long", year: "numeric", timeZone: "UTC" });
+};
+
+const fmtEur = (n: number, lang: SupportedLang): string => {
+  const locale = { de: "de-DE", en: "en-IE", fr: "fr-FR", nl: "nl-NL" }[lang];
+  return new Intl.NumberFormat(locale, { style: "currency", currency: "EUR" }).format(n);
+};
+
+const escapeHtml = (s: string): string =>
+  s.replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string,
+  );
+
+const TXT = {
+  de: {
+    subject: (bn: string) => `Buchungsbestätigung ${bn} — Landhotel Schend`,
+    hi: (n: string) => `Liebe(r) ${n},`,
+    intro: "vielen Dank für Ihre Direktbuchung im Landhotel Schend. Wir freuen uns auf Ihren Besuch.",
+    summary: "Ihre Buchung im Überblick",
+    bookingNo: "Buchungsnummer",
+    room: "Zimmer",
+    checkIn: "Check-in",
+    checkOut: "Check-out",
+    nights: (n: number) => `${n} ${n === 1 ? "Nacht" : "Nächte"}`,
+    extras: "Zusatzleistungen",
+    perNight: "/ Nacht",
+    notesLabel: "Ihre Nachricht",
+    total: "Gesamtpreis",
+    auto: "Diese Bestätigung wurde automatisch erstellt. Bei Rückfragen, Sonderwünschen oder Änderungen erreichen Sie uns telefonisch oder per E-Mail — wir antworten in der Regel binnen weniger Stunden.",
+    season: "Hinweis: Wir öffnen saisonal von März bis September. Ihre Buchung liegt innerhalb dieses Zeitraums.",
+    bye: "Herzliche Grüße aus der Vulkaneifel",
+    fam: "Familie Beimler & Team Landhotel Schend",
+  },
+  en: {
+    subject: (bn: string) => `Booking confirmation ${bn} — Landhotel Schend`,
+    hi: (n: string) => `Dear ${n},`,
+    intro: "thank you for your direct booking at Landhotel Schend. We are looking forward to welcoming you.",
+    summary: "Your booking summary",
+    bookingNo: "Booking number",
+    room: "Room",
+    checkIn: "Check-in",
+    checkOut: "Check-out",
+    nights: (n: number) => `${n} ${n === 1 ? "night" : "nights"}`,
+    extras: "Extras",
+    perNight: "/ night",
+    notesLabel: "Your message",
+    total: "Total",
+    auto: "This confirmation was generated automatically. For any questions, special requests or changes, please reach us by phone or email — we usually reply within a few hours.",
+    season: "Note: We operate seasonally from March through September. Your booking is within that window.",
+    bye: "Warm regards from the Volcanic Eifel",
+    fam: "The Beimler family & the Landhotel Schend team",
+  },
+  fr: {
+    subject: (bn: string) => `Confirmation de réservation ${bn} — Landhotel Schend`,
+    hi: (n: string) => `Cher / Chère ${n},`,
+    intro: "merci pour votre réservation directe au Landhotel Schend. Nous nous réjouissons de votre visite.",
+    summary: "Récapitulatif de votre réservation",
+    bookingNo: "Numéro de réservation",
+    room: "Chambre",
+    checkIn: "Arrivée",
+    checkOut: "Départ",
+    nights: (n: number) => `${n} ${n === 1 ? "nuit" : "nuits"}`,
+    extras: "Services supplémentaires",
+    perNight: "/ nuit",
+    notesLabel: "Votre message",
+    total: "Total",
+    auto: "Cette confirmation est générée automatiquement. Pour toute question, demande spéciale ou modification, contactez-nous par téléphone ou e-mail — nous répondons en général sous quelques heures.",
+    season: "Information : nous sommes ouverts de mars à septembre. Votre réservation se situe dans cette période.",
+    bye: "Cordiales salutations de l'Eifel volcanique",
+    fam: "La famille Beimler et l'équipe du Landhotel Schend",
+  },
+  nl: {
+    subject: (bn: string) => `Boekingsbevestiging ${bn} — Landhotel Schend`,
+    hi: (n: string) => `Beste ${n},`,
+    intro: "hartelijk dank voor uw directe boeking bij Landhotel Schend. We kijken uit naar uw bezoek.",
+    summary: "Overzicht van uw boeking",
+    bookingNo: "Boekingsnummer",
+    room: "Kamer",
+    checkIn: "Check-in",
+    checkOut: "Check-out",
+    nights: (n: number) => `${n} ${n === 1 ? "nacht" : "nachten"}`,
+    extras: "Extra's",
+    perNight: "/ nacht",
+    notesLabel: "Uw bericht",
+    total: "Totaalprijs",
+    auto: "Deze bevestiging is automatisch aangemaakt. Voor vragen, speciale wensen of wijzigingen kunt u ons telefonisch of per e-mail bereiken — we reageren meestal binnen enkele uren.",
+    season: "Let op: wij zijn geopend van maart tot en met september. Uw boeking valt binnen deze periode.",
+    bye: "Hartelijke groet uit de Vulkaan-Eifel",
+    fam: "Familie Beimler & het team van Landhotel Schend",
+  },
+} as const;
+
+export const renderBookingEmail = (input: BookingEmailInput) => {
+  const lang = pickLang(input.language);
+  const t = TXT[lang];
+
+  const ci = fmtDate(input.checkIn, lang);
+  const co = fmtDate(input.checkOut, lang);
+  const total = fmtEur(input.totalPrice, lang);
+
+  const extrasLines = input.extras.length === 0
+    ? ""
+    : input.extras
+        .map((e) => `<li>${escapeHtml(e.name)} — ${fmtEur(e.price, lang)}${e.per_night ? ` ${t.perNight}` : ""}</li>`)
+        .join("");
+
+  const extrasText = input.extras.length === 0
+    ? ""
+    : input.extras
+        .map((e) => `  - ${e.name} — ${fmtEur(e.price, lang)}${e.per_night ? ` ${t.perNight}` : ""}`)
+        .join("\n");
+
+  const notesBlock = input.notes
+    ? `<p style="margin:18px 0 0;padding:14px 16px;background:#f6f3ee;border-left:3px solid #b8985a;color:#3a3a3a;font-size:14px;line-height:1.55;">
+         <strong>${t.notesLabel}:</strong><br>${escapeHtml(input.notes).replace(/\n/g, "<br>")}
+       </p>`
+    : "";
+
+  const html = `<!doctype html>
+<html lang="${lang}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>${escapeHtml(t.subject(input.bookingNumber))}</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f1ea;font-family:Georgia,'Times New Roman',serif;color:#2a2a2a;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1ea;padding:32px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e6e0d5;">
+          <tr>
+            <td style="padding:36px 40px 18px;border-bottom:1px solid #e6e0d5;text-align:center;">
+              <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;letter-spacing:0.22em;color:#b8985a;text-transform:uppercase;margin-bottom:6px;">★★★ Superior</div>
+              <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:26px;color:#2a2a2a;letter-spacing:0.02em;">${HOTEL.name}</h1>
+              <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:#7a7a7a;margin-top:4px;">${HOTEL.city}</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:32px 40px 8px;">
+              <p style="margin:0 0 12px;font-size:16px;line-height:1.6;">${escapeHtml(t.hi(input.guestName))}</p>
+              <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#3a3a3a;">${t.intro}</p>
+
+              <h2 style="margin:24px 0 14px;font-family:Georgia,'Times New Roman',serif;font-size:18px;color:#2a2a2a;border-bottom:1px solid #e6e0d5;padding-bottom:8px;">${t.summary}</h2>
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:14px;line-height:1.7;">
+                <tr><td style="color:#7a7a7a;width:160px;">${t.bookingNo}</td><td style="font-weight:600;color:#2a2a2a;letter-spacing:0.04em;">${escapeHtml(input.bookingNumber)}</td></tr>
+                <tr><td style="color:#7a7a7a;">${t.room}</td><td style="color:#2a2a2a;">${escapeHtml(input.roomName)}${input.roomType ? ` <span style="color:#7a7a7a;">— ${escapeHtml(input.roomType)}</span>` : ""}</td></tr>
+                <tr><td style="color:#7a7a7a;">${t.checkIn}</td><td style="color:#2a2a2a;">${escapeHtml(ci)}</td></tr>
+                <tr><td style="color:#7a7a7a;">${t.checkOut}</td><td style="color:#2a2a2a;">${escapeHtml(co)} <span style="color:#7a7a7a;">(${t.nights(input.nights)})</span></td></tr>
+              </table>
+
+              ${extrasLines ? `<h3 style="margin:24px 0 8px;font-family:Georgia,'Times New Roman',serif;font-size:15px;color:#2a2a2a;">${t.extras}</h3><ul style="margin:0;padding-left:20px;font-family:'Helvetica Neue',Arial,sans-serif;font-size:14px;line-height:1.7;color:#3a3a3a;">${extrasLines}</ul>` : ""}
+
+              ${notesBlock}
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 4px;border-top:1px solid #e6e0d5;">
+                <tr><td style="padding:18px 0 0;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;letter-spacing:0.22em;color:#b8985a;text-transform:uppercase;">${t.total}</td>
+                    <td align="right" style="padding:18px 0 0;font-family:Georgia,'Times New Roman',serif;font-size:22px;color:#2a2a2a;font-weight:600;">${total}</td></tr>
+              </table>
+
+              <p style="margin:32px 0 0;padding:16px;background:#f6f3ee;font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.6;color:#5a5a5a;">${t.auto}</p>
+              <p style="margin:14px 0 0;font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:#7a7a7a;font-style:italic;">${t.season}</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:24px 40px 32px;border-top:1px solid #e6e0d5;font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.7;color:#5a5a5a;">
+              <p style="margin:0 0 6px;">${t.bye}</p>
+              <p style="margin:0 0 18px;color:#2a2a2a;">${t.fam}</p>
+              <div style="border-top:1px solid #e6e0d5;padding-top:14px;font-size:12px;color:#7a7a7a;">
+                <strong style="color:#2a2a2a;">${HOTEL.name}</strong><br>
+                ${HOTEL.street} · ${HOTEL.city}<br>
+                Tel <a href="tel:${HOTEL.phone.replace(/\s/g, "")}" style="color:#5a5a5a;text-decoration:none;">${HOTEL.phone}</a> · <a href="mailto:${HOTEL.email}" style="color:#5a5a5a;text-decoration:none;">${HOTEL.email}</a> · <a href="${HOTEL.web}" style="color:#5a5a5a;text-decoration:none;">${HOTEL.web.replace("https://", "")}</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+  const text = [
+    t.hi(input.guestName),
+    "",
+    t.intro,
+    "",
+    `=== ${t.summary} ===`,
+    `${t.bookingNo}: ${input.bookingNumber}`,
+    `${t.room}: ${input.roomName}${input.roomType ? ` (${input.roomType})` : ""}`,
+    `${t.checkIn}: ${ci}`,
+    `${t.checkOut}: ${co} (${t.nights(input.nights)})`,
+    extrasText ? `\n${t.extras}:\n${extrasText}` : "",
+    input.notes ? `\n${t.notesLabel}:\n${input.notes}` : "",
+    "",
+    `${t.total}: ${total}`,
+    "",
+    t.auto,
+    "",
+    t.season,
+    "",
+    t.bye,
+    t.fam,
+    "",
+    `${HOTEL.name}`,
+    `${HOTEL.street} · ${HOTEL.city}`,
+    `Tel ${HOTEL.phone} · ${HOTEL.email} · ${HOTEL.web}`,
+  ]
+    .filter((line) => line !== undefined && line !== null)
+    .join("\n");
+
+  return {
+    subject: t.subject(input.bookingNumber),
+    html,
+    text,
+    language: lang,
+    fromName: HOTEL.name,
+    replyTo: HOTEL.email,
+  };
+};
