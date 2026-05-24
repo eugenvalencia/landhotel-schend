@@ -76,7 +76,11 @@ export default function HeaderMegaMenu({
           open ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-1 pointer-events-none"
         }`}
       >
-        <div className="bg-background/95 backdrop-blur-xl border border-border/60 rounded-lg shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)] overflow-hidden flex w-[440px]">
+        <div
+          className={`bg-background/95 backdrop-blur-xl border border-border/60 rounded-lg shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)] overflow-hidden flex ${
+            previewImage ? "w-[440px]" : "min-w-[260px]"
+          }`}
+        >
           {/* Items column */}
           <ul className="flex-1 p-3">
             {items.map((it) => (

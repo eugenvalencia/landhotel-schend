@@ -8,7 +8,6 @@ import ThemeToggle from "@/components/ThemeToggle";
 import HeaderWeather from "@/components/HeaderWeather";
 import HeaderMegaMenu from "@/components/HeaderMegaMenu";
 import { PAKETE } from "@/lib/pakete";
-import { SCHEND_HEROES } from "@/lib/photos";
 
 const ROOMS_MEGA = [
   { label: "Einzelzimmer", to: "/rooms/d47bcebd-a254-4880-8952-72a2929d2520", hint: "Gemütlich für Reisende — ab 65 €" },
@@ -143,8 +142,6 @@ export default function SiteHeader() {
                   label={item.label}
                   anchorId="rooms"
                   items={ROOMS_MEGA}
-                  previewImage={SCHEND_HEROES[1]}
-                  previewCaption="21 Zimmer mit Balkon"
                   onAnchorClick={handleNav}
                 />
               );
@@ -156,8 +153,6 @@ export default function SiteHeader() {
                   label={item.label}
                   anchorId="pakete"
                   items={PAKETE_MEGA}
-                  previewImage="/fotos/maar-blick-mit-kindern-landhotel-schend.jpg"
-                  previewCaption="Eifel-Auszeit"
                   onAnchorClick={handleNav}
                 />
               );
