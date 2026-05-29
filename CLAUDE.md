@@ -67,6 +67,10 @@ npm run lint
 
 ## Wichtigste Memorys
 
-`[[project-landhaus-schend]]` · `[[feedback-schend-naming]]` · `[[feedback-verify-before-deploy]]` · `[[schend-language-strategy]]` · `[[open-problem-finanzamt-online-buchung]]`
+`[[project-landhaus-schend]]` · `[[feedback-schend-naming]]` · `[[feedback-verify-before-deploy]]` · `[[schend-language-strategy]]` · `[[open-problem-finanzamt-online-buchung]]` · `[[karpathy-code-rules]]`
+
+## Code-Doctrine
+
+> Vor jeder Coding-Session: [`../CONEXA-CODE-RULES.md`](../CONEXA-CODE-RULES.md) — Karpathy-4-Regeln + 3 Conexa-Ergänzungen. Regel 6 (Build-Test bevor Deploy) hat hier explizite Form: `npm run build && npm run preview` PFLICHT vor `./deploy.sh` oder Push (siehe oben "Deploy-Regel"). Lock-File-Sync nicht vergessen — CI nutzt `npm ci` strict.
 
 @README.md
