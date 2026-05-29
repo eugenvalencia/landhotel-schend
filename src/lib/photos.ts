@@ -1,10 +1,10 @@
 // Bilder vom Original-Server des Landhotel Schend (Domain bleibt landhaus-schend.de).
-// Auf der Preview-Site reverse-proxyt Caddy /pics/* -> landhaus-schend.de und
-// Cloudflare cached danach am Edge -> Same-Origin + 0 Roundtrip.
-// In Vite-Dev haben wir keinen reverse-proxy, also greift man direkt zur Quelle.
-// HotelImage zeigt einen LS-Platzhalter, falls eine URL nicht erreichbar ist.
-
-const BASE = import.meta.env.DEV ? "https://landhaus-schend.de/pics" : "/pics";
+// Cross-Origin auch in PROD: CF Pages hat keinen Reverse-Proxy für /pics/*,
+// der SPA-Fallback in _redirects würde sonst alle Pics-Pfade auf index.html umlenken
+// und HotelImage fiele auf den Unsplash-Default zurück.
+// landhaus-schend.de liefert `Access-Control-Allow-Origin: *`, also OK.
+// TODO: nach IONOS→Hetzner-Cutover BASE auf Hetzner-Pics-Endpoint umstellen.
+const BASE = "https://landhaus-schend.de/pics";
 
 export const SCHEND_HEROES = [
   `${BASE}/01_startseite/b0_1.jpg`,

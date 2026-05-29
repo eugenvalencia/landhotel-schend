@@ -59,9 +59,9 @@ npm run lint
 
 | Was | Wo |
 |---|---|
-| Live | `landhaus-schend.de` (Hetzner, Cutover IONOS → Hetzner abgeschlossen) |
-| Preview | `schend.conexadigital.eu` (Hetzner) |
-| DB | Supabase EU-central-1 (Frankfurt) |
+| Aktive Bau-Site | `schend.conexadigital.eu` (Hetzner) — hier werden alle Änderungen entwickelt + getestet |
+| Live (Gäste-Site) | `landhaus-schend.de` — Hosting-Provider noch zu klären (IONOS-Daten vorhanden, Hetzner als Ziel). Umzug erfolgt erst wenn Bau-Site fertig ist. |
+| DB | Supabase EU-central-1 (Frankfurt, Project `eyplzqxikdznjiemzyoz` im outlook-Account) |
 | Mail | Resend |
 | Analytics | Umami (`analytics.conexadigital.eu`) |
 
