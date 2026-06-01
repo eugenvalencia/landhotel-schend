@@ -73,7 +73,7 @@ const Barrierefreiheit = () => {
           <h2 className="font-display text-xl md:text-2xl mb-3">3. Erstellung dieser Erklärung</h2>
           <p>
             Diese Erklärung wurde am
-            {" "}<strong>{new Date().toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })}</strong>{" "}
+            {" "}<strong>01. Juni 2026</strong>{" "}
             erstellt.
           </p>
           <p className="mt-3">
@@ -83,7 +83,7 @@ const Barrierefreiheit = () => {
           </p>
           <p className="mt-3">
             Eine erneute Überprüfung erfolgt mindestens jährlich, zuletzt am
-            {" "}<strong>{new Date().toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })}</strong>.
+            {" "}<strong>01. Juni 2026</strong>.
           </p>
         </section>
 
@@ -170,7 +170,7 @@ const Barrierefreiheit = () => {
         </section>
 
         <p className="text-xs text-muted-foreground pt-4">
-          Stand: {new Date().toLocaleDateString("de-DE", { year: "numeric", month: "long" })}
+          Stand: Juni 2026
         </p>
       </div>
     </main>

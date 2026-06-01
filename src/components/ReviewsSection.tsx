@@ -156,10 +156,13 @@ export default function ReviewsSection() {
   const prev = () => setIdx((i) => (i - 1 + REVIEWS.length) % REVIEWS.length);
   const next = () => setIdx((i) => (i + 1) % REVIEWS.length);
 
+  // Auto-Rotate: bei prefers-reduced-motion AUS (WCAG 2.2.2). Timer haengt an
+  // idx -> nach manuellem Blaettern volle 8s statt sofortigem Weiterspringen.
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const t = setInterval(() => setIdx((i) => (i + 1) % REVIEWS.length), 8000);
     return () => clearInterval(t);
-  }, []);
+  }, [idx]);
 
   return (
     <section className="bg-gradient-to-b from-background via-muted/50 to-background">

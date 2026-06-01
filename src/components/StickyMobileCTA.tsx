@@ -79,6 +79,7 @@ export default function StickyMobileCTA() {
         <Link
           to="/booking"
           aria-label="Direkt buchen — provisionsfrei"
+          tabIndex={show ? undefined : -1}
           className="group relative flex flex-col items-center justify-center gap-1.5 px-4 py-5 min-w-[64px] bg-card/95 backdrop-blur-md border-2 border-foreground/15 rounded-md shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:border-secondary hover:shadow-[0_12px_28px_rgba(0,0,0,0.18)] hover:-translate-y-0.5 hover:rotate-[-2deg] transition-all duration-300"
         >
           {/* Inner Hairline-Frame für Stempel-Optik */}

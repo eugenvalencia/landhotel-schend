@@ -204,7 +204,7 @@ const AGB = () => {
         </section>
 
         <p className="text-xs text-muted-foreground pt-4">
-          Stand: {new Date().toLocaleDateString("de-DE", { year: "numeric", month: "long" })}
+          Stand: Juni 2026
         </p>
       </div>
     </main>

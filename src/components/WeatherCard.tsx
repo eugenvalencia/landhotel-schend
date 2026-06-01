@@ -292,8 +292,8 @@ export default function WeatherCard({
                 <Detail icon={Droplets} label={`${Math.round(data.current.humidity)}% Luftf.`} />
                 <Detail icon={Thermometer} label={`${data.current.precipitation.toFixed(1)} mm/h Niederschlag`} />
                 <Detail icon={Compass} label={`${Math.round(data.current.windDirection)}°`} />
-                <Detail icon={Sunrise} label={`SA ${sunriseHHMM(data.daily[0].sunrise)}`} />
-                <Detail icon={Sunset}  label={`SU ${sunriseHHMM(data.daily[0].sunset)}`} />
+                {data.daily?.[0] && <Detail icon={Sunrise} label={`SA ${sunriseHHMM(data.daily[0].sunrise)}`} />}
+                {data.daily?.[0] && <Detail icon={Sunset}  label={`SU ${sunriseHHMM(data.daily[0].sunset)}`} />}
               </div>
             </div>
 
