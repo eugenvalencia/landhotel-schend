@@ -7,8 +7,14 @@ type Props = React.ImgHTMLAttributes<HTMLImageElement> & {
   fallbackSrc?: string;
 };
 
-const DEFAULT_FALLBACK_SRC =
-  "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800&q=80";
+// Kein externer Stock-Fallback mehr (war ein Unsplash-Foto). Gründe:
+//  1) DSGVO/US-Transfer — Unsplash-CDN überträgt Besucher-IP.
+//  2) Ehrlichkeit — ein generisches Stockzimmer täuscht ein Zimmer vor, das es
+//     nicht zeigt. Ein fehlendes Bild fällt jetzt auf den gebrandeten
+//     "LS"-Platzhalter (unten) zurück = klares "Foto folgt" statt Fake.
+// Echter Fix: die tatsächlichen Zimmer-Fotos same-origin bereitstellen
+// (landhaus-schend.de/pics/02_zimmer/* liefert aktuell HTML statt Bild → fehlt).
+const DEFAULT_FALLBACK_SRC: string | undefined = undefined;
 
 /**
  * Renders an <img>; if loading fails, swaps to a fallback image and finally
