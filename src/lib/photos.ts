@@ -21,9 +21,10 @@ export const SCHEND_HEROES = [
  * Reihenfolge: Hauptbild (Front), Detail-Winkel _a, Detail-Winkel _b, Außen/Lifestyle.
  * Wo der Server für einen Typ keine _b Variante hat, ziehen wir auf das passende Haus-Bild.
  */
-// Familienzimmer: echte lokale Fotos (self-hosted). Die Server-/pics-Zimmerbilder
-// existieren nicht mehr (liefern HTML) — hier die echten Aufnahmen, Hauptbild zuerst.
-const FAMILIENZIMMER = [
+// Echte lokale Zimmer-Fotos (self-hosted). Die Server-/pics-Zimmerbilder existieren
+// nicht mehr (liefern HTML). Stammen vom Familienzimmer — laut Eugen praktisch dasselbe
+// Zimmer wie das Doppelzimmer (Doppelbett), daher fuer beide Typen genutzt. Hauptbild zuerst.
+const ECHTE_ZIMMER_FOTOS = [
   "/fotos/familienzimmer-doppelbett-landhotel-schend-vulkaneifel.jpg",
   "/fotos/familienzimmer-mit-nebenraum-landhotel-schend-vulkaneifel.jpg",
   "/fotos/familienzimmer-mit-kinderbetten-und-bad-landhotel-schend-vulkaneifel.jpg",
@@ -38,32 +39,12 @@ export const SCHEND_ROOM_GALLERY: Record<string, string[]> = {
     `${BASE}/02_zimmer/b2_c.jpg`,
     `${BASE}/02_zimmer/b2_d.jpg`,
   ],
-  "Doppelzimmer": [
-    `${BASE}/02_zimmer/b1_1.jpg`,
-    `${BASE}/02_zimmer/b1_1_a.jpg`,
-    `${BASE}/02_zimmer/b1_1_b.jpg`,
-    `${BASE}/03_haus/b1_3.jpg`,
-  ],
-  "Doppelzimmer Standard": [
-    `${BASE}/02_zimmer/b1_1.jpg`,
-    `${BASE}/02_zimmer/b1_1_a.jpg`,
-    `${BASE}/02_zimmer/b1_1_b.jpg`,
-    `${BASE}/03_haus/b1_3.jpg`,
-  ],
-  "Komfort": [
-    `${BASE}/02_zimmer/b1_2.jpg`,
-    `${BASE}/02_zimmer/b1_2_a.jpg`,
-    `${BASE}/02_zimmer/b1_2_b.jpg`,
-    `${BASE}/03_haus/b1_4.jpg`,
-  ],
-  "Doppelzimmer Komfort": [
-    `${BASE}/02_zimmer/b1_2.jpg`,
-    `${BASE}/02_zimmer/b1_2_a.jpg`,
-    `${BASE}/02_zimmer/b1_2_b.jpg`,
-    `${BASE}/03_haus/b1_4.jpg`,
-  ],
-  "Familie": FAMILIENZIMMER,
-  "Familienzimmer": FAMILIENZIMMER,
+  "Doppelzimmer": ECHTE_ZIMMER_FOTOS,
+  "Doppelzimmer Standard": ECHTE_ZIMMER_FOTOS,
+  "Komfort": ECHTE_ZIMMER_FOTOS,
+  "Doppelzimmer Komfort": ECHTE_ZIMMER_FOTOS,
+  "Familie": ECHTE_ZIMMER_FOTOS,
+  "Familienzimmer": ECHTE_ZIMMER_FOTOS,
   "Junior Suite": [
     `${BASE}/02_zimmer/b1_4.jpg`,
     `${BASE}/02_zimmer/b1_4_a.jpg`,
