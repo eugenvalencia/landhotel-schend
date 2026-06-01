@@ -38,3 +38,4 @@ supabase/.temp/
 
 # Roh-Foto-Uploads (lokales Backup der Originale, nicht deployen/committen)
 /_originale-upload-2026-06-01/
+/public/fotos/karin 01.02.2026/

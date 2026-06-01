@@ -65,7 +65,21 @@ Alt-Texte unten zum Einsetzen, sobald ein Bild in eine Seite/Galerie kommt
 |---|---|
 | antiker-kuechenherd-mit-deko-landhotel-schend.jpg | Antiker emaillierter Küchenherd als nostalgische Dekoration im Landhotel Schend |
 
-## Nicht übernommen (3)
+## Nachtrag — „karin"-Upload (20 Roh, davon 8 übernommen)
+
+| Datei (`public/fotos/`) | Alt-Text | Hinweis |
+|---|---|---|
+| **doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg** | Gemütliches Doppelzimmer mit Holzbett im Landhotel Schend in der Vulkaneifel | ⭐ **Einziges echtes Zimmer-Foto** (aus Screenshot, UI-Balken gecroppt). Zimmer-Fotos fehlen der Site sonst komplett — Kandidat für die Doppelzimmer-Galerie. |
+| landhotel-schend-zeichnung-innenhof-historisch.jpg | Bleistift-Zeichnung des Landhotel Schend mit Innenhof und Eingang | Handgezeichnet → ersetzt das History-Bild in „Über uns" (live). |
+| hotelfront-im-sommer-mit-blumenkaesten-landhotel-schend-vulkaneifel.jpg | Sommerliche Hotelfront des Landhotel Schend mit Blumenkästen in der Vulkaneifel | Top-Außenansicht, blauer Himmel. |
+| sonnenterrasse-mit-hortensien-landhotel-schend-vulkaneifel.jpg | Sonnige Terrasse mit blühenden Hortensien im Landhotel Schend in der Vulkaneifel | |
+| sandstein-brunnen-mit-schwengelpumpe-landhotel-schend.jpg | Historischer Sandstein-Brunnen mit Schwengelpumpe im Garten des Landhotel Schend | |
+| hoteleingang-mit-schneebaum-landhotel-schend-vulkaneifel.jpg | Hoteleingang des Landhotel Schend mit schneebedecktem Baum in der Vulkaneifel | Bestes Winter-Motiv. |
+| hotelfront-mit-lichterketten-blaue-stunde-landhotel-schend-vulkaneifel.jpg | Festlich beleuchtete Hotelfront des Landhotel Schend zur blauen Stunde | Nur 768×682 — klein, eher als kleines Galerie-Bild. |
+
+Verworfen: ~11 Near-Duplikat-Schneebilder + 2 Screenshots mit UI/Text-Overlay (nur die 2–3 besten Winterbilder übernommen).
+
+## Nicht übernommen (Upload 01.06.2026 — 3)
 
 - `20191130_105922.jpg` — unscharf/schief, kein erkennbares Motiv.
 - `20191206_093123.jpg` — gedreht, sehr privat wirkende Weihnachtsdeko.
