@@ -96,12 +96,12 @@ export const SCHEND_ROOM_PHOTO: Record<string, string> = Object.fromEntries(
  * Restaurant: Innenraum, Terrasse, Theke, Saal — verschiedene Stimmungen
  * fuer die Magazin-Sektion + Marquee.
  */
+// Self-hosted (lokal optimiert aus dem Original-Server, b1_d5 war tot/HTML).
 export const SCHEND_RESTAURANT_GALLERY = [
-  `${BASE}/04_gastro/b1_d1.jpg`,
-  `${BASE}/04_gastro/b1_d2.jpg`,
-  `${BASE}/04_gastro/b1_d3.jpg`,
-  `${BASE}/04_gastro/b1_d4.jpg`,
-  `${BASE}/04_gastro/b1_d5.jpg`,
+  "/fotos/restaurant-panorama-1-landhotel-schend.jpg",
+  "/fotos/restaurant-panorama-2-landhotel-schend.jpg",
+  "/fotos/restaurant-panorama-3-landhotel-schend.jpg",
+  "/fotos/restaurant-panorama-4-landhotel-schend.jpg",
 ];
 
 export const SCHEND_RESTAURANT = SCHEND_RESTAURANT_GALLERY[0];
@@ -116,10 +116,21 @@ export const SCHEND_HAUS_GALLERY = [
   `${BASE}/03_haus/b1_4.jpg`,
 ];
 
-export const SCHEND_GALLERY = Array.from({ length: 12 }, (_, i) => {
-  const n = String(i + 1).padStart(2, "0");
-  return `${BASE}/07_galerie/${n}.jpg`;
-});
+// Self-hosted (lokal optimiert aus 07_galerie, SEO-Dateinamen, Reihenfolge erhalten).
+export const SCHEND_GALLERY = [
+  "/fotos/hotelgarten-mit-brunnen-landhotel-schend.jpg",
+  "/fotos/hotelfront-mit-blumenbeet-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/eingang-mit-torbogen-und-hortensien-landhotel-schend.jpg",
+  "/fotos/innenhof-mit-balkonen-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/landhaus-schend-schriftzug-fassade-landhotel-schend.jpg",
+  "/fotos/winterlicher-innenhof-landhotel-schend.jpg",
+  "/fotos/gartenseite-mit-terrasse-landhotel-schend.jpg",
+  "/fotos/weihnachtsstimmung-im-schnee-landhotel-schend.jpg",
+  "/fotos/fassade-mit-hotelschild-landhotel-schend.jpg",
+  "/fotos/dorfansicht-immerath-landhotel-schend.jpg",
+  "/fotos/radfahrer-am-radweg-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/wanderer-am-eifelmaar-landhotel-schend-vulkaneifel.jpg",
+];
 
 export const SCHEND_LOGO = `${BASE}/logo_hell_footer.png`;
 
