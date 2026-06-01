@@ -3,14 +3,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Loader2, MapPin, Wind, Droplets, Thermometer, Sunrise, Sunset, Compass, Navigation, Mountain, Footprints, Bike, Coffee, Waves, Castle, Flower2, Cloud } from "lucide-react";
+import { useWeather } from "@/hooks/useWeather";
 
 // Landhotel Schend, Immerath — Default-Position
 const HOTEL_LAT = 50.1303;
 const HOTEL_LON = 6.9594;
 const HOTEL_LABEL = "Immerath · Hotel";
-
-// Auto-Refresh alle 15 Minuten
-const REFRESH_MS = 15 * 60 * 1000;
 
 interface WeatherData {
   current: {
@@ -48,12 +46,6 @@ interface WeatherCardProps {
   /** Eigene Ueberschrift; null = keine Ueberschrift */
   title?: string | null;
 }
-
-const buildUrl = (lat: number, lon: number) =>
-  `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-  `&current=temperature_2m,apparent_temperature,weathercode,windspeed_10m,winddirection_10m,relative_humidity_2m,precipitation` +
-  `&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,sunrise,sunset` +
-  `&timezone=Europe/Berlin&forecast_days=5`;
 
 const codeLabel = (code: number): { icon: string; label: string; mood: string } => {
   if (code === 0) return { icon: "☀️", label: "Klar",                 mood: "Perfekt zum Wandern" };
@@ -148,9 +140,11 @@ export default function WeatherCard({
   title = null,
 }: WeatherCardProps) {
   const [pos, setPos] = useState<Position | null>(null);
-  const [data, setData] = useState<WeatherData | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [gpsLoading, setGpsLoading] = useState(false);
+
+  // Geteilter Wetter-Cache: gleiche Koordinaten ⇒ ein Request für alle
+  // Wetter-Komponenten (HeaderWeather + WeatherCard) statt mehrfacher Fetches.
+  const { data: raw, isError } = useWeather(pos?.lat ?? null, pos?.lon ?? null);
 
   const requestGps = useCallback(() => {
     if (!("geolocation" in navigator)) {
@@ -186,56 +180,35 @@ export default function WeatherCard({
     else setHotel();
   }, [defaultMode, requestGps, setHotel]);
 
-  // Wetter laden + 15-Min-Refresh
-  useEffect(() => {
-    if (!pos) return;
-    let active = true;
-    setError(null);
-
-    const load = () => {
-      fetch(buildUrl(pos.lat, pos.lon))
-        .then((r) => r.json())
-        .then((raw) => {
-          if (!active || !raw?.current || !raw?.daily) {
-            setError("Keine Wetterdaten verfügbar");
-            return;
-          }
-          const cur = raw.current;
-          const dly = raw.daily;
-          const daily: WeatherData["daily"] = dly.time.map((d: string, i: number) => ({
-            date: d,
-            weatherCode: Number(dly.weathercode[i] ?? 0),
-            tMax: Number(dly.temperature_2m_max[i] ?? 0),
-            tMin: Number(dly.temperature_2m_min[i] ?? 0),
-            rainMm: Number(dly.precipitation_sum[i] ?? 0),
-            sunrise: String(dly.sunrise[i] ?? ""),
-            sunset: String(dly.sunset[i] ?? ""),
-          }));
-          setData({
-            current: {
-              temperature: Number(cur.temperature_2m ?? 0),
-              apparent: Number(cur.apparent_temperature ?? 0),
-              weatherCode: Number(cur.weathercode ?? 0),
-              windSpeed: Number(cur.windspeed_10m ?? 0),
-              windDirection: Number(cur.winddirection_10m ?? 0),
-              humidity: Number(cur.relative_humidity_2m ?? 0),
-              precipitation: Number(cur.precipitation ?? 0),
-            },
-            daily,
-          });
-        })
-        .catch(() => {
-          if (active) setError("Wetter-API nicht erreichbar");
-        });
+  // Open-Meteo-Antwort → internes WeatherData-Format. Fetch, Caching und der
+  // 15-Min-Refresh liegen jetzt im geteilten useWeather-Hook.
+  const data = useMemo<WeatherData | null>(() => {
+    if (!raw?.current || !raw?.daily) return null;
+    const cur = raw.current;
+    const dly = raw.daily;
+    return {
+      current: {
+        temperature: Number(cur.temperature_2m ?? 0),
+        apparent: Number(cur.apparent_temperature ?? 0),
+        weatherCode: Number(cur.weathercode ?? 0),
+        windSpeed: Number(cur.windspeed_10m ?? 0),
+        windDirection: Number(cur.winddirection_10m ?? 0),
+        humidity: Number(cur.relative_humidity_2m ?? 0),
+        precipitation: Number(cur.precipitation ?? 0),
+      },
+      daily: dly.time.map((d, i) => ({
+        date: d,
+        weatherCode: Number(dly.weathercode[i] ?? 0),
+        tMax: Number(dly.temperature_2m_max[i] ?? 0),
+        tMin: Number(dly.temperature_2m_min[i] ?? 0),
+        rainMm: Number(dly.precipitation_sum[i] ?? 0),
+        sunrise: String(dly.sunrise[i] ?? ""),
+        sunset: String(dly.sunset[i] ?? ""),
+      })),
     };
+  }, [raw]);
 
-    load();
-    const interval = window.setInterval(load, REFRESH_MS);
-    return () => {
-      active = false;
-      window.clearInterval(interval);
-    };
-  }, [pos]);
+  const error = isError ? "Wetter-API nicht erreichbar" : null;
 
   const today = useMemo(() => (data ? codeLabel(data.current.weatherCode) : null), [data]);
   const activities = useMemo(() => (data ? activityTipsForCode(data.current.weatherCode) : null), [data]);

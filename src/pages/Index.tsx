@@ -86,7 +86,7 @@ const Index = () => {
   useSEO({
     title: "3-Sterne-Superior Hotel in der Vulkaneifel",
     description:
-      "Familiengeführtes Landhotel in Immerath mit 21 Zimmern, hauseigener Eifeler Landküche und Halbpension auf Wunsch. Direkt buchen — provisionsfrei. Ideal für Kurzurlaub, Wandern und Motorradfahren in der Vulkaneifel.",
+      "Familiengeführtes 3-Sterne-Hotel in Immerath, Vulkaneifel — 21 Zimmer, Eifeler Landküche, Halbpension. Ideal zum Wandern. Provisionsfrei direkt buchen.",
     canonical: "/",
   });
 

@@ -2,6 +2,7 @@ import {
   Phone, Mail, Globe, MapPin, Car, Map, Train, Plane, Navigation, Copy, Check,
 } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const HOTEL_ADDRESS = "Landhotel Schend, Hauptstraße 9, 54552 Immerath, Deutschland";
@@ -30,6 +31,7 @@ const DISTANCES_BENELUX: { name: string; time: string }[] = [
 
 export default function LocationSection() {
   const [copied, setCopied] = useState(false);
+  const [mapConsent, setMapConsent] = useState(false);
 
   const copyCoords = async () => {
     try {
@@ -55,17 +57,46 @@ export default function LocationSection() {
           </p>
         </div>
 
-        {/* Map — Hairline-Border, sanfte Rundung, leichter Schatten */}
+        {/* Map — DSGVO-Zwei-Klick: das Google-Maps-iframe lädt erst nach
+            ausdrücklicher Zustimmung. Ohne Consent wird keine Besucher-IP an
+            Google (USA) übertragen. */}
         <div className="border border-border/70 rounded-md overflow-hidden shadow-card mb-10">
-          <iframe
-            src={MAP_SRC}
-            title="Landhotel Schend, Hauptstraße 9, 54552 Immerath – auf Google Maps"
-            className="w-full h-[360px] md:h-[480px] block"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+          {mapConsent ? (
+            <iframe
+              src={MAP_SRC}
+              title="Landhotel Schend, Hauptstraße 9, 54552 Immerath – auf Google Maps"
+              className="w-full h-[360px] md:h-[480px] block"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          ) : (
+            <div className="w-full h-[360px] md:h-[480px] flex flex-col items-center justify-center gap-4 bg-muted/40 px-6 text-center">
+              <Map className="h-8 w-8 text-secondary" strokeWidth={1.25} />
+              <p className="font-display text-xl text-foreground">Karte von Google Maps</p>
+              <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
+                Beim Laden der Karte werden Daten — u.&nbsp;a. Ihre IP-Adresse — an
+                Google übertragen, auch in die USA. Erst nach Ihrer Zustimmung wird
+                die interaktive Karte geladen. Mehr dazu in unseren{" "}
+                <Link
+                  to="/datenschutz"
+                  className="text-secondary underline hover:no-underline"
+                >
+                  Datenschutzhinweisen
+                </Link>
+                .
+              </p>
+              <Button
+                onClick={() => setMapConsent(true)}
+                size="lg"
+                variant="outline"
+                className="rounded-sm uppercase tracking-[0.18em] text-xs px-7 border-primary/40 mt-1"
+              >
+                <Map className="h-4 w-4" strokeWidth={1.5} /> Karte laden
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Route actions — editorial outline buttons */}
