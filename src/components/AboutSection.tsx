@@ -1,7 +1,6 @@
 import type { CSSProperties } from "react";
 import { HotelImage } from "@/components/HotelImage";
 import { useReveal } from "@/hooks/useMagnetic";
-import historyPhoto from "@/assets/landhotel-history-bw.jpg";
 
 const TIMELINE = [
   { year: "1856", event: "Grundhaus erbaut — Gasthaus & Poststelle" },
@@ -41,9 +40,9 @@ export default function AboutSection() {
         <div className="lg:col-span-6">
           <div className="aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden shadow-elevated">
             <HotelImage
-              src={historyPhoto}
-              alt="Historisches Schwarz-Weiß Foto des Landhotels Schend in Immerath, ca. 1950er Jahre"
-              className="w-full h-full object-cover sepia-[0.18] contrast-110"
+              src="/fotos/landhotel-schend-zeichnung-innenhof-historisch.jpg"
+              alt="Bleistift-Zeichnung des Landhotel Schend in Immerath mit Innenhof und Eingang"
+              className="w-full h-full object-cover object-center contrast-110"
             />
           </div>
         </div>
