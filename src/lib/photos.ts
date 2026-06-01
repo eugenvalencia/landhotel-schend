@@ -21,6 +21,16 @@ export const SCHEND_HEROES = [
  * Reihenfolge: Hauptbild (Front), Detail-Winkel _a, Detail-Winkel _b, Außen/Lifestyle.
  * Wo der Server für einen Typ keine _b Variante hat, ziehen wir auf das passende Haus-Bild.
  */
+// Familienzimmer: echte lokale Fotos (self-hosted). Die Server-/pics-Zimmerbilder
+// existieren nicht mehr (liefern HTML) — hier die echten Aufnahmen, Hauptbild zuerst.
+const FAMILIENZIMMER = [
+  "/fotos/familienzimmer-doppelbett-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/familienzimmer-mit-nebenraum-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/familienzimmer-mit-kinderbetten-und-bad-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/familienzimmer-schlafbereich-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/familienzimmer-wohnbereich-mit-tv-landhotel-schend-vulkaneifel.jpg",
+];
+
 export const SCHEND_ROOM_GALLERY: Record<string, string[]> = {
   "Einzelzimmer": [
     `${BASE}/02_zimmer/b2_a.jpg`,
@@ -52,18 +62,8 @@ export const SCHEND_ROOM_GALLERY: Record<string, string[]> = {
     `${BASE}/02_zimmer/b1_2_b.jpg`,
     `${BASE}/03_haus/b1_4.jpg`,
   ],
-  "Familie": [
-    `${BASE}/02_zimmer/b1_3.jpg`,
-    `${BASE}/02_zimmer/b1_3_a.jpg`,
-    `${BASE}/02_zimmer/b1_3_b.jpg`,
-    `${BASE}/03_haus/b1_2.jpg`,
-  ],
-  "Familienzimmer": [
-    `${BASE}/02_zimmer/b1_3.jpg`,
-    `${BASE}/02_zimmer/b1_3_a.jpg`,
-    `${BASE}/02_zimmer/b1_3_b.jpg`,
-    `${BASE}/03_haus/b1_2.jpg`,
-  ],
+  "Familie": FAMILIENZIMMER,
+  "Familienzimmer": FAMILIENZIMMER,
   "Junior Suite": [
     `${BASE}/02_zimmer/b1_4.jpg`,
     `${BASE}/02_zimmer/b1_4_a.jpg`,
