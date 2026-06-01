@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { X, Type, Contrast, ZapOff, RotateCcw, Settings2, Accessibility } from "lucide-react";
+import { X, Type, Contrast, ZapOff, RotateCcw, Settings2, ZoomIn } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 /**
@@ -134,7 +134,7 @@ export default function A11yPanel() {
         className="fixed left-4 md:left-6 z-40 h-11 w-11 md:h-12 md:w-12 rounded-full bg-card/95 backdrop-blur-sm text-foreground/70 border border-border shadow-md flex items-center justify-center hover:bg-card hover:text-foreground hover:scale-105 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-secondary transition-all
                    bottom-[max(5rem,calc(env(safe-area-inset-bottom)+5rem))] md:bottom-6"
       >
-        <Accessibility className="h-5 w-5 md:h-[22px] md:w-[22px]" strokeWidth={1.75} aria-hidden="true" />
+        <ZoomIn className="h-5 w-5 md:h-[20px] md:w-[20px]" strokeWidth={2} aria-hidden="true" />
       </button>
 
       {/* Panel + Backdrop */}
