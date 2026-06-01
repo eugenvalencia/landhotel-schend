@@ -80,7 +80,6 @@ type RoomCategory = { id: string; name: string; type: string; price: number };
 
 const Index = () => {
   const [categories, setCategories] = useState<RoomCategory[]>([]);
-  const [heroIdx, setHeroIdx] = useState(0);
   const { t } = useTranslation();
   const magneticPrimary = useMagnetic<HTMLAnchorElement>(0.18, 12);
   const magneticSecondary = useMagnetic<HTMLAnchorElement>(0.15, 10);
@@ -93,14 +92,6 @@ const Index = () => {
       "Familiengeführtes 3-Sterne-Hotel in Immerath, Vulkaneifel — 21 Zimmer, Eifeler Landküche, Halbpension. Ideal zum Wandern. Provisionsfrei direkt buchen.",
     canonical: "/",
   });
-
-  useEffect(() => {
-    const t = setInterval(
-      () => setHeroIdx((i) => (i + 1) % SCHEND_HEROES.length),
-      6000,
-    );
-    return () => clearInterval(t);
-  }, []);
 
   // Sanfter Parallax: Hero-Bildebene scrollt langsamer weg als der Inhalt.
   // Basis-Overscale (1.22) gibt Spielraum, damit beim Verschieben kein Rand
@@ -168,32 +159,17 @@ const Index = () => {
           className="absolute inset-0 will-change-transform"
           style={{ transform: "scale(1.22)" }}
         >
-        {SCHEND_HEROES.map((src, i) => {
-          // Eager-Load: aktuelles + nächstes Bild — damit der Crossfade nicht auf ein noch ladendes Bild trifft
-          const isNext = i === (heroIdx + 1) % SCHEND_HEROES.length;
-          const isActive = i === heroIdx;
-          return (
-            <HotelImage
-              key={src}
-              src={src}
-              alt="Landhotel Schend in der Vulkaneifel"
-              loading={i === 0 || isNext || isActive ? "eager" : "lazy"}
-              decoding={i === 0 ? "sync" : "async"}
-              className={cn(
-                "absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-[cubic-bezier(0.4,0,0.2,1)]",
-                isActive ? "opacity-100" : "opacity-0",
-              )}
-              // Ken-Burns nur auf aktiven Slide. Beim Inaktivieren auf 'none'
-              // setzen, damit React beim nächsten Aktivieren die Animation als
-              // Wechsel sieht und neu triggert (sonst würde sie nur einmal laufen).
-              style={{
-                animation: isActive
-                  ? `${i % 2 === 0 ? "ken-burns-in" : "ken-burns-out"} 7s ease-out forwards`
-                  : "none",
-              }}
-            />
-          );
-        })}
+        {/* EIN Hero-Bild (vorerst). Spaeter Video-Loop: dieses <HotelImage> durch
+            <video autoPlay muted loop playsInline poster={SCHEND_HEROES[0]} ...>
+            ersetzen — Parallax-Wrapper + Overlays bleiben unveraendert. */}
+        <HotelImage
+          src={SCHEND_HEROES[0]}
+          alt="Landhotel Schend in der Vulkaneifel"
+          loading="eager"
+          decoding="sync"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ animation: "ken-burns-in 18s ease-out forwards" }}
+        />
         </div>
 
         {/* Cinematic editorial overlay — three layers ensure legibility on ANY photo */}
@@ -341,22 +317,6 @@ const Index = () => {
           </span>
         </div>
 
-        {/* Slide-Indikator — zeigt + wechselt das aktive Hero-Foto */}
-        <div className="absolute bottom-6 right-6 z-10 flex items-center gap-2">
-          {SCHEND_HEROES.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => setHeroIdx(i)}
-              aria-label={`Bild ${i + 1} von ${SCHEND_HEROES.length} anzeigen`}
-              aria-current={i === heroIdx}
-              className={cn(
-                "h-2 rounded-full transition-all duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70",
-                i === heroIdx ? "w-6 bg-white" : "w-2 bg-white/45 hover:bg-white/70",
-              )}
-            />
-          ))}
-        </div>
       </section>
 
       {/* USPs — editorial Hairline-Grid statt Boxen */}
