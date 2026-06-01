@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, Globe, ChevronDown, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -304,38 +304,93 @@ const FlagNL = () => (
   </svg>
 );
 
+const LANGS = [
+  { code: "DE", name: "Deutsch", Flag: FlagDE },
+  { code: "EN", name: "English", Flag: FlagGB },
+  { code: "FR", name: "Français", Flag: FlagFR },
+  { code: "NL", name: "Nederlands", Flag: FlagNL },
+];
+
+/**
+ * Sprachwahl als dezenter Dropdown (Globe + Kürzel) statt einer Reihe aus vier
+ * Flaggen — editorial-ruhiger und konventionell (Flaggen ≠ Sprachen). Flaggen
+ * bleiben klein im aufgeklappten Menü als sekundärer Hinweis.
+ */
 function LanguageSwitcher() {
   const { i18n } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
   const lang = i18n.language?.slice(0, 2).toUpperCase() || "DE";
-  const langs = [
-    { code: "DE", name: "Deutsch", Flag: FlagDE },
-    { code: "EN", name: "English", Flag: FlagGB },
-    { code: "FR", name: "Français", Flag: FlagFR },
-    { code: "NL", name: "Nederlands", Flag: FlagNL },
-  ];
+  const current = LANGS.find((l) => l.code === lang) ?? LANGS[0];
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onEsc);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onEsc);
+    };
+  }, [open]);
+
+  const choose = (code: string) => {
+    const c = code.toLowerCase();
+    i18n.changeLanguage(c);
+    try { localStorage.setItem("lang", c); } catch { /* localStorage disabled */ }
+    setOpen(false);
+  };
+
   return (
-    <div className="ml-1.5 flex items-center gap-1.5">
-      {langs.map((l) => {
-        const active = lang === l.code;
-        return (
-          <button
-            key={l.code}
-            onClick={() => {
-              const code = l.code.toLowerCase();
-              i18n.changeLanguage(code);
-              try { localStorage.setItem("lang", code); } catch { /* localStorage disabled */ }
-            }}
-            aria-label={l.name}
-            title={l.name}
-            className={cn(
-              "h-4 w-6 overflow-hidden rounded-sm border border-border transition-all duration-200 hover:scale-110 hover:shadow-md",
-              active && "ring-2 ring-secondary ring-offset-1 ring-offset-background shadow-md"
-            )}
-          >
-            <l.Flag />
-          </button>
-        );
-      })}
+    <div ref={ref} className="relative ml-1.5">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label="Sprache wählen"
+        className="inline-flex items-center gap-1.5 px-2 py-1.5 text-[11px] xl:text-xs font-semibold tracking-[0.12em] text-primary hover:text-secondary transition-colors"
+      >
+        <Globe className="h-3.5 w-3.5" strokeWidth={1.75} />
+        {current.code}
+        <ChevronDown
+          className={cn("h-3 w-3 transition-transform duration-200", open && "rotate-180")}
+          strokeWidth={2}
+        />
+      </button>
+      {open && (
+        <ul
+          role="listbox"
+          className="absolute right-0 mt-2 w-44 overflow-hidden rounded-md border border-border bg-background/95 backdrop-blur-xl shadow-[0_8px_30px_rgb(0_0_0_/0.12)] py-1 z-50 animate-fade-up"
+        >
+          {LANGS.map((l) => {
+            const active = l.code === current.code;
+            return (
+              <li key={l.code}>
+                <button
+                  role="option"
+                  aria-selected={active}
+                  onClick={() => choose(l.code)}
+                  className={cn(
+                    "flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors hover:bg-muted",
+                    active ? "text-secondary font-semibold" : "text-foreground/85",
+                  )}
+                >
+                  <span className="h-3.5 w-5 overflow-hidden rounded-[2px] border border-border/60 shrink-0">
+                    <l.Flag />
+                  </span>
+                  <span className="flex-1">{l.name}</span>
+                  {active && <Check className="h-3.5 w-3.5 text-secondary" strokeWidth={2} />}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </div>
   );
 }

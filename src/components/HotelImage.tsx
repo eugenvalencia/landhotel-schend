@@ -49,11 +49,22 @@ export const HotelImage = forwardRef<HTMLImageElement, Props>(function HotelImag
         role="img"
         aria-label={alt}
         className={cn(
-          "flex items-center justify-center bg-primary text-primary-foreground font-bold tracking-widest",
+          "relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary to-[hsl(220_28%_9%)] text-primary-foreground",
           className,
         )}
       >
-        <span className="text-2xl md:text-4xl">LS</span>
+        {/* Editorial Hairline-Rahmen statt flacher Box — gebrandeter
+            „Foto folgt"-Platzhalter, kein Fake-Stockfoto. */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-3 rounded-[3px] border border-primary-foreground/15"
+        />
+        <span
+          aria-hidden
+          className="font-display leading-none tracking-[0.12em] text-primary-foreground/85 text-3xl md:text-5xl"
+        >
+          LS
+        </span>
       </div>
     );
   }
