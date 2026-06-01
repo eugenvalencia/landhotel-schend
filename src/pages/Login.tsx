@@ -43,7 +43,9 @@ export default function Login() {
         return;
       }
       toast.success("Willkommen zurück!");
-      navigate("/dashboard");
+      // Weiterleitung macht der useEffect oben — und zwar NUR fuer Admins.
+      // Kein unbedingtes navigate('/dashboard') mehr: sonst landen Nicht-Admins
+      // in einer /dashboard->/login-Schleife mit falschem Erfolgs-Redirect.
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       console.error("[login] supabase signIn threw:", err);

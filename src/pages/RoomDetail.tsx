@@ -58,10 +58,13 @@ export default function RoomDetail() {
   const navigate = useNavigate();
   const [room, setRoom] = useState<Room | null>(null);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [status, setStatus] = useState<"loading" | "ready" | "notfound">("loading");
 
   useEffect(() => {
-    if (!id) return;
+    if (!id) { setStatus("notfound"); return; }
     let active = true;
+    setStatus("loading");
+    setActiveIdx(0); // Galerie-Index bei Zimmerwechsel zuruecksetzen (sonst stale -> undefined)
     supabase
       .from("rooms")
       .select("*")
@@ -69,12 +72,14 @@ export default function RoomDetail() {
       .maybeSingle()
       .then(({ data, error }) => {
         if (!active) return;
-        if (error) {
-          console.warn("[RoomDetail] load failed", error);
+        if (error || !data) {
+          if (error) console.warn("[RoomDetail] load failed", error);
           setRoom(null);
+          setStatus("notfound");
           return;
         }
-        setRoom(data as Room | null);
+        setRoom(data as Room);
+        setStatus("ready");
       });
     return () => {
       active = false;
@@ -91,13 +96,25 @@ export default function RoomDetail() {
     return galleryForRoomType(room.room_type);
   }, [room]);
 
-  if (!room) {
+  if (status !== "ready" || !room) {
     return (
       <div className="min-h-screen bg-background">
         <SiteHeader />
         <div className="container mx-auto px-4 py-32 text-center text-muted-foreground">
-          <p className="eyebrow mb-4">Einen Moment</p>
-          <p className="font-display text-2xl">Zimmer wird geladen …</p>
+          {status === "notfound" ? (
+            <>
+              <p className="eyebrow mb-4">Nicht gefunden</p>
+              <p className="font-display text-2xl mb-8">Dieses Zimmer gibt es nicht (mehr).</p>
+              <Button asChild variant="outline" className="rounded-sm uppercase tracking-[0.18em] text-xs">
+                <Link to="/#rooms">Zu allen Zimmern</Link>
+              </Button>
+            </>
+          ) : (
+            <>
+              <p className="eyebrow mb-4">Einen Moment</p>
+              <p className="font-display text-2xl">Zimmer wird geladen …</p>
+            </>
+          )}
         </div>
         <SiteFooter />
       </div>
@@ -122,7 +139,7 @@ export default function RoomDetail() {
           <div className="space-y-3">
             <div className="aspect-[4/3] rounded-md overflow-hidden shadow-elevated">
               <HotelImage
-                src={gallery[activeIdx]}
+                src={gallery[activeIdx] ?? gallery[0]}
                 alt={room.name}
                 className="w-full h-full object-cover transition-transform duration-[1500ms] ease-out hover:scale-[1.03]"
               />

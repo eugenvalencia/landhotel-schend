@@ -135,8 +135,11 @@ export default function Booking() {
   const blockedDates = useMemo(() => {
     const set = new Set<string>();
     roomBookings.forEach((b) => {
-      const start = new Date(b.check_in);
-      const end = new Date(b.check_out);
+      // Lokal parsen (nicht new Date(string)=UTC) — sonst verschiebt sich die
+      // Belegung in negativen Zeitzonen und der Kalender zeigt belegte Naechte als frei.
+      const start = parseISOLocal(b.check_in);
+      const end = parseISOLocal(b.check_out);
+      if (!start || !end) return;
       for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
         set.add(toISODate(d));
       }
