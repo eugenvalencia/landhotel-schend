@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Star, CalendarRange } from "lucide-react";
+import { Phone, Mail, MapPin, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import CountUp from "@/components/CountUp";
 
@@ -25,7 +25,7 @@ export default function SiteFooter() {
             </p>
           </div>
           <p className="text-[11px] tracking-[0.22em] uppercase text-[hsl(38_30%_92%)]/55 mt-3">
-            Anno 1856 · Vulkaneifel · Familie Beimler
+            Anno 1856 · Vulkaneifel
           </p>
           <p className="text-sm text-[hsl(38_30%_92%)]/75 mt-6 leading-relaxed max-w-md">
             {t("footer.tagline")}
@@ -44,12 +44,6 @@ export default function SiteFooter() {
               <CountUp to={501} duration={1800} className="mx-1 font-bold" /> Bewertungen
             </span>
           </div>
-
-          {/* Saison-Hint — verhindert Winter-Anfragen */}
-          <p className="mt-5 inline-flex items-center gap-2 text-xs text-[hsl(38_30%_92%)]/65">
-            <CalendarRange className="h-3.5 w-3.5 text-secondary" strokeWidth={1.5} />
-            <span>Saison März – September · Oktober – Februar geschlossen</span>
-          </p>
         </div>
 
         {/* Quick Links */}
@@ -130,19 +124,6 @@ export default function SiteFooter() {
               >
                 CONEXA DIGITAL
               </a>
-              <span className="mx-2 opacity-40">·</span>
-              <span>
-                Built on{" "}
-                <a
-                  href="https://www.conexadigital.eu"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Conexa OS — AI-Native Platform für Gastronomie, Hotel & Dienstleister"
-                  className="hover:text-secondary underline-offset-2 hover:underline transition-colors"
-                >
-                  Conexa&nbsp;OS
-                </a>
-              </span>
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-5 gap-y-2">

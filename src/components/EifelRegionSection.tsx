@@ -4,7 +4,6 @@ import eifel3 from "@/assets/eifel-3.jpg";
 import eifel4 from "@/assets/eifel-4.jpg";
 import eifel5 from "@/assets/eifel-5.jpg";
 import WeatherCard from "@/components/WeatherCard";
-import PartnerRecommendations from "@/components/PartnerRecommendations";
 
 export default function EifelRegionSection() {
   return (
@@ -26,9 +25,6 @@ export default function EifelRegionSection() {
         <div className="max-w-4xl mx-auto mb-6">
           <WeatherCard defaultMode="hotel" allowGpsToggle />
         </div>
-
-        {/* Schend-Partner — kuratiert mit Konflikt-Filter */}
-        <PartnerRecommendations />
 
         {/* Photo mosaic — sanfte Rundung, ruhige Schatten */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mb-20 md:mb-24">
