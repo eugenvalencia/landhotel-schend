@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
 import { useWeather } from "@/hooks/useWeather";
 import { WeatherIcon } from "@/components/WeatherIcons";
 import {
-  SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_RESTAURANT_GALLERY, galleryForRoomType,
+  SCHEND_RESTAURANT, SCHEND_RESTAURANT_GALLERY, galleryForRoomType,
 } from "@/lib/photos";
 import food0 from "@/assets/food-0.jpg";
 import food1 from "@/assets/food-1.jpg";
@@ -159,12 +159,13 @@ const Index = () => {
           className="absolute inset-0 will-change-transform"
           style={{ transform: "scale(1.22)" }}
         >
-        {/* EIN Hero-Bild (vorerst). Spaeter Video-Loop: dieses <HotelImage> durch
-            <video autoPlay muted loop playsInline poster={SCHEND_HEROES[0]} ...>
+        {/* EIN Hero-Bild (vorerst), self-hosted + SEO. Spaeter Video-Loop:
+            dieses <HotelImage> durch <video autoPlay muted loop playsInline
+            poster="/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg" ...>
             ersetzen — Parallax-Wrapper + Overlays bleiben unveraendert. */}
         <HotelImage
-          src={SCHEND_HEROES[0]}
-          alt="Landhotel Schend in der Vulkaneifel"
+          src="/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg"
+          alt="Vorderansicht des Landhotel Schend mit Rosenbeet in der Vulkaneifel"
           loading="eager"
           decoding="sync"
           className="absolute inset-0 w-full h-full object-cover"
