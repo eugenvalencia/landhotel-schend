@@ -120,8 +120,14 @@ export default function SiteFooter() {
                 href="https://www.conexadigital.eu"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-secondary underline-offset-2 hover:underline transition-colors"
+                className="inline-flex items-center gap-1.5 align-middle hover:text-secondary underline-offset-2 hover:underline transition-colors"
               >
+                <img
+                  src="/conexa-icon-white.svg"
+                  alt=""
+                  aria-hidden="true"
+                  className="conexa-diamond h-3.5 w-3.5 shrink-0"
+                />
                 CONEXA DIGITAL
               </a>
             </p>

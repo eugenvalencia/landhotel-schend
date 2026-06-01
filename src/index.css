@@ -361,6 +361,17 @@
     .ken-burns-in, .ken-burns-out { animation: none !important; }
   }
 
+  /* Conexa-Icon Diamant-Puls — Footer "Powered by". Nur das Icon glüht/funkelt
+     sanft (Eugen: pulsiert/funkelt wie Diamant, nur die Icon). */
+  @keyframes conexa-diamond-pulse {
+    0%, 100% { filter: drop-shadow(0 0 1px rgba(255,255,255,0.2)); opacity: 0.6; }
+    50%      { filter: drop-shadow(0 0 5px rgba(214,184,122,0.6)) drop-shadow(0 0 11px rgba(255,255,255,0.22)); opacity: 1; }
+  }
+  .conexa-diamond { animation: conexa-diamond-pulse 4.5s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .conexa-diamond { animation: none; opacity: 0.85; }
+  }
+
   /* Glow-Border — rotierender konischer Gradient als Button-Akzent.
      Nutzt @property für animierbare Custom-Property (Chrome 85+, FF 128+, Safari 16.4+) */
   @property --glow-angle {
