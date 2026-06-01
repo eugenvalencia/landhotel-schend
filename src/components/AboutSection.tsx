@@ -1,4 +1,6 @@
+import type { CSSProperties } from "react";
 import { HotelImage } from "@/components/HotelImage";
+import { useReveal } from "@/hooks/useMagnetic";
 import historyPhoto from "@/assets/landhotel-history-bw.jpg";
 
 const TIMELINE = [
@@ -31,6 +33,7 @@ const VALUES = [
 ];
 
 export default function AboutSection() {
+  const timelineRef = useReveal<HTMLDivElement>();
   return (
     <section id="about" className="bg-gradient-to-b from-background via-muted/15 to-background">
       {/* History — asymmetric magazine spread */}
@@ -82,7 +85,10 @@ export default function AboutSection() {
       </div>
 
       {/* Timeline — 1856 bis heute, sepia-Linie mit Marker-Punkten */}
-      <div className="container mx-auto px-4 py-16 md:py-24 border-t border-border/40">
+      <div
+        ref={timelineRef}
+        className="tl-reveal container mx-auto px-4 py-16 md:py-24 border-t border-border/40"
+      >
         <div className="text-center mb-12 md:mb-16">
           <p className="eyebrow">165+ Jahre Gastfreundschaft</p>
           <h3 className="font-display text-2xl md:text-3xl lg:text-4xl mt-4 text-balance">
@@ -95,11 +101,16 @@ export default function AboutSection() {
         <div className="hidden md:block relative max-w-6xl mx-auto">
           <div
             aria-hidden
-            className="absolute left-0 right-0 top-1.5 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent"
+            className="tl-line absolute left-0 right-0 top-1.5 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent"
           />
+          <span aria-hidden className="tl-glint" />
           <ol className="relative grid grid-cols-8 gap-2">
-            {TIMELINE.map((item) => (
-              <li key={item.year} className="flex flex-col items-center text-center">
+            {TIMELINE.map((item, i) => (
+              <li
+                key={item.year}
+                className="tl-item flex flex-col items-center text-center"
+                style={{ "--i": i } as CSSProperties}
+              >
                 <span
                   aria-hidden
                   className="block h-3 w-3 rounded-full bg-secondary ring-4 ring-background relative z-10 transition-transform hover:scale-125"
@@ -118,8 +129,12 @@ export default function AboutSection() {
         {/* Mobile Timeline — vertical */}
         <div className="md:hidden max-w-md mx-auto">
           <ol className="relative border-l-2 border-secondary/30 ml-3 space-y-6 pl-6">
-            {TIMELINE.map((item) => (
-              <li key={item.year} className="relative">
+            {TIMELINE.map((item, i) => (
+              <li
+                key={item.year}
+                className="tl-item relative"
+                style={{ "--i": i } as CSSProperties}
+              >
                 <span
                   aria-hidden
                   className="absolute -left-[1.85rem] top-1 h-3 w-3 rounded-full bg-secondary ring-4 ring-background"

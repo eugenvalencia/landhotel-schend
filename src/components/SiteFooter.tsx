@@ -126,7 +126,7 @@ export default function SiteFooter() {
                   src="/conexa-icon-white.svg"
                   alt=""
                   aria-hidden="true"
-                  className="conexa-diamond h-3.5 w-3.5 shrink-0"
+                  className="conexa-diamond h-4 w-4 shrink-0"
                 />
                 CONEXA DIGITAL
               </a>
