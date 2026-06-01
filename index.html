@@ -50,13 +50,10 @@
 
     <link rel="preconnect" href="https://api.open-meteo.com" />
     <link rel="preconnect" href="https://landhaus-schend.de" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://www.google.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Fonts self-hosted (DSGVO: kein Google-Fonts-CDN → keine Besucher-IP an Google).
+         woff2 + fonts.css generiert aus der Google-css2-Antwort, liegen in public/fonts/. -->
+    <link rel="stylesheet" href="/fonts/fonts.css" />
 
     <!-- Hero-Bild fuer LCP vorladen. Auf NAS-Preview wird /pics ueber Caddy
          proxied + Cloudflare-edge-gecacht; auf landhaus-schend.de direkt. -->
