@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,7 +7,7 @@ import {
   ParkingCircle, Bike, ChefHat, UtensilsCrossed, BedDouble, Wifi, Coffee, Trophy,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { eur } from "@/lib/format";
+import { eur, toISODate } from "@/lib/format";
 import { HotelImage } from "@/components/HotelImage";
 import ReviewsSection from "@/components/ReviewsSection";
 import LocationSection from "@/components/LocationSection";
@@ -23,6 +23,8 @@ import {
   handleSpotlightTilt, handleSpotlightTiltReset,
 } from "@/hooks/useMagnetic";
 import { cn } from "@/lib/utils";
+import { useWeather } from "@/hooks/useWeather";
+import { WeatherIcon } from "@/components/WeatherIcons";
 import {
   SCHEND_HEROES, SCHEND_RESTAURANT, SCHEND_RESTAURANT_GALLERY, galleryForRoomType,
 } from "@/lib/photos";
@@ -82,6 +84,21 @@ const Index = () => {
   const { t } = useTranslation();
   const magneticPrimary = useMagnetic<HTMLAnchorElement>(0.18, 12);
   const magneticSecondary = useMagnetic<HTMLAnchorElement>(0.15, 10);
+  const navigate = useNavigate();
+  const heroBgRef = useRef<HTMLDivElement>(null);
+  const [hCheckIn, setHCheckIn] = useState("");
+  const [hCheckOut, setHCheckOut] = useState("");
+  const todayIso = toISODate(new Date());
+  const wxCur = useWeather(50.1303, 6.9594).data?.current;
+
+  const checkAvailability = (e: FormEvent) => {
+    e.preventDefault();
+    const sp = new URLSearchParams();
+    if (hCheckIn) sp.set("checkin", hCheckIn);
+    if (hCheckOut) sp.set("checkout", hCheckOut);
+    const qs = sp.toString();
+    navigate(qs ? `/booking?${qs}` : "/booking");
+  };
 
   useSEO({
     title: "3-Sterne-Superior Hotel in der Vulkaneifel",
@@ -96,6 +113,33 @@ const Index = () => {
       6000,
     );
     return () => clearInterval(t);
+  }, []);
+
+  // Sanfter Parallax: Hero-Bildebene scrollt langsamer weg als der Inhalt.
+  // Basis-Overscale (1.22) gibt Spielraum, damit beim Verschieben kein Rand
+  // sichtbar wird. Verschiebung auf 6% der Hero-Höhe gedeckelt (< Headroom).
+  useEffect(() => {
+    const el = heroBgRef.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.style.transform = "scale(1)";
+      return;
+    }
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const h = el.offsetHeight || 1;
+        const y = Math.min(window.scrollY * 0.3, h * 0.06);
+        el.style.transform = `translate3d(0, ${y}px, 0) scale(1.22)`;
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   useEffect(() => {
@@ -131,6 +175,12 @@ const Index = () => {
         id="top"
         className="relative h-[100vh] min-h-[640px] max-h-[1100px] overflow-hidden"
       >
+        <div
+          ref={heroBgRef}
+          aria-hidden
+          className="absolute inset-0 will-change-transform"
+          style={{ transform: "scale(1.22)" }}
+        >
         {SCHEND_HEROES.map((src, i) => {
           // Eager-Load: aktuelles + nächstes Bild — damit der Crossfade nicht auf ein noch ladendes Bild trifft
           const isNext = i === (heroIdx + 1) % SCHEND_HEROES.length;
@@ -157,6 +207,7 @@ const Index = () => {
             />
           );
         })}
+        </div>
 
         {/* Cinematic editorial overlay — three layers ensure legibility on ANY photo */}
         <div aria-hidden className="absolute inset-0 bg-black/25" />
@@ -172,6 +223,24 @@ const Index = () => {
           aria-hidden
           className="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-black/55 via-black/20 to-transparent"
         />
+        <div aria-hidden className="hero-grain absolute inset-0 z-[1] pointer-events-none" />
+
+        {wxCur && (
+          <div
+            className="absolute top-5 right-5 z-10 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90"
+            style={{ textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}
+            aria-label={`Wetter in der Vulkaneifel: ${Math.round(Number(wxCur.temperature_2m ?? 0))} Grad`}
+          >
+            <WeatherIcon code={Number(wxCur.weathercode ?? 0)} className="h-4 w-4 text-secondary shrink-0" />
+            <span className="tabular-nums text-sm font-medium leading-none">
+              {Math.round(Number(wxCur.temperature_2m ?? 0))}°
+            </span>
+            <span className="block h-3 w-px bg-white/30" aria-hidden />
+            <span className="text-[10px] tracking-[0.18em] uppercase leading-none text-white/75">
+              Vulkaneifel
+            </span>
+          </div>
+        )}
 
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
           {/* Eyebrow with hairlines */}
@@ -196,7 +265,7 @@ const Index = () => {
 
           {/* Display headline — Fraunces, balanced. Mobile bewusst kleiner für 60+ Lesbarkeit. */}
           <h1
-            className="font-display text-balance text-white text-[2.5rem] sm:text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] mb-7 md:mb-9 max-w-4xl animate-fade-up"
+            className="font-display text-balance text-white text-[2.5rem] sm:text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] mb-7 md:mb-9 max-w-4xl headline-reveal"
             style={{
               animationDelay: "0.15s",
               textShadow: "0 2px 14px rgba(0,0,0,0.55), 0 1px 2px rgba(0,0,0,0.4)",
@@ -241,10 +310,52 @@ const Index = () => {
             </span>
           </div>
 
+          {/* Schnell-Verfügbarkeit — Glas-Leiste, deep-linkt mit Daten nach /booking */}
+          <form
+            onSubmit={checkAvailability}
+            aria-label="Schnelle Verfügbarkeitsanfrage"
+            className="w-full max-w-2xl mb-8 md:mb-10 flex flex-col sm:flex-row items-stretch gap-2 p-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/25 shadow-lg animate-fade-up"
+            style={{ animationDelay: "0.5s" }}
+          >
+            <label className="flex-1 flex flex-col gap-0.5 px-3 py-1.5 text-left">
+              <span className="text-[10px] tracking-[0.18em] uppercase text-white/70">Anreise</span>
+              <input
+                type="date"
+                value={hCheckIn}
+                min={todayIso}
+                onChange={(e) => {
+                  setHCheckIn(e.target.value);
+                  if (hCheckOut && e.target.value && hCheckOut <= e.target.value) setHCheckOut("");
+                }}
+                aria-label="Anreisedatum"
+                className="bg-transparent text-white text-sm font-medium outline-none [color-scheme:dark]"
+              />
+            </label>
+            <span className="hidden sm:block w-px bg-white/20 my-1" aria-hidden />
+            <label className="flex-1 flex flex-col gap-0.5 px-3 py-1.5 text-left">
+              <span className="text-[10px] tracking-[0.18em] uppercase text-white/70">Abreise</span>
+              <input
+                type="date"
+                value={hCheckOut}
+                min={hCheckIn || todayIso}
+                onChange={(e) => setHCheckOut(e.target.value)}
+                aria-label="Abreisedatum"
+                className="bg-transparent text-white text-sm font-medium outline-none [color-scheme:dark]"
+              />
+            </label>
+            <button
+              type="submit"
+              className="group inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[52px] bg-white text-zinc-900 text-xs sm:text-sm font-medium tracking-[0.15em] uppercase rounded-lg hover:bg-secondary hover:text-secondary-foreground transition-colors"
+            >
+              Verfügbarkeit
+              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </button>
+          </form>
+
           {/* Primary + Secondary CTA + phone link */}
           <div
             className="flex flex-col items-center gap-5 animate-fade-up"
-            style={{ animationDelay: "0.55s" }}
+            style={{ animationDelay: "0.65s" }}
           >
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <Link
@@ -277,10 +388,29 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Subtle scroll cue */}
+        {/* Subtle scroll cue — heller Funke wandert die Linie hinunter */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 text-white/55">
           <span className="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
-          <span className="block h-10 w-px bg-white/45" />
+          <span className="relative block h-10 w-px overflow-hidden bg-white/20">
+            <span aria-hidden className="scroll-cue-travel absolute inset-x-0 top-0 block h-3 bg-white/85" />
+          </span>
+        </div>
+
+        {/* Slide-Indikator — zeigt + wechselt das aktive Hero-Foto */}
+        <div className="absolute bottom-6 right-6 z-10 flex items-center gap-2">
+          {SCHEND_HEROES.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setHeroIdx(i)}
+              aria-label={`Bild ${i + 1} von ${SCHEND_HEROES.length} anzeigen`}
+              aria-current={i === heroIdx}
+              className={cn(
+                "h-2 rounded-full transition-all duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70",
+                i === heroIdx ? "w-6 bg-white" : "w-2 bg-white/45 hover:bg-white/70",
+              )}
+            />
+          ))}
         </div>
       </section>
 

@@ -76,6 +76,15 @@ const guestSchema = z.object({
   phone: z.string().trim().min(5, "Telefonnummer zu kurz").max(40),
 });
 
+/** Parst "YYYY-MM-DD" als lokales Datum (kein UTC-Shift). */
+function parseISOLocal(s: string | null): Date | undefined {
+  if (!s) return undefined;
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+  if (!m) return undefined;
+  const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  return Number.isNaN(d.getTime()) ? undefined : d;
+}
+
 export default function Booking() {
   const [params] = useSearchParams();
   const roomIdParam = params.get("room");
@@ -102,6 +111,19 @@ export default function Booking() {
   const [confirmed, setConfirmed] = useState<BookingConfirmationData | null>(null);
   const [roomBookings, setRoomBookings] = useState<Array<{ check_in: string; check_out: string }>>([]);
   const [allBookings, setAllBookings] = useState<Array<{ room_id: string; check_in: string; check_out: string }>>([]);
+
+  // Prefill aus Hero-Schnellanfrage (?checkin/?checkout) — nur valide Werte,
+  // nicht in der Vergangenheit; Abreise muss nach der Anreise liegen.
+  useEffect(() => {
+    const ci = parseISOLocal(params.get("checkin"));
+    const co = parseISOLocal(params.get("checkout"));
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (ci && ci >= today) {
+      setCheckIn(ci);
+      if (co && co > ci) setCheckOut(co);
+    }
+  }, [params]);
 
   const nights = useMemo(
     () => (checkIn && checkOut ? nightsBetween(checkIn, checkOut) : 0),
