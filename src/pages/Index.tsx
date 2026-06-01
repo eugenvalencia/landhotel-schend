@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,7 +7,7 @@ import {
   ParkingCircle, Bike, ChefHat, UtensilsCrossed, BedDouble, Wifi, Coffee, Trophy,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { eur, toISODate } from "@/lib/format";
+import { eur } from "@/lib/format";
 import { HotelImage } from "@/components/HotelImage";
 import ReviewsSection from "@/components/ReviewsSection";
 import LocationSection from "@/components/LocationSection";
@@ -84,21 +84,8 @@ const Index = () => {
   const { t } = useTranslation();
   const magneticPrimary = useMagnetic<HTMLAnchorElement>(0.18, 12);
   const magneticSecondary = useMagnetic<HTMLAnchorElement>(0.15, 10);
-  const navigate = useNavigate();
   const heroBgRef = useRef<HTMLDivElement>(null);
-  const [hCheckIn, setHCheckIn] = useState("");
-  const [hCheckOut, setHCheckOut] = useState("");
-  const todayIso = toISODate(new Date());
   const wxCur = useWeather(50.1303, 6.9594).data?.current;
-
-  const checkAvailability = (e: FormEvent) => {
-    e.preventDefault();
-    const sp = new URLSearchParams();
-    if (hCheckIn) sp.set("checkin", hCheckIn);
-    if (hCheckOut) sp.set("checkout", hCheckOut);
-    const qs = sp.toString();
-    navigate(qs ? `/booking?${qs}` : "/booking");
-  };
 
   useSEO({
     title: "3-Sterne-Superior Hotel in der Vulkaneifel",
@@ -310,52 +297,10 @@ const Index = () => {
             </span>
           </div>
 
-          {/* Schnell-Verfügbarkeit — Glas-Leiste, deep-linkt mit Daten nach /booking */}
-          <form
-            onSubmit={checkAvailability}
-            aria-label="Schnelle Verfügbarkeitsanfrage"
-            className="w-full max-w-2xl mb-8 md:mb-10 flex flex-col sm:flex-row items-stretch gap-2 p-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/25 shadow-lg animate-fade-up"
-            style={{ animationDelay: "0.5s" }}
-          >
-            <label className="flex-1 flex flex-col gap-0.5 px-3 py-1.5 text-left">
-              <span className="text-[10px] tracking-[0.18em] uppercase text-white/70">Anreise</span>
-              <input
-                type="date"
-                value={hCheckIn}
-                min={todayIso}
-                onChange={(e) => {
-                  setHCheckIn(e.target.value);
-                  if (hCheckOut && e.target.value && hCheckOut <= e.target.value) setHCheckOut("");
-                }}
-                aria-label="Anreisedatum"
-                className="bg-transparent text-white text-sm font-medium outline-none [color-scheme:dark]"
-              />
-            </label>
-            <span className="hidden sm:block w-px bg-white/20 my-1" aria-hidden />
-            <label className="flex-1 flex flex-col gap-0.5 px-3 py-1.5 text-left">
-              <span className="text-[10px] tracking-[0.18em] uppercase text-white/70">Abreise</span>
-              <input
-                type="date"
-                value={hCheckOut}
-                min={hCheckIn || todayIso}
-                onChange={(e) => setHCheckOut(e.target.value)}
-                aria-label="Abreisedatum"
-                className="bg-transparent text-white text-sm font-medium outline-none [color-scheme:dark]"
-              />
-            </label>
-            <button
-              type="submit"
-              className="group inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[52px] bg-white text-zinc-900 text-xs sm:text-sm font-medium tracking-[0.15em] uppercase rounded-lg hover:bg-secondary hover:text-secondary-foreground transition-colors"
-            >
-              Verfügbarkeit
-              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </button>
-          </form>
-
           {/* Primary + Secondary CTA + phone link */}
           <div
             className="flex flex-col items-center gap-5 animate-fade-up"
-            style={{ animationDelay: "0.65s" }}
+            style={{ animationDelay: "0.55s" }}
           >
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <Link
