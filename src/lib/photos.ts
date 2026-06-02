@@ -1,30 +1,21 @@
-// Bilder vom Original-Server des Landhotel Schend (Domain bleibt landhaus-schend.de).
-// Cross-Origin auch in PROD: CF Pages hat keinen Reverse-Proxy für /pics/*,
-// der SPA-Fallback in _redirects würde sonst alle Pics-Pfade auf index.html umlenken
-// und HotelImage fiele auf den Unsplash-Default zurück.
-// landhaus-schend.de liefert `Access-Control-Allow-Origin: *`, also OK.
-// TODO: nach IONOS→Hetzner-Cutover BASE auf Hetzner-Pics-Endpoint umstellen.
-const BASE = "https://landhaus-schend.de/pics";
+// Bild-Registry — VOLLSTÄNDIG self-hosted aus public/fotos.
+// Keine Cross-Origin-Abhängigkeit mehr von der alten landhaus-schend.de (/pics/*):
+// die /pics-Zimmer-/Haus-/Logo-Pfade lieferten HTML (tot) und hingen an einer Seite,
+// die abgelöst wird. Alle Pfade jetzt lokal (/fotos/...), SEO-Dateinamen, optimiert.
 
 export const SCHEND_HEROES = [
-  `${BASE}/01_startseite/b0_1.jpg`,
-  `${BASE}/01_startseite/b0_2.jpg`,
-  `${BASE}/01_startseite/b0_3.jpg`,
-  `${BASE}/01_startseite/b0_4.jpg`,
-  `${BASE}/01_startseite/b0_5.jpg`,
-  `${BASE}/01_startseite/b0_6.jpg`,
-  `${BASE}/01_startseite/b0_7.jpg`,
+  "/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/hotelfront-mit-blumenbeet-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/hotelfront-im-sommer-mit-blumenkaesten-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/hotelfront-mit-lichterketten-blaue-stunde-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/hotelfassade-mit-terrasse-und-hortensien-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/gartenseite-mit-terrasse-landhotel-schend.jpg",
+  "/fotos/hotelansicht-mit-terrasse-landhotel-schend.jpg",
 ];
 
-/**
- * Pro Zimmer-Typ eine Galerie mit verschiedenen Sichtrichtungen.
- * Reihenfolge: Hauptbild (Front), Detail-Winkel _a, Detail-Winkel _b, Außen/Lifestyle.
- * Wo der Server für einen Typ keine _b Variante hat, ziehen wir auf das passende Haus-Bild.
- */
-// Echte lokale Zimmer-Fotos (self-hosted). Die Server-/pics-Zimmerbilder existieren
-// nicht mehr (liefern HTML). Stammen vom Familienzimmer — laut Eugen praktisch dasselbe
-// Zimmer wie das Doppelzimmer (Doppelbett), daher fuer beide Typen genutzt. Hauptbild zuerst.
-const ECHTE_ZIMMER_FOTOS = [
+// Echte lokale Familienzimmer-Fotos (Doppelbett) — laut Eugen praktisch dasselbe
+// Zimmer wie das Doppelzimmer, daher als dessen Galerie genutzt. Hauptbild zuerst.
+const FAMILIENZIMMER_FOTOS = [
   "/fotos/familienzimmer-doppelbett-landhotel-schend-vulkaneifel.jpg",
   "/fotos/familienzimmer-mit-nebenraum-landhotel-schend-vulkaneifel.jpg",
   "/fotos/familienzimmer-mit-kinderbetten-und-bad-landhotel-schend-vulkaneifel.jpg",
@@ -32,52 +23,56 @@ const ECHTE_ZIMMER_FOTOS = [
   "/fotos/familienzimmer-wohnbereich-mit-tv-landhotel-schend-vulkaneifel.jpg",
 ];
 
+/**
+ * Pro Zimmer-Typ eine Galerie — alle self-hosted. Wo für einen Typ nur wenige echte
+ * Fotos existieren, ergänzen verwandte Zimmer-Fotos (statt toter /pics-Links).
+ */
 export const SCHEND_ROOM_GALLERY: Record<string, string[]> = {
   "Einzelzimmer": [
-    `${BASE}/02_zimmer/b2_a.jpg`,
-    `${BASE}/02_zimmer/b2_b.jpg`,
-    `${BASE}/02_zimmer/b2_c.jpg`,
-    `${BASE}/02_zimmer/b2_d.jpg`,
+    "/fotos/einzelzimmer-mit-bad-landhotel-schend-vulkaneifel.jpg",
   ],
-  "Doppelzimmer": ECHTE_ZIMMER_FOTOS,
-  "Doppelzimmer Standard": ECHTE_ZIMMER_FOTOS,
-  "Komfort": ECHTE_ZIMMER_FOTOS,
-  "Doppelzimmer Komfort": ECHTE_ZIMMER_FOTOS,
-  "Familie": ECHTE_ZIMMER_FOTOS,
-  "Familienzimmer": ECHTE_ZIMMER_FOTOS,
+  "Doppelzimmer": [
+    "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
+  ],
+  "Doppelzimmer Standard": [
+    "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
+  ],
+  "Komfort": [
+    "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
+  ],
+  "Doppelzimmer Komfort": [
+    "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
+  ],
+  "Familie": FAMILIENZIMMER_FOTOS,
+  "Familienzimmer": FAMILIENZIMMER_FOTOS,
   "Junior Suite": [
-    `${BASE}/02_zimmer/b1_4.jpg`,
-    `${BASE}/02_zimmer/b1_4_a.jpg`,
-    `${BASE}/02_zimmer/b1_6.jpg`,
-    `${BASE}/03_haus/b1_1.jpg`,
+    "/fotos/suite-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
   ],
   "Suite": [
-    `${BASE}/02_zimmer/b1_5.jpg`,
-    `${BASE}/02_zimmer/b1_5_a.jpg`,
-    `${BASE}/02_zimmer/b1_7.jpg`,
-    `${BASE}/02_zimmer/b1_8.jpg`,
+    "/fotos/suite-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
   ],
   "Eifel-Suite": [
-    `${BASE}/02_zimmer/b1_5.jpg`,
-    `${BASE}/02_zimmer/b1_5_a.jpg`,
-    `${BASE}/02_zimmer/b1_7.jpg`,
-    `${BASE}/02_zimmer/b1_8.jpg`,
+    "/fotos/suite-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
   ],
 };
 
-/**
- * Legacy-Map fuer Code-Pfade die nur EIN Foto pro Typ wollen
- * (z.B. Vorschau in Booking-Karten).
- */
+/** Legacy-Map für Code-Pfade die nur EIN Foto pro Typ wollen (z.B. Booking-Karten). */
 export const SCHEND_ROOM_PHOTO: Record<string, string> = Object.fromEntries(
   Object.entries(SCHEND_ROOM_GALLERY).map(([k, v]) => [k, v[0]]),
 );
 
-/**
- * Restaurant: Innenraum, Terrasse, Theke, Saal — verschiedene Stimmungen
- * fuer die Magazin-Sektion + Marquee.
- */
-// Self-hosted (lokal optimiert aus dem Original-Server, b1_d5 war tot/HTML).
+/** Restaurant: self-hosted Panorama-Stimmungen. */
 export const SCHEND_RESTAURANT_GALLERY = [
   "/fotos/restaurant-panorama-1-landhotel-schend.jpg",
   "/fotos/restaurant-panorama-2-landhotel-schend.jpg",
@@ -87,14 +82,14 @@ export const SCHEND_RESTAURANT_GALLERY = [
 
 export const SCHEND_RESTAURANT = SCHEND_RESTAURANT_GALLERY[0];
 
-/**
- * Außenansichten / Haus-Atmosphäre
- */
+/** Außenansichten / Haus-Atmosphäre — self-hosted. */
 export const SCHEND_HAUS_GALLERY = [
-  `${BASE}/03_haus/b1_1.jpg`,
-  `${BASE}/03_haus/b1_2.jpg`,
-  `${BASE}/03_haus/b1_3.jpg`,
-  `${BASE}/03_haus/b1_4.jpg`,
+  "/fotos/hotelfassade-mit-garten-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/hotelgarten-mit-brunnen-landhotel-schend.jpg",
+  "/fotos/eingang-mit-torbogen-und-hortensien-landhotel-schend.jpg",
+  "/fotos/innenhof-mit-balkonen-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/sonnenterrasse-mit-hortensien-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/hoteleingang-mit-schneebaum-landhotel-schend-vulkaneifel.jpg",
 ];
 
 // Self-hosted (lokal optimiert aus 07_galerie, SEO-Dateinamen, Reihenfolge erhalten).
@@ -113,7 +108,8 @@ export const SCHEND_GALLERY = [
   "/fotos/wanderer-am-eifelmaar-landhotel-schend-vulkaneifel.jpg",
 ];
 
-export const SCHEND_LOGO = `${BASE}/logo_hell_footer.png`;
+// Self-hosted SVG-Logo (das alte /pics/logo_hell_footer.png war tot).
+export const SCHEND_LOGO = "/schend-logo-white.svg";
 
 export const photoForRoomType = (type: string): string =>
   SCHEND_ROOM_PHOTO[type] ?? SCHEND_HEROES[0];

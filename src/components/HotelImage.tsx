@@ -12,8 +12,9 @@ type Props = React.ImgHTMLAttributes<HTMLImageElement> & {
 //  2) Ehrlichkeit — ein generisches Stockzimmer täuscht ein Zimmer vor, das es
 //     nicht zeigt. Ein fehlendes Bild fällt jetzt auf den gebrandeten
 //     "LS"-Platzhalter (unten) zurück = klares "Foto folgt" statt Fake.
-// Echter Fix: die tatsächlichen Zimmer-Fotos same-origin bereitstellen
-// (landhaus-schend.de/pics/02_zimmer/* liefert aktuell HTML statt Bild → fehlt).
+// Bilder sind jetzt vollständig self-hosted (public/fotos, siehe photos.ts) — keine
+// /pics-Cross-Origin-Abhängigkeit mehr. Der LS-Platzhalter bleibt als Sicherheitsnetz,
+// falls je ein Pfad 404t (zeigt gebrandetes „Foto folgt" statt kaputtem Bild).
 const DEFAULT_FALLBACK_SRC: string | undefined = undefined;
 
 /**
