@@ -124,10 +124,11 @@ export default function CalendarTab() {
           .select("*")
           .order("check_in")
           .range(from, to);
-        if (error) {
-          if (page === 0) throw error;
-          break;
-        }
+        // Jeder Page-Fehler MUSS werfen — nicht nur Seite 0. Früher gab ein
+        // Fehler auf Seite >0 still die Teilliste zurück → der Kalender sah
+        // vollständig aus, fehlende Buchungen erschienen als freie Nächte →
+        // Doppelbuchungs-Risiko. Lieber laut scheitern (Toast) als still lügen.
+        if (error) throw error;
         if (!data || data.length === 0) break;
         all.push(...(data as unknown as Booking[]));
         if (data.length < pageSize) break;
