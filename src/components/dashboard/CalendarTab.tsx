@@ -347,6 +347,19 @@ export default function CalendarTab() {
     setDragEnd(null);
   };
 
+  // Drag per globalem mouseup abschließen — Maus-Release IRGENDWO (auch
+  // außerhalb der Tabelle) beendet die Auswahl sauber. Früher öffnete das
+  // onMouseLeave→finishDrag den Buchungs-Dialog schon beim Verlassen der
+  // Tabelle mit gedrückter Maus (Zielgruppe 60+, zittrige Hand). Jetzt öffnet
+  // NUR das echte Loslassen.
+  useEffect(() => {
+    if (!dragStart) return;
+    const onUp = () => finishDrag();
+    window.addEventListener("mouseup", onUp);
+    return () => window.removeEventListener("mouseup", onUp);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dragStart, dragEnd]);
+
   const room = selected ? rooms.find((r) => r.id === selected.room_id) : null;
   const nights = selected ? nightsBetween(selected.check_in, selected.check_out) : 0;
   const roomPrice = room?.price_per_night ? Number(room.price_per_night) : 0;
@@ -463,8 +476,6 @@ export default function CalendarTab() {
             )}
             <table
               className="w-full text-xs select-none"
-              onMouseUp={finishDrag}
-              onMouseLeave={() => { if (dragStart) finishDrag(); }}
             >
               <thead className="bg-muted">
                 <tr>

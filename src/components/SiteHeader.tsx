@@ -68,7 +68,9 @@ export default function SiteHeader() {
     setOpen(false);
     if (location.pathname !== "/") {
       navigate("/", { replace: false });
-      setTimeout(() => scrollTo(id), 80);
+      // Index-Chunk lädt lazy — auf das Ziel warten statt fixem 80ms-Timeout,
+      // der mit dem Chunk-Mount racet und sonst oben statt bei #faq landet.
+      scrollToWhenReady(id);
     } else {
       scrollTo(id);
     }
@@ -81,6 +83,21 @@ export default function SiteHeader() {
     }
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  // Nach Cross-Page-Navigation per rAF auf das Anchor-Element pollen (bis ~1s),
+  // bis der lazy geladene Index-Chunk gemountet ist.
+  const scrollToWhenReady = (id: string, attempts = 0) => {
+    if (id === "top") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else if (attempts < 60) {
+      requestAnimationFrame(() => scrollToWhenReady(id, attempts + 1));
+    }
   };
 
   return (

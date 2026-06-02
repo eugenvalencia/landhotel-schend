@@ -152,19 +152,35 @@ export default function WeatherCard({
       return;
     }
     setGpsLoading(true);
+    // Erste Antwort gewinnt (Position, Fehler oder Fallback) — danach gesperrt.
+    let settled = false;
+    const settle = (next: Position) => {
+      if (settled) return;
+      settled = true;
+      setPos(next);
+      setGpsLoading(false);
+    };
+    // Manche Browser starten den getCurrentPosition-Timeout erst, NACHDEM der
+    // Nutzer den Permission-Prompt beantwortet. Bleibt der Prompt offen, kommt
+    // nie ein Ergebnis → "Lade Wetter …" hängt ewig. Eigener Timer fällt nach
+    // 6s auf den Hotel-Standort zurück.
+    const fallback = setTimeout(
+      () => settle({ lat: HOTEL_LAT, lon: HOTEL_LON, label: HOTEL_LABEL, source: "hotel" }),
+      6000,
+    );
     navigator.geolocation.getCurrentPosition(
       (p) => {
-        setPos({
+        clearTimeout(fallback);
+        settle({
           lat: p.coords.latitude,
           lon: p.coords.longitude,
           label: "Mein Standort",
           source: "gps",
         });
-        setGpsLoading(false);
       },
       () => {
-        setPos({ lat: HOTEL_LAT, lon: HOTEL_LON, label: HOTEL_LABEL, source: "hotel" });
-        setGpsLoading(false);
+        clearTimeout(fallback);
+        settle({ lat: HOTEL_LAT, lon: HOTEL_LON, label: HOTEL_LABEL, source: "hotel" });
       },
       { timeout: 4000, maximumAge: 30 * 60 * 1000 },
     );
