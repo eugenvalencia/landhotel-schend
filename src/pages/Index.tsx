@@ -159,17 +159,16 @@ const Index = () => {
           className="absolute inset-0 will-change-transform"
           style={{ transform: "scale(1.22)" }}
         >
-        {/* EIN Hero-Bild (vorerst), self-hosted + SEO. Spaeter Video-Loop:
-            dieses <HotelImage> durch <video autoPlay muted loop playsInline
-            poster="/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg" ...>
-            ersetzen — Parallax-Wrapper + Overlays bleiben unveraendert. */}
+        {/* EIN scharfes Hero-Bild, self-hosted + SEO. Bewegung = unendlich
+            pendelnder Ken-Burns (CSS, .hero-ken-burns) statt Video/Fake-Pflanzen:
+            volle Bildschaerfe, 0 KB Extra, keine Flimmer-/Gummi-Artefakte.
+            Parallax-Wrapper (heroBgRef) + Overlays bleiben davon unberuehrt. */}
         <HotelImage
           src="/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg"
           alt="Vorderansicht des Landhotel Schend mit Rosenbeet in der Vulkaneifel"
           loading="eager"
           decoding="sync"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ animation: "ken-burns-in 18s ease-out forwards" }}
+          className="hero-ken-burns absolute inset-0 w-full h-full object-cover"
         />
         </div>
 

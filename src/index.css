@@ -361,6 +361,24 @@
     .ken-burns-in, .ken-burns-out { animation: none !important; }
   }
 
+  /* Hero "lebendig" — unendlich sanft pendelnder Ken-Burns (rein→raus→rein).
+     0%==100% = nahtloser Loop ohne Ruck; ease-in-out + 32s = ruhige, echte
+     Kamerafahrt-Anmutung. Bewusste Entscheidung gegen Fake-Pflanzen-Bewegung
+     (Warp wirkt wie Gummi, lokales i2v flimmert): das ganze SCHARFE Foto atmet
+     minimal, das liest das Auge als real. Skaliert 1:1 für jeden Kunden-Hero. */
+  @keyframes ken-burns-loop {
+    0%   { transform: scale(1.04) translate3d(0, 0, 0); }
+    50%  { transform: scale(1.10) translate3d(-1.2%, -0.8%, 0); }
+    100% { transform: scale(1.04) translate3d(0, 0, 0); }
+  }
+  .hero-ken-burns {
+    animation: ken-burns-loop 32s ease-in-out infinite;
+    will-change: transform;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-ken-burns { animation: none !important; }
+  }
+
   /* Conexa-Icon Diamant-Funkeln — Footer "Powered by". Nur das Icon funkelt:
      lange ruhig & gedimmt, dann ein kurzer scharfer Glint — heller Gold-Weiß-
      Funke MIT Scale-Pop (Diamant blitzt kurz auf). Der Pop verkauft das Funkeln;
