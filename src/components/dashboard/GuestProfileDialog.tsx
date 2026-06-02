@@ -95,6 +95,10 @@ export default function GuestProfileDialog({
 
   useEffect(() => {
     if (!open || !guestKey) return;
+    // Guard gegen Stale-Write-Race: bei schnellem Gastwechsel darf ein langsam
+    // ankommender Fetch des vorigen Gasts nicht die Anzeige des aktuellen mit
+    // FALSCHEN persoenlichen Daten (notes/birthday/diet) ueberschreiben.
+    let active = true;
     (async () => {
       const filterCol = guestKey.email ? "guest_email" : "guest_name";
       const filterVal = guestKey.email ?? guestKey.name;
@@ -107,6 +111,7 @@ export default function GuestProfileDialog({
           .limit(500),
         supabase.from("rooms").select("id, name, room_number, room_type"),
       ]);
+      if (!active) return;
       setBookings((b as Booking[] | null) ?? []);
       setRooms((r as Room[] | null) ?? []);
 
@@ -116,6 +121,7 @@ export default function GuestProfileDialog({
           .select("id, notes, birthday, diet")
           .eq("email", guestKey.email)
           .maybeSingle();
+        if (!active) return;
         setGuestRecord(g ?? null);
         setNotes(g?.notes ?? "");
         setBirthday(g?.birthday ?? "");
@@ -127,6 +133,7 @@ export default function GuestProfileDialog({
         setDiet("");
       }
     })();
+    return () => { active = false; };
   }, [open, guestKey?.name, guestKey?.email]);
 
   const roomMap = useMemo(() => Object.fromEntries(rooms.map((r) => [r.id, r])), [rooms]);
@@ -140,7 +147,9 @@ export default function GuestProfileDialog({
     const today = new Date().toISOString().slice(0, 10);
     const past = valid.filter((b) => b.check_out <= today);
     const upcoming = valid.filter((b) => b.check_in >= today).sort((a, b) => a.check_in.localeCompare(b.check_in));
-    const lastStay = past[0]?.check_out;
+    // bookings ist nach check_in DESC sortiert → past[0] ist NICHT der letzte
+    // Aufenthalt. Spaetesten check_out nehmen (ISO-Strings sortieren chronolog.).
+    const lastStay = past.length ? past.map((b) => b.check_out).sort().at(-1) : undefined;
     const nextStay = upcoming[0]?.check_in;
     const firstBooking = [...valid].sort((a, b) => a.created_at.localeCompare(b.created_at))[0]?.created_at;
 
@@ -188,14 +197,31 @@ export default function GuestProfileDialog({
       if (error) { toast.error(error.message); return; }
       setGuestRecord({ ...guestRecord, ...payload });
     } else {
-      const { data, error } = await (supabase as any)
+      // guests.email hat KEINE UNIQUE-Constraint (s. Migration) → blinder Insert
+      // erzeugt Duplikate, wenn der Gast nur ueber den Namen geladen wurde.
+      // Erst per email nachsehen, sonst updaten. Echte Loesung: UNIQUE(tenant_id,
+      // email) als Schema-Constraint (Alisa) — dann upsert onConflict moeglich.
+      const { data: existing } = await (supabase as any)
         .from("guests")
-        .insert({ name: guestKey?.name ?? "", email, phone: phone || null, ...payload })
-        .select("id, notes, birthday, diet")
+        .select("id")
+        .eq("email", email)
+        .limit(1)
         .maybeSingle();
-      setSaving(false);
-      if (error) { toast.error(error.message); return; }
-      setGuestRecord(data ?? null);
+      if (existing?.id) {
+        const { error } = await (supabase as any).from("guests").update(payload).eq("id", existing.id);
+        setSaving(false);
+        if (error) { toast.error(error.message); return; }
+        setGuestRecord({ id: existing.id, ...payload });
+      } else {
+        const { data, error } = await (supabase as any)
+          .from("guests")
+          .insert({ name: guestKey?.name ?? "", email, phone: phone || null, ...payload })
+          .select("id, notes, birthday, diet")
+          .maybeSingle();
+        setSaving(false);
+        if (error) { toast.error(error.message); return; }
+        setGuestRecord(data ?? null);
+      }
     }
     toast.success("Gespeichert");
   };
