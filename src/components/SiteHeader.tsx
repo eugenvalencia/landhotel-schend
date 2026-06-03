@@ -27,6 +27,7 @@ const PAKETE_MEGA = PAKETE.slice(0, 5).map((p) => ({
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
@@ -41,22 +42,55 @@ export default function SiteHeader() {
   ];
 
   useEffect(() => {
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        // Header bleibt IMMER oben fest (kein Auto-Hide) — nur der Glas-Effekt
-        // schaltet ab 20px Scroll dazu. Persistenter Header = bessere Bedienbarkeit
-        // (Telefon-Pill + Buchen jederzeit erreichbar, wichtig fuer 60+).
-        setScrolled(window.scrollY > 20);
-        ticking = false;
-      });
+    // WICHTIG: Lenis (Smooth-Scroll) feuert KEINE nativen window-"scroll"-Events —
+    // ein scroll-Listener liefe nie. Stattdessen pro Frame (rAF) die Position
+    // pollen; das funktioniert mit Lenis, nativem Scroll und reduced-motion.
+    // React-State nur bei echtem Wechsel setzen (kein Re-Render pro Frame).
+    //
+    // Desktop (>=lg, volle Nav) = Header IMMER fest oben.
+    // Mobil/Tablet (Hamburger) = beim aktiven Runterscrollen darf er weichen,
+    // kommt aber sofort zurueck beim Hochscrollen ODER beim Stehenbleiben
+    // (Scroll-Stop), damit er beim Lesen jederzeit greifbar ist.
+    let lastY = window.scrollY;
+    let curScrolled = lastY > 20;
+    let curHidden = false;
+    let rafId = 0;
+    let idleTimer: ReturnType<typeof setTimeout> | undefined;
+    const isMobile = () => window.matchMedia("(max-width: 1023px)").matches;
+
+    const applyScrolled = (v: boolean) => {
+      if (v !== curScrolled) { curScrolled = v; setScrolled(v); }
     };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    const applyHidden = (v: boolean) => {
+      if (v !== curHidden) { curHidden = v; setHidden(v); }
+    };
+
+    const tick = () => {
+      const y = window.scrollY;
+      applyScrolled(y > 20);
+
+      if (!isMobile() || open || y < 120) {
+        applyHidden(false);            // Desktop / Menü offen / ganz oben: immer da
+      } else if (y > lastY + 6) {
+        applyHidden(true);             // mobil, aktiv runter: ausblenden
+      } else if (y < lastY - 4) {
+        applyHidden(false);            // mobil, hoch: einblenden
+      }
+
+      if (Math.abs(y - lastY) > 0.5) {
+        // bewegt sich noch -> Idle-Timer neu setzen
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => applyHidden(false), 220); // Scroll-Stop = einblenden
+      }
+      lastY = y;
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(idleTimer);
+    };
+  }, [open]);
 
   const handleNav = (id: string) => {
     setOpen(false);
@@ -101,6 +135,7 @@ export default function SiteHeader() {
         scrolled
           ? "bg-background/55 backdrop-blur-xl backdrop-saturate-150 border-b border-white/30 shadow-[0_8px_30px_rgb(0_0_0_/0.08)]"
           : "bg-background border-b border-transparent",
+        hidden ? "-translate-y-full" : "translate-y-0",
       )}
     >
       {/* subtle gradient sheen — only when scrolled */}
