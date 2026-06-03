@@ -67,7 +67,7 @@ const DISTANZEN = [
   <section class="container mx-auto px-4 py-16 md:py-24">
     <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
       {HIGHLIGHTS.map((h, i) => (
-        <article class="rounded-md overflow-hidden border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${(i % 2) * 0.1}s`}>
+        <article class="spotlight rounded-md overflow-hidden border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${(i % 2) * 0.1}s`}>
           <div class="aspect-[16/10] overflow-hidden">
             <img src={h.img} alt={h.title} class="w-full h-full object-cover" loading="lazy" decoding="async" />
           </div>

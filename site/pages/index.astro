@@ -189,8 +189,14 @@ const hotelGraph = {
         kostenlose Motorradgarage. Ideal für Ihren Kurzurlaub — direkt buchen, provisionsfrei.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href="/booking" class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">Jetzt direkt buchen</a>
+        <a href="/booking" class="glow-border inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">Jetzt direkt buchen</a>
         <a href="tel:+4965731306" class="inline-flex items-center px-6 py-3 rounded-sm border border-white/40 font-semibold tracking-wide hover:bg-white/10 transition-colors">+49 6573 306</a>
+      </div>
+    </div>
+    <!-- Scroll-Hinweis -->
+    <div aria-hidden="true" class="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:block">
+      <div class="relative h-12 w-px bg-white/25 overflow-hidden">
+        <span class="scroll-cue-travel absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-white to-transparent"></span>
       </div>
     </div>
   </section>
@@ -252,7 +258,7 @@ const hotelGraph = {
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {roomTeaser.map((r, i) => (
-          <a href={`/zimmer/${r.slug}`} class="group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+          <a href={`/zimmer/${r.slug}`} class="spotlight group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
             <div class="aspect-[4/3] overflow-hidden">
               <img src={r.gallery[0]} alt={`${r.type} im Landhotel Schend`} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
             </div>
@@ -277,7 +283,7 @@ const hotelGraph = {
     </div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {paketTeaser.map((p, i) => (
-        <a href={`/pakete/${p.slug}`} class="group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+        <a href={`/pakete/${p.slug}`} class="spotlight group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
           <div class="aspect-[4/3] overflow-hidden">
             <img src={p.cover} alt={p.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
           </div>
@@ -333,7 +339,7 @@ const hotelGraph = {
       </div>
       <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
         {REGION.map((r, i) => (
-          <div class="rounded-md overflow-hidden border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+          <div class="spotlight rounded-md overflow-hidden border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
             <div class="aspect-[16/10] overflow-hidden">
               <img src={r.img} alt={r.title} class="w-full h-full object-cover" loading="lazy" decoding="async" />
             </div>

@@ -23,7 +23,7 @@ import { PAKETE } from "../../lib/pakete";
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
       {PAKETE.map((p, i) => (
-        <a href={`/pakete/${p.slug}`} class="group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${(i % 3) * 0.08}s`}>
+        <a href={`/pakete/${p.slug}`} class="spotlight group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${(i % 3) * 0.08}s`}>
           <div class="aspect-[4/3] overflow-hidden">
             <img src={p.cover} alt={p.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
           </div>

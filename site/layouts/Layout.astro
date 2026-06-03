@@ -10,6 +10,7 @@
 import "../styles/global.css";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import A11yPanel from "../components/A11yPanel.astro";
 import { ORIGIN, SITE_NAME } from "../lib/site";
 
 interface Props {
@@ -70,10 +71,24 @@ const robots = noindex
     {/* Theme vor Render anwenden — verhindert Flash beim Light/Dark-Wechsel. */}
     <script is:inline>
       (function () {
+        // Früh markieren, dass JS läuft — so starten Reveal-/Timeline-Elemente
+        // schon vor dem ersten Paint verborgen (kein Aufblitzen). Ohne JS bleibt
+        // die Klasse aus → alle Inhalte voll sichtbar.
+        document.documentElement.classList.add("has-js");
         try {
           var t = localStorage.getItem("theme");
           if (t === "light") document.documentElement.classList.add("light");
           else if (t === "dark") document.documentElement.classList.add("dark");
+        } catch (e) {}
+        // Barrierefreiheits-Komfort (Schriftgröße/Kontrast/Bewegung) früh anwenden,
+        // damit kein Umspringen beim Laden sichtbar ist. Key: schend_a11y_v1.
+        try {
+          var a = JSON.parse(localStorage.getItem("schend_a11y_v1") || "{}");
+          var r = document.documentElement;
+          if (a.font === "large") r.classList.add("a11y-large");
+          if (a.font === "larger") r.classList.add("a11y-larger");
+          if (a.contrast) r.classList.add("a11y-high-contrast");
+          if (a.motion) r.classList.add("a11y-reduced-motion");
         } catch (e) {}
       })();
     </script>
@@ -117,6 +132,7 @@ const robots = noindex
       <slot />
     </main>
     <SiteFooter />
+    <A11yPanel />
 
     <style is:global>
       /* Skip-Link — visuell versteckt bis Tastatur-Fokus (a11y). */
@@ -161,18 +177,34 @@ const robots = noindex
           transition: none !important;
         }
       }
+      /* „Bewegung reduzieren" im Komfort-Tool zeigt alle Reveal-Elemente sofort. */
+      html.a11y-reduced-motion [data-reveal] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      /* Timeline (Über-uns) ohne JS bzw. bei reduzierter Bewegung voll sichtbar. */
+      html:not(.has-js) .tl-item,
+      html.a11y-reduced-motion .tl-item {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      html:not(.has-js) .tl-line,
+      html.a11y-reduced-motion .tl-line {
+        transform: scaleX(1) !important;
+      }
     </style>
 
     <script>
-      // Progressive Enhancement für Scroll-Effekte. Inhalt steht ohne JS im HTML;
+      // Progressive Enhancement für alle Effekte. Inhalt steht ohne JS im HTML;
       // dieses Script legt nur die Animationen obendrauf (klein, vanilla, kein React).
-      const root = document.documentElement;
-      root.classList.add("has-js");
-
+      // html.has-js wird bereits im Kopf gesetzt.
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const reveals = document.querySelectorAll<HTMLElement>("[data-reveal]");
+      const hasIO = "IntersectionObserver" in window;
 
-      if (reduce || !("IntersectionObserver" in window)) {
+      // 1) Scroll-Reveal — [data-reveal] fadet beim Reinscrollen ein.
+      const reveals = document.querySelectorAll<HTMLElement>("[data-reveal]");
+      if (reduce || !hasIO) {
         reveals.forEach((el) => el.classList.add("in"));
       } else {
         const io = new IntersectionObserver(
@@ -187,19 +219,67 @@ const robots = noindex
           { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
         );
         reveals.forEach((el) => io.observe(el));
-        // Bereits sichtbare Elemente (above the fold) sofort zeigen.
         requestAnimationFrame(() => {
           reveals.forEach((el) => {
             if (el.getBoundingClientRect().top < window.innerHeight * 0.92) el.classList.add("in");
           });
         });
+      }
 
-        // Sanfter Hero-Parallax — Elemente mit [data-parallax] bewegen sich
-        // langsamer als der Scroll (nur Desktop, reduced-motion aus).
-        const parallax = document.querySelectorAll<HTMLElement>("[data-parallax]");
-        if (parallax.length && window.innerWidth >= 768) {
-          let ticking = false;
-          const onScroll = () => {
+      // 2) Timeline-Reveal — Linie zeichnet sich, Jahre faden gestaffelt, Gold-Funke wandert.
+      const tls = document.querySelectorAll<HTMLElement>(".tl-reveal");
+      if (reduce || !hasIO) {
+        tls.forEach((t) => t.classList.add("visible"));
+      } else {
+        const tio = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("visible");
+                tio.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.2 },
+        );
+        tls.forEach((t) => tio.observe(t));
+      }
+
+      // 3) Spotlight — sanfter Gold-Schimmer folgt der Maus über Karten.
+      if (!reduce) {
+        document.querySelectorAll<HTMLElement>(".spotlight").forEach((card) => {
+          card.addEventListener("pointermove", (e) => {
+            const r = card.getBoundingClientRect();
+            card.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+            card.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
+          });
+        });
+      }
+
+      // 4) Tilt — Karten mit .tilt-card kippen leicht in 3D zur Maus.
+      if (!reduce && window.matchMedia("(hover: hover)").matches) {
+        document.querySelectorAll<HTMLElement>(".tilt-card").forEach((card) => {
+          card.addEventListener("pointermove", (e) => {
+            const r = card.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width - 0.5;
+            const py = (e.clientY - r.top) / r.height - 0.5;
+            card.style.setProperty("--tilt-y", `${px * 6}deg`);
+            card.style.setProperty("--tilt-x", `${-py * 6}deg`);
+          });
+          card.addEventListener("pointerleave", () => {
+            card.style.setProperty("--tilt-y", "0deg");
+            card.style.setProperty("--tilt-x", "0deg");
+          });
+        });
+      }
+
+      // 5) Sanfter Parallax — Elemente mit [data-parallax] (nur Desktop).
+      const parallax = document.querySelectorAll<HTMLElement>("[data-parallax]");
+      if (!reduce && parallax.length && window.innerWidth >= 768) {
+        let ticking = false;
+        window.addEventListener(
+          "scroll",
+          () => {
             if (ticking) return;
             ticking = true;
             requestAnimationFrame(() => {
@@ -209,9 +289,9 @@ const robots = noindex
               });
               ticking = false;
             });
-          };
-          window.addEventListener("scroll", onScroll, { passive: true });
-        }
+          },
+          { passive: true },
+        );
       }
     </script>
   </body>

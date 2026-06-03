@@ -90,8 +90,9 @@ const aboutSchema = {
     </div>
   </section>
 
-  <!-- Timeline — 1856 bis heute (statisch sichtbar) -->
-  <section class="container mx-auto px-4 py-16 md:py-24 border-t border-border/40">
+  <!-- Timeline — 1856 bis heute. tl-reveal: Linie zeichnet sich, Jahre staffeln,
+       Gold-Funke wandert (per IntersectionObserver). Ohne JS voll sichtbar. -->
+  <section class="tl-reveal container mx-auto px-4 py-16 md:py-24 border-t border-border/40">
     <div class="text-center mb-12 md:mb-16">
       <p class="eyebrow">165+ Jahre Gastfreundschaft</p>
       <h2 class="font-display text-2xl md:text-3xl lg:text-4xl mt-4 text-balance">
@@ -102,10 +103,11 @@ const aboutSchema = {
 
     <!-- Desktop — horizontal -->
     <div class="hidden md:block relative max-w-6xl mx-auto">
-      <div aria-hidden="true" class="absolute left-0 right-0 top-1.5 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent"></div>
+      <div aria-hidden="true" class="tl-line absolute left-0 right-0 top-1.5 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent"></div>
+      <span aria-hidden="true" class="tl-glint"></span>
       <ol class="relative grid grid-cols-8 gap-2">
         {TIMELINE.map((item, i) => (
-          <li class="flex flex-col items-center text-center" data-reveal style={`--reveal-delay:${i * 0.07}s`}>
+          <li class="tl-item flex flex-col items-center text-center" style={`--i:${i}`}>
             <span aria-hidden="true" class="block h-3 w-3 rounded-full bg-secondary ring-4 ring-background relative z-10"></span>
             <p class="font-display text-secondary text-xl lg:text-2xl mt-4 mb-2">{item.year}</p>
             <p class="text-[10px] lg:text-[11px] text-muted-foreground leading-tight tracking-wide px-1">{item.event}</p>
@@ -117,8 +119,8 @@ const aboutSchema = {
     <!-- Mobile — vertikal -->
     <div class="md:hidden max-w-md mx-auto">
       <ol class="relative border-l-2 border-secondary/30 ml-3 space-y-6 pl-6">
-        {TIMELINE.map((item) => (
-          <li class="relative">
+        {TIMELINE.map((item, i) => (
+          <li class="tl-item relative" style={`--i:${i}`}>
             <span aria-hidden="true" class="absolute -left-[1.85rem] top-1 h-3 w-3 rounded-full bg-secondary ring-4 ring-background"></span>
             <p class="font-display text-secondary text-xl">{item.year}</p>
             <p class="text-sm text-muted-foreground leading-relaxed">{item.event}</p>

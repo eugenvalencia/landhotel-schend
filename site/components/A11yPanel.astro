@@ -1,0 +1,124 @@
+---
+// Barrierefreiheits-/Komfort-Tool — wichtig für die 60+-Zielgruppe.
+// Schwebender Knopf unten rechts (große Tap-Fläche, mobil-tauglich, ZoomIn-Lupe
+// NICHT Personen-Symbol). Steuert Schriftgröße / Kontrast / Bewegung über
+// HTML-Root-Klassen (CSS liegt in global.css), Persistenz: schend_a11y_v1.
+---
+
+<div id="a11y-tool" class="fixed z-[60] right-4 bottom-4 safe-pb print:hidden">
+  <!-- Panel -->
+  <div
+    id="a11y-panel"
+    hidden
+    role="dialog"
+    aria-label="Anzeige-Einstellungen"
+    class="absolute bottom-16 right-0 w-[min(20rem,calc(100vw-2rem))] rounded-xl border border-border bg-card text-card-foreground shadow-elevated p-5 animate-fade-up"
+  >
+    <p class="font-display text-lg mb-1">Anzeige & Komfort</p>
+    <p class="text-xs text-muted-foreground mb-4">Für angenehmeres Lesen.</p>
+
+    <p class="text-sm font-semibold mb-2">Schriftgröße</p>
+    <div class="grid grid-cols-3 gap-2 mb-5" role="group" aria-label="Schriftgröße">
+      <button type="button" data-font="normal" class="a11y-opt h-12 rounded-md border border-border text-sm font-medium hover:border-secondary transition-colors" aria-pressed="true">Normal</button>
+      <button type="button" data-font="large" class="a11y-opt h-12 rounded-md border border-border text-base font-medium hover:border-secondary transition-colors" aria-pressed="false">Groß</button>
+      <button type="button" data-font="larger" class="a11y-opt h-12 rounded-md border border-border text-lg font-medium hover:border-secondary transition-colors" aria-pressed="false">Größer</button>
+    </div>
+
+    <button type="button" data-toggle="contrast" class="a11y-switch w-full h-12 mb-2 flex items-center justify-between px-4 rounded-md border border-border hover:border-secondary transition-colors" aria-pressed="false">
+      <span class="text-sm font-medium">Hoher Kontrast</span>
+      <span class="a11y-dot h-5 w-9 rounded-full bg-muted relative transition-colors"><span class="absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-background shadow transition-transform"></span></span>
+    </button>
+
+    <button type="button" data-toggle="motion" class="a11y-switch w-full h-12 mb-4 flex items-center justify-between px-4 rounded-md border border-border hover:border-secondary transition-colors" aria-pressed="false">
+      <span class="text-sm font-medium">Bewegung reduzieren</span>
+      <span class="a11y-dot h-5 w-9 rounded-full bg-muted relative transition-colors"><span class="absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-background shadow transition-transform"></span></span>
+    </button>
+
+    <button type="button" data-a11y-reset class="w-full h-10 rounded-md text-xs font-medium text-muted-foreground hover:text-secondary transition-colors">Zurücksetzen</button>
+  </div>
+
+  <!-- Knopf -->
+  <button
+    type="button"
+    id="a11y-toggle"
+    aria-label="Anzeige & Komfort — Schriftgröße und Kontrast einstellen"
+    aria-expanded="false"
+    aria-controls="a11y-panel"
+    class="h-14 w-14 rounded-full bg-primary text-primary-foreground shadow-elevated flex items-center justify-center hover:bg-secondary hover:text-secondary-foreground transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+  >
+    <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      <line x1="11" y1="8" x2="11" y2="14"></line>
+      <line x1="8" y1="11" x2="14" y2="11"></line>
+    </svg>
+  </button>
+</div>
+
+<style>
+  /* Aktiver Zustand der Optionen + Schalter (an html-Klassen orientiert via JS). */
+  .a11y-opt[aria-pressed="true"] {
+    background: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    border-color: hsl(var(--secondary));
+  }
+  .a11y-switch[aria-pressed="true"] .a11y-dot {
+    background: hsl(var(--secondary));
+  }
+  .a11y-switch[aria-pressed="true"] .a11y-dot > span {
+    transform: translateX(1rem);
+  }
+</style>
+
+<script>
+  const KEY = "schend_a11y_v1";
+  const root = document.documentElement;
+  const tool = document.getElementById("a11y-tool");
+  const toggle = document.getElementById("a11y-toggle");
+  const panel = document.getElementById("a11y-panel");
+
+  type State = { font: "normal" | "large" | "larger"; contrast: boolean; motion: boolean };
+  const load = (): State => {
+    try {
+      return { font: "normal", contrast: false, motion: false, ...JSON.parse(localStorage.getItem(KEY) || "{}") };
+    } catch {
+      return { font: "normal", contrast: false, motion: false };
+    }
+  };
+  let state = load();
+
+  const apply = () => {
+    root.classList.toggle("a11y-large", state.font === "large");
+    root.classList.toggle("a11y-larger", state.font === "larger");
+    root.classList.toggle("a11y-high-contrast", state.contrast);
+    root.classList.toggle("a11y-reduced-motion", state.motion);
+    document.querySelectorAll<HTMLButtonElement>("[data-font]").forEach((b) =>
+      b.setAttribute("aria-pressed", String(b.dataset.font === state.font)),
+    );
+    document.querySelector<HTMLButtonElement>('[data-toggle="contrast"]')?.setAttribute("aria-pressed", String(state.contrast));
+    document.querySelector<HTMLButtonElement>('[data-toggle="motion"]')?.setAttribute("aria-pressed", String(state.motion));
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {}
+  };
+  apply();
+
+  if (toggle && panel && tool) {
+    const setOpen = (open: boolean) => {
+      panel.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+    };
+    toggle.addEventListener("click", () => setOpen(panel.hidden));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !panel.hidden) { setOpen(false); toggle.focus(); }
+    });
+    document.addEventListener("click", (e) => {
+      if (!panel.hidden && !tool.contains(e.target as Node)) setOpen(false);
+    });
+
+    panel.querySelectorAll<HTMLButtonElement>("[data-font]").forEach((b) =>
+      b.addEventListener("click", () => { state.font = b.dataset.font as State["font"]; apply(); }),
+    );
+    panel.querySelector<HTMLButtonElement>('[data-toggle="contrast"]')?.addEventListener("click", () => { state.contrast = !state.contrast; apply(); });
+    panel.querySelector<HTMLButtonElement>('[data-toggle="motion"]')?.addEventListener("click", () => { state.motion = !state.motion; apply(); });
+    panel.querySelector<HTMLButtonElement>("[data-a11y-reset]")?.addEventListener("click", () => { state = { font: "normal", contrast: false, motion: false }; apply(); });
+  }
+</script>

@@ -96,7 +96,7 @@ import { ROOM_TYPES, ROOM_INTRO, ROOM_RATES, ROOM_AUSSTATTUNG, HAUS_SONSTIGES, E
   <section class="container mx-auto px-4 py-16 md:py-20">
     <div class="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
       {ROOM_TYPES.map((r, i) => (
-        <a href={`/zimmer/${r.slug}`} class="group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+        <a href={`/zimmer/${r.slug}`} class="spotlight group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
           <div class="aspect-[4/3] overflow-hidden">
             <img src={r.gallery[0]} alt={`${r.type} im Landhotel Schend`} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
           </div>
