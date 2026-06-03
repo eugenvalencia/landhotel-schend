@@ -1,0 +1,26 @@
+---
+// 404 — branded, im Astro-SSG eine echte statische Seite.
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Seite nicht gefunden" description="Diese Seite gibt es nicht (mehr)." canonicalPath="/404" noindex={true}>
+  <section class="container mx-auto px-4 py-28 md:py-40 text-center max-w-xl">
+    <p class="eyebrow">Fehler 404</p>
+    <h1 class="font-display text-5xl md:text-6xl mt-3 text-balance leading-[1.05]">Seite nicht gefunden</h1>
+    <p class="text-muted-foreground mt-5 leading-relaxed text-pretty">
+      Die gewünschte Seite existiert nicht oder wurde verschoben. Finden Sie zurück zur Startseite
+      oder rufen Sie uns direkt an — wir helfen gern weiter.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3 justify-center">
+      <a href="/" class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">Zur Startseite</a>
+      <a href="tel:+4965731306" class="inline-flex items-center px-6 py-3 rounded-sm border border-border font-semibold tracking-wide hover:bg-muted transition-colors">+49 6573 306</a>
+    </div>
+    <nav class="mt-10 flex flex-wrap gap-x-6 gap-y-2 justify-center text-sm text-muted-foreground" aria-label="Schnellzugriff">
+      <a href="/zimmer" class="hover:text-secondary transition-colors">Zimmer</a>
+      <a href="/pakete" class="hover:text-secondary transition-colors">Pakete</a>
+      <a href="/restaurant" class="hover:text-secondary transition-colors">Restaurant</a>
+      <a href="/ueber-uns" class="hover:text-secondary transition-colors">Über uns</a>
+      <a href="/faq" class="hover:text-secondary transition-colors">FAQ</a>
+    </nav>
+  </section>
+</Layout>

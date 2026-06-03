@@ -53,23 +53,27 @@ Sprach-Pfade: `/en/zimmer`, `/fr/zimmer`, `/nl/zimmer` … via Astro i18n-Routin
 > **Walter** (Legal). Stufe 1 portiert die Texte bewusst 1:1; inhaltliche Änderung
 > erst, wenn die Architektur steht (sonst Doppelarbeit bei Stufe-2/3-Rebuild).
 
-**Stufe 2 — Content-Seiten + Daten**
-- [ ] Startseite (Hero/Ken-Burns als CSS, USPs, Anrisse → Themen-Seiten).
-- [ ] Zimmer-Übersicht + Zimmer-Detail (`/zimmer/[slug]`) aus Daten, `HotelRoom`-Schema.
-- [ ] Pakete-Übersicht + Detail. Restaurant-Seite.
+**Stufe 2 — Content-Seiten + Daten** ✅ (Commit 9872a10)
+- [x] Startseite voll (Hero + USP-Strip + Trust mit 4 echten Plattform-Ratings + 3 echten Zitaten + Zimmer/Pakete/Restaurant/Über-uns/Region-Anrissen + FAQ-CTA, Hotel-`@graph`).
+- [x] Zimmer-Übersicht + `/zimmer/[slug]` (5 Typen), `HotelRoom`+`Offer`-Schema. Daten statisch aus Code-Konstanten (kein Build-Zeit-Supabase → deterministisch).
+- [x] Pakete-Übersicht + `/pakete/[slug]` (6), Restaurant-Seite (+`Restaurant`-Schema). 404-Seite.
 
-**Stufe 3 — Interaktion + Mehrsprachigkeit**
-- [ ] Buchungs-Flow als React-Island (Supabase, create_booking) einbinden.
-- [ ] Übersetzungen aus bestehender `i18n.ts` in Astro-i18n-Content überführen (DE vollständig; EN/FR/NL Gerüst, Inhalte folgen).
-- [ ] hreflang/Canonical reziprok + selbstreferenzierend, sitemap pro Sprache.
+**Stufe 3 — Interaktion + Mehrsprachigkeit** ⚠️ teils bewusst gescoped (Commit s. Cutover-Doc)
+- [~] Buchungs-Flow: NICHT blind als Island nachgebaut. Architektur-Entscheidung — `/booking` + `/dashboard` bleiben die getestete React-SPA, beim Cutover per Cloudflare-Routing angebunden. Astro-CTAs zeigen korrekt auf `/booking`. (Island-Einbettung = optionale spätere Politur.)
+- [~] i18n: Config (de/en/fr/nl) steht. EN/FR/NL-**Inhalte** bewusst NICHT halb gebaut (Content-Task → Angelina; Fabrikations-/Inkonsistenz-Risiko). DE vollständig.
+- [x] hreflang/Canonical korrekt für DE-Stand (de + x-default, selbstreferenzierend), Astro-Sitemap listet alle Routen. Voll-reziproke Sprach-hreflang folgt mit den Übersetzungen.
 
-**Stufe 4 — Verify + Cutover**
-- [ ] `curl`-Test pro Route: Haupttext im HTML. Lighthouse SEO/Perf/A11y ≥ Zielwerte (§ A7/A5).
-- [ ] § A0–A9 + B1/B2 Checkliste durchgehen.
-- [ ] Branch-Preview gegen alte Preview vergleichen, dann erst `main` + Cloudflare-Cutover.
-- [ ] Reusable Shell → `conexa-site-template` extrahieren.
+**Stufe 4 — Verify + Cutover** ✅ Verify / ⛔ Cutover = Eugen+Schend
+- [x] Routen-Test: Haupttext + Schema im HTML pro Route (22 Seiten grün). Zero externes JS-Bundle.
+- [x] § A0 (Render-Architektur) erfüllt — alles SSG, Content im HTML, eigene URLs pro Thema.
+- [ ] Lighthouse SEO/Perf/A11y messen (braucht Preview-Deploy oder lokalen Server-Run).
+- [ ] Branch-Preview gegen alte Preview, dann `main` + Cloudflare-Cutover. **⛔ Eugen + Schend-OK** (Live-Domain-Memory).
+- [ ] Reusable Shell → `conexa-site-template`. **Follow-up** (eigener Repo-Refactor).
+
+> **Cutover-Details** stehen in [`schend-astro-cutover-checklist.md`](./schend-astro-cutover-checklist.md).
 
 ## Risiken / offen
-- Dashboard-Einbettung: entweder als eigene SPA-Route (`/dashboard/*` via Astro-`output: "server"`-Teilbereich oder separates Deploy) — in Stufe 3 entscheiden.
-- Booking-Island muss dieselbe Supabase-Client-Config + RLS nutzen wie heute.
-- Bestehende Fotos (`public/fotos`) + Self-Hosting bleiben 1:1.
+- **Cutover-Routing:** `dist-astro/_redirects` erbt aus `public/_redirects` den SPA-Fallback `/* /index.html 200` — der ist für das SSG-Deploy FALSCH (würde alles auf die Home routen). Beim Astro-Deploy überschreiben: SPA-Catch-all raus, `/booking` + `/dashboard/*` → React-App, sonst echtes 404. (`public/` ist mit der Vite-App geteilt → NICHT jetzt ändern.)
+- **Sitemap-Verweis:** `public/robots.txt` zeigt auf `/sitemap.xml` (alt, Vite). Astro erzeugt `/sitemap-index.xml`. Beim Cutover robots umbiegen.
+- Booking + Dashboard nutzen weiter dieselbe Supabase-Client-Config + RLS (React-SPA).
+- Bestehende Fotos (`public/fotos`) + Self-Hosting bleiben 1:1. Pakete-Bilder neu in `public/pakete`.
