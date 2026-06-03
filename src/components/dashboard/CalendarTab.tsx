@@ -48,10 +48,17 @@ type Booking = {
   updated_at: string;
 };
 
+// "YYYY-MM-DD" als LOKALES Datum parsen (sonst UTC-Mitternacht → vermischt sich mit
+// lokal gebauten Monatsgrenzen und verschiebt Nächte/Umsatzanteil um den TZ-Offset).
+const parseLocalDate = (iso: string): Date => {
+  const [y, mo, d] = iso.split("-").map(Number);
+  return new Date(y, (mo || 1) - 1, d || 1);
+};
+
 const nightsBetween = (inIso: string, outIso: string) =>
   Math.max(
     1,
-    Math.round((new Date(outIso).getTime() - new Date(inIso).getTime()) / 86400000),
+    Math.round((parseLocalDate(outIso).getTime() - parseLocalDate(inIso).getTime()) / 86400000),
   );
 
 type ViewMode = "day" | "week" | "month" | "year";
@@ -956,8 +963,8 @@ function YearGrid({
           if (b.booking_type !== "intern" && !countedBookings.has(b.id)) {
             countedBookings.add(b.id);
             bookingsCount++;
-            const ci = new Date(b.check_in);
-            const co = new Date(b.check_out);
+            const ci = parseLocalDate(b.check_in);   // lokal — konsistent mit monthStart/-End
+            const co = parseLocalDate(b.check_out);
             const monthStart = new Date(yr, m, 1);
             const monthEnd = new Date(yr, m + 1, 1);
             const overlapStart = ci < monthStart ? monthStart : ci;

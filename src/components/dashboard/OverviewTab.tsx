@@ -78,9 +78,13 @@ export default function OverviewTab() {
     const monthStart = toISODate(new Date(now.getFullYear(), now.getMonth(), 1));
     const monthEnd = toISODate(new Date(now.getFullYear(), now.getMonth() + 1, 0));
     const tomorrow = toISODate(new Date(now.getTime() + 86400000));
-    const weekStart = toISODate(new Date(now.getTime() - now.getDay() * 86400000));
-    const lastWeekStart = toISODate(new Date(new Date(weekStart).getTime() - 7 * 86400000));
-    const lastWeekEnd = toISODate(new Date(new Date(weekStart).getTime() - 86400000));
+    // ISO-Woche: Montag-Start (getDay() 0=So..6=Sa → Montag-Offset). Kalender-Arithmetik
+    // (new Date(y,m,d-n)) statt ms — DST-sicher.
+    const wd = (now.getDay() + 6) % 7;                       // Mo=0 … So=6
+    const Y = now.getFullYear(), M = now.getMonth(), D = now.getDate();
+    const weekStart = toISODate(new Date(Y, M, D - wd));
+    const lastWeekStart = toISODate(new Date(Y, M, D - wd - 7));
+    const lastWeekEnd = toISODate(new Date(Y, M, D - wd - 1));
     const next14End = toISODate(new Date(now.getTime() + 14 * 86400000));
     const prevYearStart = toISODate(new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()));
     const prevYearEnd = toISODate(new Date(now.getFullYear() - 1, now.getMonth(), now.getDate() + 14));
@@ -100,7 +104,7 @@ export default function OverviewTab() {
 
     // ---- Umsatz ----
     const paid = validOnline.filter((b) => b.payment_status === "paid");
-    const revToday = paid.filter((b) => b.created_at.slice(0, 10) === todayIso).reduce((s, b) => s + Number(b.total_price), 0);
+    const revToday = paid.filter((b) => toISODate(new Date(b.created_at)) === todayIso).reduce((s, b) => s + (Number(b.total_price) || 0), 0);
     const revMonth = paid.filter((b) => b.check_in >= monthStart && b.check_in <= monthEnd).reduce((s, b) => s + Number(b.total_price), 0);
 
     // ---- Pace nächste 14 Tage vs Vorjahres-Zeitraum ----
@@ -109,8 +113,8 @@ export default function OverviewTab() {
     const pacePct = paceVj > 0 ? Math.round(((pace14 - paceVj) / paceVj) * 100) : 0;
 
     // ---- Diese Woche vs letzte Woche ----
-    const thisWeekBookings = validOnline.filter((b) => b.created_at.slice(0, 10) >= weekStart && b.created_at.slice(0, 10) <= todayIso).length;
-    const lastWeekBookings = validOnline.filter((b) => b.created_at.slice(0, 10) >= lastWeekStart && b.created_at.slice(0, 10) <= lastWeekEnd).length;
+    const thisWeekBookings = validOnline.filter((b) => { const d = toISODate(new Date(b.created_at)); return d >= weekStart && d <= todayIso; }).length;
+    const lastWeekBookings = validOnline.filter((b) => { const d = toISODate(new Date(b.created_at)); return d >= lastWeekStart && d <= lastWeekEnd; }).length;
     const weekDelta = lastWeekBookings > 0 ? Math.round(((thisWeekBookings - lastWeekBookings) / lastWeekBookings) * 100) : 0;
 
     // ---- Frühstück morgen ----

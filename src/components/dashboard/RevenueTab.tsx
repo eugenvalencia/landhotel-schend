@@ -6,9 +6,18 @@ import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGri
 
 export default function RevenueTab() {
   const [bookings, setBookings] = useState<any[]>([]);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.from("bookings").select("*").then(({ data }) => setBookings(data ?? []));
+    supabase
+      .from("bookings")
+      .select("id, check_in, total_price, payment_status, booking_type")
+      .then(({ data, error }) => {
+        // Fehler NICHT verschlucken — sonst zeigt der Chart still 0 € statt eines Problems.
+        if (error) { setLoadError(error.message); return; }
+        setLoadError(null);
+        setBookings(data ?? []);
+      });
   }, []);
 
   const monthly = useMemo(() => {
@@ -21,10 +30,12 @@ export default function RevenueTab() {
     }
     bookings.forEach((b) => {
       if (b.payment_status !== "paid") return;
+      if (!b.check_in) return;                          // null-Guard: kein Crash bei .slice
       const key = b.check_in.slice(0, 7);
       if (!data[key]) return;
-      if (b.booking_type === "intern") data[key].intern += Number(b.total_price);
-      else data[key].online += Number(b.total_price);
+      const amount = Number(b.total_price) || 0;        // NaN-Guard
+      if (b.booking_type === "intern") data[key].intern += amount;
+      else data[key].online += amount;
     });
     return Object.values(data);
   }, [bookings]);
@@ -36,7 +47,11 @@ export default function RevenueTab() {
       <Card className="shadow-card">
         <CardHeader>
           <CardTitle>Monatsumsatz (letzte 6 Monate)</CardTitle>
-          <p className="text-sm text-muted-foreground">Gesamt: {eur(total)}</p>
+          {loadError ? (
+            <p className="text-sm text-destructive">Umsatzdaten konnten nicht geladen werden: {loadError}</p>
+          ) : (
+            <p className="text-sm text-muted-foreground">Gesamt: {eur(total)}</p>
+          )}
         </CardHeader>
         <CardContent>
           <div className="h-[320px]">
