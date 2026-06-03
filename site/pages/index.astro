@@ -176,8 +176,8 @@ const hotelGraph = {
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(hotelGraph)} />
 
   <!-- Hero -->
-  <section class="relative">
-    <img src={HERO_IMG} alt="Landhotel Schend in Immerath, Vulkaneifel" class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
+  <section class="relative overflow-hidden">
+    <img src={HERO_IMG} alt="Landhotel Schend in Immerath, Vulkaneifel" class="hero-ken-burns absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
     <div class="absolute inset-0 gradient-hero"></div>
     <div class="relative container mx-auto px-4 py-28 md:py-40 max-w-3xl text-[hsl(38_30%_95%)]">
       <span class="inline-block text-[11px] font-semibold tracking-[0.22em] uppercase px-3 py-1 rounded-full border border-white/30 bg-black/20 backdrop-blur-sm">3 Sterne Superior</span>
@@ -211,13 +211,13 @@ const hotelGraph = {
 
   <!-- Trust / Bewertungen -->
   <section class="container mx-auto px-4 py-16 md:py-24">
-    <div class="text-center max-w-2xl mx-auto mb-12">
+    <div class="text-center max-w-2xl mx-auto mb-12" data-reveal>
       <p class="eyebrow">Was Gäste sagen</p>
       <h2 class="font-display text-3xl md:text-4xl mt-3 text-balance">Über 500 Bewertungen, 4,5 ★ im Schnitt</h2>
     </div>
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto mb-12">
-      {PLATFORMS.map((p) => (
-        <div class="text-center p-6 rounded-md border border-border bg-card shadow-card">
+      {PLATFORMS.map((p, i) => (
+        <div class="text-center p-6 rounded-md border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
           <p class="text-sm font-semibold text-muted-foreground">{p.name}</p>
           <p class="font-display text-3xl text-secondary mt-2">{p.score}</p>
           <p class="text-xs text-foreground/70 mt-1">{p.line}</p>
@@ -226,8 +226,8 @@ const hotelGraph = {
       ))}
     </div>
     <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-      {REVIEWS.map((r) => (
-        <figure class="p-6 rounded-md border border-border bg-card shadow-card flex flex-col">
+      {REVIEWS.map((r, i) => (
+        <figure class="p-6 rounded-md border border-border bg-card shadow-card flex flex-col" data-reveal style={`--reveal-delay:${i * 0.1}s`}>
           <div class="flex gap-0.5 text-secondary mb-3" aria-hidden="true">
             {[1, 2, 3, 4, 5].map(() => (
               <svg class="h-4 w-4 fill-secondary" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -251,8 +251,8 @@ const hotelGraph = {
         <a href="/zimmer" class="text-sm font-semibold text-secondary hover:text-foreground transition-colors">Alle Zimmer ansehen →</a>
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {roomTeaser.map((r) => (
-          <a href={`/zimmer/${r.slug}`} class="group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow">
+        {roomTeaser.map((r, i) => (
+          <a href={`/zimmer/${r.slug}`} class="group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
             <div class="aspect-[4/3] overflow-hidden">
               <img src={r.gallery[0]} alt={`${r.type} im Landhotel Schend`} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
             </div>
@@ -276,8 +276,8 @@ const hotelGraph = {
       <a href="/pakete" class="text-sm font-semibold text-secondary hover:text-foreground transition-colors">Alle Pauschalen →</a>
     </div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {paketTeaser.map((p) => (
-        <a href={`/pakete/${p.slug}`} class="group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow">
+      {paketTeaser.map((p, i) => (
+        <a href={`/pakete/${p.slug}`} class="group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
           <div class="aspect-[4/3] overflow-hidden">
             <img src={p.cover} alt={p.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
           </div>
@@ -294,7 +294,7 @@ const hotelGraph = {
   <section class="relative">
     <img src="/fotos/restaurant-panorama-1-landhotel-schend.jpg" alt="Landhaus Restaurant im Landhotel Schend" class="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
     <div class="absolute inset-0 bg-black/55"></div>
-    <div class="relative container mx-auto px-4 py-24 md:py-32 text-center text-white">
+    <div class="relative container mx-auto px-4 py-24 md:py-32 text-center text-white" data-reveal>
       <p class="eyebrow !text-[hsl(38_48%_72%)]">Kulinarik</p>
       <h2 class="font-display text-4xl md:text-5xl mt-3 text-balance">Landhaus Restaurant & Terrasse</h2>
       <p class="mt-5 max-w-2xl mx-auto text-white/90 leading-relaxed text-pretty">
@@ -307,7 +307,7 @@ const hotelGraph = {
 
   <!-- Über-uns-Anriss -->
   <section class="container mx-auto px-4 py-16 md:py-24">
-    <div class="grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto" data-reveal>
       <div class="aspect-[4/3] overflow-hidden rounded-md shadow-elevated order-2 lg:order-1">
         <img src="/fotos/landhotel-schend-zeichnung-innenhof-historisch.jpg" alt="Historische Zeichnung des Landhotel Schend" class="w-full h-full object-cover contrast-110" loading="lazy" decoding="async" />
       </div>
@@ -327,13 +327,13 @@ const hotelGraph = {
   <!-- Region -->
   <section class="bg-muted/20 border-y border-border/50">
     <div class="container mx-auto px-4 py-16 md:py-24">
-      <div class="text-center max-w-2xl mx-auto mb-12">
+      <div class="text-center max-w-2xl mx-auto mb-12" data-reveal>
         <p class="eyebrow">Urlaubsregion</p>
         <h2 class="font-display text-3xl md:text-4xl mt-3 text-balance">Die Vulkaneifel vor der Tür</h2>
       </div>
       <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-        {REGION.map((r) => (
-          <div class="rounded-md overflow-hidden border border-border bg-card shadow-card">
+        {REGION.map((r, i) => (
+          <div class="rounded-md overflow-hidden border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
             <div class="aspect-[16/10] overflow-hidden">
               <img src={r.img} alt={r.title} class="w-full h-full object-cover" loading="lazy" decoding="async" />
             </div>
@@ -348,7 +348,7 @@ const hotelGraph = {
   </section>
 
   <!-- FAQ-Anriss + Final-CTA -->
-  <section class="container mx-auto px-4 py-16 md:py-24 text-center max-w-2xl">
+  <section class="container mx-auto px-4 py-16 md:py-24 text-center max-w-2xl" data-reveal>
     <p class="eyebrow">Noch Fragen?</p>
     <h2 class="font-display text-3xl md:text-4xl mt-3 text-balance">Alles Wichtige auf einen Blick</h2>
     <p class="text-muted-foreground mt-5 leading-relaxed text-pretty">

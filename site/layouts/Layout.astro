@@ -136,6 +136,83 @@ const robots = noindex
       .skip-link:focus {
         top: 1rem;
       }
+
+      /* Scroll-Reveal als Progressive Enhancement: Ohne JS bleiben Elemente
+         voll sichtbar (Inhalt + GEO unberührt). Erst wenn JS läuft (html.has-js)
+         starten [data-reveal]-Elemente verborgen und faden beim Reinscrollen ein.
+         --reveal-delay erlaubt gestaffelte Karten. */
+      html.has-js [data-reveal] {
+        opacity: 0;
+        transform: translateY(26px);
+        transition:
+          opacity 0.8s ease-out,
+          transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        transition-delay: var(--reveal-delay, 0s);
+        will-change: opacity, transform;
+      }
+      html.has-js [data-reveal].in {
+        opacity: 1;
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html.has-js [data-reveal] {
+          opacity: 1 !important;
+          transform: none !important;
+          transition: none !important;
+        }
+      }
     </style>
+
+    <script>
+      // Progressive Enhancement für Scroll-Effekte. Inhalt steht ohne JS im HTML;
+      // dieses Script legt nur die Animationen obendrauf (klein, vanilla, kein React).
+      const root = document.documentElement;
+      root.classList.add("has-js");
+
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const reveals = document.querySelectorAll<HTMLElement>("[data-reveal]");
+
+      if (reduce || !("IntersectionObserver" in window)) {
+        reveals.forEach((el) => el.classList.add("in"));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                (e.target as HTMLElement).classList.add("in");
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+        );
+        reveals.forEach((el) => io.observe(el));
+        // Bereits sichtbare Elemente (above the fold) sofort zeigen.
+        requestAnimationFrame(() => {
+          reveals.forEach((el) => {
+            if (el.getBoundingClientRect().top < window.innerHeight * 0.92) el.classList.add("in");
+          });
+        });
+
+        // Sanfter Hero-Parallax — Elemente mit [data-parallax] bewegen sich
+        // langsamer als der Scroll (nur Desktop, reduced-motion aus).
+        const parallax = document.querySelectorAll<HTMLElement>("[data-parallax]");
+        if (parallax.length && window.innerWidth >= 768) {
+          let ticking = false;
+          const onScroll = () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+              const y = window.scrollY;
+              parallax.forEach((el) => {
+                el.style.transform = `translate3d(0, ${y * 0.18}px, 0)`;
+              });
+              ticking = false;
+            });
+          };
+          window.addEventListener("scroll", onScroll, { passive: true });
+        }
+      }
+    </script>
   </body>
 </html>

@@ -25,8 +25,8 @@ import { ROOM_TYPES, ROOM_INTRO, ROOM_RATES, ROOM_AUSSTATTUNG, HAUS_SONSTIGES, E
   <!-- Preis-Karten -->
   <section class="container mx-auto px-4 pb-8">
     <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-      {ROOM_RATES.map((r) => (
-        <div class="flex flex-col rounded-md border border-border bg-[hsl(38_38%_94%)] shadow-card p-7">
+      {ROOM_RATES.map((r, i) => (
+        <div class="flex flex-col rounded-md border border-border bg-[hsl(38_38%_94%)] shadow-card p-7" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
           <h2 class="font-display text-2xl leading-tight">
             {r.title}
             {r.sub && <span class="block text-sm tracking-[0.18em] uppercase text-muted-foreground mt-1">{r.sub}</span>}
@@ -95,8 +95,8 @@ import { ROOM_TYPES, ROOM_INTRO, ROOM_RATES, ROOM_AUSSTATTUNG, HAUS_SONSTIGES, E
   <!-- Zimmer-Detailkarten -->
   <section class="container mx-auto px-4 py-16 md:py-20">
     <div class="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-      {ROOM_TYPES.map((r) => (
-        <a href={`/zimmer/${r.slug}`} class="group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow">
+      {ROOM_TYPES.map((r, i) => (
+        <a href={`/zimmer/${r.slug}`} class="group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
           <div class="aspect-[4/3] overflow-hidden">
             <img src={r.gallery[0]} alt={`${r.type} im Landhotel Schend`} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
           </div>

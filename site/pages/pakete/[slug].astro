@@ -53,7 +53,7 @@ const { paket } = Astro.props;
     <!-- Galerie -->
     <div class="grid grid-cols-3 gap-3 mt-10">
       {paket.gallery.map((src, i) => (
-        <div class="aspect-[4/3] overflow-hidden rounded-md">
+        <div class="aspect-[4/3] overflow-hidden rounded-md" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
           <img src={src} alt={`${paket.title} — Eindruck ${i + 1}`} class="w-full h-full object-cover" loading="lazy" decoding="async" />
         </div>
       ))}
