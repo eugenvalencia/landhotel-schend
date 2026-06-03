@@ -50,15 +50,14 @@
     <meta name="apple-mobile-web-app-title" content="Schend" />
 
     <link rel="preconnect" href="https://api.open-meteo.com" />
-    <link rel="preconnect" href="https://landhaus-schend.de" />
     <link rel="dns-prefetch" href="https://www.google.com" />
     <!-- Fonts self-hosted (DSGVO: kein Google-Fonts-CDN → keine Besucher-IP an Google).
          woff2 + fonts.css generiert aus der Google-css2-Antwort, liegen in public/fonts/. -->
     <link rel="stylesheet" href="/fonts/fonts.css" />
 
-    <!-- Hero-Bild fuer LCP vorladen. Auf NAS-Preview wird /pics ueber Caddy
-         proxied + Cloudflare-edge-gecacht; auf landhaus-schend.de direkt. -->
-    <link rel="preload" as="image" href="/pics/01_startseite/b0_1.jpg" fetchpriority="high" />
+    <!-- Hero-Bild fuer LCP vorladen — self-hosted (muss exakt das von Index.tsx
+         gerenderte Hero sein, sonst laedt der Browser zwei Bilder + verfehlt LCP). -->
+    <link rel="preload" as="image" href="/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg" fetchpriority="high" />
 
     <meta property="og:type" content="hotel" />
     <meta property="og:site_name" content="Landhotel Schend" />
@@ -68,15 +67,15 @@
     <meta property="og:url" content="https://landhaus-schend.de/" />
     <meta property="og:title" content="Landhotel Schend ★★★ – Eifeler Landküche & Wanderhotel in der Vulkaneifel" />
     <meta property="og:description" content="Familiengeführtes 3-Sterne-Superior Hotel in Immerath. Eifeler Landküche, Halbpension, direkt am Eifelsteig. Saison März–September. Direkt buchen — provisionsfrei." />
-    <meta property="og:image" content="https://landhaus-schend.de/pics/01_startseite/b0_1.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image" content="https://landhaus-schend.de/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg" />
+    <meta property="og:image:width" content="1920" />
+    <meta property="og:image:height" content="1080" />
     <meta property="og:image:alt" content="Landhotel Schend in Immerath, Vulkaneifel" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Landhotel Schend ★★★ – Eifeler Landküche & Wanderhotel in der Vulkaneifel" />
     <meta name="twitter:description" content="Familiengeführtes 3-Sterne-Superior Hotel in Immerath. Eifeler Landküche, Halbpension, direkt am Eifelsteig. Saison März–September." />
-    <meta name="twitter:image" content="https://landhaus-schend.de/pics/01_startseite/b0_1.jpg" />
+    <meta name="twitter:image" content="https://landhaus-schend.de/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg" />
 
     <script type="application/ld+json">
     {
@@ -93,11 +92,11 @@
           "faxNumber": "+49-6573-99815",
           "email": "info@landhaus-schend.de",
           "image": [
-            "https://landhaus-schend.de/pics/01_startseite/b0_1.jpg",
-            "https://landhaus-schend.de/pics/01_startseite/b0_2.jpg",
-            "https://landhaus-schend.de/pics/01_startseite/b0_3.jpg"
+            "https://landhaus-schend.de/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg",
+            "https://landhaus-schend.de/fotos/hotelfront-mit-blumenbeet-landhotel-schend-vulkaneifel.jpg",
+            "https://landhaus-schend.de/fotos/gartenseite-mit-terrasse-landhotel-schend.jpg"
           ],
-          "logo": "https://landhaus-schend.de/pics/logo_dunkel.svg",
+          "logo": "https://landhaus-schend.de/schend-logo-black.svg",
           "priceRange": "€€",
           "starRating": {
             "@type": "Rating",
@@ -229,7 +228,7 @@
           "name": "Landhotel Schend",
           "alternateName": "Landhaus Schend",
           "url": "https://landhaus-schend.de/",
-          "logo": "https://landhaus-schend.de/pics/logo_dunkel.svg",
+          "logo": "https://landhaus-schend.de/schend-logo-black.svg",
           "founder": {
             "@type": "Person",
             "name": "Familie Schend"
