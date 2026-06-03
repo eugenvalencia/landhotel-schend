@@ -18,14 +18,15 @@ export const HOTEL = {
 } as const;
 
 // Öffentliche Themen-Seiten als ECHTE URLs (DR-029 — eigene URL pro Thema,
-// statt SPA-Anker). /zimmer, /pakete, /restaurant folgen in Stufe 2.
+// statt SPA-Anker). Menü-Reihenfolge wie auf der Original-Seite.
 export const NAV = [
   { label: "Startseite", href: "/" },
   { label: "Zimmer", href: "/zimmer" },
   { label: "Pakete", href: "/pakete" },
   { label: "Gastronomie", href: "/restaurant" },
   { label: "Über uns", href: "/ueber-uns" },
-  { label: "FAQ", href: "/faq" },
+  { label: "Urlaubsregion", href: "/urlaubsregion" },
+  { label: "Galerie", href: "/galerie" },
 ] as const;
 
 export const LOCALES = ["de", "en", "fr", "nl"] as const;
