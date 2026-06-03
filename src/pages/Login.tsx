@@ -139,7 +139,7 @@ export default function Login() {
               rel="noopener noreferrer"
               aria-label="Betrieben von Conexa Digital"
               title="Betrieben von Conexa Digital"
-              className="mt-2 inline-flex hover:opacity-90 transition-opacity"
+              className="mt-2 inline-flex flex-col items-center gap-1.5 hover:opacity-90 transition-opacity"
             >
               <img
                 src="/conexa-icon-white.svg"
@@ -147,6 +147,9 @@ export default function Login() {
                 aria-hidden="true"
                 className="conexa-live h-5 w-5"
               />
+              <span className="text-[10px] tracking-[0.18em] uppercase opacity-70">
+                powered by <span className="font-semibold text-foreground/90">Conexa Digital</span>
+              </span>
             </a>
           </div>
         </CardContent>
