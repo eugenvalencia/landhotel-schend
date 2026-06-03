@@ -195,6 +195,8 @@ const robots = noindex
       html.a11y-reduced-motion .tl-line {
         transform: scaleX(1) !important;
       }
+      /* Magnetische Buttons — sanfte Rückkehr nach dem Loslassen. */
+      .magnetic { transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
     </style>
 
     <script>
@@ -271,6 +273,19 @@ const robots = noindex
           card.addEventListener("pointerleave", () => {
             card.style.setProperty("--tilt-y", "0deg");
             card.style.setProperty("--tilt-x", "0deg");
+          });
+        });
+
+        // 4b) Magnetische Buttons — .magnetic folgt sanft dem Cursor.
+        document.querySelectorAll<HTMLElement>(".magnetic").forEach((el) => {
+          el.addEventListener("pointermove", (e) => {
+            const r = el.getBoundingClientRect();
+            const x = Math.max(-12, Math.min(12, (e.clientX - (r.left + r.width / 2)) * 0.25));
+            const y = Math.max(-10, Math.min(10, (e.clientY - (r.top + r.height / 2)) * 0.25));
+            el.style.transform = `translate(${x}px, ${y}px)`;
+          });
+          el.addEventListener("pointerleave", () => {
+            el.style.transform = "";
           });
         });
       }
