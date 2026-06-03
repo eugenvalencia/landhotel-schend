@@ -1,48 +1,115 @@
 ---
-// Zimmer-Übersicht — eigene URL /zimmer (DR-029). Statische Typ-Daten.
+// Zimmer & Preise — eigene URL /zimmer. Daten AUTHORITATIV von der echten
+// Hotel-Seite (Doppelzimmer + Familienzimmer + Einzelnutzung, Ausstattung,
+// Sonstiges, Extras). Kein Einzelzimmer, keine Suiten.
 import Layout from "../../layouts/Layout.astro";
-import { ROOM_TYPES } from "../../lib/rooms";
+import { ROOM_TYPES, ROOM_INTRO, ROOM_RATES, ROOM_AUSSTATTUNG, HAUS_SONSTIGES, EXTRAS } from "../../lib/rooms";
 ---
 
 <Layout
-  title="Zimmer & Suiten in der Vulkaneifel"
-  description="21 individuell gestaltete Zimmer und Suiten im Landhotel Schend, Immerath — alle mit Balkon oder Terrasse und Blick in die Vulkaneifel. Frühstücksbuffet inklusive, provisionsfrei direkt buchen."
+  title="Zimmer & Preise — Doppel- und Familienzimmer in der Vulkaneifel"
+  description="Komfortable Doppelzimmer (ab 57 € p.P., auch zur Einzelnutzung) und großzügige Familienzimmer im Landhotel Schend, Immerath — alle mit Balkon/Terrasse, Frühstück inklusive. Sauna im Haus, Massagen. Provisionsfrei direkt buchen."
   canonicalPath="/zimmer"
 >
-  <section class="container mx-auto px-4 pt-12 md:pt-16 pb-20">
-    <div class="text-center max-w-2xl mx-auto mb-12 md:mb-16">
+  <!-- Intro -->
+  <section class="container mx-auto px-4 pt-12 md:pt-16 pb-10">
+    <div class="max-w-3xl mx-auto text-center">
       <p class="eyebrow">Unsere Zimmer</p>
-      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl mt-3 text-balance leading-[1.05]">
-        Zu Gast im Landhotel Schend
-      </h1>
-      <p class="text-muted-foreground mt-5 leading-relaxed text-pretty">
-        21 individuell gestaltete Zimmer und Suiten — alle mit Balkon oder Terrasse und Blick in
-        die Vulkaneifel. Das große Frühstücksbuffet ist immer inklusive.
-      </p>
+      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl mt-3 text-balance leading-[1.05]">Zimmer & Preise</h1>
     </div>
+    <div class="max-w-3xl mx-auto mt-8 space-y-4 text-foreground/85 leading-relaxed text-pretty">
+      {ROOM_INTRO.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+  <!-- Preis-Karten -->
+  <section class="container mx-auto px-4 pb-8">
+    <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      {ROOM_RATES.map((r) => (
+        <div class="flex flex-col rounded-md border border-border bg-[hsl(38_38%_94%)] shadow-card p-7">
+          <h2 class="font-display text-2xl leading-tight">
+            {r.title}
+            {r.sub && <span class="block text-sm tracking-[0.18em] uppercase text-muted-foreground mt-1">{r.sub}</span>}
+          </h2>
+          <p class="text-sm text-muted-foreground mt-4">inkl. Frühstück</p>
+          <p class="mt-1"><span class="font-display text-4xl text-secondary">{r.price}</span> <span class="text-sm text-muted-foreground">{r.unit}</span></p>
+          <p class="text-xs text-muted-foreground mt-3 uppercase tracking-wide">{r.halfboard}</p>
+          <ul class="mt-5 space-y-2 text-sm text-foreground/85 flex-1">
+            {r.features.map((f) => (
+              <li class="flex items-start gap-2">
+                <svg class="h-4 w-4 shrink-0 mt-0.5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                {f}
+              </li>
+            ))}
+          </ul>
+          <a href="/booking" class="mt-6 inline-flex items-center justify-center px-5 py-3 rounded-sm bg-secondary text-secondary-foreground text-sm font-semibold tracking-[0.16em] uppercase hover:bg-secondary/90 transition-colors">Anfragen</a>
+          <a href={r.href} class="mt-2 text-center text-xs text-muted-foreground hover:text-secondary transition-colors">Mehr zum Zimmer →</a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Ausstattung + Sonstiges -->
+  <section class="container mx-auto px-4 py-16 md:py-20">
+    <div class="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+      <div>
+        <h2 class="font-display text-2xl md:text-3xl mb-6">Zimmerausstattung</h2>
+        <ul class="space-y-3">
+          {ROOM_AUSSTATTUNG.map((a) => (
+            <li class="flex items-start gap-3 text-foreground/85">
+              <svg class="h-5 w-5 shrink-0 mt-0.5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              {a}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h2 class="font-display text-2xl md:text-3xl mb-6">Sonstiges</h2>
+        <ul class="space-y-3">
+          {HAUS_SONSTIGES.map((a) => (
+            <li class="flex items-start gap-3 text-foreground/85">
+              <svg class="h-5 w-5 shrink-0 mt-0.5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              {a}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Extras & Rabatte -->
+  <section class="bg-muted/20 border-y border-border/50">
+    <div class="container mx-auto px-4 py-14 max-w-4xl">
+      <h2 class="font-display text-2xl md:text-3xl mb-6">Extras & Rabatte</h2>
+      <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-3">
+        {EXTRAS.map((e) => (
+          <li class="flex items-start gap-3 text-foreground/85">
+            <span class="h-2 w-2 rounded-full bg-secondary shrink-0 mt-2"></span>
+            {e}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Zimmer-Detailkarten -->
+  <section class="container mx-auto px-4 py-16 md:py-20">
+    <div class="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
       {ROOM_TYPES.map((r) => (
         <a href={`/zimmer/${r.slug}`} class="group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow">
           <div class="aspect-[4/3] overflow-hidden">
             <img src={r.gallery[0]} alt={`${r.type} im Landhotel Schend`} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
           </div>
-          <div class="flex flex-col flex-1 p-6">
-            <h2 class="font-display text-2xl leading-snug group-hover:text-secondary transition-colors">{r.type}</h2>
-            <p class="text-sm text-muted-foreground mt-2 leading-relaxed flex-1 text-pretty">{r.hint} · bis {r.maxPersons} {r.maxPersons === 1 ? "Person" : "Personen"}</p>
-            <div class="mt-5 flex items-center justify-between">
-              <span class="font-display text-secondary text-lg">{r.priceLabel}</span>
-              <span class="text-xs font-semibold tracking-wide uppercase text-primary group-hover:text-secondary transition-colors">Ansehen →</span>
-            </div>
+          <div class="p-6">
+            <h3 class="font-display text-2xl group-hover:text-secondary transition-colors">{r.type}</h3>
+            <p class="text-sm text-muted-foreground mt-1">{r.hint}</p>
+            <p class="text-sm text-secondary font-medium mt-2">{r.priceLabel}</p>
           </div>
         </a>
       ))}
     </div>
-
-    <div class="text-center mt-12">
-      <a href="/booking" class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">
-        Verfügbarkeit prüfen
-      </a>
+    <div class="text-center mt-10">
+      <a href="/booking" class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">Verfügbarkeit prüfen</a>
     </div>
   </section>
 </Layout>

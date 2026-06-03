@@ -1,19 +1,16 @@
-// Zimmer-TYP-Daten für die öffentlichen SSG-Seiten.
-// Statisch aus vorhandenen Code-Quellen zusammengeführt (KEINE Erfindung):
-//   - Typen + Preise + Kurz-Hint: src/components/SiteHeader.tsx (ROOMS_MEGA)
-//   - Beschreibungen: src/pages/RoomDetail.tsx (TYPE_DESCRIPTIONS)
-//   - Galerien: src/lib/photos.ts (SCHEND_ROOM_GALLERY)
-//   - Ausstattung: FAQ („Dusche/WC, Telefon, TV, WLAN, Safe")
-// Die Live-Verfügbarkeit/Buchung pro Einzelzimmer bleibt Sache des Buchungs-
-// Flows (Supabase) — die Marketing-Seiten zeigen die Typen.
+// Zimmer-Daten — AUTHORITATIV von der echten Hotel-Seite landhaus-schend.de/zimmer
+// (Screenshots Eugen 2026-06-03) + Auskunft Karin/Schend.
+// WICHTIG: Das Hotel hat KEINE Einzelzimmer und KEINE Suiten. Es gibt genau zwei
+// Zimmer-Arten: Doppelzimmer (auch zur Einzelnutzung gegen Aufpreis) und 2 Familien-
+// zimmer. 19 Komfort- + 2 Familienzimmer = 21.
 import { galleryForRoomType } from "./photos";
 
 export type RoomType = {
   slug: string;
   type: string;
-  galleryKey: string;
   priceFrom: number;
   priceLabel: string;
+  priceNote?: string;
   maxPersons: number;
   bed: string;
   hint: string;
@@ -22,86 +19,105 @@ export type RoomType = {
   gallery: string[];
 };
 
-const BASE_AMENITIES = [
-  "Balkon oder Terrasse",
-  "Dusche/WC",
-  "Kostenfreies WLAN",
-  "Flat-TV",
-  "Safe",
-  "Telefon",
-  "Großes Frühstücksbuffet inklusive",
+// Intro-Text 1:1 von der Original-Seite.
+export const ROOM_INTRO = [
+  "Fühlen Sie sich wie zuhause in unseren komfortablen Doppelzimmern. Bei Bedarf kann das Zimmer auch als Einzelperson genutzt werden.",
+  "Großzügige Familienzimmer bieten Kindern wie Eltern Freiraum.",
+  "Wohlfühl-Ambiente für Familien, Paare und Einzelreisende. Großzügig und modern eingerichtet bieten unsere 19 Komfort- und 2 Familienzimmer optimale Voraussetzungen, zu entspannen. Genießen Sie von Balkon oder Terrasse aus den Blick in die wunderbare Naturlandschaft und nach einer ausgiebigen Ausflugtour die Annehmlichkeiten eines komfortablen Bades.",
+  "Ein WLAN-Anschluss steht Ihnen ebenso zur Verfügung wie Telefon und Sat-TV oder Dusche und WC. Unsere Doppel- und Familienzimmer sind alle Nichtraucherzimmer, erreichbar per Lift und auf Wunsch ausgestattet mit zusätzlichen Kinderbetten. Bis 2 Jahre übernachten Kinder kostenlos, bis 12 Jahre um 50 % ermäßigt, im Elternzimmer.",
 ];
 
+export const ROOM_AUSSTATTUNG = [
+  "Nichtraucherzimmer",
+  "Telefon, Sat-TV",
+  "überwiegend Balkon/Terrasse",
+  "Dusche/WC",
+  "WLAN",
+  "moderne, komfortable Ausstattung",
+];
+
+export const HAUS_SONSTIGES = ["Frühstück oder Halbpension", "Sauna im Haus", "Massagen"];
+
+export const EXTRAS = [
+  "Kinderermäßigung im Elternzimmer: bis 2 Jahre kostenlos",
+  "Kinderermäßigung im Elternzimmer: bis 12 Jahre 50 % Ermäßigung",
+  "Hunde auf Anfrage: 15 €/Tag",
+  "Verleih Bademantel 5 €",
+];
+
+// Die drei Preis-Karten — exakt wie auf der Original-Seite.
+export const ROOM_RATES = [
+  {
+    title: "Doppelzimmer",
+    sub: "",
+    price: "ab 57 €",
+    unit: "pro Person/Nacht",
+    halfboard: "Halbpension zzgl. 23 € Person/Tag",
+    features: ["komfortables Landhauszimmer", "Nichtraucherzimmer", "DU/WC, Telefon, TV, WLAN, Safe", "überwiegend Balkon/Terrasse"],
+    href: "/zimmer/doppelzimmer",
+  },
+  {
+    title: "Familienzimmer",
+    sub: "",
+    price: "ab 170 €",
+    unit: "pro Nacht",
+    halfboard: "Halbpension zzgl. 23 € Person/Tag",
+    features: ["Nutzung mit 2 Personen möglich – ab 130 €", "zwei getrennte Zimmer mit 4 Schlafplätzen", "Nichtraucherzimmer", "DU/WC, Telefon, TV, WLAN, Safe"],
+    href: "/zimmer/familienzimmer",
+  },
+  {
+    title: "Doppelzimmer",
+    sub: "Einzelnutzung",
+    price: "ab 80 €",
+    unit: "pro Person/Nacht",
+    halfboard: "Halbpension zzgl. 23 € Person/Tag",
+    features: ["komfortables Landhauszimmer", "Nichtraucherzimmer", "DU/WC, Telefon, TV, WLAN, Safe", "überwiegend Balkon/Terrasse"],
+    href: "/zimmer/doppelzimmer",
+  },
+];
+
+const ROOM_AMENITIES = [
+  "Komfortables Landhauszimmer",
+  "Nichtraucherzimmer",
+  "Dusche/WC",
+  "Telefon & Sat-TV",
+  "Kostenfreies WLAN",
+  "Safe",
+  "Überwiegend Balkon oder Terrasse",
+  "Erreichbar per Lift",
+  "Großes Frühstück inklusive",
+  "Halbpension auf Wunsch (zzgl. 23 €/Person/Tag)",
+];
+
+// Zwei echte Zimmer-Detailseiten.
 export const ROOM_TYPES: RoomType[] = [
   {
-    slug: "einzelzimmer",
-    type: "Einzelzimmer",
-    galleryKey: "Einzelzimmer",
-    priceFrom: 65,
-    priceLabel: "ab 65 €",
-    maxPersons: 1,
-    bed: "Einzelbett",
-    hint: "Gemütlich für Reisende",
-    description:
-      "Gemütliches Einzelzimmer mit Blick auf die Vulkaneifel. Ideal für Geschäftsreisende und Solo-Urlauber. Inklusive Frühstücksbuffet und kostenlosem WLAN.",
-    amenities: BASE_AMENITIES,
-    gallery: galleryForRoomType("Einzelzimmer"),
-  },
-  {
-    slug: "doppelzimmer-standard",
-    type: "Doppelzimmer Standard",
-    galleryKey: "Doppelzimmer Standard",
-    priceFrom: 95,
-    priceLabel: "ab 95 €",
+    slug: "doppelzimmer",
+    type: "Doppelzimmer",
+    priceFrom: 57,
+    priceLabel: "ab 57 € pro Person/Nacht",
+    priceNote: "Zur Einzelnutzung ab 80 € pro Nacht",
     maxPersons: 2,
     bed: "Doppelbett",
-    hint: "Komfort mit Doppelbett und Balkon",
+    hint: "Komfortabel, mit Balkon — auch zur Einzelnutzung",
     description:
-      "Komfortables Doppelzimmer mit Doppelbett, Balkon und Eifel-Blick. Liebevoll eingerichtet mit allem, was Sie für einen erholsamen Aufenthalt brauchen.",
-    amenities: BASE_AMENITIES,
+      "Fühlen Sie sich wie zuhause in unseren komfortablen Doppelzimmern — modern eingerichtet, überwiegend mit Balkon oder Terrasse und Blick in die wunderbare Vulkaneifel-Landschaft. Bei Bedarf kann das Zimmer auch zur Einzelnutzung gebucht werden (ab 80 € pro Nacht). Alle Zimmer sind Nichtraucherzimmer und per Lift erreichbar.",
+    amenities: ROOM_AMENITIES,
     gallery: galleryForRoomType("Doppelzimmer Standard"),
-  },
-  {
-    slug: "doppelzimmer-komfort",
-    type: "Doppelzimmer Komfort",
-    galleryKey: "Doppelzimmer Komfort",
-    priceFrom: 105,
-    priceLabel: "ab 105 €",
-    maxPersons: 2,
-    bed: "Zwei Einzelbetten",
-    hint: "Geräumig mit Terrasse",
-    description:
-      "Geräumiges Komfort-Zimmer mit zwei Einzelbetten und großzügiger Terrasse. Perfekt für Freunde oder Paare, die mehr Platz wünschen.",
-    amenities: BASE_AMENITIES,
-    gallery: galleryForRoomType("Doppelzimmer Komfort"),
   },
   {
     slug: "familienzimmer",
     type: "Familienzimmer",
-    galleryKey: "Familienzimmer",
-    priceFrom: 145,
-    priceLabel: "ab 145 €",
+    priceFrom: 170,
+    priceLabel: "ab 170 € pro Nacht",
+    priceNote: "Nutzung mit 2 Personen möglich – ab 130 €",
     maxPersons: 4,
-    bed: "Doppelbett + Zusatzbetten",
-    hint: "Bis 4 Personen",
+    bed: "Zwei getrennte Zimmer, 4 Schlafplätze",
+    hint: "Zwei getrennte Räume, bis 4 Personen",
     description:
-      "Großes Familienzimmer für bis zu 4 Personen, mit kindgerechter Ausstattung und viel Platz zum Wohlfühlen.",
-    amenities: [...BASE_AMENITIES, "Platz für bis zu 4 Personen", "Kindgerechte Ausstattung"],
+      "Großzügige Familienzimmer mit zwei getrennten Räumen und vier Schlafplätzen bieten Kindern wie Eltern Freiraum. Wir haben zwei Familienzimmer — auf Wunsch mit zusätzlichen Kinderbetten ausgestattet. Kinder bis 2 Jahre übernachten kostenlos, bis 12 Jahre um 50 % ermäßigt im Elternzimmer. Eine Nutzung mit nur 2 Personen ist ebenfalls möglich (ab 130 €).",
+    amenities: [...ROOM_AMENITIES, "Zwei getrennte Zimmer mit 4 Schlafplätzen", "Zusätzliche Kinderbetten auf Wunsch"],
     gallery: galleryForRoomType("Familienzimmer"),
-  },
-  {
-    slug: "suiten",
-    type: "Junior Suite & Eifel-Suite",
-    galleryKey: "Junior Suite",
-    priceFrom: 165,
-    priceLabel: "ab 165 €",
-    maxPersons: 2,
-    bed: "Kingsize-Bett",
-    hint: "Wohnbereich und Panoramablick",
-    description:
-      "Elegante Junior Suite mit Kingsize-Bett, Sitzecke und Premium-Ausstattung — und unsere Eifel-Suite mit eigenem Wohnbereich und Panoramablick. Ein Hauch von Luxus inmitten der Vulkaneifel.",
-    amenities: [...BASE_AMENITIES, "Separater Wohnbereich / Sitzecke", "Panoramablick"],
-    gallery: galleryForRoomType("Junior Suite"),
   },
 ];
 
@@ -123,7 +139,7 @@ export function roomSchema(r: RoomType) {
       "@type": "Offer",
       price: r.priceFrom,
       priceCurrency: "EUR",
-      description: `${r.priceLabel} pro Nacht inkl. Frühstücksbuffet`,
+      description: `${r.priceLabel}, inkl. Frühstücksbuffet`,
       availability: "https://schema.org/InStock",
     },
   };

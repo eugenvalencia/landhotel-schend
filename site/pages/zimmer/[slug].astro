@@ -31,7 +31,8 @@ const schema = roomSchema(room);
       </a>
       <p class="eyebrow !text-[hsl(38_48%_72%)]">Zimmer</p>
       <h1 class="font-display text-4xl md:text-6xl mt-3 text-balance leading-[1.05]">{room.type}</h1>
-      <p class="font-display text-2xl md:text-3xl text-[hsl(38_48%_78%)] mt-5">{room.priceLabel} <span class="text-base font-sans text-[hsl(38_30%_95%)]/80">pro Nacht, inkl. Frühstück</span></p>
+      <p class="font-display text-2xl md:text-3xl text-[hsl(38_48%_78%)] mt-5">{room.priceLabel} <span class="text-base font-sans text-[hsl(38_30%_95%)]/80">inkl. Frühstück</span></p>
+      {room.priceNote && <p class="text-sm text-[hsl(38_30%_95%)]/80 mt-1">{room.priceNote}</p>}
     </div>
   </section>
 
