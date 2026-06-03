@@ -27,7 +27,6 @@ const PAKETE_MEGA = PAKETE.slice(0, 5).map((p) => ({
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
@@ -42,27 +41,22 @@ export default function SiteHeader() {
   ];
 
   useEffect(() => {
-    let lastY = window.scrollY;
     let ticking = false;
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        const y = window.scrollY;
-        setScrolled(y > 20);
-        // Auto-hide: scrolling down past 120px hides header, scrolling up shows it.
-        // Mobile-Menü offen oder ganz oben? Immer sichtbar.
-        if (open || y < 120) setHidden(false);
-        else if (y > lastY + 6) setHidden(true);
-        else if (y < lastY - 4) setHidden(false);
-        lastY = y;
+        // Header bleibt IMMER oben fest (kein Auto-Hide) — nur der Glas-Effekt
+        // schaltet ab 20px Scroll dazu. Persistenter Header = bessere Bedienbarkeit
+        // (Telefon-Pill + Buchen jederzeit erreichbar, wichtig fuer 60+).
+        setScrolled(window.scrollY > 20);
         ticking = false;
       });
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [open]);
+  }, []);
 
   const handleNav = (id: string) => {
     setOpen(false);
@@ -107,7 +101,6 @@ export default function SiteHeader() {
         scrolled
           ? "bg-background/55 backdrop-blur-xl backdrop-saturate-150 border-b border-white/30 shadow-[0_8px_30px_rgb(0_0_0_/0.08)]"
           : "bg-background border-b border-transparent",
-        hidden ? "-translate-y-full" : "translate-y-0",
       )}
     >
       {/* subtle gradient sheen — only when scrolled */}
