@@ -1,7 +1,18 @@
-# Cloudflare Pages Redirects — wirkt auf dist/ nach Deploy
+# Cloudflare Pages — SaaS-Weiche für den kombinierten Deploy.
 # Format: https://developers.cloudflare.com/pages/configuration/redirects/
-
-# SPA-Fallback: jede unbekannte URL liefert index.html mit HTTP 200,
-# damit React-Router clientseitig die Route auflöst.
-# Muss als LETZTE Regel stehen — alles davor hat Vorrang.
-/*    /index.html   200
+#
+# Die öffentliche Seite ist statisches Astro (Multi-Page, unter /_astro).
+# Diese Pfade liefert stattdessen die React-SaaS-App: ihre Shell liegt unter
+# /_saas/index.html (im Deploy-Workflow dorthin kopiert), ihre Assets unter /assets.
+# So funktioniert der versteckte „·" → /login und das ganze Hotelier-Dashboard
+# unter derselben Adresse wie die öffentliche Seite.
+#
+# WICHTIG: KEIN globaler /* -Catch-all — unbekannte Pfade soll Astro mit seiner
+# eigenen 404.html beantworten (sonst bricht die Multi-Page-Auslieferung).
+/login                  /_saas/index.html   200
+/dashboard              /_saas/index.html   200
+/dashboard/*            /_saas/index.html   200
+/operator               /_saas/index.html   200
+/operator/*             /_saas/index.html   200
+/booking-confirmation   /_saas/index.html   200
+/confirmation/*         /_saas/index.html   200
