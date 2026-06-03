@@ -46,19 +46,24 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Vite build
-        env:
-          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-        run: npm run build
+      # Öffentliche Seite = Astro SSG (DR-029). srcDir ./site, outDir ./dist-astro.
+      # Die React/Vite-App (src/) wird hier NICHT mehr deployed — sie bleibt für
+      # den späteren SaaS-Routing-Split (Buchung/Dashboard/Login) im Repo.
+      - name: Astro build (öffentliche SSG-Seite)
+        run: npm run build:site
+
+      # Die geteilte public/_redirects enthält die SPA-Regel /* /index.html 200
+      # (für die React-SPA). Auf der Multi-Page-Astro-Seite würde sie die
+      # Unterseiten brechen → vor dem Deploy entfernen. Astro liefert 404.html selbst.
+      - name: SPA-Fallback entfernen (Astro ist Multi-Page)
+        run: rm -f dist-astro/_redirects
 
       - name: Deploy zu Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=landhotel-schend --branch=${{ github.head_ref || github.ref_name }}
+          command: pages deploy dist-astro --project-name=landhotel-schend --branch=${{ github.head_ref || github.ref_name }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Verifikation HTTPS (nur auf main)

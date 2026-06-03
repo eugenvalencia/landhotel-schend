@@ -92,6 +92,9 @@
     root.classList.toggle("a11y-larger", state.font === "larger");
     root.classList.toggle("a11y-high-contrast", state.contrast);
     root.classList.toggle("a11y-reduced-motion", state.motion);
+    // Weiches Scrollen (Lenis) bei "Bewegung reduzieren" sofort abschalten.
+    // (Wieder-Einschalten greift beim nächsten Seitenaufruf — Astro ist MPA.)
+    try { if (state.motion) (window as any).__lenis?.destroy?.(); } catch {}
     document.querySelectorAll<HTMLButtonElement>("[data-font]").forEach((b) =>
       b.setAttribute("aria-pressed", String(b.dataset.font === state.font)),
     );

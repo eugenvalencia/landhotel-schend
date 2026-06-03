@@ -529,16 +529,21 @@ const uspIcon: Record<string, string> = {
     const bg = document.querySelector<HTMLElement>("[data-hero-bg]");
     if (bg && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       let raf = 0;
-      const onScroll = () => {
+      const applyParallax = (sy: number) => {
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(() => {
           const h = bg.offsetHeight || 1;
-          const y = Math.min(window.scrollY * 0.3, h * 0.06);
+          const y = Math.min(sy * 0.3, h * 0.06);
           bg.style.transform = `translate3d(0, ${y}px, 0) scale(1.22)`;
         });
       };
-      onScroll();
-      window.addEventListener("scroll", onScroll, { passive: true });
+      // Zentrale Scroll-Brücke (Lenis-kompatibel) statt window-"scroll".
+      if ((window as any).__onScroll) {
+        (window as any).__onScroll(applyParallax);
+      } else {
+        applyParallax(window.scrollY);
+        window.addEventListener("scroll", () => applyParallax(window.scrollY), { passive: true });
+      }
     }
 
     // Live-Wetter (Open-Meteo) — im Datenschutz als Auftragsdienst gelistet.

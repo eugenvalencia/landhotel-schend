@@ -76,6 +76,15 @@ const robots = noindex
         // schon vor dem ersten Paint verborgen (kein Aufblitzen). Ohne JS bleibt
         // die Klasse aus → alle Inhalte voll sichtbar.
         document.documentElement.classList.add("has-js");
+        // Gemeinsame Scroll-Brücke: scroll-abhängige Effekte (Header-Glas,
+        // Hero-Parallax) registrieren sich hier und werden unten von Lenis
+        // (weiches Scrollen) ODER nativem Scroll gespeist — nie direkt an
+        // window-"scroll", denn das feuert Lenis nicht ([[lenis-no-native-scroll-event-gotcha]]).
+        window.__scrollSubs = [];
+        window.__onScroll = function (cb) {
+          window.__scrollSubs.push(cb);
+          try { cb(window.scrollY || 0); } catch (e) {}
+        };
         try {
           var t = localStorage.getItem("theme");
           if (t === "light") document.documentElement.classList.add("light");
@@ -197,9 +206,19 @@ const robots = noindex
       }
       /* Magnetische Buttons — sanfte Rückkehr nach dem Loslassen. */
       .magnetic { transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+
+      /* Lenis (weiches Scrollen) — empfohlene Basis-Styles. Lenis setzt die
+         Klassen .lenis/.lenis-smooth automatisch auf <html>. */
+      html.lenis,
+      html.lenis body { height: auto; }
+      .lenis.lenis-smooth { scroll-behavior: auto !important; }
+      .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+      .lenis.lenis-stopped { overflow: hidden; }
+      .lenis.lenis-smooth iframe { pointer-events: none; }
     </style>
 
     <script>
+      import Lenis from "lenis";
       // Progressive Enhancement für alle Effekte. Inhalt steht ohne JS im HTML;
       // dieses Script legt nur die Animationen obendrauf (klein, vanilla, kein React).
       // html.has-js wird bereits im Kopf gesetzt.
@@ -290,9 +309,29 @@ const robots = noindex
         });
       }
 
-      // 5) Sanfter Parallax — Elemente mit [data-parallax] (nur Desktop).
-      const parallax = document.querySelectorAll<HTMLElement>("[data-parallax]");
-      if (!reduce && parallax.length && window.innerWidth >= 768) {
+      // 5) Weiches Scrollen (Lenis) + zentrale Scroll-Brücke.
+      //    Lenis macht das Scroll-Gefühl sanft (wie in V1). Alle scroll-abhängigen
+      //    Effekte (Header-Glas, Hero-Parallax, [data-parallax]) hängen an
+      //    window.__onScroll, NICHT an window-"scroll" (das feuert Lenis nicht).
+      //    Mobil: natives Scrollen (Lenis-Default smoothTouch:false) — am Handy am besten.
+      //    Bei reduzierter Bewegung (Komfort-Tool / prefers-reduced-motion) bleibt es nativ.
+      const motionOff =
+        reduce || document.documentElement.classList.contains("a11y-reduced-motion");
+      const emit = (y: number) => {
+        ((window as any).__scrollSubs || []).forEach((cb: (n: number) => void) => {
+          try { cb(y); } catch {}
+        });
+      };
+      if (!motionOff) {
+        const lenis = new Lenis({ lerp: 0.09, smoothWheel: true, anchors: true });
+        (window as any).__lenis = lenis;
+        lenis.on("scroll", (e: any) => emit(e.scroll));
+        const raf = (time: number) => {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        };
+        requestAnimationFrame(raf);
+      } else {
         let ticking = false;
         window.addEventListener(
           "scroll",
@@ -300,14 +339,22 @@ const robots = noindex
             if (ticking) return;
             ticking = true;
             requestAnimationFrame(() => {
-              const y = window.scrollY;
-              parallax.forEach((el) => {
-                el.style.transform = `translate3d(0, ${y * 0.18}px, 0)`;
-              });
+              emit(window.scrollY);
               ticking = false;
             });
           },
           { passive: true },
+        );
+      }
+      emit(window.scrollY || 0);
+
+      // [data-parallax]-Elemente (falls genutzt) — sanfter Versatz, nur Desktop.
+      const parallax = document.querySelectorAll<HTMLElement>("[data-parallax]");
+      if (!reduce && parallax.length && window.innerWidth >= 768) {
+        (window as any).__onScroll((y: number) =>
+          parallax.forEach((el) => {
+            el.style.transform = `translate3d(0, ${y * 0.18}px, 0)`;
+          }),
         );
       }
     </script>

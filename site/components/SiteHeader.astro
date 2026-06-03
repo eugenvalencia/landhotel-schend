@@ -189,12 +189,14 @@ const isActive = (href: string) =>
   }
 
   if (header) {
-    const onScroll = () => {
-      const scrolled = window.scrollY > 20;
-      header.classList.toggle("is-scrolled", scrolled);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
+    // Über die zentrale Scroll-Brücke (Lenis-kompatibel), nicht window-"scroll".
+    const onScroll = (y: number) => header.classList.toggle("is-scrolled", y > 20);
+    if ((window as any).__onScroll) {
+      (window as any).__onScroll(onScroll);
+    } else {
+      onScroll(window.scrollY);
+      window.addEventListener("scroll", () => onScroll(window.scrollY), { passive: true });
+    }
   }
 
   // Hell-/Dunkelmodus. CSS unterstützt .dark/.light + prefers-color-scheme;
