@@ -29,18 +29,29 @@ Sprach-Pfade: `/en/zimmer`, `/fr/zimmer`, `/nl/zimmer` … via Astro i18n-Routin
 
 ## Stufen
 
-**Stufe 0 — Foundation (Branch + Astro-Gerüst)**
-- [ ] Branch `feat/astro-ssg`.
-- [ ] Astro + Integrationen (`@astrojs/tailwind`, `@astrojs/react`, `@astrojs/sitemap`) installieren.
-- [ ] `astro.config` mit i18n (`defaultLocale: "de"`, `locales: ["de","en","fr","nl"]`, `prefixDefaultLocale: false`).
-- [ ] Design-Tokens/Tailwind-Theme + self-hosted Fonts + globale CSS portieren (1:1 aus bestehendem `index.css`).
-- [ ] Cloudflare-Pages-Build auf statische `dist/` umstellen (Branch-Preview separat).
+**Stufe 0 — Foundation (Branch + Astro-Gerüst)** ✅ (Commit 421eae6)
+- [x] Branch `feat/astro-ssg`.
+- [x] Astro 6 + `@astrojs/react` + `@astrojs/sitemap` + `@astrojs/check` installiert.
+      (`@astrojs/tailwind` entfällt — in Astro 6 raus; stattdessen eigene explizite
+      PostCSS-Pipeline in `astro.config`, isoliert von der Vite-`postcss.config.js`.)
+- [x] `astro.config` mit i18n (`defaultLocale: "de"`, `locales: ["de","en","fr","nl"]`, `prefixDefaultLocale: false`).
+      Isolation: `srcDir ./site`, `outDir ./dist-astro`, `publicDir ./public` (Fonts+Fotos geteilt).
+- [x] Design-Tokens/Tailwind-Theme + self-hosted Fonts + globale CSS 1:1 portiert (`site/styles/global.css`).
+- [ ] Cloudflare-Pages-Build auf statische `dist-astro/` umstellen (Branch-Preview separat). **OFFEN — Eugen-Decision (Infra).**
 
-**Stufe 1 — Statische Seiten + Layout**
-- [ ] `Layout.astro` (Head/SEO-Komponente: title/meta/canonical/hreflang/OG/JSON-LD pro Seite + Sprache).
-- [ ] SiteHeader + SiteFooter als Astro-Komponenten (Header-Interaktivität als kleine Island).
-- [ ] Recht (Impressum/Datenschutz/AGB/Barrierefreiheit) zuerst — reiner Text, beweist Pipeline.
-- [ ] Über-uns + FAQ (FAQ mit `FAQPage`-Schema).
+**Stufe 1 — Statische Seiten + Layout** ✅ (Commit 908f4ab)
+- [x] `Layout.astro` (Head/SEO statisch: title/meta/canonical/OG/robots/geo, JSON-LD pro Seite über Slot). hreflang voll-reziprok = Stufe 3.
+- [x] SiteHeader + SiteFooter als Astro-Komponenten (Mobile-Menü + Glas-Effekt als Vanilla-JS-Island, keine React-Hydration). Nav = echte URLs statt Anker.
+- [x] Recht (Impressum/Datenschutz/AGB/Barrierefreiheit) — 1:1 verbatim portiert.
+- [x] Über-uns (1856-Story + AboutPage-Schema) + FAQ (18 Fragen als natives `<details>` + `FAQPage`-Schema).
+- [x] Bonus: Interim-Home (`/`) mit realem Hero + USP-Strip + vollem Hotel-`@graph`.
+- [x] `react()`-Integration entfernt (ungenutzt → Orphan-Bundle vermieden); Dep bleibt für Stufe 3.
+
+> **Inhalts-/Legal-Review (Eugen-Auftrag 2026-06-03, SEPARATER Pass nach der Migration):**
+> FAQ auf „nur das Beste für GEO" trimmen → **Angelina** (CMO/SEO). AGB · Impressum ·
+> Datenschutz · **Cookie-Consent** nach allen aktuellen Richtlinien prüfen/anpassen →
+> **Walter** (Legal). Stufe 1 portiert die Texte bewusst 1:1; inhaltliche Änderung
+> erst, wenn die Architektur steht (sonst Doppelarbeit bei Stufe-2/3-Rebuild).
 
 **Stufe 2 — Content-Seiten + Daten**
 - [ ] Startseite (Hero/Ken-Burns als CSS, USPs, Anrisse → Themen-Seiten).
