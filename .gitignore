@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Astro SSG-Schicht (paralleler Build neben Vite) — Output + Type-Cache
+dist-astro
+.astro
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

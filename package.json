@@ -11,7 +11,12 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "optimize:images": "node scripts/optimize-images.mjs"
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "dev:site": "astro dev",
+    "build:site": "astro build",
+    "preview:site": "astro preview",
+    "check:site": "astro check",
+    "astro": "astro"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -70,6 +75,9 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/react": "^5.0.7",
+    "@astrojs/sitemap": "^3.7.3",
     "@eslint/js": "^9.32.0",
     "@fontsource/cormorant-garamond": "^5.2.11",
     "@fontsource/inter": "^5.2.8",
@@ -81,6 +89,7 @@
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react-swc": "^3.11.0",
     "archiver": "^7.0.1",
+    "astro": "^6.4.3",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",

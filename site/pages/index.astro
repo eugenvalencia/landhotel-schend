@@ -1,0 +1,63 @@
+---
+// STUFE 0 — Render-Fundament-Proof.
+// Diese Seite ist NUR der Beweis, dass das Astro-SSG-Gerüst steht: Tokens,
+// Tailwind-Utilities, Editorial-Utilities und self-hosted Fonts kompilieren
+// und landen als echtes HTML/CSS im Build. Wird in Stufe 1 durch das echte
+// Layout + die echte Startseite ersetzt.
+import "../styles/global.css";
+
+const tokens = [
+  { cls: "bg-background text-foreground border border-border", label: "background" },
+  { cls: "bg-primary text-primary-foreground", label: "primary · Slate-Tinte" },
+  { cls: "bg-secondary text-secondary-foreground", label: "secondary · Messing" },
+  { cls: "bg-accent text-accent-foreground", label: "accent · Eifel-Wald" },
+  { cls: "bg-muted text-muted-foreground", label: "muted" },
+  { cls: "bg-card text-card-foreground border border-border", label: "card" },
+];
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Astro-Gerüst · Landhotel Schend (Stufe 0)</title>
+    <!-- Self-hosted Fonts: dieselbe fonts.css wie die Vite-App, aus /public/fonts -->
+    <link rel="preload" href="/fonts/inter-UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/cormorantgaramond-co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+  </head>
+  <body class="bg-background text-foreground paper-grain min-h-screen">
+    <main class="container mx-auto px-6 py-20">
+      <p class="eyebrow mb-3">Stufe 0 · SEO/GEO-Render-Fundament</p>
+      <h1 class="font-display text-5xl md:text-7xl text-balance leading-[1.05]">
+        Landhotel Schend
+      </h1>
+      <p class="mt-5 max-w-prose text-lg text-muted-foreground text-pretty">
+        Das Astro-SSG-Gerüst steht. Jede öffentliche Seite wird ab hier als
+        eigenes prerendertes HTML pro Sprache (<code>de · en · fr · nl</code>)
+        gebaut — Inhalt im HTML, eigene URLs pro Thema. Tokens, Editorial-Utilities
+        und self-hosted Fonts sind 1:1 aus der bestehenden App portiert.
+      </p>
+
+      <div class="hairline my-10"></div>
+
+      <h2 class="font-display text-3xl mb-4">Design-Tokens</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-editorial">
+        {tokens.map((t) => (
+          <div class={`rounded-lg px-4 py-6 shadow-card ${t.cls}`}>
+            <span class="text-sm font-medium">{t.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <div class="hairline my-10"></div>
+
+      <h2 class="font-display text-3xl mb-4">Typografie</h2>
+      <p class="font-display text-2xl">Cormorant Garamond — Display-Serif</p>
+      <p class="font-display-italic text-2xl text-secondary">Cormorant Garamond — Kursiv</p>
+      <p class="font-sans text-base mt-2">Inter — Fließtext-Sans, self-hosted.</p>
+    </main>
+  </body>
+</html>
