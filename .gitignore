@@ -16,6 +16,9 @@ dist-ssr
 dist-astro
 .astro
 
+# Wrangler lokaler Emulator-State (pages dev)
+.wrangler
+
 # TypeScript Build-Cache (Artefakt, regeneriert beim Build)
 *.tsbuildinfo
 
