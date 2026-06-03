@@ -1,0 +1,177 @@
+---
+// Öffentlicher Site-Header (Astro, SSG). Reale Themen-URLs statt SPA-Anker.
+// Interaktivität (Mobile-Menü auf/zu, Glas-Effekt beim Scrollen) als kleine
+// Vanilla-JS-Island unten — keine React-Hydration nötig.
+import { NAV, HOTEL } from "../lib/site";
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path.startsWith(href);
+---
+
+<header
+  id="site-header"
+  class="fixed top-0 inset-x-0 z-50 bg-background border-b border-transparent transition-all duration-500 ease-out"
+>
+  <div class="container mx-auto px-4 flex items-center justify-between gap-4 h-16 md:h-20">
+    <!-- Brand -->
+    <a href="/" class="group flex items-center gap-3 min-w-0" aria-label="Landhotel Schend — Startseite">
+      <span
+        role="img"
+        aria-label="Landhotel Schend Logo"
+        class="schend-mark shrink-0 text-foreground h-9 md:h-10 transition-transform duration-500 group-hover:scale-105"
+      ></span>
+      <span class="min-w-0">
+        <span class="block font-display text-primary text-base md:text-lg lg:text-xl leading-tight truncate tracking-tight">
+          Landhotel Schend
+        </span>
+        <span class="hidden xl:block text-[11px] tracking-[0.18em] uppercase text-muted-foreground leading-tight truncate">
+          Ihr Familienhotel in Immerath · Vulkaneifel
+        </span>
+      </span>
+    </a>
+
+    <div class="flex items-center gap-4 lg:gap-5">
+      <!-- Desktop-Nav -->
+      <nav class="hidden lg:flex items-center gap-0.5" aria-label="Hauptnavigation">
+        {NAV.map((item) => (
+          <a
+            href={item.href}
+            aria-current={isActive(item.href) ? "page" : undefined}
+            class:list={[
+              "nav-underline px-2.5 py-2 text-xs font-semibold transition-colors tracking-[0.08em] whitespace-nowrap",
+              isActive(item.href) ? "text-secondary" : "text-primary hover:text-secondary",
+            ]}
+          >
+            {item.label}
+          </a>
+        ))}
+        <a
+          href={HOTEL.phoneHref}
+          class="ml-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-secondary/40 text-xs font-semibold text-secondary hover:bg-secondary hover:text-secondary-foreground hover:border-secondary transition-all whitespace-nowrap"
+          aria-label={`Hotel anrufen ${HOTEL.phoneLabel}`}
+        >
+          <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+          {HOTEL.phoneLabel}
+        </a>
+        <a
+          href="/booking"
+          class="ml-1 inline-flex items-center px-4 py-2 rounded-sm bg-primary text-primary-foreground text-xs font-semibold tracking-wide hover:bg-primary/90 transition-colors whitespace-nowrap"
+        >
+          Jetzt buchen
+        </a>
+      </nav>
+
+      <!-- Tablet: Telefon sichtbar -->
+      <a
+        href={HOTEL.phoneHref}
+        class="hidden md:inline-flex lg:hidden items-center gap-1.5 px-3 py-1.5 rounded-full border border-secondary/40 text-xs font-semibold text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all"
+        aria-label={`Hotel anrufen ${HOTEL.phoneLabel}`}
+      >
+        <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+        06573 306
+      </a>
+
+      <!-- Mobile-Toggle -->
+      <button
+        type="button"
+        data-menu-toggle
+        aria-label="Menü öffnen"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="lg:hidden p-3 -mr-2 text-primary rounded-md hover:bg-muted transition-colors"
+      >
+        <svg data-icon-open class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <svg data-icon-close class="h-7 w-7 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile-Menü -->
+  <div id="mobile-menu" hidden class="lg:hidden border-t bg-background animate-fade-up">
+    <div class="container mx-auto px-4 py-4 flex flex-col gap-1">
+      <a
+        href={HOTEL.phoneHref}
+        class="flex items-center gap-3 px-4 py-4 mb-2 bg-secondary/10 border border-secondary/25 rounded-md hover:bg-secondary hover:text-secondary-foreground transition-colors"
+      >
+        <svg class="h-5 w-5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+        <span>
+          <span class="block text-base font-semibold tracking-tight">{HOTEL.phoneLabel}</span>
+          <span class="block text-xs text-muted-foreground">Direkt anrufen — wir sind für Sie da</span>
+        </span>
+      </a>
+      {NAV.map((item) => (
+        <a
+          href={item.href}
+          aria-current={isActive(item.href) ? "page" : undefined}
+          class:list={[
+            "px-4 py-4 text-base font-semibold hover:bg-muted rounded-md transition-colors tracking-wide",
+            isActive(item.href) ? "text-secondary" : "text-primary hover:text-secondary",
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+      <a
+        href="/booking"
+        class="mt-3 h-14 flex items-center justify-center rounded-sm bg-primary text-primary-foreground text-base font-semibold hover:bg-primary/90 transition-colors"
+      >
+        Jetzt buchen
+      </a>
+      <p class="text-center text-xs text-muted-foreground mt-3 mb-1">
+        Saison März – September · Sonst geschlossen
+      </p>
+    </div>
+  </div>
+</header>
+<!-- Spacer, damit der fixe Header den Seiteninhalt nicht überlappt -->
+<div aria-hidden="true" class="h-16 md:h-20"></div>
+
+<script>
+  // Mobile-Menü-Toggle + Glas-Effekt beim Scrollen (Vanilla, keine native
+  // scroll-Abhängigkeit von Lenis hier — Astro-Seiten scrollen nativ).
+  const header = document.getElementById("site-header");
+  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const menu = document.getElementById("mobile-menu");
+  const iconOpen = document.querySelector<SVGElement>("[data-icon-open]");
+  const iconClose = document.querySelector<SVGElement>("[data-icon-close]");
+
+  if (toggle && menu && iconOpen && iconClose) {
+    const setOpen = (open: boolean) => {
+      menu.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Menü schließen" : "Menü öffnen");
+      iconOpen.classList.toggle("hidden", open);
+      iconClose.classList.toggle("hidden", !open);
+    };
+    toggle.addEventListener("click", () => setOpen(menu.hidden));
+    // Beim Klick auf einen Menülink schließen
+    menu.querySelectorAll("a").forEach((a) =>
+      a.addEventListener("click", () => setOpen(false)),
+    );
+    // Esc schließt
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !menu.hidden) setOpen(false);
+    });
+  }
+
+  if (header) {
+    const onScroll = () => {
+      const scrolled = window.scrollY > 20;
+      header.classList.toggle("is-scrolled", scrolled);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+</script>
+
+<style>
+  /* Glas-Effekt nur im gescrollten Zustand (vom Script gesetzt). */
+  #site-header.is-scrolled {
+    background: hsl(var(--background) / 0.7);
+    backdrop-filter: blur(16px) saturate(1.5);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    border-bottom-color: hsl(var(--border) / 0.6);
+    box-shadow: 0 8px 30px rgb(0 0 0 / 0.08);
+  }
+</style>

@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
@@ -24,7 +23,10 @@ export default defineConfig({
     locales: ["de", "en", "fr", "nl"],
     routing: { prefixDefaultLocale: false },
   },
-  integrations: [react(), sitemap()],
+  // @astrojs/react bleibt installiert, wird aber erst in Stufe 3 (Booking-Island)
+  // als Integration registriert — sonst landet die ungenutzte React-Runtime als
+  // Orphan-Bundle im Build (Zero-JS-Default, DR-029).
+  integrations: [sitemap()],
   vite: {
     css: {
       // Eigene, explizite PostCSS-Pipeline mit der site-eigenen Tailwind-Config.

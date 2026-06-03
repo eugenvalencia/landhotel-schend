@@ -1,0 +1,79 @@
+---
+// FAQ — 19 Fragen, 1:1 aus src/components/FAQSection.tsx (FAQS_DE).
+// Akkordeon nativ über <details>/<summary> (kein JS) → Antworten stehen immer
+// im HTML (GEO: direkte AI-Zitate). FAQPage-Schema aus derselben Datenquelle.
+import Layout from "../layouts/Layout.astro";
+
+const FAQS = [
+  { q: "Wo liegt das Landhotel Schend genau?", a: "Das Landhotel Schend liegt in der Hauptstraße 9, 54552 Immerath, mitten in der Vulkaneifel — eingebettet in die Kratermulde eines erloschenen Vulkans. Köln erreichen Sie in ca. 90 Minuten, Frankfurt in ca. 120 Minuten, den Nürburgring in ca. 45 Minuten." },
+  { q: "Wie viele Zimmer hat das Hotel und wie sind sie ausgestattet?", a: "Wir haben 21 Zimmer — 19 Komfortzimmer und 2 Familienzimmer. Alle sind Nichtraucherzimmer mit Dusche/WC, Telefon, TV, kostenfreiem WLAN und Safe. Die meisten verfügen über einen Balkon oder eine Terrasse mit Blick auf die Vulkaneifel." },
+  { q: "Gibt es eine Garage oder einen sicheren Stellplatz für Motorräder?", a: "Ja. Wir bieten kostenlose, videoüberwachte Parkplätze und genügend Motorrad-Stellplätze. Damit sind wir ein beliebtes Hotel für Motorradfahrer rund um den Nürburgring und die kurvenreichen Straßen der Vulkaneifel." },
+  { q: "Bieten Sie Halbpension oder Vollpension an?", a: "Halbpension ist auf Wunsch buchbar (+23 € pro Person/Tag) — täglich frische Eifeler Landküche mit 3-Gang-Menü im Landhaus Restaurant. Das große Frühstücksbuffet mit regionalen Produkten ist in jedem Übernachtungspreis bereits enthalten. Vollpension auf Anfrage." },
+  { q: "Welche Erholungsmöglichkeiten gibt es im Haus?", a: "Unser behagliches Kaminzimmer, die Sonnenterrasse und das gemütliche Restaurant laden zum Verweilen ein. Die ruhige Lage in der Kratermulde der Vulkaneifel — fernab vom Großstadttrubel — sorgt von selbst für Erholung. Wanderwege, Maare und Radrouten direkt vor der Tür sind ideal zum Durchatmen." },
+  { q: "Ist Frühstück inklusive und wie sieht es aus?", a: "Ja, ein großes Frühstücksbuffet ist in allen Übernachtungspreisen inklusive. Es gibt frische, regionale Produkte aus der Eifel — herzhaft und süß — täglich von 8:00 bis 10:00 Uhr." },
+  { q: "Hat das Restaurant einen Ruhetag?", a: "Unser Landhaus Restaurant ist Montag bis Samstag von 17:30 bis 20:00 Uhr geöffnet. Sonntags servieren wir auch mittags von 12:00 bis 14:00 Uhr und abends von 17:30 bis 20:00 Uhr." },
+  { q: "Welche Küche serviert das Restaurant?", a: "Wir verwöhnen Sie mit Eifeler Landküche und internationalen Spezialitäten — frische, saisonale Zutaten, hauseigene Gerichte und frisch gezapftes Bitburger Bier. Eine separate Kinderkarte und eine Kinderspielecke sind vorhanden." },
+  { q: "Sind Hunde erlaubt?", a: "Hunde sind in unserer Dorfgaststätte willkommen. Im Restaurant-Hauptbereich und in den Zimmern bitten wir um Verständnis, dass Hunde nicht erlaubt sind." },
+  { q: "Was kostet eine Übernachtung?", a: "Doppelzimmer ab 57 € pro Person/Nacht inklusive Frühstücksbuffet. Doppelzimmer zur Einzelnutzung ab 80 €. Familienzimmer (4 Personen) ab 170 €. Halbpension auf Wunsch +23 € pro Person/Tag. Kinder bis 2 Jahre kostenfrei, bis 12 Jahre 50 % Rabatt." },
+  { q: "Welche Aktivitäten und Sehenswürdigkeiten gibt es in der Umgebung?", a: "Direkt an unserer Tür: Eifelsteig (Premium-Wanderweg), Maare-Mosel-Radweg, das Immerath-Maar (Kratersee), Schulmuseum Immerath. In der Nähe: Maarmuseum Manderscheid, Vulkanhaus Strohn, Wildpark Daun, Nürburgring, Mosel und Tagestouren nach Luxemburg und Belgien." },
+  { q: "Welche Maare können wir vom Hotel aus erwandern?", a: "Vom Hotel aus erreichen Sie das Immerath-Maar direkt zu Fuß. In rund 15–30 Autominuten erreichen Sie die drei berühmten Dauner Maare (Gemündener, Weinfelder, Schalkenmehrener Maar) sowie das Meerfelder Maar, das Pulvermaar und das Holzmaar. Die Rundwanderung über die Dauner Maare (ca. 9 km mit dem Dronketurm-Aussichtspunkt) ist eine der schönsten Eintages-Touren der Eifel." },
+  { q: "Welche Wanderwege starten direkt am Hotel?", a: "Der Premium-Wanderweg Eifelsteig (300 km von Aachen nach Trier in 15 Etappen) führt nahe am Hotel vorbei — wir liegen auf der Etappenstrecke Daun ↔ Manderscheid. Zusätzlich: der Maar-Pfad (zwei Tagesetappen ab Schalkenmehren) und unzählige Rundwege ab Immerath. Wir stellen kostenlos Wanderkarten und persönliche Tourenempfehlungen für jedes Niveau bereit." },
+  { q: "Sind wir nahe am Sternenpark Eifel / Nationalpark Eifel?", a: "Die Vulkaneifel ist ideal für Sternenbeobachtung. Der zertifizierte Sternenpark des Nationalpark Eifel (erster International Dark Sky Park Deutschlands) ist von uns aus in etwa 60–80 Min Fahrt erreichbar. Auch über Immerath gibt es bei klarem Himmel hervorragende Sicht auf die Milchstraße — wir helfen gerne mit Tipps für die besten Beobachtungsplätze." },
+  { q: "Warum direkt beim Hotel buchen statt über Booking.com?", a: "Bei Direktbuchung über unsere Website oder telefonisch unter +49 6573 306 zahlen Sie keine Vermittlungs-Provision. Sie bekommen unseren Bestpreis, sind im Sonderwunsch flexibler (Zimmer mit Balkon/Seite, frühe Anreise, Diät-Wünsche) und unterstützen direkt unser Familienunternehmen — statt 15–20 % an Online-Portale abgeben zu müssen." },
+  { q: "Können Sie Familien- oder Firmenfeiern ausrichten?", a: "Ja. Im eleganten Eichelbergzimmer können bis zu 70 Personen speisen, im behaglichen Kaminzimmer 35 Personen, in der Dorfgaststätte und auf der Sonnenterrasse jeweils 40 Personen. Wir stellen gerne ein individuelles Paket inklusive Menü oder Buffet zusammen — Geburtstage, Kommunion, Taufe, Hochzeit, Firmen-Events oder Weihnachtsfeier." },
+  { q: "Wann hat das Hotel Saison?", a: "Wir sind von März bis Oktober durchgehend für Sie da — das ist die Haupt-Saison in der Eifel mit dem schönsten Wander- und Radwetter. Außerhalb dieser Zeit (November bis Februar) machen wir Betriebsferien. Für Anfragen außerhalb der Saison rufen Sie uns gerne an." },
+  { q: "Wie kann ich direkt buchen?", a: "Direkt über unsere Website (Button 'Jetzt buchen') oder telefonisch unter +49 6573 306. Direktbuchung ist provisionsfrei und damit für Sie der beste Preis." },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+---
+
+<Layout
+  title="Häufige Fragen (FAQ)"
+  description="Antworten rund um das Landhotel Schend in der Vulkaneifel: Lage, Zimmer, Halbpension, Restaurant, Wandern, Maare, Saison und Direktbuchung."
+  canonicalPath="/faq"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+  <section class="bg-gradient-to-b from-muted/15 via-background to-muted/15">
+    <div class="container mx-auto px-4 py-16 md:py-24 max-w-3xl">
+      <div class="text-center mb-14 md:mb-20">
+        <p class="eyebrow">Häufige Fragen</p>
+        <h1 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance leading-[1.05]">
+          Was Gäste oft fragen
+        </h1>
+        <p class="text-muted-foreground mt-5 leading-relaxed text-pretty">
+          Antworten zu Ausstattung, Anreise, Restaurant und Buchung — kurz auf den Punkt.
+        </p>
+      </div>
+
+      <div class="border-t border-border/70">
+        {FAQS.map((f, i) => (
+          <details class="faq-item border-b border-border/70" open={i === 0}>
+            <summary class="flex items-start justify-between gap-5 py-6 md:py-7 cursor-pointer list-none group">
+              <span class="font-display text-lg md:text-xl leading-snug text-balance pt-0.5 group-hover:text-secondary transition-colors">
+                {f.q}
+              </span>
+              <svg class="faq-chevron shrink-0 mt-1.5 h-4 w-4 text-secondary transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <p class="pb-7 pr-8 md:pr-10 text-foreground/85 leading-relaxed max-w-prose">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* Nativer Marker weg (Dreieck), eigener Chevron rotiert beim Öffnen. */
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item[open] .faq-chevron { transform: rotate(180deg); }
+  </style>
+</Layout>

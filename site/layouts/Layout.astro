@@ -1,0 +1,141 @@
+---
+// Basis-Layout für alle öffentlichen Astro-Seiten.
+// Erzeugt den kompletten SEO-Head STATISCH (kein JS nötig) — spiegelt den
+// Vertrag aus src/hooks/useSEO.ts + index.html der Vite-App:
+//   fullTitle = "<title> | Landhotel Schend"
+//   description → meta + og:description + twitter:description
+//   canonical = ORIGIN + canonicalPath, og:url = canonical
+//   robots je nach noindex
+// Per-Seite-JSON-LD kommt über <slot name="head" /> (z.B. FAQPage auf /faq).
+import "../styles/global.css";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { ORIGIN, SITE_NAME } from "../lib/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath: string; // z.B. "/impressum" (führender Slash)
+  ogImage?: string;
+  ogType?: string;
+  noindex?: boolean;
+  lang?: string;
+}
+
+const {
+  title,
+  description,
+  canonicalPath,
+  ogImage = "/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg",
+  ogType = "website",
+  noindex = false,
+  lang = "de",
+} = Astro.props;
+
+const fullTitle = title
+  ? `${title} | ${SITE_NAME}`
+  : `${SITE_NAME} – 3-Sterne-Superior Hotel in der Vulkaneifel`;
+
+const canonical = `${ORIGIN}${canonicalPath}`;
+const ogImageAbs = ogImage.startsWith("http") ? ogImage : `${ORIGIN}${ogImage}`;
+const robots = noindex
+  ? "noindex, nofollow"
+  : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <meta name="author" content="Landhotel Schend" />
+    <meta name="robots" content={robots} />
+
+    <meta name="theme-color" content="#2a3140" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f8f1e3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#13161c" media="(prefers-color-scheme: dark)" />
+    <meta name="geo.region" content="DE-RP" />
+    <meta name="geo.placename" content="Immerath, Vulkaneifel" />
+    <meta name="geo.position" content="50.1303;6.9594" />
+    <meta name="ICBM" content="50.1303, 6.9594" />
+
+    <link rel="canonical" href={canonical} />
+    {/* Voll-reziproke hreflang (en/fr/nl als echte Pfade) kommen in Stufe 3. */}
+    <link rel="alternate" hreflang="de" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+
+    {/* Theme vor Render anwenden — verhindert Flash beim Light/Dark-Wechsel. */}
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t === "light") document.documentElement.classList.add("light");
+          else if (t === "dark") document.documentElement.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
+
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <meta name="apple-mobile-web-app-title" content="Schend" />
+
+    {/* Self-hosted Fonts (DSGVO: kein Google-CDN). woff2 + fonts.css in /public/fonts. */}
+    <link rel="preload" href="/fonts/inter-UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/cormorantgaramond-co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Landhotel Schend" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={fullTitle} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:image" content={ogImageAbs} />
+    <meta property="og:image:width" content="1920" />
+    <meta property="og:image:height" content="1080" />
+    <meta property="og:image:alt" content="Landhotel Schend in Immerath, Vulkaneifel" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImageAbs} />
+
+    <slot name="head" />
+  </head>
+
+  <body class="min-h-screen flex flex-col bg-background text-foreground">
+    <a href="#main" class="skip-link">Zum Inhalt springen</a>
+    <SiteHeader />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <SiteFooter />
+
+    <style is:global>
+      /* Skip-Link — visuell versteckt bis Tastatur-Fokus (a11y). */
+      .skip-link {
+        position: fixed;
+        top: -100px;
+        left: 1rem;
+        z-index: 100;
+        padding: 0.6rem 1rem;
+        border-radius: 0.4rem;
+        background: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: top 0.2s ease;
+      }
+      .skip-link:focus {
+        top: 1rem;
+      }
+    </style>
+  </body>
+</html>

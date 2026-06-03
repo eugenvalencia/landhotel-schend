@@ -1,63 +1,244 @@
 ---
-// STUFE 0 — Render-Fundament-Proof.
-// Diese Seite ist NUR der Beweis, dass das Astro-SSG-Gerüst steht: Tokens,
-// Tailwind-Utilities, Editorial-Utilities und self-hosted Fonts kompilieren
-// und landen als echtes HTML/CSS im Build. Wird in Stufe 1 durch das echte
-// Layout + die echte Startseite ersetzt.
-import "../styles/global.css";
+// Startseite (INTERIM Stufe 1) — navigierbar mit Header/Footer, realem Hero-Copy
+// (aus src/i18n.ts), USP-Strip und dem vollständigen Hotel-@graph (kanonische
+// Entität, reale Daten aus index.html → dauerhaft korrekt, sofort GEO-stark).
+// Die voll ausgebaute visuelle Startseite (Galerie, Sektionen, Reviews) kommt
+// in Stufe 2.
+import Layout from "../layouts/Layout.astro";
 
-const tokens = [
-  { cls: "bg-background text-foreground border border-border", label: "background" },
-  { cls: "bg-primary text-primary-foreground", label: "primary · Slate-Tinte" },
-  { cls: "bg-secondary text-secondary-foreground", label: "secondary · Messing" },
-  { cls: "bg-accent text-accent-foreground", label: "accent · Eifel-Wald" },
-  { cls: "bg-muted text-muted-foreground", label: "muted" },
-  { cls: "bg-card text-card-foreground border border-border", label: "card" },
+const HERO_IMG = "/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg";
+
+const USPS = [
+  "Kostenlose Parkplätze — videoüberwacht",
+  "Genügend Motorrad-Parkplätze — videoüberwacht",
+  "Halbpension auf Wunsch",
+  "Hauseigenes Restaurant",
+  "21 Zimmer mit Balkon/Terrasse",
+  "Kostenloses WLAN",
+  "Großes Frühstücksbuffet",
+  "Booking.com 8.5 · Tripadvisor #1",
 ];
+
+const SECTIONS = [
+  { label: "Über uns", href: "/ueber-uns", hint: "Familienhotel seit 1856 — die Geschichte", live: true },
+  { label: "FAQ", href: "/faq", hint: "Antworten zu Lage, Zimmern, Restaurant & Buchung", live: true },
+  { label: "Zimmer", href: "/zimmer", hint: "21 Zimmer & Suiten mit Balkon", live: false },
+  { label: "Pakete", href: "/pakete", hint: "Angebote & Pauschalen für die Eifel", live: false },
+  { label: "Gastronomie", href: "/restaurant", hint: "Eifeler Landküche & Terrasse", live: false },
+];
+
+// Volles Hotel-@graph — 1:1 aus index.html der Vite-App (reale Stammdaten).
+const hotelGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Hotel",
+      "@id": "https://landhaus-schend.de/#hotel",
+      name: "Landhotel Schend",
+      alternateName: "Landhaus Schend",
+      description:
+        "Familiengeführtes 3-Sterne-Superior Landhotel in Immerath / Vulkaneifel mit 21 komfortablen Zimmern, hauseigenem Eifeler Restaurant und Halbpension auf Wunsch. Ideal für Kurzurlaub und Wandern in der Vulkaneifel.",
+      url: "https://landhaus-schend.de/",
+      telephone: "+49-6573-306",
+      faxNumber: "+49-6573-99815",
+      email: "info@landhaus-schend.de",
+      image: [
+        "https://landhaus-schend.de/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg",
+        "https://landhaus-schend.de/fotos/hotelfront-mit-blumenbeet-landhotel-schend-vulkaneifel.jpg",
+        "https://landhaus-schend.de/fotos/gartenseite-mit-terrasse-landhotel-schend.jpg",
+      ],
+      logo: "https://landhaus-schend.de/schend-logo-black.svg",
+      priceRange: "€€",
+      starRating: { "@type": "Rating", ratingValue: "3", additionalType: "Superior" },
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Hauptstraße 9",
+        addressLocality: "Immerath",
+        addressRegion: "Rheinland-Pfalz",
+        postalCode: "54552",
+        addressCountry: "DE",
+      },
+      geo: { "@type": "GeoCoordinates", latitude: 50.1303, longitude: 6.9594 },
+      hasMap: "https://www.google.com/maps?q=Landhotel+Schend+Immerath",
+      checkinTime: "15:00",
+      checkoutTime: "11:00",
+      numberOfRooms: 21,
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          validFrom: "2026-03-01",
+          validThrough: "2026-09-30",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          description: "Saisonbetrieb März bis September. Oktober bis Februar geschlossen.",
+        },
+      ],
+      petsAllowed: "Hunde sind in der Dorfgaststätte erlaubt",
+      smokingAllowed: false,
+      amenityFeature: [
+        { "@type": "LocationFeatureSpecification", name: "Halbpension auf Wunsch", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Eifeler Landküche", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Kaminzimmer", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Sonnenterrasse", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Hauseigenes Restaurant", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Frühstücksbuffet", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Kostenloses WLAN", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Kostenloser Parkplatz – videoüberwacht", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Mehrere Motorrad-Stellplätze im Hof", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Balkon oder Terrasse", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Aufzug", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Familienzimmer", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Kinderspielecke", value: true },
+      ],
+      aggregateRating: { "@type": "AggregateRating", ratingValue: "8.5", bestRating: "10", ratingCount: 250 },
+      containsPlace: [
+        {
+          "@type": "Restaurant",
+          "@id": "https://landhaus-schend.de/#restaurant",
+          name: "Landhaus Restaurant & Terrasse",
+          url: "https://landhaus-schend.de/restaurant",
+          telephone: "+49-6573-306",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Hauptstraße 9",
+            addressLocality: "Immerath",
+            addressRegion: "Rheinland-Pfalz",
+            postalCode: "54552",
+            addressCountry: "DE",
+          },
+          servesCuisine: ["Eifeler Landküche", "Deutsch", "Regional"],
+          acceptsReservations: "True",
+          priceRange: "€€",
+          openingHoursSpecification: [
+            { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], opens: "17:30", closes: "20:00" },
+            { "@type": "OpeningHoursSpecification", dayOfWeek: ["Sunday"], opens: "12:00", closes: "14:00" },
+            { "@type": "OpeningHoursSpecification", dayOfWeek: ["Sunday"], opens: "17:30", closes: "20:00" },
+          ],
+        },
+      ],
+      potentialAction: {
+        "@type": "ReserveAction",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: "https://landhaus-schend.de/booking",
+          actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"],
+        },
+        result: { "@type": "LodgingReservation", name: "Direktbuchung Zimmer" },
+      },
+      areaServed: [
+        { "@type": "Place", name: "Vulkaneifel" },
+        { "@type": "Place", name: "Eifelsteig" },
+        { "@type": "Place", name: "Maare-Mosel-Radweg" },
+        { "@type": "Place", name: "Nürburgring" },
+        { "@type": "City", name: "Cochem", containedInPlace: { "@type": "Country", name: "Deutschland" } },
+        { "@type": "City", name: "Trier", containedInPlace: { "@type": "Country", name: "Deutschland" } },
+        { "@type": "City", name: "Köln", containedInPlace: { "@type": "Country", name: "Deutschland" } },
+        { "@type": "City", name: "Düsseldorf", containedInPlace: { "@type": "Country", name: "Deutschland" } },
+        { "@type": "City", name: "Frankfurt am Main", containedInPlace: { "@type": "Country", name: "Deutschland" } },
+        { "@type": "City", name: "Luxemburg", containedInPlace: { "@type": "Country", name: "Luxemburg" } },
+        { "@type": "City", name: "Lüttich", alternateName: "Liège", containedInPlace: { "@type": "Country", name: "Belgien" } },
+        { "@type": "City", name: "Maastricht", containedInPlace: { "@type": "Country", name: "Niederlande" } },
+      ],
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://landhaus-schend.de/#organization",
+      name: "Landhotel Schend",
+      alternateName: "Landhaus Schend",
+      url: "https://landhaus-schend.de/",
+      logo: "https://landhaus-schend.de/schend-logo-black.svg",
+      founder: { "@type": "Person", name: "Familie Schend" },
+      foundingDate: "1856",
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: "+49-6573-306",
+        contactType: "Reservierung",
+        areaServed: "DE",
+        availableLanguage: ["German", "English", "French"],
+      },
+      sameAs: [
+        "https://www.facebook.com/Landhotel.Schend/",
+        "https://www.booking.com/hotel/de/landhaus-schend.html",
+        "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html",
+        "https://www.eifel.info/en/unterkuenfte/landhaus-schend",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://landhaus-schend.de/#website",
+      url: "https://landhaus-schend.de/",
+      name: "Landhotel Schend",
+      publisher: { "@id": "https://landhaus-schend.de/#organization" },
+      inLanguage: ["de-DE", "en-US", "fr-FR"],
+    },
+  ],
+};
 ---
 
-<!doctype html>
-<html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex" />
-    <title>Astro-Gerüst · Landhotel Schend (Stufe 0)</title>
-    <!-- Self-hosted Fonts: dieselbe fonts.css wie die Vite-App, aus /public/fonts -->
-    <link rel="preload" href="/fonts/inter-UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/cormorantgaramond-co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="/fonts/fonts.css" />
-  </head>
-  <body class="bg-background text-foreground paper-grain min-h-screen">
-    <main class="container mx-auto px-6 py-20">
-      <p class="eyebrow mb-3">Stufe 0 · SEO/GEO-Render-Fundament</p>
-      <h1 class="font-display text-5xl md:text-7xl text-balance leading-[1.05]">
-        Landhotel Schend
+<Layout
+  description="Familiengeführtes 3-Sterne-Hotel in Immerath, Vulkaneifel — 21 Zimmer, Eifeler Landküche, Halbpension. Ideal zum Wandern. Provisionsfrei direkt buchen."
+  canonicalPath="/"
+  ogType="hotel"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(hotelGraph)} />
+
+  <!-- Hero -->
+  <section class="relative">
+    <img src={HERO_IMG} alt="Landhotel Schend in Immerath, Vulkaneifel" class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
+    <div class="absolute inset-0 gradient-hero"></div>
+    <div class="relative container mx-auto px-4 py-28 md:py-40 max-w-3xl text-[hsl(38_30%_95%)]">
+      <span class="inline-block text-[11px] font-semibold tracking-[0.22em] uppercase px-3 py-1 rounded-full border border-white/30 bg-black/20 backdrop-blur-sm">
+        3 Sterne Superior
+      </span>
+      <p class="eyebrow mt-6 !text-[hsl(38_48%_72%)]">Kurzurlaub & Wanderhotel in der Vulkaneifel</p>
+      <h1 class="headline-reveal font-display text-5xl md:text-7xl mt-3 text-balance leading-[1.03]">
+        Willkommen im Landhotel Schend
       </h1>
-      <p class="mt-5 max-w-prose text-lg text-muted-foreground text-pretty">
-        Das Astro-SSG-Gerüst steht. Jede öffentliche Seite wird ab hier als
-        eigenes prerendertes HTML pro Sprache (<code>de · en · fr · nl</code>)
-        gebaut — Inhalt im HTML, eigene URLs pro Thema. Tokens, Editorial-Utilities
-        und self-hosted Fonts sind 1:1 aus der bestehenden App portiert.
+      <p class="mt-6 text-lg leading-relaxed max-w-2xl text-[hsl(38_30%_95%)]/90 text-pretty">
+        Ihr ★★★ Superior Hotel in Immerath — Eifelsteig, Maare-Mosel-Radweg und Nürburgring direkt
+        vor der Tür. 21 Zimmer mit Balkon, hauseigene Eifeler Landküche, Halbpension auf Wunsch und
+        kostenlose Motorradgarage. Ideal für Ihren Kurzurlaub — direkt buchen, provisionsfrei.
       </p>
-
-      <div class="hairline my-10"></div>
-
-      <h2 class="font-display text-3xl mb-4">Design-Tokens</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-editorial">
-        {tokens.map((t) => (
-          <div class={`rounded-lg px-4 py-6 shadow-card ${t.cls}`}>
-            <span class="text-sm font-medium">{t.label}</span>
-          </div>
-        ))}
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/booking" class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">
+          Jetzt direkt buchen
+        </a>
+        <a href="tel:+4965731306" class="inline-flex items-center px-6 py-3 rounded-sm border border-white/40 font-semibold tracking-wide hover:bg-white/10 transition-colors">
+          +49 6573 306
+        </a>
       </div>
+    </div>
+  </section>
 
-      <div class="hairline my-10"></div>
+  <!-- USP-Strip -->
+  <section class="border-b border-border/50 bg-muted/20">
+    <div class="container mx-auto px-4 py-8">
+      <ul class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-3 text-sm text-foreground/80">
+        {USPS.map((u) => (
+          <li class="flex items-center gap-2">
+            <svg class="h-3.5 w-3.5 shrink-0 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            {u}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
 
-      <h2 class="font-display text-3xl mb-4">Typografie</h2>
-      <p class="font-display text-2xl">Cormorant Garamond — Display-Serif</p>
-      <p class="font-display-italic text-2xl text-secondary">Cormorant Garamond — Kursiv</p>
-      <p class="font-sans text-base mt-2">Inter — Fließtext-Sans, self-hosted.</p>
-    </main>
-  </body>
-</html>
+  <!-- Sektionen -->
+  <section class="container mx-auto px-4 py-16 md:py-24">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <p class="eyebrow">Entdecken</p>
+      <h2 class="font-display text-3xl md:text-4xl mt-3 text-balance">Ihr Aufenthalt im Überblick</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+      {SECTIONS.map((s) => (
+        <a href={s.href} class="group block p-6 rounded-md border border-border bg-card shadow-card hover:shadow-elevated transition-shadow">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="font-display text-2xl">{s.label}</h3>
+            {!s.live && <span class="text-[10px] font-semibold tracking-wide uppercase text-muted-foreground border border-border rounded-full px-2 py-0.5">In Vorbereitung</span>}
+          </div>
+          <p class="text-sm text-muted-foreground mt-2 leading-relaxed">{s.hint}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
