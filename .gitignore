@@ -16,6 +16,14 @@ dist-ssr
 dist-astro
 .astro
 
+# TypeScript Build-Cache (Artefakt, regeneriert beim Build)
+*.tsbuildinfo
+
+# Fremder Paketmanager — Repo nutzt npm (package-lock.json). pnpm-Artefakte
+# ignorieren, damit nicht versehentlich ein zweites Lockfile committet wird.
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
