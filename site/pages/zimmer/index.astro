@@ -1,0 +1,48 @@
+---
+// Zimmer-Übersicht — eigene URL /zimmer (DR-029). Statische Typ-Daten.
+import Layout from "../../layouts/Layout.astro";
+import { ROOM_TYPES } from "../../lib/rooms";
+---
+
+<Layout
+  title="Zimmer & Suiten in der Vulkaneifel"
+  description="21 individuell gestaltete Zimmer und Suiten im Landhotel Schend, Immerath — alle mit Balkon oder Terrasse und Blick in die Vulkaneifel. Frühstücksbuffet inklusive, provisionsfrei direkt buchen."
+  canonicalPath="/zimmer"
+>
+  <section class="container mx-auto px-4 pt-12 md:pt-16 pb-20">
+    <div class="text-center max-w-2xl mx-auto mb-12 md:mb-16">
+      <p class="eyebrow">Unsere Zimmer</p>
+      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl mt-3 text-balance leading-[1.05]">
+        Zu Gast im Landhotel Schend
+      </h1>
+      <p class="text-muted-foreground mt-5 leading-relaxed text-pretty">
+        21 individuell gestaltete Zimmer und Suiten — alle mit Balkon oder Terrasse und Blick in
+        die Vulkaneifel. Das große Frühstücksbuffet ist immer inklusive.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      {ROOM_TYPES.map((r) => (
+        <a href={`/zimmer/${r.slug}`} class="group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src={r.gallery[0]} alt={`${r.type} im Landhotel Schend`} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
+          </div>
+          <div class="flex flex-col flex-1 p-6">
+            <h2 class="font-display text-2xl leading-snug group-hover:text-secondary transition-colors">{r.type}</h2>
+            <p class="text-sm text-muted-foreground mt-2 leading-relaxed flex-1 text-pretty">{r.hint} · bis {r.maxPersons} {r.maxPersons === 1 ? "Person" : "Personen"}</p>
+            <div class="mt-5 flex items-center justify-between">
+              <span class="font-display text-secondary text-lg">{r.priceLabel}</span>
+              <span class="text-xs font-semibold tracking-wide uppercase text-primary group-hover:text-secondary transition-colors">Ansehen →</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <div class="text-center mt-12">
+      <a href="/booking" class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">
+        Verfügbarkeit prüfen
+      </a>
+    </div>
+  </section>
+</Layout>

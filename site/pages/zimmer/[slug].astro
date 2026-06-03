@@ -1,0 +1,82 @@
+---
+// Zimmer-Detail — eigene URL /zimmer/[slug] (DR-029), prerendered pro Typ,
+// eigener Title + HotelRoom-Schema.
+import Layout from "../../layouts/Layout.astro";
+import { ROOM_TYPES, roomSchema } from "../../lib/rooms";
+
+export function getStaticPaths() {
+  return ROOM_TYPES.map((r) => ({ params: { slug: r.slug }, props: { room: r } }));
+}
+
+const { room } = Astro.props;
+const schema = roomSchema(room);
+---
+
+<Layout
+  title={`${room.type} — Zimmer im Landhotel Schend`}
+  description={room.description}
+  canonicalPath={`/zimmer/${room.slug}`}
+  ogImage={room.gallery[0]}
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(schema)} />
+
+  <!-- Hero -->
+  <section class="relative">
+    <img src={room.gallery[0]} alt={`${room.type} im Landhotel Schend`} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
+    <div class="absolute inset-0 gradient-hero"></div>
+    <div class="relative container mx-auto px-4 py-24 md:py-32 max-w-3xl text-[hsl(38_30%_95%)]">
+      <a href="/zimmer" class="inline-flex items-center gap-1.5 text-sm text-[hsl(38_30%_95%)]/80 hover:text-[hsl(38_30%_95%)] transition-colors mb-5">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Alle Zimmer
+      </a>
+      <p class="eyebrow !text-[hsl(38_48%_72%)]">Zimmer</p>
+      <h1 class="font-display text-4xl md:text-6xl mt-3 text-balance leading-[1.05]">{room.type}</h1>
+      <p class="font-display text-2xl md:text-3xl text-[hsl(38_48%_78%)] mt-5">{room.priceLabel} <span class="text-base font-sans text-[hsl(38_30%_95%)]/80">pro Nacht, inkl. Frühstück</span></p>
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-16 md:py-20 max-w-3xl">
+    <!-- Eckdaten -->
+    <div class="flex flex-wrap gap-x-8 gap-y-3 text-sm mb-8">
+      <span class="inline-flex items-center gap-2"><span class="text-muted-foreground">Belegung:</span> <span class="font-medium">bis {room.maxPersons} {room.maxPersons === 1 ? "Person" : "Personen"}</span></span>
+      <span class="inline-flex items-center gap-2"><span class="text-muted-foreground">Bett:</span> <span class="font-medium">{room.bed}</span></span>
+    </div>
+
+    <p class="text-xl leading-relaxed text-foreground/90 text-pretty">{room.description}</p>
+
+    <div class="hairline my-10"></div>
+
+    <h2 class="font-display text-2xl md:text-3xl mb-6">Ausstattung</h2>
+    <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-3">
+      {room.amenities.map((a) => (
+        <li class="flex items-start gap-3">
+          <svg class="h-5 w-5 shrink-0 mt-0.5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          <span class="text-foreground/90">{a}</span>
+        </li>
+      ))}
+    </ul>
+
+    {room.gallery.length > 1 && (
+      <>
+        <div class="hairline my-10"></div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {room.gallery.map((src, i) => (
+            <div class="aspect-[4/3] overflow-hidden rounded-md">
+              <img src={src} alt={`${room.type} — Ansicht ${i + 1}`} class="w-full h-full object-cover" loading="lazy" decoding="async" />
+            </div>
+          ))}
+        </div>
+      </>
+    )}
+
+    <div class="mt-12 flex flex-wrap gap-3">
+      <a href="/booking" class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">
+        Verfügbarkeit prüfen
+      </a>
+      <a href="tel:+4965731306" class="inline-flex items-center px-6 py-3 rounded-sm border border-border font-semibold tracking-wide hover:bg-muted transition-colors">
+        +49 6573 306
+      </a>
+    </div>
+    <p class="text-sm text-muted-foreground mt-4">Direktbuchung ist provisionsfrei — der beste Preis für Sie.</p>
+  </section>
+</Layout>
