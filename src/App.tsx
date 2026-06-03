@@ -10,6 +10,7 @@ import A11yPanel from "./components/A11yPanel";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SiteOffline from "./components/SiteOffline";
 import MarketingChrome from "./components/MarketingChrome";
+import ScrollToTop from "./components/ScrollToTop";
 import PageFadeIn from "./components/PageFadeIn";
 import { useLenisScroll } from "./hooks/useLenisScroll";
 
@@ -47,6 +48,7 @@ const App = () => {
           Zum Hauptinhalt springen
         </a>
         <MarketingChrome />
+        <ScrollToTop />
         <ErrorBoundary>
         <Suspense fallback={<SiteOffline variant="loading" />}>
           <PageFadeIn>

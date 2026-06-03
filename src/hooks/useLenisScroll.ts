@@ -1,6 +1,13 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 
+// Modul-weite Referenz auf die aktive Lenis-Instanz. Andere Komponenten (z.B.
+// ScrollToTop bei Routenwechsel) brauchen sie, um den Smooth-Scroll-Offset
+// zurueckzusetzen — ein blosses window.scrollTo(0,0) wuerde Lenis ueberschreiben
+// und die Seite spaeter wieder an die alte Position ruckeln.
+let activeLenis: Lenis | null = null;
+export const getLenis = (): Lenis | null => activeLenis;
+
 // Site-weiter Smooth-Scroll. Init in App-Root, läuft im Hintergrund.
 // Respektiert prefers-reduced-motion (Lenis macht das selbst nicht — wir patchen es).
 // Anchor-Links (#xyz) und programmatisches scrollTo werden automatisch smooth.
@@ -17,6 +24,8 @@ export function useLenisScroll() {
       touchMultiplier: 1.6,
       infinite: false,
     });
+
+    activeLenis = lenis;
 
     let rafId = 0;
     const raf = (time: number) => {
@@ -43,6 +52,7 @@ export function useLenisScroll() {
       document.removeEventListener("click", onAnchorClick);
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      activeLenis = null;
     };
   }, []);
 }
