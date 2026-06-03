@@ -12,11 +12,17 @@ import { useAuth } from "@/hooks/useAuth";
 const DEMO_EMAIL = "admin@landhotel-schend.de";
 const DEMO_PASSWORD = "Demo2026";
 
+// Solange die Seite noch Demo/Abstimmung mit Schend ist: Felder vorausgefüllt
+// + Hinweis-Box, damit man direkt auf „Anmelden" klicken kann. Zum echten
+// Scharfschalten (Live-Betrieb) einfach auf false setzen.
+const DEMO_MODE_DEFAULT = true;
+
 export default function Login() {
   const navigate = useNavigate();
   const { user, isAdmin, loading } = useAuth();
   const [searchParams] = useSearchParams();
   const demoMode =
+    DEMO_MODE_DEFAULT ||
     import.meta.env.DEV ||
     import.meta.env.VITE_DEMO_MODE === "1" ||
     searchParams.get("demo") === "1";
@@ -63,14 +69,14 @@ export default function Login() {
             <img
               src="/schend-logo-black.svg"
               alt="Landhotel Schend Logo"
-              className="h-10 w-auto dark:hidden"
+              className="h-16 w-auto dark:hidden"
             />
             <img
               src="/schend-logo-white.svg"
               alt="Landhotel Schend Logo"
-              className="hidden h-10 w-auto dark:block"
+              className="hidden h-16 w-auto dark:block"
             />
-            <span className="font-display text-xl">Landhotel Schend</span>
+            <span className="font-display text-2xl">Landhotel Schend</span>
           </Link>
           <p className="text-[11px] font-medium tracking-[0.22em] uppercase text-secondary mb-2">
             Hotelier-Bereich
@@ -127,6 +133,21 @@ export default function Login() {
             <p className="text-[10px] tracking-wider uppercase opacity-70 mt-1">
               Verschlüsselt · Supabase Auth · EU-Hosting
             </p>
+            <a
+              href="https://www.conexadigital.eu"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Betrieben von Conexa Digital"
+              title="Betrieben von Conexa Digital"
+              className="mt-2 inline-flex hover:opacity-90 transition-opacity"
+            >
+              <img
+                src="/conexa-icon-white.svg"
+                alt=""
+                aria-hidden="true"
+                className="conexa-live h-5 w-5"
+              />
+            </a>
           </div>
         </CardContent>
       </Card>
