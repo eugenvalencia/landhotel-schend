@@ -1,0 +1,166 @@
+---
+// Standort / Anreise — 1:1 aus src/components/LocationSection.tsx.
+// Google-Maps mit DSGVO-2-Klick (Karte lädt erst nach Zustimmung → ohne
+// Consent keine Besucher-IP an Google). Route-Buttons + Adresse/Kontakt/
+// Entfernungen + Anreise (Auto/Bahn/Flug).
+const ADDRESS = "Landhotel Schend, Hauptstraße 9, 54552 Immerath, Deutschland";
+const LAT = 50.1303;
+const LNG = 6.9594;
+const ENC = encodeURIComponent(ADDRESS);
+const ROUTE_URL = `https://www.google.com/maps/dir/?api=1&destination=${ENC}`;
+const MAP_SRC = `https://www.google.com/maps?q=${ENC}&output=embed&z=15`;
+const APPLE_MAPS = `https://maps.apple.com/?q=${ENC}&ll=${LAT},${LNG}`;
+
+const DIST_DE = [
+  { name: "Cochem", time: "~ 40 Min" },
+  { name: "Trier", time: "~ 60 Min" },
+  { name: "Nürburgring", time: "~ 45 Min" },
+  { name: "Köln", time: "~ 90 Min" },
+  { name: "Düsseldorf", time: "~ 100 Min" },
+  { name: "Frankfurt", time: "~ 120 Min" },
+];
+const DIST_BX = [
+  { name: "Luxemburg-Stadt", time: "~ 90 Min" },
+  { name: "Lüttich", time: "~ 100 Min" },
+  { name: "Maastricht", time: "~ 110 Min" },
+];
+---
+
+<section id="location" class="bg-background">
+  <div class="container mx-auto px-4 py-20 md:py-28">
+    <div class="text-center mb-14 max-w-3xl mx-auto" data-reveal>
+      <p class="eyebrow">Anreise</p>
+      <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-5 text-balance leading-[1.05]">So finden Sie zu uns</h2>
+      <p class="text-muted-foreground leading-relaxed">Landhotel Schend · Hauptstraße 9 · 54552 Immerath · Vulkaneifel</p>
+    </div>
+
+    <!-- Karte (DSGVO-2-Klick) -->
+    <div class="border border-border/70 rounded-md overflow-hidden shadow-card mb-10" data-reveal>
+      <div data-map-placeholder class="w-full h-[360px] md:h-[480px] flex flex-col items-center justify-center gap-4 bg-muted/40 px-6 text-center">
+        <svg class="h-8 w-8 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+        <p class="font-display text-xl text-foreground">Karte von Google Maps</p>
+        <p class="text-sm text-muted-foreground max-w-md leading-relaxed">
+          Beim Laden der Karte werden Daten — u.&nbsp;a. Ihre IP-Adresse — an Google übertragen,
+          auch in die USA. Erst nach Ihrer Zustimmung wird die interaktive Karte geladen. Mehr dazu
+          in unseren <a href="/datenschutz" class="text-secondary underline hover:no-underline">Datenschutzhinweisen</a>.
+        </p>
+        <button type="button" data-map-load data-src={MAP_SRC} class="inline-flex items-center gap-2 mt-1 px-7 py-3 rounded-sm border border-primary/40 text-xs font-medium uppercase tracking-[0.18em] hover:border-secondary hover:text-secondary transition-colors">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+          Karte laden
+        </button>
+      </div>
+    </div>
+
+    <!-- Route-Aktionen -->
+    <div class="flex flex-wrap items-center justify-center gap-3 mb-20 md:mb-24">
+      <a href={ROUTE_URL} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-7 py-3 rounded-sm border border-primary/40 text-xs font-medium uppercase tracking-[0.18em] hover:border-secondary hover:text-secondary transition-colors">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        Google Maps
+      </a>
+      <a href={APPLE_MAPS} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-7 py-3 rounded-sm border border-primary/40 text-xs font-medium uppercase tracking-[0.18em] hover:border-secondary hover:text-secondary transition-colors">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+        Apple Maps
+      </a>
+      <button type="button" data-copy-coords aria-label="GPS-Koordinaten kopieren" class="inline-flex items-center gap-2 px-5 py-3 text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-primary transition-colors">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span data-coords>{LAT}, {LNG}</span>
+      </button>
+    </div>
+
+    <!-- Adresse · Kontakt · Entfernungen -->
+    <div class="grid md:grid-cols-3 gap-px bg-border/50 mb-3 border border-border/50 rounded-md overflow-hidden shadow-card" data-reveal>
+      <div class="bg-background p-8 md:p-10">
+        <p class="eyebrow mb-5">Adresse</p>
+        <address class="not-italic text-foreground/85 leading-relaxed">Landhotel Schend<br />Hauptstraße 9<br />54552 Immerath<br />Vulkaneifel · Deutschland</address>
+        <div class="hairline-strong opacity-50 my-5"></div>
+        <p class="text-xs text-muted-foreground leading-relaxed">
+          <span class="block"><span class="text-foreground/85 font-medium">Höhe</span> · 400 m ü. NHN</span>
+          <span class="block"><span class="text-foreground/85 font-medium">GPS</span> · {LAT}° N, {LNG}° E</span>
+        </p>
+      </div>
+      <div class="bg-background p-8 md:p-10">
+        <p class="eyebrow mb-5">Kontakt</p>
+        <ul class="space-y-3 text-foreground/85">
+          <li><a href="tel:+4965731306" class="hover:text-secondary transition-colors">+49 6573 306</a></li>
+          <li><a href="mailto:info@landhaus-schend.de" class="hover:text-secondary transition-colors break-all">info@landhaus-schend.de</a></li>
+          <li><a href="https://landhaus-schend.de" class="hover:text-secondary transition-colors">landhaus-schend.de</a></li>
+        </ul>
+      </div>
+      <div class="bg-background p-8 md:p-10">
+        <p class="eyebrow mb-5">Entfernungen</p>
+        <div class="space-y-5 text-sm">
+          <div>
+            <p class="text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary mb-2">Deutschland</p>
+            <ul class="space-y-1 text-foreground/85">
+              {DIST_DE.map((d) => (<li class="flex justify-between gap-3"><span class="font-medium">{d.name}</span><span class="text-muted-foreground">{d.time}</span></li>))}
+            </ul>
+          </div>
+          <div class="hairline-strong opacity-50"></div>
+          <div>
+            <p class="text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary mb-2">Benelux</p>
+            <ul class="space-y-1 text-foreground/85">
+              {DIST_BX.map((d) => (<li class="flex justify-between gap-3"><span class="font-medium">{d.name}</span><span class="text-muted-foreground">{d.time}</span></li>))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Anreise: Auto · Bahn · Flugzeug -->
+    <div class="grid md:grid-cols-3 gap-px bg-border/50 border border-border/50" data-reveal>
+      <div class="bg-background p-8 md:p-10">
+        <p class="eyebrow mb-5">Mit dem Auto</p>
+        <ul class="text-sm text-foreground/85 space-y-3 leading-relaxed">
+          <li><strong class="font-medium">A1 / A48</strong> Köln ↔ Trier — Abfahrt Daun, dann B257 ca. 8 km nach Immerath</li>
+          <li><strong class="font-medium">A60</strong> aus Belgien / Niederlande — Abfahrt Hillesheim, über B421 / B257</li>
+          <li>Kostenlose, videoüberwachte Parkplätze direkt am Hotel — auch Stellplätze für Motorräder</li>
+        </ul>
+      </div>
+      <div class="bg-background p-8 md:p-10">
+        <p class="eyebrow mb-5">Mit der Bahn</p>
+        <ul class="text-sm text-foreground/85 space-y-3 leading-relaxed">
+          <li><strong class="font-medium">Bahnhof Wittlich Hbf</strong> · ca. 25 km — IC / RE Köln ↔ Trier</li>
+          <li><strong class="font-medium">Bahnhof Gerolstein</strong> · ca. 30 km — Eifelbahn aus Köln</li>
+          <li>Letzte Etappe gerne per Taxi — Vorab-Reservierung über uns möglich</li>
+        </ul>
+      </div>
+      <div class="bg-background p-8 md:p-10">
+        <p class="eyebrow mb-5">Mit dem Flugzeug</p>
+        <ul class="text-sm text-foreground/85 space-y-3 leading-relaxed">
+          <li><strong class="font-medium">Flughafen Frankfurt-Hahn</strong> · ca. 70 km</li>
+          <li><strong class="font-medium">Flughafen Luxemburg</strong> · ca. 90 km</li>
+          <li><strong class="font-medium">Flughafen Köln/Bonn</strong> · ca. 110 km</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Karte erst nach Zustimmung laden (DSGVO).
+  const btn = document.querySelector<HTMLButtonElement>("[data-map-load]");
+  btn?.addEventListener("click", () => {
+    const ph = document.querySelector<HTMLElement>("[data-map-placeholder]");
+    const src = btn.dataset.src!;
+    if (!ph) return;
+    const f = document.createElement("iframe");
+    f.src = src;
+    f.title = "Landhotel Schend, Hauptstraße 9, 54552 Immerath – auf Google Maps";
+    f.className = "w-full h-[360px] md:h-[480px] block";
+    f.style.border = "0";
+    f.loading = "lazy";
+    f.setAttribute("allowfullscreen", "");
+    f.referrerPolicy = "no-referrer-when-downgrade";
+    ph.replaceWith(f);
+  });
+
+  // GPS kopieren.
+  const copyBtn = document.querySelector<HTMLButtonElement>("[data-copy-coords]");
+  copyBtn?.addEventListener("click", async () => {
+    const label = copyBtn.querySelector("[data-coords]");
+    try {
+      await navigator.clipboard.writeText("50.1303, 6.9594");
+      if (label) { const prev = label.textContent; label.textContent = "Kopiert ✓"; setTimeout(() => (label.textContent = prev), 1800); }
+    } catch {}
+  });
+</script>

@@ -1,0 +1,56 @@
+---
+// Mitlaufender Buchen-Button (1:1 aus src/components/StickyMobileCTA.tsx).
+// Mobil: volle Leiste unten (Anrufen + Buchen). Desktop: seitliche Pille rechts.
+// Erscheint nach dem Hero, versteckt auf /booking /dashboard /login.
+const path = Astro.url.pathname;
+const hidden = ["/booking", "/dashboard", "/login"].some((p) => path.startsWith(p));
+---
+
+{!hidden && (
+  <div id="sticky-cta" data-hidden="true">
+    {/* Mobil — Leiste unten */}
+    <div class="sticky-bar md:hidden fixed bottom-0 inset-x-0 z-40 transition-transform duration-300" role="region" aria-label="Schnellaktion Anruf und Buchung">
+      <div class="bg-background/95 backdrop-blur border-t shadow-elevated p-2 grid grid-cols-2 gap-2" style="padding-bottom:max(env(safe-area-inset-bottom),0.5rem)">
+        <a href="tel:+4965731306" class="h-14 flex items-center justify-center gap-2 rounded-sm border border-border text-base font-semibold hover:bg-muted transition-colors" aria-label="Hotel anrufen unter +49 6573 306">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+          Anrufen
+        </a>
+        <a href="/booking" class="h-14 flex items-center justify-center gap-2 rounded-sm bg-primary text-primary-foreground text-base font-semibold hover:bg-secondary hover:text-secondary-foreground transition-colors" aria-label="Direkt buchen">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="m9 16 2 2 4-4"/></svg>
+          Buchen
+        </a>
+      </div>
+    </div>
+
+    {/* Desktop — seitliche Pille rechts, etwas unter der Mitte */}
+    <div class="sticky-pill hidden md:block fixed right-6 lg:right-8 z-40 transition-all duration-700 ease-out" style="top:58%">
+      <a href="/booking" aria-label="Direkt buchen — provisionsfrei" class="group relative flex flex-col items-center justify-center gap-1.5 px-4 py-5 min-w-[64px] bg-card/95 backdrop-blur-md border-2 border-foreground/15 rounded-md shadow-elevated hover:border-secondary hover:-translate-y-0.5 transition-all duration-300">
+        <span aria-hidden="true" class="absolute inset-1.5 border border-foreground/10 rounded-sm pointer-events-none transition-colors group-hover:border-secondary/30"></span>
+        <svg class="h-5 w-5 text-foreground group-hover:text-secondary transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="m9 16 2 2 4-4"/></svg>
+        <span class="[writing-mode:vertical-rl] [transform:rotate(180deg)] text-[10px] font-medium tracking-[0.32em] uppercase text-foreground group-hover:text-secondary transition-colors leading-none py-1">Direkt buchen</span>
+        <span aria-hidden="true" class="block h-px w-6 bg-secondary/50 group-hover:bg-secondary transition-colors"></span>
+      </a>
+    </div>
+  </div>
+)}
+
+<style>
+  /* Versteckt bis nach dem Hero gescrollt (vom Script via data-hidden gesteuert). */
+  #sticky-cta[data-hidden="true"] .sticky-bar { transform: translateY(100%); }
+  #sticky-cta[data-hidden="true"] .sticky-pill { opacity: 0; transform: translateX(2.5rem) rotate(-3deg); pointer-events: none; }
+  #sticky-cta[data-hidden="false"] .sticky-bar { transform: translateY(0); }
+  #sticky-cta[data-hidden="false"] .sticky-pill { opacity: 1; transform: none; }
+</style>
+
+<script>
+  const cta = document.getElementById("sticky-cta");
+  if (cta) {
+    const update = () => {
+      const trigger = Math.max(window.innerHeight - 120, 320);
+      cta.dataset.hidden = window.scrollY > trigger ? "false" : "true";
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+  }
+</script>
