@@ -1,6 +1,5 @@
-/login                 /_saas/   200
-/dashboard             /_saas/   200
-/dashboard/*           /_saas/   200
-/operator              /_saas/   200
-/booking-confirmation  /_saas/   200
-/confirmation/*        /_saas/   200
+/login        /_saas/  200
+/dashboard*   /_saas/  200
+/operator     /_saas/  200
+/booking*     /_saas/  200
+/confirmation/*  /_saas/  200
