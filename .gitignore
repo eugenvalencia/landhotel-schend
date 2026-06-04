@@ -54,3 +54,8 @@ supabase/.temp/
 # Roh-Foto-Uploads (lokales Backup der Originale, nicht deployen/committen)
 /_originale-upload-2026-06-01/
 /public/fotos/karin 01.02.2026/
+
+# Hero-Video Roh-Quellen (Runway-Downloads, noch mit Wasserzeichen) — nicht deployen/committen.
+# Das ausgelieferte Hero-Video liegt sauber unter /public/hero/.
+/_hero-video-source/
+/public/fotos/schend foto verbessert.png
