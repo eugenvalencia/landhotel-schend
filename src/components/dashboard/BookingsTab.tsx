@@ -22,6 +22,7 @@ import { Trash2, Loader2, Check, X } from "lucide-react";
 import GuestProfileDialog from "./GuestProfileDialog";
 import BookingDetailDialog from "./BookingDetailDialog";
 import { notifyRequestsChanged } from "@/hooks/useOpenRequests";
+import { notifyBooking } from "@/lib/notify-booking";
 
 type RequestStatus = "angefragt" | "bestaetigt" | "abgelehnt";
 
@@ -137,6 +138,8 @@ export default function BookingsTab() {
       return;
     }
     toast.success(status === "bestaetigt" ? "Anfrage bestätigt" : "Anfrage abgelehnt");
+    // Verbindliche Bestätigungs-Mail an den Gast — nur beim Bestätigen, best-effort.
+    if (status === "bestaetigt") notifyBooking(b.id, "confirmation");
     notifyRequestsChanged();
     load();
   };

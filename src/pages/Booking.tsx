@@ -11,6 +11,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
+import { notifyBooking } from "@/lib/notify-booking";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
@@ -372,6 +373,7 @@ export default function Booking() {
       }
 
       const result = data as {
+        booking_id: string;
         booking_number: string;
         total_price: number;
         extras: Array<{ id: string; name: string; price: number; per_night: boolean }>;
@@ -379,6 +381,9 @@ export default function Booking() {
         room_total: number;
         extras_total: number;
       };
+
+      // Eingangsbestätigung an den Gast (Resend via notify-schend) — best-effort.
+      notifyBooking(result.booking_id, "request");
 
       const confirmationExtras = (result.extras ?? []).map((extra) => ({
         id: extra.id,

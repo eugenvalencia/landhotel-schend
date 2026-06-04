@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Check, X, Loader2, Mail, Phone, BedDouble, CalendarDays, Tag, StickyNote } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { notifyBooking } from "@/lib/notify-booking";
 import { toast } from "sonner";
 import { eur, formatDate } from "@/lib/format";
 import { notifyRequestsChanged } from "@/hooks/useOpenRequests";
@@ -85,6 +86,8 @@ export default function BookingDetailDialog({
       return;
     }
     toast.success(status === "bestaetigt" ? "Anfrage bestätigt" : "Anfrage abgelehnt");
+    // Verbindliche Bestätigungs-Mail an den Gast — nur beim Bestätigen, best-effort.
+    if (status === "bestaetigt") notifyBooking(b.id, "confirmation");
     notifyRequestsChanged();
     onChanged?.();
     onOpenChange(false);
