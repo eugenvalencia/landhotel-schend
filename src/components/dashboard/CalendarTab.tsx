@@ -163,12 +163,20 @@ export default function CalendarTab() {
 
   useEffect(() => {
     let active = true;
-    (async () => {
-      await loadAll();
-      if (!active) return;
-    })();
+    const run = () => { if (active) loadAll(); };
+    run();
+    // Auto-Refresh: der Kalender ist die Doppelbuchungs-Schranke. Lädt er nur
+    // beim Mount, prüft `findConflict` gegen veralteten State → zwei Browser/Tabs
+    // können dasselbe Zimmer doppelt belegen. Darum alle 30 s, bei Fenster-Fokus
+    // und sofort nach jeder Bestätigung/Ablehnung (gleiches Event wie useOpenRequests).
+    const id = setInterval(run, 30000);
+    window.addEventListener("focus", run);
+    window.addEventListener("schend:requests-changed", run);
     return () => {
       active = false;
+      clearInterval(id);
+      window.removeEventListener("focus", run);
+      window.removeEventListener("schend:requests-changed", run);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
