@@ -9,7 +9,12 @@ import { ROOM_TYPES } from "../lib/rooms";
 import { PAKETE } from "../lib/pakete";
 import { SCHEND_RESTAURANT, galleryForRoomType } from "../lib/photos";
 
-const HERO_IMG = "/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg";
+// Hero-Hintergrund: Video (Runway, Sommerbrise) mit Standbild als Poster/Fallback.
+// INTERIM: das MP4 trägt noch das Runway-Free-Plan-Wasserzeichen ("runway", unten
+// rechts) — nach dem Paid-Upgrade gegen die saubere, höher aufgelöste Version
+// tauschen (gleicher Pfad, nur Datei ersetzen). TODO: Upgrade-Swap.
+const HERO_VIDEO = "/hero/schend-hero.mp4";
+const HERO_POSTER = "/hero/schend-hero-poster.jpg";
 
 const USPS = [
   { label: "Kostenlose Parkplätze — videoüberwacht", icon: "park" },
@@ -157,7 +162,18 @@ const uspIcon: Record<string, string> = {
   <!-- HERO -->
   <section class="relative h-[100vh] min-h-[640px] max-h-[1100px] overflow-hidden">
     <div data-hero-bg aria-hidden="true" class="absolute inset-0 will-change-transform" style="transform: scale(1.22)">
-      <img src={HERO_IMG} alt="Vorderansicht des Landhotel Schend mit Rosenbeet in der Vulkaneifel" class="hero-ken-burns absolute inset-0 w-full h-full object-cover" fetchpriority="high" decoding="async" />
+      <video
+        data-hero-video
+        class="absolute inset-0 w-full h-full object-cover"
+        poster={HERO_POSTER}
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-hidden="true"
+      >
+        <source src={HERO_VIDEO} type="video/mp4" />
+      </video>
     </div>
     <div aria-hidden="true" class="absolute inset-0 bg-black/25"></div>
     <div aria-hidden="true" class="absolute inset-0" style="background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.18) 55%, transparent 100%)"></div>
@@ -525,6 +541,15 @@ const uspIcon: Record<string, string> = {
   <LocationSection />
 
   <script>
+    // Hero-Video nur abspielen, wenn der Nutzer Bewegung erlaubt — sonst bleibt
+    // das Poster-Standbild stehen (Barrierefreiheit, prefers-reduced-motion).
+    const heroVideo = document.querySelector<HTMLVideoElement>("[data-hero-video]");
+    if (heroVideo && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const tryPlay = () => heroVideo.play().catch(() => {});
+      if (heroVideo.readyState >= 2) tryPlay();
+      else heroVideo.addEventListener("canplay", tryPlay, { once: true });
+    }
+
     // Hero-Parallax (Bildebene scrollt langsamer, Scale bleibt erhalten).
     const bg = document.querySelector<HTMLElement>("[data-hero-bg]");
     if (bg && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
