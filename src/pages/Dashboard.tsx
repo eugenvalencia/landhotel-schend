@@ -7,6 +7,9 @@ import { supabase } from "@/integrations/supabase/client";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 import DisabledModuleCard from "@/components/dashboard/DisabledModuleCard";
+import DemoMarker from "@/components/dashboard/DemoMarker";
+import OpenRequestsBanner from "@/components/dashboard/OpenRequestsBanner";
+import RequestNotifier from "@/components/dashboard/RequestNotifier";
 import ThemeToggle from "@/components/ThemeToggle";
 
 // Overview eager (kommt zuerst, schnellster Eindruck), Rest lazy
@@ -15,6 +18,7 @@ import OverviewTab from "@/components/dashboard/OverviewTab";
 const CalendarTab            = lazy(() => import("@/components/dashboard/CalendarTab"));
 const BookingsTab            = lazy(() => import("@/components/dashboard/BookingsTab"));
 const GuestsTab              = lazy(() => import("@/components/dashboard/GuestsTab"));
+const RoomsTab               = lazy(() => import("@/components/dashboard/RoomsTab"));
 const ReviewsTab             = lazy(() => import("@/components/dashboard/ReviewsTab"));
 const AnalyticsTab           = lazy(() => import("@/components/dashboard/AnalyticsTab"));
 const PricingTab             = lazy(() => import("@/components/dashboard/PricingTab"));
@@ -67,6 +71,8 @@ import {
  */
 const MODULE_COMPONENTS: Partial<Record<FeatureKey, { real?: React.ComponentType; demo?: React.ComponentType }>> = {
   calendar:             { real: CalendarTab },
+  bookings:             { real: BookingsTab },
+  rooms:                { real: RoomsTab },
   internal_bookings:    { real: InternalBookingsTab },
   housekeeping_mobile:  { real: HousekeepingTab },
   guest_profiles:       { real: GuestsTab },
@@ -157,7 +163,12 @@ function DashboardShell({ children, activePath }: { children: React.ReactNode; a
       <div className="flex flex-1 min-h-0">
         <DashboardSidebar activePath={activePath} />
         <main className="flex-1 overflow-y-auto">
-          <div className="px-3 md:px-6 py-5 md:py-6 max-w-7xl mx-auto w-full">{children}</div>
+          <div className="px-3 md:px-6 py-5 md:py-6 max-w-7xl mx-auto w-full">
+            {/* Offene Anfragen IMMER sichtbar — außer auf Übersicht/Buchungen,
+                wo sie ohnehin prominent (Panel bzw. Liste) erscheinen. */}
+            {activePath !== "overview" && activePath !== "bookings" && <OpenRequestsBanner />}
+            {children}
+          </div>
         </main>
       </div>
     </div>
@@ -191,7 +202,7 @@ function DashboardModule() {
       return;
     }
     if (tenant) {
-      const state = getFeatureState(tenant.features, moduleDescriptor.key);
+      const state = moduleDescriptor.core ? "active" : getFeatureState(tenant.features, moduleDescriptor.key);
       if (state === "hidden") {
         navigate("/dashboard", { replace: true });
       }
@@ -200,7 +211,9 @@ function DashboardModule() {
 
   if (!moduleDescriptor) return null;
 
-  const state = tenant ? getFeatureState(tenant.features, moduleDescriptor.key) : "hidden";
+  const state = moduleDescriptor.core
+    ? "active"
+    : (tenant ? getFeatureState(tenant.features, moduleDescriptor.key) : "hidden");
   const config = tenant?.features[moduleDescriptor.key] as Record<string, unknown> | undefined;
   const isDemo = config?.demo === true;
   const slot = MODULE_COMPONENTS[moduleDescriptor.key];
@@ -214,9 +227,13 @@ function DashboardModule() {
       {state === "disabled" || !Component ? (
         <DisabledModuleCard module={moduleDescriptor} />
       ) : (
-        <Suspense fallback={<ModuleLoader />}>
-          <Component />
-        </Suspense>
+        <>
+          {/* Demo-/Beispielinhalt markieren (roter Punkt) — wird später entfernt */}
+          {isDemo && <DemoMarker />}
+          <Suspense fallback={<ModuleLoader />}>
+            <Component />
+          </Suspense>
+        </>
       )}
     </DashboardShell>
   );
@@ -226,6 +243,8 @@ function DashboardModule() {
 export default function Dashboard() {
   return (
     <ProtectedRoute>
+      {/* Einmalig: Ton + Browser-Benachrichtigung bei neuer Anfrage */}
+      <RequestNotifier />
       <Outlet />
     </ProtectedRoute>
   );

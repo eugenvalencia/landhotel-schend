@@ -1,11 +1,19 @@
-// Mehrsprachige Gast-Bestätigungs-Email für eine Buchung.
+// Mehrsprachige Gast-EINGANGSBESTÄTIGUNG für eine Buchungs-ANFRAGE.
+// Anfrage-Modus (Stufe A): der Gast bekommt sofort eine Eingangsbestätigung,
+// die verbindliche Bestätigung folgt, sobald das Hotel die Anfrage im Dashboard
+// bestätigt. Daher Wording "Anfrage eingegangen", nicht "Buchung bestätigt".
 // Sprachen: DE (default), EN, FR, NL — match auf preferred_language.
 // Reine String-Templates; HTML ist bewusst inline (max. Kompatibilität in Mail-Clients).
 
 export type SupportedLang = "de" | "en" | "fr" | "nl";
 
+// request      = Eingangsbestätigung beim Absenden (Buchung noch nicht verbindlich)
+// confirmation = verbindliche Bestätigung, wenn das Hotel die Anfrage bestätigt
+export type EmailKind = "request" | "confirmation";
+
 export interface BookingEmailInput {
   language: string | null | undefined;
+  kind?: EmailKind;
   bookingNumber: string;
   guestName: string;
   roomName: string;
@@ -51,10 +59,16 @@ const escapeHtml = (s: string): string =>
 
 const TXT = {
   de: {
-    subject: (bn: string) => `Buchungsbestätigung ${bn} — Landhotel Schend`,
+    subject: (bn: string, kind: EmailKind) =>
+      kind === "confirmation"
+        ? `Buchungsbestätigung ${bn} — Landhotel Schend`
+        : `Anfrage eingegangen ${bn} — Landhotel Schend`,
     hi: (n: string) => `Liebe(r) ${n},`,
-    intro: "vielen Dank für Ihre Direktbuchung im Landhotel Schend. Wir freuen uns auf Ihren Besuch.",
-    summary: "Ihre Buchung im Überblick",
+    intro: {
+      request: "vielen Dank für Ihre Anfrage im Landhotel Schend. Wir prüfen die Verfügbarkeit und bestätigen Ihnen Ihre Buchung in Kürze — in der Regel binnen weniger Stunden.",
+      confirmation: "wir freuen uns, Ihnen Ihre Buchung im Landhotel Schend verbindlich zu bestätigen. Ihr Zimmer ist nun fest für Sie reserviert — wir freuen uns auf Ihren Besuch.",
+    },
+    summary: { request: "Ihre Anfrage im Überblick", confirmation: "Ihre Buchung im Überblick" },
     bookingNo: "Buchungsnummer",
     room: "Zimmer",
     checkIn: "Check-in",
@@ -64,16 +78,25 @@ const TXT = {
     perNight: "/ Nacht",
     notesLabel: "Ihre Nachricht",
     total: "Gesamtpreis",
-    auto: "Diese Bestätigung wurde automatisch erstellt. Bei Rückfragen, Sonderwünschen oder Änderungen erreichen Sie uns telefonisch oder per E-Mail — wir antworten in der Regel binnen weniger Stunden.",
+    auto: {
+      request: "Diese Eingangsbestätigung wurde automatisch erstellt — Ihre Buchung ist noch nicht verbindlich. Die verbindliche Bestätigung folgt, sobald wir die Verfügbarkeit geprüft haben. Bei Rückfragen, Sonderwünschen oder Änderungen erreichen Sie uns telefonisch oder per E-Mail — wir antworten in der Regel binnen weniger Stunden.",
+      confirmation: "Diese Bestätigung wurde automatisch erstellt. Bei Rückfragen, Sonderwünschen oder Änderungen erreichen Sie uns telefonisch oder per E-Mail — wir antworten in der Regel binnen weniger Stunden.",
+    },
     season: "Hinweis: Wir öffnen saisonal von März bis September. Ihre Buchung liegt innerhalb dieses Zeitraums.",
     bye: "Herzliche Grüße aus der Vulkaneifel",
     fam: "Familie Beimler & Team Landhotel Schend",
   },
   en: {
-    subject: (bn: string) => `Booking confirmation ${bn} — Landhotel Schend`,
+    subject: (bn: string, kind: EmailKind) =>
+      kind === "confirmation"
+        ? `Booking confirmation ${bn} — Landhotel Schend`
+        : `Request received ${bn} — Landhotel Schend`,
     hi: (n: string) => `Dear ${n},`,
-    intro: "thank you for your direct booking at Landhotel Schend. We are looking forward to welcoming you.",
-    summary: "Your booking summary",
+    intro: {
+      request: "thank you for your enquiry at Landhotel Schend. We are checking availability and will confirm your booking shortly — usually within a few hours.",
+      confirmation: "we are delighted to confirm your booking at Landhotel Schend. Your room is now firmly reserved for you — we look forward to welcoming you.",
+    },
+    summary: { request: "Your request summary", confirmation: "Your booking summary" },
     bookingNo: "Booking number",
     room: "Room",
     checkIn: "Check-in",
@@ -83,16 +106,25 @@ const TXT = {
     perNight: "/ night",
     notesLabel: "Your message",
     total: "Total",
-    auto: "This confirmation was generated automatically. For any questions, special requests or changes, please reach us by phone or email — we usually reply within a few hours.",
+    auto: {
+      request: "This acknowledgement was generated automatically — your booking is not yet binding. A binding confirmation will follow once we have checked availability. For any questions, special requests or changes, please reach us by phone or email — we usually reply within a few hours.",
+      confirmation: "This confirmation was generated automatically. For any questions, special requests or changes, please reach us by phone or email — we usually reply within a few hours.",
+    },
     season: "Note: We operate seasonally from March through September. Your booking is within that window.",
     bye: "Warm regards from the Volcanic Eifel",
     fam: "The Beimler family & the Landhotel Schend team",
   },
   fr: {
-    subject: (bn: string) => `Confirmation de réservation ${bn} — Landhotel Schend`,
+    subject: (bn: string, kind: EmailKind) =>
+      kind === "confirmation"
+        ? `Confirmation de réservation ${bn} — Landhotel Schend`
+        : `Demande reçue ${bn} — Landhotel Schend`,
     hi: (n: string) => `Cher / Chère ${n},`,
-    intro: "merci pour votre réservation directe au Landhotel Schend. Nous nous réjouissons de votre visite.",
-    summary: "Récapitulatif de votre réservation",
+    intro: {
+      request: "merci pour votre demande au Landhotel Schend. Nous vérifions les disponibilités et confirmerons votre réservation sous peu — en général sous quelques heures.",
+      confirmation: "nous avons le plaisir de confirmer votre réservation au Landhotel Schend. Votre chambre est désormais fermement réservée — nous nous réjouissons de votre visite.",
+    },
+    summary: { request: "Récapitulatif de votre demande", confirmation: "Récapitulatif de votre réservation" },
     bookingNo: "Numéro de réservation",
     room: "Chambre",
     checkIn: "Arrivée",
@@ -102,16 +134,25 @@ const TXT = {
     perNight: "/ nuit",
     notesLabel: "Votre message",
     total: "Total",
-    auto: "Cette confirmation est générée automatiquement. Pour toute question, demande spéciale ou modification, contactez-nous par téléphone ou e-mail — nous répondons en général sous quelques heures.",
+    auto: {
+      request: "Cet accusé de réception est généré automatiquement — votre réservation n'est pas encore ferme. La confirmation définitive suivra après vérification des disponibilités. Pour toute question, demande spéciale ou modification, contactez-nous par téléphone ou e-mail — nous répondons en général sous quelques heures.",
+      confirmation: "Cette confirmation est générée automatiquement. Pour toute question, demande spéciale ou modification, contactez-nous par téléphone ou e-mail — nous répondons en général sous quelques heures.",
+    },
     season: "Information : nous sommes ouverts de mars à septembre. Votre réservation se situe dans cette période.",
     bye: "Cordiales salutations de l'Eifel volcanique",
     fam: "La famille Beimler et l'équipe du Landhotel Schend",
   },
   nl: {
-    subject: (bn: string) => `Boekingsbevestiging ${bn} — Landhotel Schend`,
+    subject: (bn: string, kind: EmailKind) =>
+      kind === "confirmation"
+        ? `Boekingsbevestiging ${bn} — Landhotel Schend`
+        : `Aanvraag ontvangen ${bn} — Landhotel Schend`,
     hi: (n: string) => `Beste ${n},`,
-    intro: "hartelijk dank voor uw directe boeking bij Landhotel Schend. We kijken uit naar uw bezoek.",
-    summary: "Overzicht van uw boeking",
+    intro: {
+      request: "hartelijk dank voor uw aanvraag bij Landhotel Schend. We controleren de beschikbaarheid en bevestigen uw boeking binnenkort — meestal binnen enkele uren.",
+      confirmation: "het verheugt ons uw boeking bij Landhotel Schend te bevestigen. Uw kamer is nu definitief voor u gereserveerd — we kijken uit naar uw bezoek.",
+    },
+    summary: { request: "Overzicht van uw aanvraag", confirmation: "Overzicht van uw boeking" },
     bookingNo: "Boekingsnummer",
     room: "Kamer",
     checkIn: "Check-in",
@@ -121,7 +162,10 @@ const TXT = {
     perNight: "/ nacht",
     notesLabel: "Uw bericht",
     total: "Totaalprijs",
-    auto: "Deze bevestiging is automatisch aangemaakt. Voor vragen, speciale wensen of wijzigingen kunt u ons telefonisch of per e-mail bereiken — we reageren meestal binnen enkele uren.",
+    auto: {
+      request: "Deze ontvangstbevestiging is automatisch aangemaakt — uw boeking is nog niet definitief. De definitieve bevestiging volgt zodra we de beschikbaarheid hebben gecontroleerd. Voor vragen, speciale wensen of wijzigingen kunt u ons telefonisch of per e-mail bereiken — we reageren meestal binnen enkele uren.",
+      confirmation: "Deze bevestiging is automatisch aangemaakt. Voor vragen, speciale wensen of wijzigingen kunt u ons telefonisch of per e-mail bereiken — we reageren meestal binnen enkele uren.",
+    },
     season: "Let op: wij zijn geopend van maart tot en met september. Uw boeking valt binnen deze periode.",
     bye: "Hartelijke groet uit de Vulkaan-Eifel",
     fam: "Familie Beimler & het team van Landhotel Schend",
@@ -130,7 +174,9 @@ const TXT = {
 
 export const renderBookingEmail = (input: BookingEmailInput) => {
   const lang = pickLang(input.language);
+  const kind: EmailKind = input.kind ?? "request";
   const t = TXT[lang];
+  const subjectLine = t.subject(input.bookingNumber, kind);
 
   const ci = fmtDate(input.checkIn, lang);
   const co = fmtDate(input.checkOut, lang);
@@ -159,7 +205,7 @@ export const renderBookingEmail = (input: BookingEmailInput) => {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>${escapeHtml(t.subject(input.bookingNumber))}</title>
+  <title>${escapeHtml(subjectLine)}</title>
 </head>
 <body style="margin:0;padding:0;background:#f4f1ea;font-family:Georgia,'Times New Roman',serif;color:#2a2a2a;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1ea;padding:32px 0;">
@@ -176,9 +222,9 @@ export const renderBookingEmail = (input: BookingEmailInput) => {
           <tr>
             <td style="padding:32px 40px 8px;">
               <p style="margin:0 0 12px;font-size:16px;line-height:1.6;">${escapeHtml(t.hi(input.guestName))}</p>
-              <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#3a3a3a;">${t.intro}</p>
+              <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#3a3a3a;">${t.intro[kind]}</p>
 
-              <h2 style="margin:24px 0 14px;font-family:Georgia,'Times New Roman',serif;font-size:18px;color:#2a2a2a;border-bottom:1px solid #e6e0d5;padding-bottom:8px;">${t.summary}</h2>
+              <h2 style="margin:24px 0 14px;font-family:Georgia,'Times New Roman',serif;font-size:18px;color:#2a2a2a;border-bottom:1px solid #e6e0d5;padding-bottom:8px;">${t.summary[kind]}</h2>
 
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:14px;line-height:1.7;">
                 <tr><td style="color:#7a7a7a;width:160px;">${t.bookingNo}</td><td style="font-weight:600;color:#2a2a2a;letter-spacing:0.04em;">${escapeHtml(input.bookingNumber)}</td></tr>
@@ -196,7 +242,7 @@ export const renderBookingEmail = (input: BookingEmailInput) => {
                     <td align="right" style="padding:18px 0 0;font-family:Georgia,'Times New Roman',serif;font-size:22px;color:#2a2a2a;font-weight:600;">${total}</td></tr>
               </table>
 
-              <p style="margin:32px 0 0;padding:16px;background:#f6f3ee;font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.6;color:#5a5a5a;">${t.auto}</p>
+              <p style="margin:32px 0 0;padding:16px;background:#f6f3ee;font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.6;color:#5a5a5a;">${t.auto[kind]}</p>
               <p style="margin:14px 0 0;font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:#7a7a7a;font-style:italic;">${t.season}</p>
             </td>
           </tr>
@@ -221,9 +267,9 @@ export const renderBookingEmail = (input: BookingEmailInput) => {
   const text = [
     t.hi(input.guestName),
     "",
-    t.intro,
+    t.intro[kind],
     "",
-    `=== ${t.summary} ===`,
+    `=== ${t.summary[kind]} ===`,
     `${t.bookingNo}: ${input.bookingNumber}`,
     `${t.room}: ${input.roomName}${input.roomType ? ` (${input.roomType})` : ""}`,
     `${t.checkIn}: ${ci}`,
@@ -233,7 +279,7 @@ export const renderBookingEmail = (input: BookingEmailInput) => {
     "",
     `${t.total}: ${total}`,
     "",
-    t.auto,
+    t.auto[kind],
     "",
     t.season,
     "",
@@ -248,7 +294,7 @@ export const renderBookingEmail = (input: BookingEmailInput) => {
     .join("\n");
 
   return {
-    subject: t.subject(input.bookingNumber),
+    subject: subjectLine,
     html,
     text,
     language: lang,
