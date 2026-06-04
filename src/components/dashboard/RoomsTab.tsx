@@ -11,8 +11,9 @@ import { Badge } from "@/components/ui/badge";
 import { HotelImage } from "@/components/HotelImage";
 import { supabase } from "@/integrations/supabase/client";
 import { eur } from "@/lib/format";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { BedDouble, Edit, Upload, X, Plus, Trash2 } from "lucide-react";
+import { BedDouble, Edit, Upload, X, Plus, Trash2, Lock, Unlock } from "lucide-react";
 
 const ALL_AMENITIES = ["WLAN", "TV", "Bad", "Balkon", "Minibar", "Wohnbereich", "Haustier"];
 
@@ -35,6 +36,31 @@ export default function RoomsTab() {
   const [editing, setEditing] = useState<any | null>(null);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [newAmenity, setNewAmenity] = useState("");
+  // Bestehende Zimmer öffnen GESPERRT (schreibgeschützt) — schützt Preise/
+  // Ausstattung vor versehentlichem Ändern. Erst „Entsperren" macht editierbar.
+  const [locked, setLocked] = useState(true);
+
+  const openEdit = (r: any) => {
+    setEditing({ ...r, amenities: toArr(r.amenities), photos: toArr(r.photos) });
+    setNewAmenity("");
+    setLocked(true);
+  };
+  const openNew = () => {
+    setEditing(blankRoom());
+    setNewAmenity("");
+    setLocked(false); // Neues Zimmer ist sofort editierbar
+  };
+  // Bei bestehendem Zimmer + gesperrt sind alle Felder schreibgeschützt.
+  const readOnly = !!editing?.id && locked;
+
+  const addAmenity = () => {
+    const a = newAmenity.trim();
+    if (!a) return;
+    const list = toArr(editing?.amenities);
+    if (!list.includes(a)) setEditing({ ...editing, amenities: [...list, a] });
+    setNewAmenity("");
+  };
 
   const load = () => supabase.from("rooms").select("*").order("room_number").then(({ data }) => setRooms(data ?? []));
   useEffect(() => { load(); }, []);
@@ -109,7 +135,7 @@ export default function RoomsTab() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">{rooms.length} {rooms.length === 1 ? "Zimmer" : "Zimmer"} — Namen &amp; Preise jederzeit änderbar.</p>
-        <Button size="sm" onClick={() => setEditing(blankRoom())}>
+        <Button size="sm" onClick={openNew}>
           <Plus className="h-4 w-4" /> Neues Zimmer
         </Button>
       </div>
@@ -134,7 +160,7 @@ export default function RoomsTab() {
                 <span className="text-xs text-muted-foreground"> {r.price_per_person ? "pro Person" : "pro Zimmer"}</span>
               </p>
               <div className="flex gap-2 mt-3">
-                <Button size="sm" variant="outline" className="flex-1" onClick={() => setEditing({ ...r, amenities: toArr(r.amenities), photos: toArr(r.photos) })}>
+                <Button size="sm" variant="outline" className="flex-1" onClick={() => openEdit(r)}>
                   <Edit className="h-4 w-4" /> Bearbeiten
                 </Button>
                 <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => remove(r)} aria-label="Zimmer löschen">
@@ -151,6 +177,22 @@ export default function RoomsTab() {
           <DialogHeader><DialogTitle>{editing?.id ? "Zimmer bearbeiten" : "Neues Zimmer"}</DialogTitle></DialogHeader>
           {editing && (
             <div className="space-y-4">
+              {editing.id && (
+                <div className={cn(
+                  "flex items-center justify-between gap-3 rounded-md border px-3 py-2 text-sm",
+                  locked ? "border-red-500/40 bg-red-500/5" : "border-emerald-500/40 bg-emerald-500/5",
+                )}>
+                  <span className="flex items-center gap-2">
+                    {locked
+                      ? <><Lock className="h-4 w-4 text-red-500" /> Geschützt — Einstellungen schreibgeschützt</>
+                      : <><Unlock className="h-4 w-4 text-emerald-600" /> Entsperrt — Änderungen möglich</>}
+                  </span>
+                  <Button size="sm" variant={locked ? "default" : "outline"} onClick={() => setLocked((v) => !v)}>
+                    {locked ? <><Unlock className="h-4 w-4" /> Entsperren</> : <><Lock className="h-4 w-4" /> Sperren</>}
+                  </Button>
+                </div>
+              )}
+              <fieldset disabled={readOnly} className="space-y-4 border-0 p-0 m-0 min-w-0 disabled:opacity-60">
               <div className="grid sm:grid-cols-2 gap-3">
                 <div>
                   <Label>Name</Label>
@@ -158,7 +200,16 @@ export default function RoomsTab() {
                 </div>
                 <div>
                   <Label>Typ</Label>
-                  <Input className="mt-1.5" value={editing.room_type} onChange={(e) => setEditing({ ...editing, room_type: e.target.value })} />
+                  <Select value={editing.room_type} onValueChange={(v) => setEditing({ ...editing, room_type: v })}>
+                    <SelectTrigger className="mt-1.5"><SelectValue placeholder="Typ wählen" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Doppelzimmer">Doppelzimmer</SelectItem>
+                      <SelectItem value="Familienzimmer">Familienzimmer</SelectItem>
+                      {editing.room_type && !["Doppelzimmer", "Familienzimmer"].includes(editing.room_type) && (
+                        <SelectItem value={editing.room_type}>{editing.room_type}</SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div>
                   <Label>Bettenbeschreibung</Label>
@@ -208,12 +259,24 @@ export default function RoomsTab() {
               <div>
                 <Label>Ausstattung</Label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-1.5">
-                  {ALL_AMENITIES.map((a) => (
+                  {Array.from(new Set([...ALL_AMENITIES, ...toArr(editing.amenities)])).map((a) => (
                     <label key={a} className="flex items-center gap-2 text-sm cursor-pointer">
-                      <Checkbox checked={(editing.amenities ?? []).includes(a)} onCheckedChange={() => toggleAmenity(a)} />
+                      <Checkbox checked={toArr(editing.amenities).includes(a)} onCheckedChange={() => toggleAmenity(a)} />
                       {a}
                     </label>
                   ))}
+                </div>
+                <div className="flex gap-2 mt-2">
+                  <Input
+                    className="h-9"
+                    placeholder="Eigene Ausstattung hinzufügen (z. B. Klimaanlage)"
+                    value={newAmenity}
+                    onChange={(e) => setNewAmenity(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addAmenity(); } }}
+                  />
+                  <Button type="button" variant="outline" size="sm" onClick={addAmenity}>
+                    <Plus className="h-4 w-4" /> Hinzufügen
+                  </Button>
                 </div>
               </div>
               <div>
@@ -234,11 +297,14 @@ export default function RoomsTab() {
                 </div>
                 {uploading && <p className="text-xs text-muted-foreground mt-2">Hochladen…</p>}
               </div>
+              </fieldset>
             </div>
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditing(null)} disabled={saving}>Abbrechen</Button>
-            <Button onClick={save} disabled={saving}>{saving ? "Speichern…" : "Speichern"}</Button>
+            <Button onClick={save} disabled={saving || readOnly} title={readOnly ? "Erst entsperren" : undefined}>
+              {saving ? "Speichern…" : "Speichern"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
