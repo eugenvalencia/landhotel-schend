@@ -39,6 +39,8 @@ type Room = {
   bed_description: string;
   max_persons: number;
   price_per_night: number;
+  price_per_person?: boolean;
+  single_use_price?: number | null;
   amenities: string[];
   photos: string[];
   status: string;
@@ -268,6 +270,12 @@ export default function Booking() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room?.id, allBookings]);
 
+  // Personenzahl nie über die Zimmer-Kapazität — beim Zimmerwechsel anpassen.
+  useEffect(() => {
+    if (room && persons > room.max_persons) setPersons(room.max_persons);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [room?.id]);
+
   const UPSELLS = useMemo(() => [
     { id: "ups-suite", name: "Suite-Upgrade", price: 30, perNight: true, desc: "Upgrade in eine Suite (sofern verfügbar)" },
     { id: "ups-romantik", name: "Romantik-Paket", price: 25, perNight: false, desc: "Wein, Rosen & Pralinen im Zimmer" },
@@ -282,7 +290,17 @@ export default function Booking() {
     }, 0);
   }, [selectedExtras, extras, nights]);
 
-  const roomTotal = room ? room.price_per_night * nights : 0;
+  // Zimmerpreis-Vorschau — MUSS der Server-Logik in create_booking entsprechen:
+  //   1 Person + Einzelbelegungs-Preis -> single_use_price (pauschal)
+  //   sonst pro Person                 -> price_per_night × Personen
+  //   sonst                            -> price_per_night (pauschal/Zimmer)
+  const roomRatePerNight = useMemo(() => {
+    if (!room) return 0;
+    if (persons <= 1 && room.single_use_price != null) return Number(room.single_use_price);
+    if (room.price_per_person) return room.price_per_night * persons;
+    return room.price_per_night;
+  }, [room, persons]);
+  const roomTotal = roomRatePerNight * nights;
   // Upsells sind WÜNSCHE auf Anfrage — sie fließen NICHT in den verbindlichen
   // Gesamtpreis (der serverseitig nur aus Zimmer + echten Extras berechnet wird).
   // Früher waren sie in grandTotal eingerechnet, aber nicht an create_booking
@@ -369,6 +387,8 @@ export default function Booking() {
         p_preferred_language: i18n.language?.split("-")[0] ?? null,
         // Akquisitions-Kanal — Default 'Direkt', belegt die Provisionsfreiheit
         p_source: bookingSource,
+        // Personen — treibt Pro-Person-Preis + max_persons-Prüfung serverseitig
+        p_persons: persons,
       });
 
       if (error || !data) {
@@ -626,7 +646,7 @@ export default function Booking() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {[1, 2, 3, 4].map((n) => (
+                    {Array.from({ length: Math.max(room?.max_persons ?? 4, 1) }, (_, i) => i + 1).map((n) => (
                       <SelectItem key={n} value={String(n)}>{n} {n === 1 ? "Person" : "Personen"}</SelectItem>
                     ))}
                   </SelectContent>
@@ -634,7 +654,10 @@ export default function Booking() {
               </div>
               {nights > 0 && room && (
                 <div className="rounded-lg bg-accent p-3 text-sm flex justify-between">
-                  <span className="text-muted-foreground">{nights} {nights === 1 ? "Nacht" : "Nächte"} × {eur(room.price_per_night)}</span>
+                  <span className="text-muted-foreground">
+                    {nights} {nights === 1 ? "Nacht" : "Nächte"} × {eur(roomRatePerNight)}
+                    {room.price_per_person && !(persons <= 1 && room.single_use_price != null) ? ` (${persons} P. × ${eur(room.price_per_night)})` : ""}
+                  </span>
                   <span className="font-semibold">{eur(roomTotal)}</span>
                 </div>
               )}
@@ -911,7 +934,7 @@ export default function Booking() {
                   <Separator />
                   <div className="space-y-1.5">
                     <div className="flex justify-between">
-                      <span>Zimmer ({nights} × {eur(room.price_per_night)})</span>
+                      <span>Zimmer ({nights} × {eur(roomRatePerNight)})</span>
                       <span>{eur(roomTotal)}</span>
                     </div>
                     {selectedExtras.map((id) => {
