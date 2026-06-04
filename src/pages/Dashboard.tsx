@@ -8,6 +8,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 import DisabledModuleCard from "@/components/dashboard/DisabledModuleCard";
 import DemoMarker from "@/components/dashboard/DemoMarker";
+import OpenRequestsBanner from "@/components/dashboard/OpenRequestsBanner";
 import ThemeToggle from "@/components/ThemeToggle";
 
 // Overview eager (kommt zuerst, schnellster Eindruck), Rest lazy
@@ -159,7 +160,12 @@ function DashboardShell({ children, activePath }: { children: React.ReactNode; a
       <div className="flex flex-1 min-h-0">
         <DashboardSidebar activePath={activePath} />
         <main className="flex-1 overflow-y-auto">
-          <div className="px-3 md:px-6 py-5 md:py-6 max-w-7xl mx-auto w-full">{children}</div>
+          <div className="px-3 md:px-6 py-5 md:py-6 max-w-7xl mx-auto w-full">
+            {/* Offene Anfragen IMMER sichtbar — außer auf Übersicht/Buchungen,
+                wo sie ohnehin prominent (Panel bzw. Liste) erscheinen. */}
+            {activePath !== "overview" && activePath !== "bookings" && <OpenRequestsBanner />}
+            {children}
+          </div>
         </main>
       </div>
     </div>

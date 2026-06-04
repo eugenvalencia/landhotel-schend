@@ -20,6 +20,8 @@ import { eur, formatDate } from "@/lib/format";
 import { toast } from "sonner";
 import { Trash2, Loader2, Check, X } from "lucide-react";
 import GuestProfileDialog from "./GuestProfileDialog";
+import BookingDetailDialog from "./BookingDetailDialog";
+import { notifyRequestsChanged } from "@/hooks/useOpenRequests";
 
 type RequestStatus = "angefragt" | "bestaetigt" | "abgelehnt";
 
@@ -63,6 +65,7 @@ export default function BookingsTab() {
   const [pendingCancel, setPendingCancel] = useState<BookingRow | null>(null);
   const [cancelling, setCancelling] = useState(false);
   const [actioningId, setActioningId] = useState<string | null>(null);
+  const [detailId, setDetailId] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -80,15 +83,20 @@ export default function BookingsTab() {
     setLoading(false);
   };
 
+  // Auto-Refresh: beim Mount, alle 30 s, bei Fenster-Fokus und sofort nach jeder
+  // Aktion (Event) — damit neue Anfragen OHNE manuelles Neuladen erscheinen.
   useEffect(() => {
-    let active = true;
-    (async () => {
-      await load();
-      if (!active) return;
-    })();
+    load();
+    const onWake = () => load();
+    const id = setInterval(onWake, 30000);
+    window.addEventListener("focus", onWake);
+    window.addEventListener("schend:requests-changed", onWake);
     return () => {
-      active = false;
+      clearInterval(id);
+      window.removeEventListener("focus", onWake);
+      window.removeEventListener("schend:requests-changed", onWake);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const roomMap = useMemo(
@@ -129,6 +137,7 @@ export default function BookingsTab() {
       return;
     }
     toast.success(status === "bestaetigt" ? "Anfrage bestätigt" : "Anfrage abgelehnt");
+    notifyRequestsChanged();
     load();
   };
 
@@ -161,6 +170,7 @@ export default function BookingsTab() {
     }
     toast.success("Buchung storniert");
     setPendingCancel(null);
+    notifyRequestsChanged();
     load();
   };
 
@@ -243,12 +253,16 @@ export default function BookingsTab() {
               </Card>
             )}
             {filtered.map((b) => (
-              <Card key={b.id} className="shadow-card">
+              <Card
+                key={b.id}
+                className="shadow-card cursor-pointer hover:border-secondary/50 transition-colors"
+                onClick={() => setDetailId(b.id)}
+              >
                 <CardContent className="p-4 space-y-2">
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <button
-                        onClick={() => setProfileGuest({ name: b.guest_name, email: b.guest_email })}
+                        onClick={(e) => { e.stopPropagation(); setProfileGuest({ name: b.guest_name, email: b.guest_email }); }}
                         className="font-semibold text-left hover:text-secondary hover:underline transition-colors"
                       >
                         {b.guest_name}
@@ -282,7 +296,7 @@ export default function BookingsTab() {
                     <div><span className="text-muted-foreground">Quelle:</span> {b.source ?? "—"}</div>
                   </div>
                   {b.request_status === "angefragt" && (
-                    <div className="flex gap-2 pt-1">
+                    <div className="flex gap-2 pt-1" onClick={(e) => e.stopPropagation()}>
                       <Button
                         size="sm"
                         className="flex-1"
@@ -303,7 +317,7 @@ export default function BookingsTab() {
                     </div>
                   )}
                   {b.payment_status !== "cancelled" && b.request_status !== "angefragt" && (
-                    <div className="pt-1">
+                    <div className="pt-1" onClick={(e) => e.stopPropagation()}>
                       <Button size="sm" variant="outline" onClick={() => setPendingCancel(b)} className="w-full">
                         <Trash2 className="h-4 w-4" /> Stornieren
                       </Button>
@@ -340,9 +354,13 @@ export default function BookingsTab() {
                     </TableRow>
                   )}
                   {filtered.map((b) => (
-                    <TableRow key={b.id}>
+                    <TableRow
+                      key={b.id}
+                      onClick={() => setDetailId(b.id)}
+                      className="cursor-pointer hover:bg-accent/40"
+                    >
                       <TableCell className="font-mono text-xs">{b.booking_number}</TableCell>
-                      <TableCell>
+                      <TableCell onClick={(e) => e.stopPropagation()}>
                         <button
                           onClick={() => setProfileGuest({ name: b.guest_name, email: b.guest_email })}
                           className="hover:text-secondary hover:underline transition-colors text-left"
@@ -382,7 +400,7 @@ export default function BookingsTab() {
                           "—"
                         )}
                       </TableCell>
-                      <TableCell>
+                      <TableCell onClick={(e) => e.stopPropagation()}>
                         {b.request_status === "angefragt" ? (
                           <div className="flex items-center gap-1">
                             <Button
@@ -432,6 +450,13 @@ export default function BookingsTab() {
         guestKey={profileGuest}
         open={!!profileGuest}
         onOpenChange={(o) => !o && setProfileGuest(null)}
+      />
+
+      <BookingDetailDialog
+        bookingId={detailId}
+        open={!!detailId}
+        onOpenChange={(o) => !o && setDetailId(null)}
+        onChanged={load}
       />
 
       <AlertDialog open={!!pendingCancel} onOpenChange={(o) => !o && setPendingCancel(null)}>

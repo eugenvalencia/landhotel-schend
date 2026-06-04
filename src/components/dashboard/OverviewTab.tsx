@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import WeatherCard from "@/components/WeatherCard";
+import OpenRequestsPanel from "@/components/dashboard/OpenRequestsPanel";
 
 interface BookingRow {
   id: string;
@@ -236,6 +237,9 @@ export default function OverviewTab() {
 
   return (
     <div className="space-y-4">
+      {/* Offene Anfragen — höchste Priorität, ganz oben */}
+      <OpenRequestsPanel />
+
       {/* Smart Alerts oben */}
       {m.alerts.length > 0 && (
         <div className="space-y-2">
