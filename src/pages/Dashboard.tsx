@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 import DisabledModuleCard from "@/components/dashboard/DisabledModuleCard";
+import DemoMarker from "@/components/dashboard/DemoMarker";
 import ThemeToggle from "@/components/ThemeToggle";
 
 // Overview eager (kommt zuerst, schnellster Eindruck), Rest lazy
@@ -214,9 +215,13 @@ function DashboardModule() {
       {state === "disabled" || !Component ? (
         <DisabledModuleCard module={moduleDescriptor} />
       ) : (
-        <Suspense fallback={<ModuleLoader />}>
-          <Component />
-        </Suspense>
+        <>
+          {/* Demo-/Beispielinhalt markieren (roter Punkt) — wird später entfernt */}
+          {isDemo && <DemoMarker />}
+          <Suspense fallback={<ModuleLoader />}>
+            <Component />
+          </Suspense>
+        </>
       )}
     </DashboardShell>
   );
