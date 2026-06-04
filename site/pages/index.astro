@@ -543,11 +543,38 @@ const uspIcon: Record<string, string> = {
   <script>
     // Hero-Video nur abspielen, wenn der Nutzer Bewegung erlaubt — sonst bleibt
     // das Poster-Standbild stehen (Barrierefreiheit, prefers-reduced-motion).
+    // Es MUSS laufen, solange es sichtbar ist (Desktop + Handy). Browser pausieren
+    // <video> gern bei Tab-Wechsel/Energiesparen/Scroll — darum aktiv selbstheilend:
+    //   - spielt, sobald es im Viewport + Tab aktiv ist
+    //   - pausiert nur, wenn es aus dem Bild gescrollt ist (spart Strom/Akku)
+    //   - wirft sich nach Browser-Auto-Pause sofort wieder an
     const heroVideo = document.querySelector<HTMLVideoElement>("[data-hero-video]");
     if (heroVideo && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      const tryPlay = () => heroVideo.play().catch(() => {});
+      let inView = true;
+      const tryPlay = () => {
+        if (inView && !document.hidden && heroVideo.paused) heroVideo.play().catch(() => {});
+      };
+
       if (heroVideo.readyState >= 2) tryPlay();
       else heroVideo.addEventListener("canplay", tryPlay, { once: true });
+
+      // Im Bild -> spielen, raus -> pausieren.
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver((entries) => {
+          inView = entries[0].isIntersecting;
+          if (inView) tryPlay();
+          else heroVideo.pause();
+        }, { threshold: 0.1 }).observe(heroVideo);
+      }
+
+      // Zurück zum Tab -> weiterspielen.
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) tryPlay(); });
+
+      // Browser hat selbst pausiert (Energiesparen/Handy) -> wieder anwerfen,
+      // solange es sichtbar sein soll. Kurzer Tick gegen Pause-Event-Schleife.
+      heroVideo.addEventListener("pause", () => {
+        if (inView && !document.hidden && !heroVideo.ended) setTimeout(tryPlay, 150);
+      });
     }
 
     // Hero-Parallax (Bildebene scrollt langsamer, Scale bleibt erhalten).
