@@ -10,10 +10,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { HotelImage } from "@/components/HotelImage";
 import { supabase } from "@/integrations/supabase/client";
-import { eur } from "@/lib/format";
+import { eur, toISODate, formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { BedDouble, Edit, Upload, X, Plus, Trash2, Lock, Unlock } from "lucide-react";
+import { BedDouble, Edit, Upload, X, Plus, Trash2, Lock, Unlock, CalendarDays, Loader2, Phone } from "lucide-react";
 
 const ALL_AMENITIES = ["WLAN", "TV", "Bad", "Balkon", "Minibar", "Wohnbereich", "Haustier"];
 
@@ -41,6 +41,13 @@ export default function RoomsTab() {
   // Ausstattung vor versehentlichem Ändern. Erst „Entsperren" macht editierbar.
   const [locked, setLocked] = useState(true);
 
+  // --- Rezeptions-Board (Status + Direktbuchung) ---
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [boardDate, setBoardDate] = useState<string>(toISODate(new Date()));
+  const [quickRoom, setQuickRoom] = useState<any | null>(null);
+  const [quickForm, setQuickForm] = useState({ guest_name: "", guest_phone: "", check_in: "", check_out: "", persons: 2, notes: "" });
+  const [quickSaving, setQuickSaving] = useState(false);
+
   const openEdit = (r: any) => {
     setEditing({ ...r, amenities: toArr(r.amenities), photos: toArr(r.photos) });
     setNewAmenity("");
@@ -62,8 +69,57 @@ export default function RoomsTab() {
     setNewAmenity("");
   };
 
-  const load = () => supabase.from("rooms").select("*").order("room_number").then(({ data }) => setRooms(data ?? []));
+  const load = async () => {
+    const [{ data: r }, { data: b }] = await Promise.all([
+      supabase.from("rooms").select("*").order("room_number"),
+      supabase.from("bookings")
+        .select("id, room_id, guest_name, check_in, check_out, persons, payment_status, request_status")
+        .neq("payment_status", "cancelled"),
+    ]);
+    setRooms(r ?? []);
+    setBookings((b as any[]) ?? []);
+  };
   useEffect(() => { load(); }, []);
+
+  // Belegung am gewählten Tag: check_in <= Tag < check_out (Abreisetag = wieder frei).
+  const occupantFor = (roomId: string) =>
+    bookings.find((b) => b.room_id === roomId && b.check_in <= boardDate && b.check_out > boardDate) ?? null;
+
+  const addDaysIso = (iso: string, days: number) => {
+    const [y, m, d] = iso.split("-").map(Number);
+    return toISODate(new Date(y, (m || 1) - 1, (d || 1) + days));
+  };
+
+  const openQuick = (room: any) => {
+    setQuickRoom(room);
+    setQuickForm({
+      guest_name: "", guest_phone: "",
+      check_in: boardDate, check_out: addDaysIso(boardDate, 1),
+      persons: Math.min(2, room.max_persons || 2), notes: "",
+    });
+  };
+
+  const submitQuick = async () => {
+    if (!quickRoom) return;
+    if (!quickForm.guest_name.trim()) { toast.error("Bitte Gastname eingeben"); return; }
+    if (quickForm.check_out <= quickForm.check_in) { toast.error("Abreise muss nach Anreise liegen"); return; }
+    setQuickSaving(true);
+    const { error } = await supabase.rpc("create_internal_booking", {
+      p_room_id: quickRoom.id,
+      p_guest_name: quickForm.guest_name.trim(),
+      p_guest_phone: quickForm.guest_phone.trim() || null,
+      p_check_in: quickForm.check_in,
+      p_check_out: quickForm.check_out,
+      p_persons: quickForm.persons,
+      p_notes: quickForm.notes.trim() || null,
+    });
+    setQuickSaving(false);
+    if (error) { toast.error("Buchung fehlgeschlagen: " + error.message); return; }
+    toast.success("Buchung angelegt — steht jetzt in Kalender & Buchungen.");
+    window.dispatchEvent(new Event("schend:requests-changed")); // andere Ansichten auffrischen
+    setQuickRoom(null);
+    load();
+  };
 
   const save = async () => {
     if (!editing) return;
@@ -133,14 +189,30 @@ export default function RoomsTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">{rooms.length} {rooms.length === 1 ? "Zimmer" : "Zimmer"} — Namen &amp; Preise jederzeit änderbar.</p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2 text-sm">
+          <CalendarDays className="h-4 w-4 text-secondary shrink-0" />
+          <span className="text-muted-foreground">Belegung am</span>
+          <input
+            type="date"
+            value={boardDate}
+            onChange={(e) => setBoardDate(e.target.value || boardDate)}
+            className="h-9 rounded-md border border-input bg-background px-2 text-sm"
+          />
+          {boardDate !== toISODate(new Date()) && (
+            <Button size="sm" variant="ghost" className="h-9" onClick={() => setBoardDate(toISODate(new Date()))}>Heute</Button>
+          )}
+          <span className="text-xs text-muted-foreground hidden sm:inline">· {rooms.length} Zimmer</span>
+        </div>
         <Button size="sm" onClick={openNew}>
           <Plus className="h-4 w-4" /> Neues Zimmer
         </Button>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {rooms.map((r) => (
+        {rooms.map((r) => {
+          const occ = occupantFor(r.id);
+          const inactive = r.status !== "aktiv";
+          return (
           <Card key={r.id} className="shadow-card overflow-hidden">
             <div className="aspect-[4/3] bg-accent flex items-center justify-center overflow-hidden">
               {r.photos?.[0] ? (
@@ -150,26 +222,48 @@ export default function RoomsTab() {
               )}
             </div>
             <CardContent className="p-4">
-              <div className="flex items-start justify-between mb-1">
+              <div className="flex items-start justify-between mb-1 gap-2">
                 <h3 className="font-semibold">{r.name}</h3>
-                <Badge variant={r.status === "aktiv" ? "default" : "secondary"}>{r.status}</Badge>
+                {/* Status für den gewählten Tag */}
+                {inactive
+                  ? <Badge variant="secondary" className="shrink-0">{r.status}</Badge>
+                  : occ
+                    ? <Badge className="bg-red-500 hover:bg-red-500 text-white shrink-0">Belegt</Badge>
+                    : <Badge className="bg-emerald-600 hover:bg-emerald-600 text-white shrink-0">Frei</Badge>}
               </div>
               <p className="text-sm text-muted-foreground">{r.room_type}</p>
               <p className="text-sm mt-1">
                 {eur(Number(r.price_per_night))} / Nacht
                 <span className="text-xs text-muted-foreground"> {r.price_per_person ? "pro Person" : "pro Zimmer"}</span>
               </p>
+              {occ && (
+                <p className="text-xs text-muted-foreground mt-1 truncate">
+                  {occ.guest_name} · bis {formatDate(occ.check_out)}
+                </p>
+              )}
               <div className="flex gap-2 mt-3">
-                <Button size="sm" variant="outline" className="flex-1" onClick={() => openEdit(r)}>
-                  <Edit className="h-4 w-4" /> Bearbeiten
-                </Button>
+                {!occ && !inactive ? (
+                  <>
+                    <Button size="sm" className="flex-1" onClick={() => openQuick(r)}>
+                      <CalendarDays className="h-4 w-4" /> Buchen
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => openEdit(r)} aria-label="Zimmer bearbeiten">
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                  </>
+                ) : (
+                  <Button size="sm" variant="outline" className="flex-1" onClick={() => openEdit(r)}>
+                    <Edit className="h-4 w-4" /> Bearbeiten
+                  </Button>
+                )}
                 <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => remove(r)} aria-label="Zimmer löschen">
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
             </CardContent>
           </Card>
-        ))}
+          );
+        })}
       </div>
 
       <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
@@ -304,6 +398,73 @@ export default function RoomsTab() {
             <Button variant="outline" onClick={() => setEditing(null)} disabled={saving}>Abbrechen</Button>
             <Button onClick={save} disabled={saving || readOnly} title={readOnly ? "Erst entsperren" : undefined}>
               {saving ? "Speichern…" : "Speichern"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Direktbuchung vom Board (z. B. telefonische Anfrage) */}
+      <Dialog open={!!quickRoom} onOpenChange={(o) => !o && setQuickRoom(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-xl">{quickRoom ? `${quickRoom.name} buchen` : "Buchen"}</DialogTitle>
+          </DialogHeader>
+          {quickRoom && (() => {
+            const nights = Math.max(1, Math.round(
+              (new Date(quickForm.check_out).getTime() - new Date(quickForm.check_in).getTime()) / 86400000));
+            const rate = quickForm.persons <= 1 && quickRoom.single_use_price != null
+              ? Number(quickRoom.single_use_price)
+              : quickRoom.price_per_person ? Number(quickRoom.price_per_night) * quickForm.persons : Number(quickRoom.price_per_night);
+            return (
+              <div className="space-y-3 text-sm">
+                <p className="text-xs text-muted-foreground">
+                  {quickRoom.room_type} · max. {quickRoom.max_persons} Personen · Direktbuchung (sofort bestätigt)
+                </p>
+                <div>
+                  <Label>Gastname</Label>
+                  <Input className="mt-1.5" value={quickForm.guest_name} placeholder="Vor- und Nachname"
+                    onChange={(e) => setQuickForm({ ...quickForm, guest_name: e.target.value })} />
+                </div>
+                <div>
+                  <Label className="flex items-center gap-1"><Phone className="h-3.5 w-3.5" /> Telefon (optional)</Label>
+                  <Input className="mt-1.5" value={quickForm.guest_phone} placeholder="z. B. +49 …"
+                    onChange={(e) => setQuickForm({ ...quickForm, guest_phone: e.target.value })} />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label>Anreise</Label>
+                    <Input type="date" className="mt-1.5" value={quickForm.check_in}
+                      onChange={(e) => setQuickForm({ ...quickForm, check_in: e.target.value,
+                        check_out: e.target.value >= quickForm.check_out ? addDaysIso(e.target.value, 1) : quickForm.check_out })} />
+                  </div>
+                  <div>
+                    <Label>Abreise</Label>
+                    <Input type="date" className="mt-1.5" value={quickForm.check_out} min={addDaysIso(quickForm.check_in, 1)}
+                      onChange={(e) => setQuickForm({ ...quickForm, check_out: e.target.value })} />
+                  </div>
+                </div>
+                <div>
+                  <Label>Personen</Label>
+                  <Select value={String(quickForm.persons)} onValueChange={(v) => setQuickForm({ ...quickForm, persons: Number(v) })}>
+                    <SelectTrigger className="mt-1.5 w-28"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: Math.max(quickRoom.max_persons || 2, 1) }, (_, i) => i + 1).map((n) => (
+                        <SelectItem key={n} value={String(n)}>{n} {n === 1 ? "Person" : "Personen"}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="rounded-md bg-accent p-3 flex justify-between font-medium">
+                  <span>{nights} {nights === 1 ? "Nacht" : "Nächte"} · {quickForm.persons} P.</span>
+                  <span>{eur(rate * nights)}</span>
+                </div>
+              </div>
+            );
+          })()}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setQuickRoom(null)} disabled={quickSaving}>Abbrechen</Button>
+            <Button onClick={submitQuick} disabled={quickSaving}>
+              {quickSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarDays className="h-4 w-4" />} Buchung anlegen
             </Button>
           </DialogFooter>
         </DialogContent>
