@@ -12,25 +12,71 @@ import { HotelImage } from "@/components/HotelImage";
 import { supabase } from "@/integrations/supabase/client";
 import { eur } from "@/lib/format";
 import { toast } from "sonner";
-import { BedDouble, Edit, Upload, X } from "lucide-react";
+import { BedDouble, Edit, Upload, X, Plus, Trash2 } from "lucide-react";
 
 const ALL_AMENITIES = ["WLAN", "TV", "Bad", "Balkon", "Minibar", "Wohnbereich", "Haustier"];
+
+// Leeres Zimmer für „Neues Zimmer". Default-Preismodus „pro Person" passt zum
+// häufigsten Schend-Fall (Doppelzimmer 57 €/Person); pro Zimmer ist 1 Klick weg.
+const blankRoom = () => ({
+  name: "", room_type: "Doppelzimmer", bed_description: "Doppelbett",
+  max_persons: 2, price_per_night: 57, price_per_person: true,
+  single_use_price: null as number | null, status: "aktiv",
+  amenities: [] as string[], photos: [] as string[], description: "",
+});
 
 export default function RoomsTab() {
   const [rooms, setRooms] = useState<any[]>([]);
   const [editing, setEditing] = useState<any | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const load = () => supabase.from("rooms").select("*").order("room_number").then(({ data }) => setRooms(data ?? []));
   useEffect(() => { load(); }, []);
 
   const save = async () => {
     if (!editing) return;
+    if (!String(editing.name ?? "").trim()) { toast.error("Bitte einen Namen vergeben"); return; }
+    setSaving(true);
     const { id, created_at, updated_at, ...rest } = editing;
-    const { error } = await supabase.from("rooms").update(rest).eq("id", id);
+    // Numerik normalisieren — leere Felder sauber als Zahl/NULL
+    rest.price_per_night = Number(rest.price_per_night) || 0;
+    rest.max_persons = Number(rest.max_persons) || 1;
+    rest.price_per_person = !!rest.price_per_person;
+    rest.single_use_price =
+      rest.single_use_price === "" || rest.single_use_price == null ? null : Number(rest.single_use_price);
+
+    let error;
+    if (id) {
+      ({ error } = await supabase.from("rooms").update(rest).eq("id", id));
+    } else {
+      // Neues Zimmer: room_number automatisch (max+1), tenant_id von bestehendem Zimmer
+      // ableiten (Single-Tenant Schend; rooms.tenant_id ist NOT NULL ohne Default).
+      const nextNr = rooms.reduce((m, r) => Math.max(m, Number(r.room_number) || 0), 0) + 1;
+      const tenant_id = rooms.find((r) => r.tenant_id)?.tenant_id ?? null;
+      if (!tenant_id) {
+        setSaving(false);
+        toast.error("Kein Tenant gefunden — bitte zuerst ein bestehendes Zimmer öffnen.");
+        return;
+      }
+      ({ error } = await supabase.from("rooms").insert({ ...rest, room_number: nextNr, tenant_id }));
+    }
+    setSaving(false);
     if (error) { toast.error(error.message); return; }
-    toast.success("Zimmer gespeichert");
+    toast.success(id ? "Zimmer gespeichert" : "Zimmer angelegt");
     setEditing(null);
+    load();
+  };
+
+  const remove = async (room: any) => {
+    if (!window.confirm(`Zimmer „${room.name}" wirklich löschen?`)) return;
+    const { error } = await supabase.from("rooms").delete().eq("id", room.id);
+    if (error) {
+      // ON DELETE RESTRICT: Zimmer mit Buchungen lässt sich nicht löschen.
+      toast.error("Löschen nicht möglich (vermutlich bestehende Buchungen). Tipp: Status auf 'Inaktiv' setzen.");
+      return;
+    }
+    toast.success("Zimmer gelöscht");
     load();
   };
 
@@ -56,6 +102,12 @@ export default function RoomsTab() {
 
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">{rooms.length} {rooms.length === 1 ? "Zimmer" : "Zimmer"} — Namen &amp; Preise jederzeit änderbar.</p>
+        <Button size="sm" onClick={() => setEditing(blankRoom())}>
+          <Plus className="h-4 w-4" /> Neues Zimmer
+        </Button>
+      </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {rooms.map((r) => (
           <Card key={r.id} className="shadow-card overflow-hidden">
@@ -72,10 +124,18 @@ export default function RoomsTab() {
                 <Badge variant={r.status === "aktiv" ? "default" : "secondary"}>{r.status}</Badge>
               </div>
               <p className="text-sm text-muted-foreground">{r.room_type}</p>
-              <p className="text-sm mt-1">{eur(Number(r.price_per_night))} / Nacht</p>
-              <Button size="sm" variant="outline" className="mt-3 w-full" onClick={() => setEditing({ ...r })}>
-                <Edit className="h-4 w-4" /> Bearbeiten
-              </Button>
+              <p className="text-sm mt-1">
+                {eur(Number(r.price_per_night))} / Nacht
+                <span className="text-xs text-muted-foreground"> {r.price_per_person ? "pro Person" : "pro Zimmer"}</span>
+              </p>
+              <div className="flex gap-2 mt-3">
+                <Button size="sm" variant="outline" className="flex-1" onClick={() => setEditing({ ...r })}>
+                  <Edit className="h-4 w-4" /> Bearbeiten
+                </Button>
+                <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => remove(r)} aria-label="Zimmer löschen">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
             </CardContent>
           </Card>
         ))}
@@ -83,7 +143,7 @@ export default function RoomsTab() {
 
       <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>Zimmer bearbeiten</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editing?.id ? "Zimmer bearbeiten" : "Neues Zimmer"}</DialogTitle></DialogHeader>
           {editing && (
             <div className="space-y-4">
               <div className="grid sm:grid-cols-2 gap-3">
@@ -106,6 +166,23 @@ export default function RoomsTab() {
                 <div>
                   <Label>Preis / Nacht (€)</Label>
                   <Input type="number" step="0.01" className="mt-1.5" value={editing.price_per_night} onChange={(e) => setEditing({ ...editing, price_per_night: parseFloat(e.target.value) || 0 })} />
+                  <label className="flex items-center gap-2 text-xs mt-2 cursor-pointer">
+                    <Checkbox
+                      checked={!!editing.price_per_person}
+                      onCheckedChange={(c) => setEditing({ ...editing, price_per_person: !!c })}
+                    />
+                    Preis gilt <strong>pro Person</strong> (sonst pro Zimmer)
+                  </label>
+                </div>
+                <div>
+                  <Label>Preis bei Einzelbelegung (€, optional)</Label>
+                  <Input
+                    type="number" step="0.01" className="mt-1.5"
+                    placeholder="z. B. 80 — leer = kein Sonderpreis"
+                    value={editing.single_use_price ?? ""}
+                    onChange={(e) => setEditing({ ...editing, single_use_price: e.target.value === "" ? null : parseFloat(e.target.value) })}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">Pauschalpreis/Nacht, wenn nur 1 Person bucht.</p>
                 </div>
                 <div>
                   <Label>Status</Label>
@@ -155,8 +232,8 @@ export default function RoomsTab() {
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setEditing(null)}>Abbrechen</Button>
-            <Button onClick={save}>Speichern</Button>
+            <Button variant="outline" onClick={() => setEditing(null)} disabled={saving}>Abbrechen</Button>
+            <Button onClick={save} disabled={saving}>{saving ? "Speichern…" : "Speichern"}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
