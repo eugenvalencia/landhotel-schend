@@ -16,6 +16,11 @@ import { BedDouble, Edit, Upload, X, Plus, Trash2 } from "lucide-react";
 
 const ALL_AMENITIES = ["WLAN", "TV", "Bad", "Balkon", "Minibar", "Wohnbereich", "Haustier"];
 
+// amenities/photos kommen aus JSONB — bei alten Seed-Daten manchmal als Objekt
+// statt Array. Sicher zu einem Array machen, sonst crasht .includes()/.map().
+const toArr = (v: unknown): any[] =>
+  Array.isArray(v) ? v : (v && typeof v === "object" ? Object.values(v as object) : []);
+
 // Leeres Zimmer für „Neues Zimmer". Default-Preismodus „pro Person" passt zum
 // häufigsten Schend-Fall (Doppelzimmer 57 €/Person); pro Zimmer ist 1 Klick weg.
 const blankRoom = () => ({
@@ -129,7 +134,7 @@ export default function RoomsTab() {
                 <span className="text-xs text-muted-foreground"> {r.price_per_person ? "pro Person" : "pro Zimmer"}</span>
               </p>
               <div className="flex gap-2 mt-3">
-                <Button size="sm" variant="outline" className="flex-1" onClick={() => setEditing({ ...r })}>
+                <Button size="sm" variant="outline" className="flex-1" onClick={() => setEditing({ ...r, amenities: toArr(r.amenities), photos: toArr(r.photos) })}>
                   <Edit className="h-4 w-4" /> Bearbeiten
                 </Button>
                 <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => remove(r)} aria-label="Zimmer löschen">
