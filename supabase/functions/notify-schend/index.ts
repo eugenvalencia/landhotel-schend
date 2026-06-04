@@ -115,7 +115,7 @@ Deno.serve(async (req) => {
     .select(`
       id, booking_number, guest_name, guest_email, guest_phone,
       check_in, check_out, total_price, extras, notes, payment_status, created_at,
-      preferred_language,
+      preferred_language, notifications,
       rooms ( name, room_type, bed_description )
     `)
     .eq("id", body.booking_id)
@@ -123,6 +123,18 @@ Deno.serve(async (req) => {
 
   if (error || !booking) {
     return new Response(`Booking not found: ${error?.message ?? "?"}`, { status: 404 });
+  }
+
+  // Idempotenz: dieselbe Mail-Art nicht im Sekundentakt doppelt senden
+  // (Doppelklick / Race / wiederholter Client-Trigger). Bewusster Resend
+  // nach > 120 s bleibt möglich (z. B. „E-Mail erneut senden" im Dashboard).
+  const sentMap = (booking.notifications ?? {}) as Record<string, string>;
+  const lastSent = sentMap[kind] ? Date.parse(sentMap[kind]) : 0;
+  if (lastSent && Date.now() - lastSent < 120_000) {
+    return new Response(
+      JSON.stringify({ ok: true, deduped: true, kind }),
+      { headers: { "Content-Type": "application/json" } },
+    );
   }
 
   // Nächte berechnen
@@ -181,6 +193,15 @@ Deno.serve(async (req) => {
       : Promise.resolve<BranchResult>({ ok: true, status: 0, detail: "n8n skipped (confirmation)" }),
     sendGuestConfirmation({ guestEmail: booking.guest_email, payload: emailPayload, kind }),
   ]);
+
+  // Versand-Zeitstempel für die Idempotenz festhalten — nur wenn die Mail
+  // wirklich rausging (fehlgeschlagene Sends dürfen erneut versucht werden).
+  if (mailResult.ok) {
+    await supabase
+      .from("bookings")
+      .update({ notifications: { ...sentMap, [kind]: new Date().toISOString() } })
+      .eq("id", booking.id);
+  }
 
   console.log(
     JSON.stringify({
