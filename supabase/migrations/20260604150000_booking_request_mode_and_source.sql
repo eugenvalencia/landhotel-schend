@@ -240,6 +240,25 @@ BEGIN
     UPDATE public.bookings SET payment_status = 'cancelled' WHERE id = p_booking_id;
   END IF;
 
+  -- Bestätigen -> verbindliche Gast-Mail über notify-schend (kind='confirmation').
+  -- Async via pg_net, blockiert die Status-Änderung nicht; Fehler werden geschluckt.
+  -- Setzt voraus: app.settings.supabase_url + app.settings.service_role_key
+  -- sind in der Postgres-Config gesetzt (siehe 20260520150000_notify_on_booking_insert.sql).
+  IF p_status = 'bestaetigt' THEN
+    BEGIN
+      PERFORM extensions.http_post(
+        url := current_setting('app.settings.supabase_url', true) || '/functions/v1/notify-schend',
+        body := jsonb_build_object('booking_id', p_booking_id::text, 'kind', 'confirmation'),
+        headers := jsonb_build_object(
+          'Content-Type', 'application/json',
+          'Authorization', 'Bearer ' || current_setting('app.settings.service_role_key', true)
+        )
+      );
+    EXCEPTION WHEN OTHERS THEN
+      RAISE WARNING 'notify-schend confirmation call failed: %', sqlerrm;
+    END;
+  END IF;
+
   INSERT INTO public.audit_log (tenant_id, actor_id, actor_role, action, entity_type, entity_id, metadata)
   VALUES (
     v_tenant, auth.uid(), 'admin',

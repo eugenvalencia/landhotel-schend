@@ -24,8 +24,13 @@ aber NICHT Teil dieser Lieferung. Braucht Walter-Freigabe, GwG.)
 | DB | `supabase/migrations/20260604150000_booking_request_mode_and_source.sql` | Spalten `source` + `request_status`; `create_booking` konsolidiert (war doppelt + kaputt); neue RPC `set_booking_request_status` |
 | Gast-Formular | `src/pages/Booking.tsx` | Anfrage-Wording, sendet `p_source` |
 | Gast-Bestätigung | `src/components/BookingConfirmationCard.tsx` | „Anfrage eingegangen" statt „bestätigt" |
-| Gast-Email (4 Sprachen) | `supabase/functions/_shared/booking-email.ts` | Eingangsbestätigung statt Buchungsbestätigung |
+| Gast-Email (4 Sprachen) | `supabase/functions/_shared/booking-email.ts` | Zwei Modi: `request` (Eingangsbestätigung) + `confirmation` (verbindliche Bestätigung) |
+| Edge-Function | `supabase/functions/notify-schend/index.ts` | nimmt `kind` (request/confirmation); n8n nur bei neuer Anfrage |
 | Hotel-Dashboard | `src/components/dashboard/BookingsTab.tsx` | Anfrage-Status-Badge, Bestätigen/Ablehnen, Quelle-Spalte, echte Quellen-Auswertung |
+
+**Voller Anfrage-Loop:** Gast sendet Anfrage → sofort Eingangsbestätigung (`request`-Mail) →
+Hotel klickt „Bestätigen" im Dashboard → `set_booking_request_status` löst per pg_net die
+verbindliche `confirmation`-Mail aus. „Ablehnen" storniert + gibt den Kalender frei (keine Mail).
 
 ### Reparierte Altlasten (die React-Engine lief nie öffentlich, daher unbemerkt)
 - `create_booking` existierte in **zwei widersprüchlichen Overloads**; die neueste (jsonb)
@@ -71,10 +76,6 @@ aber NICHT Teil dieser Lieferung. Braucht Walter-Freigabe, GwG.)
 
 ## Bekannte Folge-Arbeit (NICHT in dieser Lieferung)
 
-- **Binding-Confirmation-Mail beim Bestätigen:** Aktuell sendet nur der INSERT die
-  Eingangsbestätigung. Wenn das Hotel im Dashboard „Bestätigt", geht (noch) keine zweite,
-  verbindliche Mail raus — das Hotel bestätigt vorerst telefonisch/manuell. Sauberer
-  Folge-Schritt: UPDATE-Trigger + zweites Mail-Template. (P2)
 - **AnalyticsTab-Quellen-Pie** ist weiter Demo-Mock; die *echte* Quellen-Auswertung steht
   jetzt im BookingsTab (echte Daten). Wiring des Pie auf echte Aggregation = später, sobald
   Buchungsvolumen da ist. (P3)

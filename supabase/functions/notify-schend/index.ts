@@ -19,7 +19,7 @@
 //   SUPABASE_SERVICE_ROLE_KEY = (auto)
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { renderBookingEmail } from "../_shared/booking-email.ts";
+import { renderBookingEmail, type EmailKind } from "../_shared/booking-email.ts";
 
 const N8N_WEBHOOK_URL = Deno.env.get("N8N_WEBHOOK_URL") ?? "";
 const N8N_WEBHOOK_SECRET = Deno.env.get("N8N_WEBHOOK_SECRET") ?? "";
@@ -32,6 +32,9 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
 interface BookingPayload {
   booking_id: string;
+  // 'request' (default) = Eingangsbestätigung beim Insert
+  // 'confirmation' = verbindliche Bestätigung, wenn das Hotel die Anfrage bestätigt
+  kind?: EmailKind;
 }
 
 interface BranchResult {
@@ -60,6 +63,7 @@ async function pushToN8n(payload: unknown): Promise<BranchResult> {
 async function sendGuestConfirmation(args: {
   guestEmail: string;
   payload: ReturnType<typeof renderBookingEmail>;
+  kind: EmailKind;
 }): Promise<BranchResult> {
   if (!RESEND_API_KEY) return { ok: false, status: 0, detail: "RESEND_API_KEY not configured" };
   try {
@@ -77,7 +81,10 @@ async function sendGuestConfirmation(args: {
         html: args.payload.html,
         text: args.payload.text,
         headers: { "Content-Language": args.payload.language },
-        tags: [{ name: "type", value: "booking-confirmation" }, { name: "lang", value: args.payload.language }],
+        tags: [
+          { name: "type", value: args.kind === "confirmation" ? "booking-confirmation" : "booking-request" },
+          { name: "lang", value: args.payload.language },
+        ],
       }),
     });
     return { ok: r.status >= 200 && r.status < 300, status: r.status, detail: await r.text().catch(() => "") };
@@ -100,6 +107,7 @@ Deno.serve(async (req) => {
   if (!body.booking_id) {
     return new Response("booking_id required", { status: 400 });
   }
+  const kind: EmailKind = body.kind === "confirmation" ? "confirmation" : "request";
 
   // Booking laden inkl. Room + Extras + preferred_language
   const { data: booking, error } = await supabase
@@ -151,6 +159,7 @@ Deno.serve(async (req) => {
   // Gast-Email Payload rendern
   const emailPayload = renderBookingEmail({
     language: booking.preferred_language,
+    kind,
     bookingNumber: booking.booking_number,
     guestName: booking.guest_name,
     roomName: room?.name ?? "Zimmer",
@@ -164,9 +173,13 @@ Deno.serve(async (req) => {
   });
 
   // Parallel: n8n + Gast-Email. Beide Pfade sind voneinander unabhängig.
+  // n8n läuft nur bei einer NEUEN Anfrage (Owner-Qualifikation via Claude);
+  // beim Bestätigen geht ausschließlich die verbindliche Gast-Mail raus.
   const [n8nResult, mailResult] = await Promise.all([
-    pushToN8n(n8nPayload),
-    sendGuestConfirmation({ guestEmail: booking.guest_email, payload: emailPayload }),
+    kind === "request"
+      ? pushToN8n(n8nPayload)
+      : Promise.resolve<BranchResult>({ ok: true, status: 0, detail: "n8n skipped (confirmation)" }),
+    sendGuestConfirmation({ guestEmail: booking.guest_email, payload: emailPayload, kind }),
   ]);
 
   console.log(
