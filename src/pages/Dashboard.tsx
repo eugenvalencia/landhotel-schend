@@ -68,6 +68,7 @@ import {
  */
 const MODULE_COMPONENTS: Partial<Record<FeatureKey, { real?: React.ComponentType; demo?: React.ComponentType }>> = {
   calendar:             { real: CalendarTab },
+  bookings:             { real: BookingsTab },
   internal_bookings:    { real: InternalBookingsTab },
   housekeeping_mobile:  { real: HousekeepingTab },
   guest_profiles:       { real: GuestsTab },
@@ -192,7 +193,7 @@ function DashboardModule() {
       return;
     }
     if (tenant) {
-      const state = getFeatureState(tenant.features, moduleDescriptor.key);
+      const state = moduleDescriptor.core ? "active" : getFeatureState(tenant.features, moduleDescriptor.key);
       if (state === "hidden") {
         navigate("/dashboard", { replace: true });
       }
@@ -201,7 +202,9 @@ function DashboardModule() {
 
   if (!moduleDescriptor) return null;
 
-  const state = tenant ? getFeatureState(tenant.features, moduleDescriptor.key) : "hidden";
+  const state = moduleDescriptor.core
+    ? "active"
+    : (tenant ? getFeatureState(tenant.features, moduleDescriptor.key) : "hidden");
   const config = tenant?.features[moduleDescriptor.key] as Record<string, unknown> | undefined;
   const isDemo = config?.demo === true;
   const slot = MODULE_COMPONENTS[moduleDescriptor.key];

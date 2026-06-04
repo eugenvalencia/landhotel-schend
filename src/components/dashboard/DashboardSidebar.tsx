@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Calendar,
+  CalendarCheck,
   NotebookPen,
   Sparkles,
   Users,
@@ -45,6 +46,7 @@ import {
 const ICON_MAP: Record<string, LucideIcon> = {
   LayoutDashboard,
   Calendar,
+  CalendarCheck,
   NotebookPen,
   Sparkles,
   Users,
@@ -121,7 +123,7 @@ export default function DashboardSidebar({ activePath, basePath = "/dashboard" }
 
   const visibleModules = useMemo(() => {
     if (!tenant) return [];
-    return MODULE_CATALOG.filter((m) => getFeatureState(tenant.features, m.key) !== "hidden");
+    return MODULE_CATALOG.filter((m) => m.core || getFeatureState(tenant.features, m.key) !== "hidden");
   }, [tenant]);
 
   const grouped = useMemo(() => {

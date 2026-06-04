@@ -14,6 +14,7 @@ export type FeatureState = "active" | "disabled" | "hidden";
 
 export type FeatureKey =
   | "calendar"
+  | "bookings"
   | "internal_bookings"
   | "housekeeping_mobile"
   | "guest_profiles"
@@ -93,10 +94,13 @@ export interface ModuleDescriptor {
   group: "alltag" | "gast" | "ops" | "intelligence" | "kommerz";
   shortPitch: string;
   whyDisabled?: string;
+  /** Kern-Modul: immer sichtbar + aktiv, unabhängig von den Tenant-Feature-Flags. */
+  core?: boolean;
 }
 
 export const MODULE_CATALOG: ModuleDescriptor[] = [
   { key: "calendar",            label: "Kalender",           iconName: "Calendar",       path: "calendar",            group: "alltag",       shortPitch: "Wer kommt wann, welcher Raum ist frei." },
+  { key: "bookings",            label: "Buchungen",          iconName: "CalendarCheck",  path: "bookings",            group: "alltag",       shortPitch: "Gast-Anfragen bestätigen, Quellen (Direkt vs OTA) sehen.", core: true },
   { key: "internal_bookings",   label: "Notizbuch",          iconName: "NotebookPen",    path: "internal-bookings",   group: "alltag",       shortPitch: "Familien- und Hausbuchungen ohne Steuer-Spur." },
   { key: "housekeeping_mobile", label: "Reinigung",          iconName: "Sparkles",       path: "housekeeping",        group: "ops",          shortPitch: "Mobile Liste für die Etage." },
   { key: "guest_profiles",      label: "Gäste",              iconName: "Users",          path: "guests",              group: "gast",         shortPitch: "Bekannte Stammgäste mit Vorlieben." },
