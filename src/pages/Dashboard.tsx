@@ -17,6 +17,7 @@ import OverviewTab from "@/components/dashboard/OverviewTab";
 const CalendarTab            = lazy(() => import("@/components/dashboard/CalendarTab"));
 const BookingsTab            = lazy(() => import("@/components/dashboard/BookingsTab"));
 const GuestsTab              = lazy(() => import("@/components/dashboard/GuestsTab"));
+const RoomsTab               = lazy(() => import("@/components/dashboard/RoomsTab"));
 const ReviewsTab             = lazy(() => import("@/components/dashboard/ReviewsTab"));
 const AnalyticsTab           = lazy(() => import("@/components/dashboard/AnalyticsTab"));
 const PricingTab             = lazy(() => import("@/components/dashboard/PricingTab"));
@@ -70,6 +71,7 @@ import {
 const MODULE_COMPONENTS: Partial<Record<FeatureKey, { real?: React.ComponentType; demo?: React.ComponentType }>> = {
   calendar:             { real: CalendarTab },
   bookings:             { real: BookingsTab },
+  rooms:                { real: RoomsTab },
   internal_bookings:    { real: InternalBookingsTab },
   housekeeping_mobile:  { real: HousekeepingTab },
   guest_profiles:       { real: GuestsTab },
