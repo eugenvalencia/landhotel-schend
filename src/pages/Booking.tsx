@@ -162,7 +162,10 @@ export default function Booking() {
     const sorted = [...blockedDates].sort();
     const inIso = toISODate(checkIn);
     for (const iso of sorted) {
-      if (iso > inIso) return new Date(iso);
+      // parseISOLocal statt new Date(iso): new Date("YYYY-MM-DD") parst UTC-Mitternacht
+      // → in der Kalender-Vergleichslogik (lokale Mitternacht) kann der späteste
+      // Check-out um einen Tag verrutschen. Lokal parsen hält es konsistent.
+      if (iso > inIso) return parseISOLocal(iso);
     }
     return undefined;
   }, [checkIn, blockedDates]);

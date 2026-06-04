@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ChevronLeft, ChevronRight, Plus, Mail, Pencil, Ban, X, BedDouble, Users, Phone, CalendarDays, CreditCard, StickyNote, FileText } from "lucide-react";
 import InvoiceDialog from "./InvoiceDialog";
 import { supabase } from "@/integrations/supabase/client";
+import { notifyBooking } from "@/lib/notify-booking";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { eur, toISODate, formatDate, formatDateShort } from "@/lib/format";
@@ -433,7 +434,10 @@ export default function CalendarTab() {
 
   const resendEmail = () => {
     if (!selected?.guest_email) { toast.error("Keine E-Mail-Adresse hinterlegt"); return; }
-    toast.success(`Bestätigungs-E-Mail erneut an ${selected.guest_email} gesendet`);
+    // Früher zeigte das nur einen Erfolgs-Toast OHNE zu senden (Anti-Theater).
+    // Jetzt wird die Bestätigungs-Mail real über notify-schend angestoßen (best-effort).
+    notifyBooking(selected.id, "confirmation");
+    toast.success(`Bestätigungs-E-Mail an ${selected.guest_email} wird erneut gesendet`);
   };
 
   return (
