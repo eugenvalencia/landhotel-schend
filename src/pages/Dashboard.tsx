@@ -9,6 +9,7 @@ import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 import DisabledModuleCard from "@/components/dashboard/DisabledModuleCard";
 import DemoMarker from "@/components/dashboard/DemoMarker";
 import OpenRequestsBanner from "@/components/dashboard/OpenRequestsBanner";
+import RequestNotifier from "@/components/dashboard/RequestNotifier";
 import ThemeToggle from "@/components/ThemeToggle";
 
 // Overview eager (kommt zuerst, schnellster Eindruck), Rest lazy
@@ -242,6 +243,8 @@ function DashboardModule() {
 export default function Dashboard() {
   return (
     <ProtectedRoute>
+      {/* Einmalig: Ton + Browser-Benachrichtigung bei neuer Anfrage */}
+      <RequestNotifier />
       <Outlet />
     </ProtectedRoute>
   );
