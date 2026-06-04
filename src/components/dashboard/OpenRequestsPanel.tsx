@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, X, Loader2, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { notifyBooking } from "@/lib/notify-booking";
 import { toast } from "sonner";
 import { eur, formatDate } from "@/lib/format";
 import { useOpenRequests, notifyRequestsChanged } from "@/hooks/useOpenRequests";
@@ -26,6 +27,8 @@ export default function OpenRequestsPanel() {
     setBusy(null);
     if (error) { toast.error("Aktion fehlgeschlagen: " + error.message); return; }
     toast.success(status === "bestaetigt" ? "Anfrage bestätigt" : "Anfrage abgelehnt");
+    // Verbindliche Bestätigungs-Mail an den Gast — nur beim Bestätigen, best-effort.
+    if (status === "bestaetigt") notifyBooking(id, "confirmation");
     notifyRequestsChanged();
     refresh();
   };
