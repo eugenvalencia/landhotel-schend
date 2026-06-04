@@ -30,6 +30,13 @@ ALTER TABLE public.bookings
   ADD COLUMN IF NOT EXISTS request_status TEXT NOT NULL DEFAULT 'angefragt'
   CHECK (request_status IN ('angefragt', 'bestaetigt', 'abgelehnt'));
 
+-- preferred_language: in manchen DB-Ständen fehlt die Spalte (frühere Migration
+-- 20260520160000 evtl. nie angewendet). Selbst-tragend nachziehen, damit
+-- create_booking() sie zuverlässig füllen kann.
+ALTER TABLE public.bookings
+  ADD COLUMN IF NOT EXISTS preferred_language TEXT
+  CHECK (preferred_language IS NULL OR preferred_language IN ('de', 'en', 'fr', 'nl'));
+
 COMMENT ON COLUMN public.bookings.source IS
   'Akquisitions-Kanal der Buchung (Direkt, Booking.com, Airbnb, …). Treibt die Provisionsfrei-Auswertung.';
 COMMENT ON COLUMN public.bookings.request_status IS
