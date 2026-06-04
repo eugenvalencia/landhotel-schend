@@ -1,4 +1,7 @@
-// Mehrsprachige Gast-Bestätigungs-Email für eine Buchung.
+// Mehrsprachige Gast-EINGANGSBESTÄTIGUNG für eine Buchungs-ANFRAGE.
+// Anfrage-Modus (Stufe A): der Gast bekommt sofort eine Eingangsbestätigung,
+// die verbindliche Bestätigung folgt, sobald das Hotel die Anfrage im Dashboard
+// bestätigt. Daher Wording "Anfrage eingegangen", nicht "Buchung bestätigt".
 // Sprachen: DE (default), EN, FR, NL — match auf preferred_language.
 // Reine String-Templates; HTML ist bewusst inline (max. Kompatibilität in Mail-Clients).
 
@@ -51,10 +54,10 @@ const escapeHtml = (s: string): string =>
 
 const TXT = {
   de: {
-    subject: (bn: string) => `Buchungsbestätigung ${bn} — Landhotel Schend`,
+    subject: (bn: string) => `Anfrage eingegangen ${bn} — Landhotel Schend`,
     hi: (n: string) => `Liebe(r) ${n},`,
-    intro: "vielen Dank für Ihre Direktbuchung im Landhotel Schend. Wir freuen uns auf Ihren Besuch.",
-    summary: "Ihre Buchung im Überblick",
+    intro: "vielen Dank für Ihre Anfrage im Landhotel Schend. Wir prüfen die Verfügbarkeit und bestätigen Ihnen Ihre Buchung in Kürze — in der Regel binnen weniger Stunden.",
+    summary: "Ihre Anfrage im Überblick",
     bookingNo: "Buchungsnummer",
     room: "Zimmer",
     checkIn: "Check-in",
@@ -64,16 +67,16 @@ const TXT = {
     perNight: "/ Nacht",
     notesLabel: "Ihre Nachricht",
     total: "Gesamtpreis",
-    auto: "Diese Bestätigung wurde automatisch erstellt. Bei Rückfragen, Sonderwünschen oder Änderungen erreichen Sie uns telefonisch oder per E-Mail — wir antworten in der Regel binnen weniger Stunden.",
+    auto: "Diese Eingangsbestätigung wurde automatisch erstellt — Ihre Buchung ist noch nicht verbindlich. Die verbindliche Bestätigung folgt, sobald wir die Verfügbarkeit geprüft haben. Bei Rückfragen, Sonderwünschen oder Änderungen erreichen Sie uns telefonisch oder per E-Mail — wir antworten in der Regel binnen weniger Stunden.",
     season: "Hinweis: Wir öffnen saisonal von März bis September. Ihre Buchung liegt innerhalb dieses Zeitraums.",
     bye: "Herzliche Grüße aus der Vulkaneifel",
     fam: "Familie Beimler & Team Landhotel Schend",
   },
   en: {
-    subject: (bn: string) => `Booking confirmation ${bn} — Landhotel Schend`,
+    subject: (bn: string) => `Request received ${bn} — Landhotel Schend`,
     hi: (n: string) => `Dear ${n},`,
-    intro: "thank you for your direct booking at Landhotel Schend. We are looking forward to welcoming you.",
-    summary: "Your booking summary",
+    intro: "thank you for your enquiry at Landhotel Schend. We are checking availability and will confirm your booking shortly — usually within a few hours.",
+    summary: "Your request summary",
     bookingNo: "Booking number",
     room: "Room",
     checkIn: "Check-in",
@@ -83,16 +86,16 @@ const TXT = {
     perNight: "/ night",
     notesLabel: "Your message",
     total: "Total",
-    auto: "This confirmation was generated automatically. For any questions, special requests or changes, please reach us by phone or email — we usually reply within a few hours.",
+    auto: "This acknowledgement was generated automatically — your booking is not yet binding. A binding confirmation will follow once we have checked availability. For any questions, special requests or changes, please reach us by phone or email — we usually reply within a few hours.",
     season: "Note: We operate seasonally from March through September. Your booking is within that window.",
     bye: "Warm regards from the Volcanic Eifel",
     fam: "The Beimler family & the Landhotel Schend team",
   },
   fr: {
-    subject: (bn: string) => `Confirmation de réservation ${bn} — Landhotel Schend`,
+    subject: (bn: string) => `Demande reçue ${bn} — Landhotel Schend`,
     hi: (n: string) => `Cher / Chère ${n},`,
-    intro: "merci pour votre réservation directe au Landhotel Schend. Nous nous réjouissons de votre visite.",
-    summary: "Récapitulatif de votre réservation",
+    intro: "merci pour votre demande au Landhotel Schend. Nous vérifions les disponibilités et confirmerons votre réservation sous peu — en général sous quelques heures.",
+    summary: "Récapitulatif de votre demande",
     bookingNo: "Numéro de réservation",
     room: "Chambre",
     checkIn: "Arrivée",
@@ -102,16 +105,16 @@ const TXT = {
     perNight: "/ nuit",
     notesLabel: "Votre message",
     total: "Total",
-    auto: "Cette confirmation est générée automatiquement. Pour toute question, demande spéciale ou modification, contactez-nous par téléphone ou e-mail — nous répondons en général sous quelques heures.",
+    auto: "Cet accusé de réception est généré automatiquement — votre réservation n'est pas encore ferme. La confirmation définitive suivra après vérification des disponibilités. Pour toute question, demande spéciale ou modification, contactez-nous par téléphone ou e-mail — nous répondons en général sous quelques heures.",
     season: "Information : nous sommes ouverts de mars à septembre. Votre réservation se situe dans cette période.",
     bye: "Cordiales salutations de l'Eifel volcanique",
     fam: "La famille Beimler et l'équipe du Landhotel Schend",
   },
   nl: {
-    subject: (bn: string) => `Boekingsbevestiging ${bn} — Landhotel Schend`,
+    subject: (bn: string) => `Aanvraag ontvangen ${bn} — Landhotel Schend`,
     hi: (n: string) => `Beste ${n},`,
-    intro: "hartelijk dank voor uw directe boeking bij Landhotel Schend. We kijken uit naar uw bezoek.",
-    summary: "Overzicht van uw boeking",
+    intro: "hartelijk dank voor uw aanvraag bij Landhotel Schend. We controleren de beschikbaarheid en bevestigen uw boeking binnenkort — meestal binnen enkele uren.",
+    summary: "Overzicht van uw aanvraag",
     bookingNo: "Boekingsnummer",
     room: "Kamer",
     checkIn: "Check-in",
@@ -121,7 +124,7 @@ const TXT = {
     perNight: "/ nacht",
     notesLabel: "Uw bericht",
     total: "Totaalprijs",
-    auto: "Deze bevestiging is automatisch aangemaakt. Voor vragen, speciale wensen of wijzigingen kunt u ons telefonisch of per e-mail bereiken — we reageren meestal binnen enkele uren.",
+    auto: "Deze ontvangstbevestiging is automatisch aangemaakt — uw boeking is nog niet definitief. De definitieve bevestiging volgt zodra we de beschikbaarheid hebben gecontroleerd. Voor vragen, speciale wensen of wijzigingen kunt u ons telefonisch of per e-mail bereiken — we reageren meestal binnen enkele uren.",
     season: "Let op: wij zijn geopend van maart tot en met september. Uw boeking valt binnen deze periode.",
     bye: "Hartelijke groet uit de Vulkaan-Eifel",
     fam: "Familie Beimler & het team van Landhotel Schend",

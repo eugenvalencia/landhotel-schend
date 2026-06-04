@@ -92,9 +92,15 @@ export default function Booking() {
   useSEO({
     title: "Direkt buchen — provisionsfrei",
     description:
-      "Buchen Sie direkt im Landhotel Schend in Immerath / Vulkaneifel. Bester Preis garantiert, keine OTA-Provision, sofortige Bestätigung.",
+      "Buchen Sie direkt im Landhotel Schend in Immerath / Vulkaneifel. Bester Preis garantiert, keine OTA-Provision. Unverbindlich anfragen — das Hotel bestätigt Ihre Buchung in Kürze.",
     canonical: "/booking",
   });
+
+  // Akquisitions-Kanal für die Provisionsfrei-Auswertung: Default 'Direkt',
+  // Kampagnen-Traffic trägt ?utm_source=/?source=/?ref= (auf 40 Zeichen begrenzt).
+  const bookingSource = (
+    params.get("utm_source") || params.get("source") || params.get("ref") || "Direkt"
+  ).slice(0, 40);
 
   const [room, setRoom] = useState<Room | null>(null);
   const [rooms, setRooms] = useState<Room[]>(FALLBACK_ROOMS);
@@ -349,6 +355,8 @@ export default function Booking() {
         p_notes: notes.trim() || null,
         // UI-Sprache des Gasts mitsenden — triggert mehrsprachige Auto-Reply (DE/EN/FR/NL)
         p_preferred_language: i18n.language?.split("-")[0] ?? null,
+        // Akquisitions-Kanal — Default 'Direkt', belegt die Provisionsfreiheit
+        p_source: bookingSource,
       });
 
       if (error || !data) {
@@ -402,7 +410,7 @@ export default function Booking() {
       };
 
       await minDelay(startedAt);
-      toast.success("Buchung bestätigt — Sie erhalten gleich eine Email mit allen Details.");
+      toast.success("Anfrage gesendet — wir bestätigen Ihre Buchung in Kürze per Email.");
       showConfirmation(confirmationData);
       setSubmitting(false);
     } catch (e) {
@@ -431,11 +439,11 @@ export default function Booking() {
           {/* Titel mittig — erst ab lg sichtbar, darunter erscheint er unter der Top-Bar */}
           <div className="hidden lg:flex flex-1 min-w-0 flex-col items-center text-center">
             <h1 className="font-display text-xl xl:text-2xl leading-tight truncate max-w-full">
-              {confirmed ? "Buchung bestätigt" : "Buchung abschließen"}
+              {confirmed ? "Anfrage gesendet" : "Buchung anfragen"}
             </h1>
             <p className="opacity-75 text-xs leading-tight truncate max-w-full">
               {confirmed
-                ? "Vielen Dank — Ihre Bestätigung kommt gleich per Email."
+                ? "Vielen Dank — wir bestätigen Ihre Anfrage in Kürze per Email."
                 : room
                   ? `Zimmer ${room.room_number} · ${room.room_type}`
                   : "Wählen Sie Ihr Zimmer und Reisedaten"}
@@ -459,11 +467,11 @@ export default function Booking() {
           {/* Titel-Block fuer Mobile/Tablet — Desktop versteckt das (siehe oben) */}
           <div className="lg:hidden mt-2">
             <h1 className="font-display text-2xl md:text-3xl text-balance leading-[1.05]">
-              {confirmed ? "Buchung bestätigt" : "Buchung abschließen"}
+              {confirmed ? "Anfrage gesendet" : "Buchung anfragen"}
             </h1>
             <p className="opacity-85 text-sm mt-1">
               {confirmed
-                ? "Vielen Dank — Ihre Bestätigung kommt gleich per Email."
+                ? "Vielen Dank — wir bestätigen Ihre Anfrage in Kürze per Email."
                 : room
                   ? `Zimmer ${room.room_number} · ${room.room_type}`
                   : "Wählen Sie Ihr Zimmer und Reisedaten"}
@@ -804,7 +812,7 @@ export default function Booking() {
           <Card className="shadow-card border-secondary/30">
             <CardHeader>
               <CardTitle className="font-display text-xl md:text-2xl flex items-center gap-2">
-                <ClipboardList className="h-4 w-4 text-secondary" strokeWidth={1.5} /> 4. Buchung abschließen
+                <ClipboardList className="h-4 w-4 text-secondary" strokeWidth={1.5} /> 4. Anfrage absenden
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
@@ -812,11 +820,12 @@ export default function Booking() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-success shrink-0 mt-0.5" />
                   <div className="space-y-1">
-                    <p className="font-semibold text-sm">Sofortige Buchungsbestätigung</p>
+                    <p className="font-semibold text-sm">Unverbindliche Anfrage</p>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Ihr Zimmer wird im Belegungskalender direkt für Sie blockiert.
-                      Sie erhalten in wenigen Minuten eine Bestätigung per E-Mail —
-                      auf Wunsch zusätzlich per WhatsApp. Keine Wartezeit, kein Rückruf nötig.
+                      Wir merken Ihr Zimmer für Sie vor und prüfen die Verfügbarkeit.
+                      Sie erhalten sofort eine Eingangsbestätigung per E-Mail; die
+                      verbindliche Buchungsbestätigung folgt in der Regel binnen weniger
+                      Stunden. Keine Vorauszahlung, keine Kreditkartendaten nötig.
                     </p>
                   </div>
                 </div>
@@ -840,7 +849,7 @@ export default function Booking() {
                 className="w-full text-base"
               >
                 {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle className="h-4 w-4" />}
-                {submitting ? "Buchung wird verarbeitet..." : "Jetzt buchen"}
+                {submitting ? "Anfrage wird gesendet..." : "Anfrage senden"}
               </Button>
               <p className="text-xs text-muted-foreground text-center">
                 Bei Änderungen oder Stornierung einfach anrufen: <a href="tel:+4965731306" className="font-medium text-foreground hover:text-primary">+49 6573 306</a>
@@ -937,7 +946,7 @@ export default function Booking() {
           className="w-full h-12 text-base"
         >
           {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle className="h-4 w-4" />}
-          {submitting ? "Buchung wird verarbeitet..." : "Jetzt buchen"}
+          {submitting ? "Anfrage wird gesendet..." : "Anfrage senden"}
         </Button>
       </div>
       )}

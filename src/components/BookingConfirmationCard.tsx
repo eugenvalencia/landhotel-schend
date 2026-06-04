@@ -34,13 +34,15 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
         <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-success/10 animate-in zoom-in duration-500">
           <CheckCircle2 className="h-8 w-8 text-success" strokeWidth={1.5} />
         </div>
-        <p className="eyebrow">Buchung bestätigt</p>
+        <p className="eyebrow">Anfrage eingegangen</p>
         <h2 className="font-display text-3xl md:text-4xl lg:text-5xl mt-3 mb-4 text-balance leading-[1.05]">
           Vielen Dank, {booking.guestName.split(" ")[0]}.
         </h2>
         <p className="text-foreground/85 max-w-prose mx-auto leading-relaxed">
-          Ihr Zimmer ist verbindlich für Sie reserviert. Eine Bestätigung wurde versendet an{" "}
-          <span className="text-primary font-medium">{booking.guestEmail}</span>.
+          Wir haben Ihre Anfrage erhalten und prüfen die Verfügbarkeit. Eine
+          Eingangsbestätigung wurde versendet an{" "}
+          <span className="text-primary font-medium">{booking.guestEmail}</span>. Die
+          verbindliche Bestätigung folgt in Kürze.
         </p>
       </div>
 
@@ -66,7 +68,7 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
               </div>
             </div>
             <p className="mt-3 text-sm font-semibold text-foreground">
-              Betreff: Buchungsbestätigung {displayBookingNumber} — Landhotel Schend
+              Betreff: Anfrage eingegangen {displayBookingNumber} — Landhotel Schend
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
               Von: info@landhaus-schend.de · An: {booking.guestEmail}
@@ -78,8 +80,9 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
             <div className="space-y-2">
               <p className="font-medium">Sehr geehrte/r {booking.guestName},</p>
               <p className="text-muted-foreground">
-                vielen Dank für Ihre Buchung — wir freuen uns auf Sie. Ihr Zimmer ist verbindlich
-                in unserem Belegungskalender reserviert. Sie müssen vorab nichts weiter tun.
+                vielen Dank für Ihre Anfrage — wir freuen uns auf Sie. Wir prüfen die
+                Verfügbarkeit und bestätigen Ihnen die Buchung in Kürze, in der Regel
+                binnen weniger Stunden. Sie müssen vorab nichts weiter tun.
               </p>
             </div>
 
@@ -212,15 +215,15 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
             <MessageCircle className="h-4 w-4 text-success" />
           </div>
           <div className="flex-1">
-            <div className="text-sm font-semibold">WhatsApp-Bestätigung ✓</div>
+            <div className="text-sm font-semibold">WhatsApp-Eingangsbestätigung ✓</div>
             <div className="text-xs text-muted-foreground">An {booking.guestPhone || "+49 …"} · vor wenigen Sekunden</div>
           </div>
         </div>
         <div className="rounded-2xl rounded-tl-sm bg-success/10 border border-success/20 p-3 text-sm">
           <p className="font-semibold mb-1">Landhotel Schend</p>
           <p>
-            Hallo {booking.guestName.split(" ")[0]}, Ihre Buchung <span className="font-mono font-semibold">{displayBookingNumber}</span> ist bestätigt.
-            Check-in: {formatDate(booking.checkIn)} ab 15:00 Uhr. Wir freuen uns auf Sie! 🏔️
+            Hallo {booking.guestName.split(" ")[0]}, Ihre Anfrage <span className="font-mono font-semibold">{displayBookingNumber}</span> ist eingegangen.
+            Wir bestätigen Ihre Buchung in Kürze. Geplanter Check-in: {formatDate(booking.checkIn)} ab 15:00 Uhr. Wir freuen uns auf Sie! 🏔️
           </p>
           <p className="text-xs text-muted-foreground mt-2">— Landhotel Schend, Vulkaneifel</p>
         </div>
