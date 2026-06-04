@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ChevronLeft, ChevronRight, Plus, Mail, Pencil, Ban, X, BedDouble, Users, Phone, CalendarDays, CreditCard, StickyNote, FileText } from "lucide-react";
 import InvoiceDialog from "./InvoiceDialog";
 import { supabase } from "@/integrations/supabase/client";
+import { notifyBooking } from "@/lib/notify-booking";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { eur, toISODate, formatDate, formatDateShort } from "@/lib/format";
@@ -163,12 +164,20 @@ export default function CalendarTab() {
 
   useEffect(() => {
     let active = true;
-    (async () => {
-      await loadAll();
-      if (!active) return;
-    })();
+    const run = () => { if (active) loadAll(); };
+    run();
+    // Auto-Refresh: der Kalender ist die Doppelbuchungs-Schranke. Lädt er nur
+    // beim Mount, prüft `findConflict` gegen veralteten State → zwei Browser/Tabs
+    // können dasselbe Zimmer doppelt belegen. Darum alle 30 s, bei Fenster-Fokus
+    // und sofort nach jeder Bestätigung/Ablehnung (gleiches Event wie useOpenRequests).
+    const id = setInterval(run, 30000);
+    window.addEventListener("focus", run);
+    window.addEventListener("schend:requests-changed", run);
     return () => {
       active = false;
+      clearInterval(id);
+      window.removeEventListener("focus", run);
+      window.removeEventListener("schend:requests-changed", run);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -425,7 +434,10 @@ export default function CalendarTab() {
 
   const resendEmail = () => {
     if (!selected?.guest_email) { toast.error("Keine E-Mail-Adresse hinterlegt"); return; }
-    toast.success(`Bestätigungs-E-Mail erneut an ${selected.guest_email} gesendet`);
+    // Früher zeigte das nur einen Erfolgs-Toast OHNE zu senden (Anti-Theater).
+    // Jetzt wird die Bestätigungs-Mail real über notify-schend angestoßen (best-effort).
+    notifyBooking(selected.id, "confirmation");
+    toast.success(`Bestätigungs-E-Mail an ${selected.guest_email} wird erneut gesendet`);
   };
 
   return (

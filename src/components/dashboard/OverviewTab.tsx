@@ -39,8 +39,8 @@ export default function OverviewTab() {
 
   useEffect(() => {
     let active = true;
-    (async () => {
-      setLoading(true);
+    const load = async (initial: boolean) => {
+      if (initial) setLoading(true);
       // Paged-Fetch fuer Buchungen
       const all: BookingRow[] = [];
       const pageSize = 1000;
@@ -53,7 +53,7 @@ export default function OverviewTab() {
           .order("check_in")
           .range(from, to);
         if (error) {
-          if (page === 0) toast.error("Übersicht konnte nicht geladen werden");
+          if (page === 0 && initial) toast.error("Übersicht konnte nicht geladen werden");
           break;
         }
         if (!data || data.length === 0) break;
@@ -69,8 +69,21 @@ export default function OverviewTab() {
       setRooms((r as RoomRow[] | null) ?? []);
       setGuests((g as GuestRow[] | null) ?? []);
       setLoading(false);
-    })();
-    return () => { active = false; };
+    };
+    // Auto-Refresh wie im Kalender: KPIs/Anreisen veralten sonst still, bis die
+    // Seite neu geladen wird. Alle 30 s, bei Fenster-Fokus und nach jeder
+    // Bestätigung/Ablehnung (Event von useOpenRequests).
+    const run = () => { if (active) load(false); };
+    load(true);
+    const id = setInterval(run, 30000);
+    window.addEventListener("focus", run);
+    window.addEventListener("schend:requests-changed", run);
+    return () => {
+      active = false;
+      clearInterval(id);
+      window.removeEventListener("focus", run);
+      window.removeEventListener("schend:requests-changed", run);
+    };
   }, []);
 
   const m = useMemo(() => {

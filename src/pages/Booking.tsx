@@ -162,7 +162,10 @@ export default function Booking() {
     const sorted = [...blockedDates].sort();
     const inIso = toISODate(checkIn);
     for (const iso of sorted) {
-      if (iso > inIso) return new Date(iso);
+      // parseISOLocal statt new Date(iso): new Date("YYYY-MM-DD") parst UTC-Mitternacht
+      // → in der Kalender-Vergleichslogik (lokale Mitternacht) kann der späteste
+      // Check-out um einen Tag verrutschen. Lokal parsen hält es konsistent.
+      if (iso > inIso) return parseISOLocal(iso);
     }
     return undefined;
   }, [checkIn, blockedDates]);
@@ -271,14 +274,6 @@ export default function Booking() {
     { id: "ups-fruehstueck", name: "Frühstück nachrüsten", price: 12, perNight: true, desc: "Pro Person & Nacht – regional & frisch" },
   ], []);
 
-  const upsellTotal = useMemo(() => {
-    return selectedUpsells.reduce((sum, id) => {
-      const u = UPSELLS.find((x) => x.id === id);
-      if (!u) return sum;
-      return sum + (u.perNight ? u.price * Math.max(nights, 1) * (u.id === "ups-fruehstueck" ? persons : 1) : u.price);
-    }, 0);
-  }, [selectedUpsells, UPSELLS, nights, persons]);
-
   const extrasTotal = useMemo(() => {
     return selectedExtras.reduce((sum, id) => {
       const e = extras.find((x) => x.id === id);
@@ -288,7 +283,12 @@ export default function Booking() {
   }, [selectedExtras, extras, nights]);
 
   const roomTotal = room ? room.price_per_night * nights : 0;
-  const grandTotal = roomTotal + extrasTotal + upsellTotal;
+  // Upsells sind WÜNSCHE auf Anfrage — sie fließen NICHT in den verbindlichen
+  // Gesamtpreis (der serverseitig nur aus Zimmer + echten Extras berechnet wird).
+  // Früher waren sie in grandTotal eingerechnet, aber nicht an create_booking
+  // gesendet → angezeigter Betrag ≠ gespeicherter Betrag, und das Hotel sah den
+  // Wunsch nie. Jetzt: Anzeige = gespeichert; Wünsche gehen in die Notizen.
+  const grandTotal = roomTotal + extrasTotal;
 
   const canSubmit = !!(room && checkIn && checkOut && nights > 0 &&
     guestSchema.safeParse(guest).success);
@@ -344,6 +344,17 @@ export default function Booking() {
         else resolve();
       });
 
+    // Gewünschte Upgrades (Upsells) in die Notizen schreiben — sie sind keine
+    // berechneten Extras, sollen dem Hotel aber sichtbar sein, damit es sie
+    // beim Bestätigen einpreisen kann.
+    const upsellWishes = selectedUpsells
+      .map((id) => UPSELLS.find((u) => u.id === id)?.name)
+      .filter(Boolean);
+    const combinedNotes = [
+      upsellWishes.length ? `Gewünschte Upgrades (auf Anfrage): ${upsellWishes.join(", ")}.` : "",
+      notes.trim(),
+    ].filter(Boolean).join("\n").trim() || null;
+
     try {
       const { data, error } = await supabase.rpc("create_booking", {
         p_room_id: room.id,
@@ -353,7 +364,7 @@ export default function Booking() {
         p_guest_email: guest.email,
         p_guest_phone: guest.phone,
         p_extras: selectedExtras,
-        p_notes: notes.trim() || null,
+        p_notes: combinedNotes,
         // UI-Sprache des Gasts mitsenden — triggert mehrsprachige Auto-Reply (DE/EN/FR/NL)
         p_preferred_language: i18n.language?.split("-")[0] ?? null,
         // Akquisitions-Kanal — Default 'Direkt', belegt die Provisionsfreiheit
@@ -917,11 +928,10 @@ export default function Booking() {
                     {selectedUpsells.map((id) => {
                       const u = UPSELLS.find((x) => x.id === id);
                       if (!u) return null;
-                      const lineTotal = u.perNight ? u.price * Math.max(nights, 1) * (u.id === "ups-fruehstueck" ? persons : 1) : u.price;
                       return (
                         <div key={id} className="flex justify-between text-secondary">
                           <span>{u.name}</span>
-                          <span>+{eur(lineTotal)}</span>
+                          <span className="text-xs italic">auf Anfrage</span>
                         </div>
                       );
                     })}

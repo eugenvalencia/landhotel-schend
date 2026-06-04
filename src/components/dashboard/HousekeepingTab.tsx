@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Smartphone, CheckCircle2, AlertCircle, Clock } from "lucide-react";
 import { toast } from "sonner";
+import DemoMarker from "./DemoMarker";
 
 type Status = "sauber" | "schmutzig" | "in_arbeit";
 
@@ -43,6 +44,7 @@ export default function HousekeepingTab() {
 
   return (
     <div className="space-y-4">
+      <DemoMarker />
       <Card className="bg-secondary/5 border-secondary/30">
         <CardContent className="p-4 flex items-start gap-3">
           <Smartphone className="h-5 w-5 text-secondary shrink-0 mt-0.5" />
