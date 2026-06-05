@@ -12,8 +12,10 @@ import { HotelImage } from "@/components/HotelImage";
 import { supabase } from "@/integrations/supabase/client";
 import { eur, toISODate, formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { notifyBooking } from "@/lib/notify-booking";
 import { toast } from "sonner";
-import { BedDouble, Edit, Upload, X, Plus, Trash2, Lock, Unlock, CalendarDays, Loader2, Phone } from "lucide-react";
+import { BedDouble, Edit, Upload, X, Plus, Trash2, Lock, Unlock, CalendarDays, Loader2, Phone, FileText, LayoutGrid, List, Mail } from "lucide-react";
+import BookingDetailDialog from "./BookingDetailDialog";
 
 const ALL_AMENITIES = ["WLAN", "TV", "Bad", "Balkon", "Minibar", "Wohnbereich", "Haustier"];
 
@@ -43,9 +45,14 @@ export default function RoomsTab() {
 
   // --- Rezeptions-Board (Status + Direktbuchung) ---
   const [bookings, setBookings] = useState<any[]>([]);
-  const [boardDate, setBoardDate] = useState<string>(toISODate(new Date()));
+  const [boardFrom, setBoardFrom] = useState<string>(toISODate(new Date()));
+  const [boardTo, setBoardTo] = useState<string>(() => { const t = new Date(); t.setDate(t.getDate() + 1); return toISODate(t); });
+  const [detailId, setDetailId] = useState<string | null>(null); // Belegt -> Buchungs-Detail
+  const [view, setView] = useState<"cards" | "list">(() => (localStorage.getItem("schend-rooms-view") === "list" ? "list" : "cards"));
+  useEffect(() => { localStorage.setItem("schend-rooms-view", view); }, [view]);
+  const [extrasList, setExtrasList] = useState<any[]>([]);
   const [quickRoom, setQuickRoom] = useState<any | null>(null);
-  const [quickForm, setQuickForm] = useState({ guest_name: "", guest_phone: "", check_in: "", check_out: "", persons: 2, notes: "" });
+  const [quickForm, setQuickForm] = useState({ guest_name: "", guest_phone: "", guest_email: "", check_in: "", check_out: "", persons: 2, notes: "", extras: [] as string[] });
   const [quickSaving, setQuickSaving] = useState(false);
 
   const openEdit = (r: any) => {
@@ -70,20 +77,23 @@ export default function RoomsTab() {
   };
 
   const load = async () => {
-    const [{ data: r }, { data: b }] = await Promise.all([
+    const [{ data: r }, { data: b }, { data: ex }] = await Promise.all([
       supabase.from("rooms").select("*").order("room_number"),
       supabase.from("bookings")
         .select("id, room_id, guest_name, check_in, check_out, persons, payment_status, request_status")
         .neq("payment_status", "cancelled"),
+      supabase.from("extras").select("id, name, price, per_night").eq("active", true).order("sort_order"),
     ]);
     setRooms(r ?? []);
     setBookings((b as any[]) ?? []);
+    setExtrasList((ex as any[]) ?? []);
   };
   useEffect(() => { load(); }, []);
 
-  // Belegung am gewählten Tag: check_in <= Tag < check_out (Abreisetag = wieder frei).
+  // Belegung im gewählten Zeitraum [von, bis): überlappt eine Buchung, ist das
+  // Zimmer belegt — auch wenn Karin den genauen Tag übersieht.
   const occupantFor = (roomId: string) =>
-    bookings.find((b) => b.room_id === roomId && b.check_in <= boardDate && b.check_out > boardDate) ?? null;
+    bookings.find((b) => b.room_id === roomId && b.check_in < boardTo && b.check_out > boardFrom) ?? null;
 
   const addDaysIso = (iso: string, days: number) => {
     const [y, m, d] = iso.split("-").map(Number);
@@ -93,9 +103,9 @@ export default function RoomsTab() {
   const openQuick = (room: any) => {
     setQuickRoom(room);
     setQuickForm({
-      guest_name: "", guest_phone: "",
-      check_in: boardDate, check_out: addDaysIso(boardDate, 1),
-      persons: Math.min(2, room.max_persons || 2), notes: "",
+      guest_name: "", guest_phone: "", guest_email: "",
+      check_in: boardFrom, check_out: boardTo,
+      persons: Math.min(2, room.max_persons || 2), notes: "", extras: [],
     });
   };
 
@@ -104,22 +114,34 @@ export default function RoomsTab() {
     if (!quickForm.guest_name.trim()) { toast.error("Bitte Gastname eingeben"); return; }
     if (quickForm.check_out <= quickForm.check_in) { toast.error("Abreise muss nach Anreise liegen"); return; }
     setQuickSaving(true);
-    const { error } = await supabase.rpc("create_internal_booking", {
+    const { data, error } = await supabase.rpc("create_internal_booking", {
       p_room_id: quickRoom.id,
       p_guest_name: quickForm.guest_name.trim(),
       p_guest_phone: quickForm.guest_phone.trim() || null,
+      p_guest_email: quickForm.guest_email.trim() || null,
       p_check_in: quickForm.check_in,
       p_check_out: quickForm.check_out,
       p_persons: quickForm.persons,
+      p_extras: quickForm.extras,
       p_notes: quickForm.notes.trim() || null,
     });
     setQuickSaving(false);
     if (error) { toast.error("Buchung fehlgeschlagen: " + error.message); return; }
-    toast.success("Buchung angelegt — steht jetzt in Kalender & Buchungen.");
+    // Wenn eine E-Mail hinterlegt ist: automatisch die Bestätigungs-Mail an den Gast.
+    const bookingId = (data as any)?.booking_id;
+    if (bookingId && quickForm.guest_email.trim()) {
+      notifyBooking(bookingId, "confirmation");
+      toast.success("Buchung angelegt + Bestätigungs-Mail an den Gast gesendet.");
+    } else {
+      toast.success("Buchung angelegt — steht jetzt in Kalender & Buchungen.");
+    }
     window.dispatchEvent(new Event("schend:requests-changed")); // andere Ansichten auffrischen
     setQuickRoom(null);
     load();
   };
+
+  const toggleQuickExtra = (id: string) =>
+    setQuickForm((f) => ({ ...f, extras: f.extras.includes(id) ? f.extras.filter((x) => x !== id) : [...f.extras, id] }));
 
   const save = async () => {
     if (!editing) return;
@@ -187,84 +209,127 @@ export default function RoomsTab() {
     setEditing({ ...editing, amenities: list.includes(a) ? list.filter((x: string) => x !== a) : [...list, a] });
   };
 
+  // Geteilte Bausteine für Karten- UND Listenansicht
+  const statusBadge = (occ: any, inactive: boolean, status: string) =>
+    inactive
+      ? <Badge variant="secondary" className="shrink-0">{status}</Badge>
+      : occ
+        ? <Badge className="bg-red-500 hover:bg-red-500 text-white shrink-0">Belegt</Badge>
+        : <Badge className="bg-emerald-600 hover:bg-emerald-600 text-white shrink-0">Frei</Badge>;
+
+  const roomActions = (r: any, occ: any, inactive: boolean) => (
+    <div className="flex gap-1.5">
+      {occ ? (
+        <Button size="sm" variant="outline" className="flex-1" onClick={() => setDetailId(occ.id)}>
+          <FileText className="h-4 w-4" /> Buchung
+        </Button>
+      ) : !inactive ? (
+        <Button size="sm" className="flex-1" onClick={() => openQuick(r)}>
+          <CalendarDays className="h-4 w-4" /> Buchen
+        </Button>
+      ) : (
+        <Button size="sm" variant="outline" className="flex-1" onClick={() => openEdit(r)}>
+          <Edit className="h-4 w-4" /> Bearbeiten
+        </Button>
+      )}
+      {!inactive && !occ && (
+        <Button size="sm" variant="outline" onClick={() => openEdit(r)} aria-label="Zimmer-Einstellungen" title="Zimmer-Einstellungen">
+          <Edit className="h-4 w-4" />
+        </Button>
+      )}
+      {!occ && (
+        <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => remove(r)} aria-label="Zimmer löschen">
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      )}
+    </div>
+  );
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex flex-wrap items-center gap-2 text-sm">
           <CalendarDays className="h-4 w-4 text-secondary shrink-0" />
-          <span className="text-muted-foreground">Belegung am</span>
+          <span className="text-muted-foreground">Belegung</span>
           <input
-            type="date"
-            value={boardDate}
-            onChange={(e) => setBoardDate(e.target.value || boardDate)}
+            type="date" aria-label="von"
+            value={boardFrom}
+            onChange={(e) => { const v = e.target.value || boardFrom; setBoardFrom(v); if (boardTo <= v) setBoardTo(addDaysIso(v, 1)); }}
             className="h-9 rounded-md border border-input bg-background px-2 text-sm"
           />
-          {boardDate !== toISODate(new Date()) && (
-            <Button size="sm" variant="ghost" className="h-9" onClick={() => setBoardDate(toISODate(new Date()))}>Heute</Button>
-          )}
+          <span className="text-muted-foreground">bis</span>
+          <input
+            type="date" aria-label="bis"
+            value={boardTo} min={addDaysIso(boardFrom, 1)}
+            onChange={(e) => setBoardTo(e.target.value || boardTo)}
+            className="h-9 rounded-md border border-input bg-background px-2 text-sm"
+          />
           <span className="text-xs text-muted-foreground hidden sm:inline">· {rooms.length} Zimmer</span>
         </div>
-        <Button size="sm" onClick={openNew}>
-          <Plus className="h-4 w-4" /> Neues Zimmer
-        </Button>
+        <div className="flex items-center gap-2">
+          <div className="flex rounded-md border border-input overflow-hidden">
+            <button type="button" onClick={() => setView("cards")} title="Kartenansicht" aria-label="Kartenansicht"
+              className={cn("px-2 h-9 flex items-center", view === "cards" ? "bg-accent text-foreground" : "text-muted-foreground hover:bg-accent/50")}>
+              <LayoutGrid className="h-4 w-4" />
+            </button>
+            <button type="button" onClick={() => setView("list")} title="Listenansicht" aria-label="Listenansicht"
+              className={cn("px-2 h-9 flex items-center border-l border-input", view === "list" ? "bg-accent text-foreground" : "text-muted-foreground hover:bg-accent/50")}>
+              <List className="h-4 w-4" />
+            </button>
+          </div>
+          <Button size="sm" onClick={openNew}>
+            <Plus className="h-4 w-4" /> Neues Zimmer
+          </Button>
+        </div>
       </div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {rooms.map((r) => {
-          const occ = occupantFor(r.id);
-          const inactive = r.status !== "aktiv";
-          return (
-          <Card key={r.id} className="shadow-card overflow-hidden">
-            <div className="aspect-[4/3] bg-accent flex items-center justify-center overflow-hidden">
-              {r.photos?.[0] ? (
-                <HotelImage src={r.photos[0]} alt={r.name} className="w-full h-full object-cover" />
-              ) : (
-                <BedDouble className="h-10 w-10 text-secondary/40" />
-              )}
-            </div>
-            <CardContent className="p-4">
-              <div className="flex items-start justify-between mb-1 gap-2">
-                <h3 className="font-semibold">{r.name}</h3>
-                {/* Status für den gewählten Tag */}
-                {inactive
-                  ? <Badge variant="secondary" className="shrink-0">{r.status}</Badge>
-                  : occ
-                    ? <Badge className="bg-red-500 hover:bg-red-500 text-white shrink-0">Belegt</Badge>
-                    : <Badge className="bg-emerald-600 hover:bg-emerald-600 text-white shrink-0">Frei</Badge>}
+      {view === "cards" ? (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+          {rooms.map((r) => {
+            const occ = occupantFor(r.id);
+            const inactive = r.status !== "aktiv";
+            return (
+            <Card key={r.id} className="shadow-card overflow-hidden">
+              <div className="aspect-[16/10] bg-accent flex items-center justify-center overflow-hidden">
+                {r.photos?.[0]
+                  ? <HotelImage src={r.photos[0]} alt={r.name} className="w-full h-full object-cover" />
+                  : <BedDouble className="h-8 w-8 text-secondary/40" />}
               </div>
-              <p className="text-sm text-muted-foreground">{r.room_type}</p>
-              <p className="text-sm mt-1">
-                {eur(Number(r.price_per_night))} / Nacht
-                <span className="text-xs text-muted-foreground"> {r.price_per_person ? "pro Person" : "pro Zimmer"}</span>
-              </p>
-              {occ && (
-                <p className="text-xs text-muted-foreground mt-1 truncate">
-                  {occ.guest_name} · bis {formatDate(occ.check_out)}
+              <CardContent className="p-3">
+                <div className="flex items-start justify-between mb-0.5 gap-2">
+                  <h3 className="font-semibold text-sm truncate">{r.name}</h3>
+                  {statusBadge(occ, inactive, r.status)}
+                </div>
+                <p className="text-xs text-muted-foreground truncate">
+                  {r.room_type} · {eur(Number(r.price_per_night))}{r.price_per_person ? "/P." : ""}
                 </p>
-              )}
-              <div className="flex gap-2 mt-3">
-                {!occ && !inactive ? (
-                  <>
-                    <Button size="sm" className="flex-1" onClick={() => openQuick(r)}>
-                      <CalendarDays className="h-4 w-4" /> Buchen
-                    </Button>
-                    <Button size="sm" variant="outline" onClick={() => openEdit(r)} aria-label="Zimmer bearbeiten">
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                  </>
-                ) : (
-                  <Button size="sm" variant="outline" className="flex-1" onClick={() => openEdit(r)}>
-                    <Edit className="h-4 w-4" /> Bearbeiten
-                  </Button>
+                {occ && (
+                  <p className="text-xs text-muted-foreground mt-0.5 truncate">{occ.guest_name} · bis {formatDate(occ.check_out)}</p>
                 )}
-                <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => remove(r)} aria-label="Zimmer löschen">
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-          );
-        })}
-      </div>
+                <div className="mt-2">{roomActions(r, occ, inactive)}</div>
+              </CardContent>
+            </Card>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="rounded-lg border divide-y overflow-hidden">
+          {rooms.map((r) => {
+            const occ = occupantFor(r.id);
+            const inactive = r.status !== "aktiv";
+            return (
+            <div key={r.id} className="flex items-center gap-3 px-3 py-2 hover:bg-accent/40">
+              <span className="font-medium text-sm w-24 sm:w-28 shrink-0 truncate">{r.name}</span>
+              <span className="text-xs text-muted-foreground w-28 shrink-0 truncate hidden md:block">{r.room_type}</span>
+              <span className="shrink-0">{statusBadge(occ, inactive, r.status)}</span>
+              <span className="text-xs text-muted-foreground flex-1 truncate">
+                {occ ? `${occ.guest_name} · bis ${formatDate(occ.check_out)}` : `${eur(Number(r.price_per_night))}${r.price_per_person ? " /P." : ""}`}
+              </span>
+              <span className="shrink-0 w-[210px]">{roomActions(r, occ, inactive)}</span>
+            </div>
+            );
+          })}
+        </div>
+      )}
 
       <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -405,7 +470,7 @@ export default function RoomsTab() {
 
       {/* Direktbuchung vom Board (z. B. telefonische Anfrage) */}
       <Dialog open={!!quickRoom} onOpenChange={(o) => !o && setQuickRoom(null)}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-display text-xl">{quickRoom ? `${quickRoom.name} buchen` : "Buchen"}</DialogTitle>
           </DialogHeader>
@@ -415,6 +480,11 @@ export default function RoomsTab() {
             const rate = quickForm.persons <= 1 && quickRoom.single_use_price != null
               ? Number(quickRoom.single_use_price)
               : quickRoom.price_per_person ? Number(quickRoom.price_per_night) * quickForm.persons : Number(quickRoom.price_per_night);
+            const extrasTotal = quickForm.extras.reduce((sum, id) => {
+              const e = extrasList.find((x) => x.id === id);
+              return e ? sum + (e.per_night ? Number(e.price) * nights : Number(e.price)) : sum;
+            }, 0);
+            const grand = rate * nights + extrasTotal;
             return (
               <div className="space-y-3 text-sm">
                 <p className="text-xs text-muted-foreground">
@@ -425,10 +495,17 @@ export default function RoomsTab() {
                   <Input className="mt-1.5" value={quickForm.guest_name} placeholder="Vor- und Nachname"
                     onChange={(e) => setQuickForm({ ...quickForm, guest_name: e.target.value })} />
                 </div>
-                <div>
-                  <Label className="flex items-center gap-1"><Phone className="h-3.5 w-3.5" /> Telefon (optional)</Label>
-                  <Input className="mt-1.5" value={quickForm.guest_phone} placeholder="z. B. +49 …"
-                    onChange={(e) => setQuickForm({ ...quickForm, guest_phone: e.target.value })} />
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label className="flex items-center gap-1"><Phone className="h-3.5 w-3.5" /> Telefon</Label>
+                    <Input className="mt-1.5" value={quickForm.guest_phone} placeholder="+49 …"
+                      onChange={(e) => setQuickForm({ ...quickForm, guest_phone: e.target.value })} />
+                  </div>
+                  <div>
+                    <Label className="flex items-center gap-1"><Mail className="h-3.5 w-3.5" /> E-Mail</Label>
+                    <Input type="email" className="mt-1.5" value={quickForm.guest_email} placeholder="gast@…"
+                      onChange={(e) => setQuickForm({ ...quickForm, guest_email: e.target.value })} />
+                  </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
@@ -454,10 +531,46 @@ export default function RoomsTab() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="rounded-md bg-accent p-3 flex justify-between font-medium">
-                  <span>{nights} {nights === 1 ? "Nacht" : "Nächte"} · {quickForm.persons} P.</span>
-                  <span>{eur(rate * nights)}</span>
+                {extrasList.length > 0 && (
+                  <div>
+                    <Label>Zusatz-Optionen (optional)</Label>
+                    <div className="mt-1.5 space-y-1.5">
+                      {extrasList.map((e) => (
+                        <label key={e.id} className="flex items-center justify-between gap-2 rounded-md border p-2 cursor-pointer hover:bg-accent/50">
+                          <span className="flex items-center gap-2">
+                            <Checkbox checked={quickForm.extras.includes(e.id)} onCheckedChange={() => toggleQuickExtra(e.id)} />
+                            {e.name}
+                          </span>
+                          <span className="text-xs text-muted-foreground">{eur(Number(e.price))}{e.per_night ? "/N" : ""}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <div>
+                  <Label>Sonderwünsche (optional)</Label>
+                  <Textarea className="mt-1.5" rows={2} value={quickForm.notes} placeholder="z. B. ruhiges Zimmer, späte Anreise …"
+                    onChange={(e) => setQuickForm({ ...quickForm, notes: e.target.value })} />
                 </div>
+                <div className="rounded-md bg-accent p-3 space-y-1">
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>Zimmer · {nights} {nights === 1 ? "Nacht" : "Nächte"} · {quickForm.persons} P.</span>
+                    <span>{eur(rate * nights)}</span>
+                  </div>
+                  {extrasTotal > 0 && (
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>Extras</span><span>{eur(extrasTotal)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between font-semibold border-t pt-1">
+                    <span>Gesamt</span><span>{eur(grand)}</span>
+                  </div>
+                </div>
+                {quickForm.guest_email.trim() && (
+                  <p className="text-xs text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
+                    <Mail className="h-3.5 w-3.5" /> Der Gast erhält automatisch eine Bestätigungs-Mail.
+                  </p>
+                )}
               </div>
             );
           })()}
@@ -469,6 +582,14 @@ export default function RoomsTab() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Belegt -> Buchungs-Detail (dieselbe Ansicht wie im Übersichts-Panel) */}
+      <BookingDetailDialog
+        bookingId={detailId}
+        open={!!detailId}
+        onOpenChange={(o) => !o && setDetailId(null)}
+        onChanged={load}
+      />
     </div>
   );
 }
