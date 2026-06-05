@@ -30,6 +30,17 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
+// CORS: Diese Function wird seit dem Umstieg auf Client-Trigger (DB-Trigger in
+// Migration 20260604180000 entfernt) vom Browser aufgerufen — sowohl von der
+// öffentlichen Gast-Buchung als auch vom Rezeptions-Board. Ohne diese Header
+// blockt der Browser den Aufruf per CORS-Preflight und es geht KEINE Gast-Mail raus.
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+const jsonHeaders = { ...corsHeaders, "Content-Type": "application/json" };
+
 interface BookingPayload {
   booking_id: string;
   // 'request' (default) = Eingangsbestätigung beim Insert
@@ -94,18 +105,22 @@ async function sendGuestConfirmation(args: {
 }
 
 Deno.serve(async (req) => {
+  // CORS-Preflight (Browser schickt OPTIONS vor dem POST)
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
   if (req.method !== "POST") {
-    return new Response("Method not allowed", { status: 405 });
+    return new Response("Method not allowed", { status: 405, headers: corsHeaders });
   }
 
   let body: BookingPayload;
   try {
     body = await req.json();
   } catch {
-    return new Response("Invalid JSON", { status: 400 });
+    return new Response("Invalid JSON", { status: 400, headers: corsHeaders });
   }
   if (!body.booking_id) {
-    return new Response("booking_id required", { status: 400 });
+    return new Response("booking_id required", { status: 400, headers: corsHeaders });
   }
   const kind: EmailKind = body.kind === "confirmation" ? "confirmation" : "request";
 
@@ -122,7 +137,7 @@ Deno.serve(async (req) => {
     .single();
 
   if (error || !booking) {
-    return new Response(`Booking not found: ${error?.message ?? "?"}`, { status: 404 });
+    return new Response(`Booking not found: ${error?.message ?? "?"}`, { status: 404, headers: corsHeaders });
   }
 
   // Idempotenz: dieselbe Mail-Art nicht im Sekundentakt doppelt senden
@@ -133,7 +148,7 @@ Deno.serve(async (req) => {
   if (lastSent && Date.now() - lastSent < 120_000) {
     return new Response(
       JSON.stringify({ ok: true, deduped: true, kind }),
-      { headers: { "Content-Type": "application/json" } },
+      { headers: jsonHeaders },
     );
   }
 
@@ -220,6 +235,6 @@ Deno.serve(async (req) => {
       n8n: { ok: n8nResult.ok, status: n8nResult.status },
       mail: { ok: mailResult.ok, status: mailResult.status },
     }),
-    { headers: { "Content-Type": "application/json" } },
+    { headers: jsonHeaders },
   );
 });
