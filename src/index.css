@@ -379,30 +379,25 @@
     .hero-ken-burns { animation: none !important; }
   }
 
-  /* Conexa-Icon Diamant-Funkeln — Footer "Powered by". Nur das Icon funkelt:
-     lange ruhig & gedimmt, dann ein kurzer scharfer Glint — heller Gold-Weiß-
-     Funke MIT Scale-Pop (Diamant blitzt kurz auf). Der Pop verkauft das Funkeln;
-     reines Opacity-/Glow-Pulsieren las sich nur als sanftes Atmen.
-     (Eugen: pulsiert/funkelt wie Diamant, nur die Icon.) */
+  /* Conexa-Icon Diamant-Funkeln — Footer "Powered by".
+     Funkelt im SOS-Morse-Takt: · · ·  – – –  · · ·  (drei kurz, drei lang, drei
+     kurz, dann Wort-Pause). 1 Einheit ≈ 120 ms, voller Zyklus ≈ 4,1 s.
+     OFF-Stops = Pausen, ON-Stops = der Glint je Dit/Dah.
+     (Eugen 2026-06-06: im SOS-Morse-Takt funkeln.) */
   @keyframes conexa-diamond-pulse {
-    0%, 55%, 100% {
+    0%, 2.9%, 5.5%, 8.8%, 11.4%, 14.7%, 23.1%, 32.8%, 34.9%, 44.5%, 46.7%, 56.3%, 64.3%, 68%, 70.2%, 73.9%, 76.1%, 79.8%, 100% {
       filter: drop-shadow(0 0 1px rgba(255,255,255,0.25));
-      opacity: 0.55;
+      opacity: 0.3;
       transform: scale(1);
     }
-    64% {
+    0.4%, 2.5%, 5.9%, 8.4%, 11.8%, 14.3%, 23.5%, 32.4%, 35.3%, 44.1%, 47.1%, 55.9%, 64.7%, 67.6%, 70.6%, 73.5%, 76.5%, 79.4% {
       filter: drop-shadow(0 0 7px rgba(214,184,122,0.95)) drop-shadow(0 0 16px rgba(255,255,255,0.6)) brightness(1.6);
       opacity: 1;
-      transform: scale(1.3);
-    }
-    72% {
-      filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
-      opacity: 0.85;
-      transform: scale(1);
+      transform: scale(1.18);
     }
   }
   .conexa-diamond {
-    animation: conexa-diamond-pulse 3.6s ease-in-out infinite;
+    animation: conexa-diamond-pulse 4.1s linear infinite;
     transform-origin: center;
     will-change: transform, filter, opacity;
   }
