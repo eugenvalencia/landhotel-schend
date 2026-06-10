@@ -332,6 +332,15 @@
     font-size: 17px;
     line-height: 1.55;
   }
+  /* Echter Fließtext mit text-sm (14px) auf 15px heben — der 17px-Body-Boost
+     greift sonst nicht, weil die Klasse direkt am Element gewinnt. Labels,
+     Eyebrows & Badges (text-xs, text-[10px]/[11px]) bleiben bewusst klein. */
+  p.text-sm,
+  li.text-sm,
+  ul.text-sm > li {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
 }
 
 @layer utilities {
@@ -645,9 +654,8 @@
   }
 
   /* Wander-Glint — nach dem Zeichnen der Linie läuft ein weicher Gold-Funke
-     drei Mal von 1856 nach Heute ("ein Funke Geschichte durch die Zeit"),
-     dann legt er sich. Eigenes Element auf der relativen Desktop-Spur,
-     kollidiert mit nichts. */
+     fortlaufend von 1856 nach Heute ("ein Funke Geschichte durch die Zeit").
+     Eigenes Element auf der relativen Desktop-Spur, kollidiert mit nichts. */
   .tl-glint {
     position: absolute;
     top: 3px;
@@ -661,7 +669,7 @@
     pointer-events: none;
   }
   .tl-reveal.visible .tl-glint {
-    animation: tl-glint-travel 4.2s ease-in-out 1.25s 3;
+    animation: tl-glint-travel 4.6s ease-in-out 1.25s infinite;
   }
   @keyframes tl-glint-travel {
     0%   { left: 0;    opacity: 0; transform: translateX(0); }
@@ -670,10 +678,34 @@
     100% { left: 100%; opacity: 0; transform: translateX(-100%); }
   }
 
+  /* Mobile-Timeline ist vertikal (linke Linie) — derselbe Funke wandert hier
+     fortlaufend von oben (1856) nach unten (Heute) die Linie entlang. */
+  .tl-glint-v {
+    position: absolute;
+    left: -4px;
+    top: 0;
+    width: 6px;
+    height: 56px;
+    border-radius: 9999px;
+    background: radial-gradient(closest-side, rgba(214, 184, 122, 0.9), rgba(214, 184, 122, 0) 70%);
+    filter: blur(1px);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .tl-reveal.visible .tl-glint-v {
+    animation: tl-glint-travel-v 5s ease-in-out 0.6s infinite;
+  }
+  @keyframes tl-glint-travel-v {
+    0%   { top: 0;    opacity: 0; transform: translateY(0); }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { top: 100%; opacity: 0; transform: translateY(-100%); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .tl-line { transform: scaleX(1); transition: none; }
     .tl-item { opacity: 1; transform: none; transition: none; }
-    .tl-glint { animation: none; opacity: 0; }
+    .tl-glint, .tl-glint-v { animation: none; opacity: 0; }
   }
 
   /* ── Hero-Politur ──────────────────────────────────────────────── */

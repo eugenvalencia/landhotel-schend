@@ -43,7 +43,7 @@ const FOTOS = [
   </section>
 
   <section class="container mx-auto px-4 pb-20">
-    <div class="gap-3 [column-count:1] sm:[column-count:2] lg:[column-count:3]">
+    <div class="gap-3 [column-count:2] lg:[column-count:3]">
       {FOTOS.map((f, i) => (
         <div class="mb-3 break-inside-avoid overflow-hidden rounded-md shadow-card" data-reveal style={`--reveal-delay:${(i % 4) * 0.06}s`}>
           <img src={f.src} alt={f.alt} data-lightbox="galerie" class="w-full h-auto block transition-transform duration-700 hover:scale-105" loading="lazy" decoding="async" />

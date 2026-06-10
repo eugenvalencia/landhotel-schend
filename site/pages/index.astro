@@ -27,27 +27,30 @@ const USPS = [
   { label: "Booking.com 8,7 · Tripadvisor Nr. 1", icon: "trophy" },
 ];
 
+// Marquee-Varianten (448px Höhe, ~574 KB statt 1,72 MB) — Original-Fotos
+// bleiben in /fotos & /pakete; hier nur die für das Laufband verkleinerten Kopien.
 const FOOD_PHOTOS = [
-  "/pakete/food-0.jpg",
-  "/fotos/haehnchen-mit-wedges-landhotel-schend.jpg",
-  "/pakete/food-1.jpg",
-  "/fotos/schnitzelteller-mit-pommes-landhotel-schend.jpg",
-  "/pakete/food-2.jpg",
-  "/fotos/rouladen-mit-rotkohl-und-kroketten-landhotel-schend.jpg",
-  "/pakete/food-3.jpg",
-  "/fotos/schlemmerplatte-landhotel-schend.jpg",
-  "/fotos/salat-buffet-mit-tomatenherz-landhotel-schend.jpg",
-  "/fotos/warmes-buffet-mit-chafing-dishes-landhotel-schend.jpg",
-  "/fotos/schnitzel-mit-salat-landhotel-schend.jpg",
-  "/fotos/cordon-bleu-mit-pommes-landhotel-schend.jpg",
+  "/marquee/food-0.jpg",
+  "/marquee/haehnchen-mit-wedges-landhotel-schend.jpg",
+  "/marquee/food-1.jpg",
+  "/marquee/schnitzelteller-mit-pommes-landhotel-schend.jpg",
+  "/marquee/food-2.jpg",
+  "/marquee/rouladen-mit-rotkohl-und-kroketten-landhotel-schend.jpg",
+  "/marquee/food-3.jpg",
+  "/marquee/schlemmerplatte-landhotel-schend.jpg",
+  "/marquee/salat-buffet-mit-tomatenherz-landhotel-schend.jpg",
+  "/marquee/warmes-buffet-mit-chafing-dishes-landhotel-schend.jpg",
+  "/marquee/schnitzel-mit-salat-landhotel-schend.jpg",
+  "/marquee/cordon-bleu-mit-pommes-landhotel-schend.jpg",
 ];
 
+// Region-Mosaik-Varianten (800px, ~642 KB statt 1,6 MB).
 const REGION_MOSAIC = [
-  { src: "/pakete/eifel-1.jpg", alt: "Eifel-Maar – Kratersee im Wald", cls: "row-span-2 md:h-[33rem]" },
-  { src: "/pakete/eifel-2.jpg", alt: "Aussichtsplattform in der Eifel bei Sonnenuntergang", cls: "md:col-span-2" },
-  { src: "/pakete/eifel-3.jpg", alt: "Schilf am Maar in der Vulkaneifel", cls: "row-span-2 md:h-[33rem]" },
-  { src: "/pakete/eifel-4.jpg", alt: "Ruderboote am Maar", cls: "" },
-  { src: "/pakete/eifel-5.jpg", alt: "Panorama der Vulkaneifel", cls: "" },
+  { src: "/region/eifel-1.jpg", alt: "Eifel-Maar – Kratersee im Wald", cls: "md:row-span-2 md:h-[33rem]" },
+  { src: "/region/eifel-2.jpg", alt: "Aussichtsplattform in der Eifel bei Sonnenuntergang", cls: "md:col-span-2" },
+  { src: "/region/eifel-3.jpg", alt: "Schilf am Maar in der Vulkaneifel", cls: "md:row-span-2 md:h-[33rem]" },
+  { src: "/region/eifel-4.jpg", alt: "Ruderboote am Maar", cls: "" },
+  { src: "/region/eifel-5.jpg", alt: "Panorama der Vulkaneifel", cls: "" },
 ];
 
 const TIMELINE = [
@@ -167,6 +170,7 @@ const uspIcon: Record<string, string> = {
         data-hero-video
         class="absolute inset-0 w-full h-full object-cover"
         poster={HERO_POSTER}
+        autoplay
         muted
         loop
         playsinline
@@ -190,17 +194,17 @@ const uspIcon: Record<string, string> = {
       <h1 class="headline-reveal font-display text-balance text-white text-[2.5rem] sm:text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] mb-7 md:mb-9 max-w-4xl" style="text-shadow:0 2px 14px rgba(0,0,0,0.55)">
         Willkommen im Landhotel Schend
       </h1>
-      <p class="font-display-italic text-balance text-white/95 text-lg md:text-2xl max-w-2xl leading-snug mb-9 md:mb-11" style="text-shadow:0 1px 8px rgba(0,0,0,0.55)">
+      <p class="font-display-italic text-balance text-white/95 text-base sm:text-lg md:text-2xl max-w-2xl leading-snug mb-8 sm:mb-9 md:mb-11" style="text-shadow:0 1px 8px rgba(0,0,0,0.55)">
         Ihr ★★★ Superior Hotel für den Kurzurlaub in der Vulkaneifel — Eifelsteig, Maare-Mosel-Radweg und Nürburgring direkt vor der Tür. Eifeler Landküche, Halbpension auf Wunsch, kostenlose Parkplätze.
       </p>
       <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 mb-10 md:mb-12 text-white/80" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">
-        <span class="text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium"><span class="text-secondary">★</span> Tripadvisor #1</span>
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span class="text-secondary">★</span> Tripadvisor #1</span>
         <span class="text-white/40" aria-hidden="true">·</span>
-        <span class="text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium"><span data-count-to="8.5" data-count-decimals="1" data-count-mount="1" data-count-delay="600" data-count-dur="1400">8,5</span> / 10 Booking</span>
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="8.5" data-count-decimals="1" data-count-mount="1" data-count-delay="600" data-count-dur="1400">8,5</span> / 10 Booking</span>
         <span class="text-white/40" aria-hidden="true">·</span>
-        <span class="text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium"><span data-count-to="165" data-count-mount="1" data-count-delay="800" data-count-dur="1600">165</span> Jahre Familie</span>
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="165" data-count-mount="1" data-count-delay="800" data-count-dur="1600">165</span> Jahre Familie</span>
         <span class="text-white/40 hidden sm:inline" aria-hidden="true">·</span>
-        <span class="hidden sm:inline text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium"><span data-count-to="21" data-count-mount="1" data-count-delay="1000" data-count-dur="1200">21</span> Zimmer mit Balkon</span>
+        <span class="hidden sm:inline text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="21" data-count-mount="1" data-count-delay="1000" data-count-dur="1200">21</span> Zimmer mit Balkon</span>
       </div>
       <div class="flex flex-col items-center gap-5">
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
@@ -371,7 +375,7 @@ const uspIcon: Record<string, string> = {
               )}
             </div>
             <h3 class="font-display text-xl md:text-2xl mb-2 group-hover:text-secondary transition-colors text-balance">{p.title}</h3>
-            {p.highlights?.[0] && <p class="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">{p.highlights[0]}</p>}
+            {p.intro && <p class="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">{p.intro}</p>}
             <span class="text-xs font-medium tracking-[0.2em] uppercase text-secondary inline-flex items-center gap-2 transition-all group-hover:gap-3">Mehr erfahren <span>→</span></span>
           </a>
         ))}
@@ -489,6 +493,7 @@ const uspIcon: Record<string, string> = {
       </div>
       <div class="md:hidden max-w-md mx-auto">
         <ol class="relative border-l-2 border-secondary/30 ml-3 space-y-6 pl-6">
+          <span aria-hidden="true" class="tl-glint-v"></span>
           {TIMELINE.map((item, i) => (
             <li class="tl-item relative" style={`--i:${i}`}>
               <span aria-hidden="true" class="absolute -left-[1.85rem] top-1 h-3 w-3 rounded-full bg-secondary ring-4 ring-background"></span>
@@ -555,10 +560,10 @@ const uspIcon: Record<string, string> = {
   <LocationSection />
 
   <!-- Abschnitts-Navigation (Punkte rechts) — zeigt die aktuelle Position auf der Seite -->
-  <nav id="section-dots" aria-label="Abschnitts-Navigation" data-visible="false" inert class="hidden lg:flex fixed right-5 top-1/2 -translate-y-1/2 z-40 flex-col gap-3 opacity-0 pointer-events-none transition-opacity duration-500">
+  <nav id="section-dots" aria-label="Abschnitts-Navigation" data-visible="false" inert class="flex fixed right-2 lg:right-5 top-1/2 -translate-y-1/2 z-40 flex-col gap-1.5 lg:gap-3 opacity-0 pointer-events-none transition-opacity duration-500">
     {[["top","Start"],["rooms","Zimmer"],["restaurant","Restaurant"],["pakete","Pakete"],["reviews","Bewertungen"],["location","Anfahrt"]].map(([id,label]) => (
-      <a href={`#${id}`} data-dot={id} aria-label={label} class="dot-link group relative grid place-items-center w-5 h-5">
-        <span class="dot block rounded-full w-1.5 h-1.5 bg-foreground/40 transition-all duration-300 ease-out group-hover:bg-secondary/80 group-hover:scale-110"></span>
+      <a href={`#${id}`} data-dot={id} aria-label={label} class="dot-link group relative grid place-items-center w-8 h-8 lg:w-5 lg:h-5">
+        <span class="dot block rounded-full w-2 h-2 lg:w-1.5 lg:h-1.5 bg-secondary/70 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out group-hover:bg-secondary group-hover:scale-110"></span>
         <span class="absolute right-full mr-3 px-2.5 py-1 rounded-sm bg-foreground/95 text-background text-[10px] uppercase tracking-[0.18em] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-300 pointer-events-none">{label}</span>
       </a>
     ))}
@@ -619,15 +624,28 @@ const uspIcon: Record<string, string> = {
     //   - spielt, sobald es im Viewport + Tab aktiv ist
     //   - pausiert nur, wenn es aus dem Bild gescrollt ist (spart Strom/Akku)
     //   - wirft sich nach Browser-Auto-Pause sofort wieder an
+    // Motion-Off = OS-prefers-reduced-motion ODER In-App-Komfort-Schalter
+    // (html.a11y-reduced-motion, gesetzt vom A11yPanel) — wie Layout.astro.
     const heroVideo = document.querySelector<HTMLVideoElement>("[data-hero-video]");
-    if (heroVideo && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const motionOff = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      || document.documentElement.classList.contains("a11y-reduced-motion");
+    if (heroVideo && motionOff) {
+      // Markup hat autoplay -> bei reduzierter Bewegung aktiv stoppen, Poster bleibt.
+      heroVideo.removeAttribute("autoplay");
+      heroVideo.pause();
+    } else if (heroVideo) {
       let inView = true;
       const tryPlay = () => {
         if (inView && !document.hidden && heroVideo.paused) heroVideo.play().catch(() => {});
       };
 
-      if (heroVideo.readyState >= 2) tryPlay();
-      else heroVideo.addEventListener("canplay", tryPlay, { once: true });
+      // Mobil holt bei preload="metadata" ohne .play() KEINE Mediendaten nach
+      // (canplay feuert dann nie). Darum sofort versuchen + an mehreren
+      // Lade-Events erneut anwerfen, statt nur auf canplay zu warten.
+      tryPlay();
+      heroVideo.addEventListener("loadedmetadata", tryPlay, { once: true });
+      heroVideo.addEventListener("loadeddata", tryPlay, { once: true });
+      heroVideo.addEventListener("canplay", tryPlay, { once: true });
 
       // Im Bild -> spielen, raus -> pausieren.
       if ("IntersectionObserver" in window) {
@@ -650,7 +668,7 @@ const uspIcon: Record<string, string> = {
 
     // Hero-Parallax (Bildebene scrollt langsamer, Scale bleibt erhalten).
     const bg = document.querySelector<HTMLElement>("[data-hero-bg]");
-    if (bg && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (bg && !motionOff) {
       let raf = 0;
       const applyParallax = (sy: number) => {
         cancelAnimationFrame(raf);

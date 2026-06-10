@@ -9,18 +9,34 @@
 // Fix: in der _saas/index.html alle /_saas/-Pfade AUSSER dem /_saas/assets/-Bundle
 // wieder auf Root / zurücksetzen. Dann laden Fonts/Fotos/Icons aus dem Astro-Root,
 // das Bundle bleibt unter /_saas/assets/. Kein 29-MB-Public-Duplikat im Deploy.
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
 
-const file = "dist-astro/_saas/index.html";
-if (!existsSync(file)) {
-  console.error(`[fix-saas-base] ${file} nicht gefunden — lief der SaaS-Build?`);
+// /_saas/ → /  (aber /_saas/assets/ unangetastet lassen, das ist das Bundle)
+const PUBLIC_PATH = /\/_saas\/(?!assets\/)/g;
+
+function fixFile(file) {
+  if (!existsSync(file)) return null;
+  const before = readFileSync(file, "utf8");
+  const hits = (before.match(PUBLIC_PATH) || []).length;
+  if (hits > 0) writeFileSync(file, before.replace(PUBLIC_PATH, "/"));
+  return hits;
+}
+
+const indexFile = "dist-astro/_saas/index.html";
+if (!existsSync(indexFile)) {
+  console.error(`[fix-saas-base] ${indexFile} nicht gefunden — lief der SaaS-Build?`);
   process.exit(1);
 }
 
-const before = readFileSync(file, "utf8");
-// /_saas/ → /  (aber /_saas/assets/ unangetastet lassen)
-const after = before.replace(/\/_saas\/(?!assets\/)/g, "/");
-writeFileSync(file, after);
+let total = fixFile(indexFile) || 0;
 
-const fixed = (before.match(/\/_saas\/(?!assets\/)/g) || []).length;
-console.log(`[fix-saas-base] ${fixed} Public-Pfad(e) in ${file} auf Root zurückgesetzt.`);
+// Auch im gebauten CSS: Vite prefixt absolute url()-Public-Pfade (z.B.
+// mask-image: url(/schend-mark.png)) ebenfalls auf /_saas/ → 404. Zurücksetzen.
+const assetsDir = "dist-astro/_saas/assets";
+if (existsSync(assetsDir)) {
+  for (const name of readdirSync(assetsDir)) {
+    if (name.endsWith(".css")) total += fixFile(`${assetsDir}/${name}`) || 0;
+  }
+}
+
+console.log(`[fix-saas-base] ${total} Public-Pfad(e) (index.html + CSS) auf Root zurückgesetzt.`);

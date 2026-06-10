@@ -799,7 +799,7 @@ export default function Booking() {
                       inputMode="email"
                       spellCheck={false}
                       placeholder="max.mustermann@beispiel.de"
-                      className="pr-12"
+                      className="pr-14"
                     />
                     <button
                       type="button"
@@ -808,7 +808,7 @@ export default function Booking() {
                       title="@-Zeichen einfügen"
                       aria-label="@-Zeichen einfügen"
                       className={cn(
-                        "absolute right-1 top-1/2 -translate-y-1/2 h-7 w-9 rounded text-sm font-bold transition-colors",
+                        "absolute right-1 top-1/2 -translate-y-1/2 h-9 w-11 rounded text-sm font-bold transition-colors",
                         emailMissingAt
                           ? "bg-secondary text-secondary-foreground hover:bg-secondary/90 animate-pulse"
                           : "text-muted-foreground hover:bg-muted",
@@ -983,6 +983,12 @@ export default function Booking() {
       {/* Sticky mobile reservation bar */}
       {!confirmed && (
       <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-card border-t shadow-elevated safe-pb px-4 pt-3">
+        {room && nights > 0 && (
+          <div className="flex items-baseline justify-between mb-2">
+            <span className="text-xs text-muted-foreground">{nights} {nights === 1 ? "Nacht" : "Nächte"}</span>
+            <span className="text-base font-semibold">Gesamt {eur(grandTotal)}</span>
+          </div>
+        )}
         <Button
           onClick={handlePayment}
           disabled={!canSubmit || submitting}
