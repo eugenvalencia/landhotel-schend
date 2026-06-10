@@ -21,7 +21,9 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
         Ihr Familienhotel in der Vulkaneifel — mit hauseigener Eifeler Landküche, ideal für Ihren Kurzurlaub.
       </p>
 
-      <!-- Trust-Strip — Bewertungs-Aggregat als Social-Proof -->
+      <!-- Trust-Strip — echte, belegbare Zahlen: Booking.com 252 Bew. @ 8,7/10
+           (= 4,35/5) + Tripadvisor 25 @ 4,0/5 → Summe 277, gewichteter Ø ≈ 4,3.
+           Quellen: booking.com/reviews/de/hotel/landhaus-schend + Tripadvisor d2330477. -->
       <div class="mt-6 inline-flex flex-wrap items-center gap-3 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/5">
         <span class="star-rail relative inline-flex gap-0.5" aria-hidden="true">
           {[1, 2, 3, 4].map(() => (
@@ -31,8 +33,8 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
           <span class="star-glint"></span>
         </span>
         <span class="text-xs text-[hsl(38_30%_92%)]/85">
-          <span class="font-bold text-secondary" data-count-to="4.5" data-count-decimals="1" data-count-dur="1600">4,5</span> Ø ·
-          <span class="mx-1 font-bold" data-count-to="501" data-count-dur="1600">501</span> Bewertungen
+          <span class="font-bold text-secondary" data-count-to="4.3" data-count-decimals="1" data-count-dur="1600">4,3</span> Ø ·
+          <span class="mx-1 font-bold" data-count-to="277" data-count-dur="1600">277</span> Bewertungen
         </span>
       </div>
     </div>

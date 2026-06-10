@@ -40,8 +40,9 @@ export default function SiteFooter() {
               <Star className="h-3 w-3 fill-secondary/60 text-secondary" strokeWidth={1.5} />
             </div>
             <span className="text-xs text-[hsl(38_30%_92%)]/85">
-              <CountUp to={4.5} decimals={1} duration={1400} className="font-bold text-secondary" /> Ø ·
-              <CountUp to={501} duration={1800} className="mx-1 font-bold" /> Bewertungen
+              {/* echte Zahlen: Booking 252 @8,7/10 + Tripadvisor 25 @4,0/5 → 277, Ø ≈ 4,3 */}
+              <CountUp to={4.3} decimals={1} duration={1400} className="font-bold text-secondary" /> Ø ·
+              <CountUp to={277} duration={1800} className="mx-1 font-bold" /> Bewertungen
             </span>
           </div>
         </div>

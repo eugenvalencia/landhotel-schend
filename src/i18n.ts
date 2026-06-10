@@ -57,7 +57,7 @@ const resources = {
         sun: "Sonntag",
         ruhetagLabel: "Ruhetag",
         ruhetagDays: "Montag, Dienstag, Mittwoch",
-        ruhetagNote: "An den Ruhetagen kein À-la-carte. Hausgäste erhalten ihr Halbpensions-Menü mit Voranmeldung — ausgenommen Feiertage.",
+        ruhetagNote: "An den Ruhetagen kein À-la-carte. Hausgäste erhalten mit Voranmeldung ihr Halbpensions-Menü. An Feiertagen ist das Restaurant für Sie geöffnet.",
         menuWeekly: "Unsere Speisekarte wechselt wöchentlich — das Wochenmenü teilen wir unseren Gästen morgens mit.",
       },
       feiern: {

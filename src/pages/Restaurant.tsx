@@ -168,7 +168,7 @@ export default function Restaurant() {
                 <div>
                   <p className="font-medium">Ruhetag: Montag, Dienstag, Mittwoch</p>
                   <p className="text-muted-foreground">
-                    Kein À-la-carte — Halbpension für Hausgäste mit Voranmeldung (außer an Feiertagen).
+                    Kein À-la-carte — Hausgäste erhalten mit Voranmeldung ihr Halbpensions-Menü. An Feiertagen ist das Restaurant für Sie geöffnet.
                   </p>
                 </div>
               </div>

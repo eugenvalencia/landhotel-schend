@@ -41,7 +41,7 @@ const FAQS_DE: FAQ[] = [
   },
   {
     q: "Hat das Restaurant einen Ruhetag?",
-    a: "Ja — Montag, Dienstag und Mittwoch sind Ruhetage. An diesen Tagen gibt es kein À-la-carte; unser Halbpensions-Menü können Hausgäste mit Voranmeldung erhalten (außer an Feiertagen). À-la-carte servieren wir Donnerstag bis Samstag von 17:30 bis 20:00 Uhr und sonntags von 12:00 bis 14:00 Uhr sowie 17:30 bis 20:00 Uhr. Unsere Speisekarte wechselt wöchentlich — das Wochenmenü geben wir morgens bekannt.",
+    a: "Ja — Montag, Dienstag und Mittwoch sind Ruhetage. An diesen Tagen gibt es kein À-la-carte; unser Halbpensions-Menü können Hausgäste mit Voranmeldung erhalten. An Feiertagen ist das Restaurant für Sie geöffnet. À-la-carte servieren wir Donnerstag bis Samstag von 17:30 bis 20:00 Uhr und sonntags von 12:00 bis 14:00 Uhr sowie 17:30 bis 20:00 Uhr. Unsere Speisekarte wechselt wöchentlich — das Wochenmenü geben wir morgens bekannt.",
   },
   {
     q: "Welche Küche serviert das Restaurant?",

@@ -9,10 +9,8 @@
     <meta name="author" content="Landhotel Schend" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow" />
-    <meta name="theme-color" content="#2a3140" />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#f8f1e3" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#13161c" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#13161c" />
+    <meta name="color-scheme" content="dark light" />
     <meta name="geo.region" content="DE-RP" />
     <meta name="geo.placename" content="Immerath, Vulkaneifel" />
     <meta name="geo.position" content="50.1303;6.9594" />
@@ -26,9 +24,10 @@
       // Apply saved theme before render to avoid flash of unstyled colour scheme.
       (function () {
         try {
+          // Default = dunkel (überall). "light" hellt auf, "system" folgt dem OS.
           var t = localStorage.getItem("theme");
           if (t === "light") document.documentElement.classList.add("light");
-          else if (t === "dark") document.documentElement.classList.add("dark");
+          else if (t !== "system") document.documentElement.classList.add("dark");
         } catch (e) {
           /* localStorage disabled */
         }

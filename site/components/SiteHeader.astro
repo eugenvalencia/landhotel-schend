@@ -207,6 +207,8 @@ const isActive = (href: string) =>
     document.querySelectorAll<HTMLElement>("[data-theme-sun]").forEach((el) => el.classList.toggle("hidden", !dark));
     document.querySelectorAll<HTMLElement>("[data-theme-moon]").forEach((el) => el.classList.toggle("hidden", dark));
     document.querySelectorAll<HTMLElement>("[data-theme-label]").forEach((el) => (el.textContent = dark ? "Hellmodus" : "Dunkelmodus"));
+    const tc = document.querySelector('meta[name="theme-color"]');
+    if (tc) tc.setAttribute("content", dark ? "#13161c" : "#f8f1e3");
   };
   syncThemeIcons();
   document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]").forEach((btn) =>

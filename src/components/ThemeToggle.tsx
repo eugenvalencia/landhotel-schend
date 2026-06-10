@@ -15,7 +15,7 @@ function getInitial(): Theme {
   } catch {
     /* localStorage disabled */
   }
-  return "system";
+  return "dark"; // Default = dunkel (überall); Hell/System nur per Wahl
 }
 
 function applyTheme(theme: Theme) {

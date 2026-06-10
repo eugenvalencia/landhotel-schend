@@ -281,10 +281,28 @@ export default function Booking() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room?.id]);
 
+  // Wünsche auf Anfrage (keine berechneten Positionen — landen in den Notizen).
+  // Ehrlich: KEIN Suite-Upgrade (es gibt keine Suiten) und kein „Frühstück
+  // nachrüsten" (Frühstück ist immer inklusive). Jeder Punkt mit Detail-Text.
   const UPSELLS = useMemo(() => [
-    { id: "ups-suite", name: "Suite-Upgrade", price: 30, perNight: true, desc: "Upgrade in eine Suite (sofern verfügbar)" },
-    { id: "ups-romantik", name: "Romantik-Paket", price: 25, perNight: false, desc: "Wein, Rosen & Pralinen im Zimmer" },
-    { id: "ups-fruehstueck", name: "Frühstück nachrüsten", price: 12, perNight: true, desc: "Pro Person & Nacht – regional & frisch" },
+    {
+      id: "ups-familienzimmer",
+      name: "Familienzimmer statt Doppelzimmer",
+      desc: "Mehr Platz · auf Anfrage",
+      details: "Statt eines Doppelzimmers buchen Sie eines unserer zwei Familienzimmer mit separatem Schlaf- bzw. Nebenraum — mehr Raum für Familien oder einen entspannten Aufenthalt zu zweit. Nach Verfügbarkeit, Aufpreis auf Anfrage.",
+    },
+    {
+      id: "ups-romantik",
+      name: "Romantik zur Anreise",
+      desc: "Sekt & Blumen · auf Anfrage",
+      details: "Eine Flasche Eifeler Sekt und frische Blumen erwarten Sie zur Anreise auf dem Zimmer. Sagen Sie uns einfach Anlass und Wünsche — wir bereiten alles vor.",
+    },
+    {
+      id: "ups-late-checkout",
+      name: "Späte Abreise / früher Check-in",
+      desc: "auf Anfrage",
+      details: "Check-out ist regulär bis 11 Uhr. Wenn es die Belegung am Tag zulässt, bleiben Sie länger oder reisen früher an — fragen Sie uns gern, wir richten es nach Möglichkeit ein.",
+    },
   ], []);
 
   const extrasTotal = useMemo(() => {
@@ -743,25 +761,33 @@ export default function Booking() {
               <CardTitle className="font-display text-xl md:text-2xl flex items-center gap-2">
                 <Star className="h-4 w-4 text-secondary" strokeWidth={1.5} /> Upgrades & Pakete
               </CardTitle>
+              <p className="text-xs text-muted-foreground mt-1.5">Wünsche, die wir Ihnen gern bestätigen — tippen Sie auf „Das ist dabei" für Details.</p>
             </CardHeader>
             <CardContent className="space-y-2">
               {UPSELLS.map((u) => {
                 const checked = selectedUpsells.includes(u.id);
-                const lineTotal = u.perNight ? u.price * Math.max(nights, 1) * (u.id === "ups-fruehstueck" ? persons : 1) : u.price;
                 return (
-                  <div key={u.id} className={cn("flex items-center justify-between gap-3 rounded-lg border p-3", checked && "bg-secondary/5 border-secondary")}>
-                    <div className="min-w-0">
-                      <p className="font-medium text-sm">{u.name} <span className="text-secondary font-semibold">+{u.price}€{u.perNight ? "/N" : ""}</span></p>
-                      <p className="text-xs text-muted-foreground">{u.desc}</p>
+                  <div key={u.id} className={cn("rounded-lg border p-3 transition-colors", checked && "bg-secondary/5 border-secondary")}>
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="font-medium text-sm">{u.name}</p>
+                        <p className="text-xs text-muted-foreground">{u.desc}</p>
+                      </div>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant={checked ? "default" : "outline"}
+                        onClick={() => setSelectedUpsells((prev) => checked ? prev.filter((x) => x !== u.id) : [...prev, u.id])}
+                      >
+                        {checked ? "✓ Vorgemerkt" : "Vormerken"}
+                      </Button>
                     </div>
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant={checked ? "default" : "outline"}
-                      onClick={() => setSelectedUpsells((prev) => checked ? prev.filter((x) => x !== u.id) : [...prev, u.id])}
-                    >
-                      {checked ? `✓ ${eur(lineTotal)}` : "Hinzufügen"}
-                    </Button>
+                    <details className="group mt-2">
+                      <summary className="flex items-center gap-1 text-xs text-secondary cursor-pointer list-none select-none">
+                        <ChevronDown className="h-3 w-3 transition-transform group-open:rotate-180" /> Das ist dabei
+                      </summary>
+                      <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{u.details}</p>
+                    </details>
                   </div>
                 );
               })}
