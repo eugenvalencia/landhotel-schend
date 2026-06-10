@@ -14,6 +14,8 @@ import food1 from "@/assets/food-1.jpg";
 import food2 from "@/assets/food-2.jpg";
 import food3 from "@/assets/food-3.jpg";
 
+// Inhalte 1:1 nach der echten Landhaus-Schend-Seite (Texte, Leistungen, Preise
+// originalgetreu). KEINE erfundenen Zusätze. Spiegel von site/lib/pakete.ts.
 export type Paket = {
   slug: string;
   title: string;
@@ -22,7 +24,9 @@ export type Paket = {
   intro: string;
   highlights: string[];
   details: string;
-  price?: string;
+  price?: string;        // kompakt (Badge/Karte), z.B. "ab 339 € p. P."
+  priceSingle?: string;  // Einzelnutzung, z.B. "Einzelnutzung ab 399 €"
+  priceNote?: string;    // z.B. "Familienzimmer auf Anfrage"
 };
 
 export const PAKETE: Paket[] = [
@@ -32,17 +36,20 @@ export const PAKETE: Paket[] = [
     cover: paketA0,
     gallery: [paketA0, eifel1, eifel2],
     intro:
-      "Erleben Sie die Vulkaneifel auf den schönsten Wanderwegen Deutschlands – mit Eifelsteig, Lieserpfad und unzähligen Themenrouten direkt vor unserer Haustür.",
+      "Genießen und entspannen inmitten des Vulkans. Unsere unvergleichliche Vulkaneifel birgt zahllose Mythen und Legenden — spüren Sie ihnen nach und erleben Sie den unvergleichlichen Reiz dieser Landschaft.",
     highlights: [
-      "4 Übernachtungen inkl. großem Frühstücksbuffet",
-      "3× Eifeler 3-Gang-Abendmenü im Landhaus Restaurant",
-      "Wanderkarte & persönliche Tourenempfehlungen",
-      "Lunchpaket für unterwegs",
-      "Glas Eifeler Wein zur Begrüßung im Kaminzimmer",
+      "4× Übernachtung",
+      "4× Halbpension",
+      "4× Frühstücksbuffet",
+      "1× Nutzung der hauseigenen Sauna",
+      "2× Proviant für den Wandertag",
+      "Moderne, komfortable Ausstattung",
     ],
     details:
-      "Unser erfahrenes Team stellt Ihnen täglich passende Routen zusammen – ob gemütliche Tagestour rund um die Maare oder anspruchsvolle Etappen auf dem Eifelsteig. Nach dem Wandertag erwartet Sie ein liebevoll zubereitetes Abendmenü mit regionalen Zutaten und ein Glas Eifeler Wein im behaglichen Kaminzimmer.",
-    price: "ab 359 € pro Person",
+      "Wir packen dafür Ihren Rucksack — mit Eifler Spezialitäten und individuellen Wandertipps. Wieder zurück, entspannen Sie in unserer Sauna und genießen erholsamen Schlaf inmitten des Vulkans.",
+    price: "ab 339 € p. P.",
+    priceSingle: "Einzelnutzung ab 399 €",
+    priceNote: "Familienzimmer auf Anfrage",
   },
   {
     slug: "rad-erlebnisse",
@@ -50,17 +57,19 @@ export const PAKETE: Paket[] = [
     cover: paketA1,
     gallery: [paketA1, paketA2, eifel5],
     intro:
-      "Sattelfest durch die Vulkaneifel – Maare-Mosel-Radweg, Kylltal-Radweg und herausfordernde Mountainbike-Strecken starten direkt am Hotel.",
+      "Inmitten von Vulkanen und Weinreben: Die Streckenführung unserer dreitägigen Eifler Rad-Erlebnisse ist außergewöhnlich. Vorbei an Maaren, den Kraterseen erloschener Vulkane, führt sie hinab ins malerische Moseltal mit seinen Weinbergen — immer entlang des Maare-Mosel-Radwegs.",
     highlights: [
-      "3 Übernachtungen mit Frühstücksbuffet",
-      "2× Eifeler Abendmenü",
-      "Abschließbarer Fahrradraum mit Ladestation für E-Bikes",
-      "Streckenkarten & GPX-Tracks",
-      "Wäscheservice für Funktionsbekleidung",
+      "4× Übernachtung",
+      "4× Halbpension",
+      "4× Frühstücksbuffet",
+      "4× Proviant für den Radlertag",
+      "Rücken- oder Fußmassage auf Wunsch (zzgl. 25 € pro Person)",
     ],
     details:
-      "Ob Genussradler oder ambitionierter Mountainbiker – unsere Empfehlungen reichen vom familienfreundlichen Maare-Mosel-Radweg bis zu knackigen Trails durch die Vulkaneifel. Nach der Tour locken eine Erfrischung auf der Sonnenterrasse und ein deftiges Eifeler Menü im Landhaus Restaurant.",
-    price: "ab 279 € pro Person",
+      "Insgesamt 55 Kilometer lang, lässt sich der Radweg gut in Etappen erkunden — dank Steigungen von maximal 3 % auch für Familien, die unterwegs in Radler-Busse einsteigen können. Bei technischen Problemen hilft der Reparaturservice unseres Landhotels.",
+    price: "ab 349 € p. P.",
+    priceSingle: "Einzelnutzung ab 409 €",
+    priceNote: "Familienzimmer auf Anfrage",
   },
   {
     slug: "erholung-entschleunigung",
@@ -68,53 +77,61 @@ export const PAKETE: Paket[] = [
     cover: eifel3,
     gallery: [eifel3, eifel4, food0],
     intro:
-      "Einfach mal abschalten – ankommen, durchatmen und die wohltuende Stille der Eifel genießen.",
+      "Sie wollen einfach mal abschalten und es sich rundum gut gehen lassen? Dann sind unsere drei Tage der Erholung das Richtige für Sie. Entschleunigen Sie bei einem Besuch in unserem Wellness mit Whirlpool, Sauna, Solarium und speziellen Massagen.",
     highlights: [
-      "3 Übernachtungen mit Frühstücksbuffet",
-      "1× Candle-Light-Dinner zur Begrüßung",
-      "Mehrgängiges Gourmet-Abendmenü mit Weinbegleitung",
-      "Frische Blumen & Obstteller im Zimmer",
-      "Spaziergangs-Empfehlungen rund um Schalkenmehren",
+      "3× Übernachtung",
+      "3× Halbpension",
+      "3× Frühstücksbuffet",
+      "1× Nutzung der hauseigenen Sauna",
+      "1× Willkommensgetränk",
     ],
     details:
-      "Dieses Paket ist eine Auszeit für Körper und Geist. Lassen Sie sich kulinarisch verwöhnen, genießen Sie ausgedehnte Spaziergänge durch die Vulkaneifel und finden Sie zur Ruhe – mit Blick in die sanften Hügel der Eifel.",
-    price: "ab 319 € pro Person",
+      "Überzeugen Sie sich von der Heilkraft Eifler Bienenhonigs und heißer Basaltsteine vulkanischen Ursprungs und genießen Sie tiefenentspannt eine erdende ayurvedische Fußmassage.",
+    price: "ab 249 € p. P.",
+    priceSingle: "Einzelnutzung ab 319 €",
+    priceNote: "Familienzimmer auf Anfrage",
   },
   {
     slug: "eifelgold-weissdornhecken",
-    title: '"Eifelgold" und Weißdornhecken',
+    title: '„Eifelgold" und Weißdornhecken',
     cover: paketB0,
     gallery: [paketB0, eifel1, food1],
     intro:
-      "Frühling in der Vulkaneifel – wenn Ginster und Weißdorn die Landschaft in Gold und Weiß tauchen, beginnt die schönste Wanderzeit des Jahres.",
+      "Lassen Sie sich vom faszinierenden Naturschauspiel der Eifel im Mai und Juni begeistern.",
     highlights: [
-      "5 Übernachtungen inkl. Halbpension",
-      "Geführte Themenwanderung mit zertifiziertem Wanderführer",
-      "Picknickkorb für eine Tagestour",
-      "Eintritt in das Naturkundemuseum Daun",
-      "Eifeler Tee & hausgemachter Kuchen am Nachmittag",
+      "4× Übernachtung",
+      "4× Halbpension",
+      "4× Frühstücksbuffet",
+      "4× Proviant für den Wandertag",
+      "4× Nutzung der hauseigenen Sauna",
+      "Rücken- oder Fußmassage auf Wunsch (zzgl. 25 € pro Person)",
     ],
     details:
-      "Ein Paket für Naturliebhaber: Erleben Sie die Eifel in voller Blüte, lernen Sie auf einer geführten Tour die Besonderheiten der Vulkanlandschaft kennen und genießen Sie täglich frische Eifeler Küche.",
-    price: "ab 449 € pro Person",
+      "Genießen Sie das natürliche Farbenspiel in Gelb und Weiß im Immerather Kraterkessel und bewundern Sie die Ginsterblüte — unser echtes „Eifelgold\".",
+    price: "ab 379 € p. P.",
+    priceSingle: "Einzelnutzung ab 449 €",
+    priceNote: "Familienzimmer auf Anfrage",
   },
   {
     slug: "bunt-sind-schon-die-waelder",
-    title: '"Bunt sind schon die Wälder"',
+    title: '„Bunt sind schon die Wälder"',
     cover: paketB1,
     gallery: [paketB1, eifel2, food2],
     intro:
-      "Wenn sich die Wälder rund um die Eifelmaare bunt färben, beginnt die zauberhafteste Jahreszeit – Goldener Herbst zum Wandern, Genießen und Verweilen.",
+      "Bereits in einem alten Volkslied wird die Farbenpracht des Herbstes besungen.",
     highlights: [
-      "4 Übernachtungen mit Frühstücksbuffet",
-      "3× Herbst-Menü mit saisonalen Spezialitäten",
-      "Wanderkarte „Herbst rund um die Maare\"",
-      "Wildgericht-Abend nach Wahl",
-      "Halbpension auf Wunsch zubuchbar",
+      "5× Übernachtung",
+      "5× Halbpension",
+      "5× Frühstücksbuffet",
+      "2× Nutzung der hauseigenen Sauna",
+      "5× Proviant für den Wandertag",
+      "1× Willkommensgetränk",
     ],
     details:
-      "Goldenes Licht über den Maaren, dampfende Tassen Tee nach der Wanderung und herzhafte Wildgerichte am Abend – dieses Paket fängt die magische Atmosphäre des Eifel-Herbstes ein.",
-    price: "ab 379 € pro Person",
+      "Schon vom Frühstückstisch aus können Sie dieses Naturschauspiel bewundern und bei einer ausgiebigen Wanderung durch die zahlreichen Mischwälder der Region ganz nah erleben.",
+    price: "ab 449 € p. P.",
+    priceSingle: "Einzelnutzung ab 519 €",
+    priceNote: "Familienzimmer auf Anfrage",
   },
   {
     slug: "zimmer-ohne-paket",
@@ -122,16 +139,15 @@ export const PAKETE: Paket[] = [
     cover: paketB2,
     gallery: [paketB2, food3, eifel5],
     intro:
-      "Sie möchten flexibel bleiben? Buchen Sie eines unserer 21 Zimmer ohne Paket – ganz nach Ihren Wünschen.",
+      "Sie möchten flexibel bleiben? Buchen Sie eines unserer Zimmer ohne Paket — ganz nach Ihren Wünschen.",
     highlights: [
       "Doppelzimmer, Familienzimmer oder Einzelnutzung",
       "Großes Frühstücksbuffet inklusive",
-      "Kostenfreies WLAN & Parkplatz",
-      "Kaminzimmer & Sonnenterrasse zur freien Nutzung",
-      "Halbpension auf Wunsch zubuchbar",
+      "Kostenfreies WLAN & Parkplatz am Haus",
+      "Halbpension auf Wunsch (+23 € pro Person/Tag)",
     ],
     details:
-      "Alle Zimmer verfügen über Balkon oder Terrasse mit Blick in die Vulkaneifel. Wählen Sie Ihren Zeitraum frei und stellen Sie sich Ihren Aufenthalt individuell zusammen – wir kümmern uns um den Rest.",
+      "Wählen Sie Ihren Zeitraum frei und stellen Sie sich Ihren Aufenthalt individuell zusammen — wir kümmern uns um den Rest.",
   },
 ];
 

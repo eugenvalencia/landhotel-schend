@@ -27,7 +27,7 @@ const Barrierefreiheit = () => {
             (BFSGV) für alle Gäste barrierefrei zugänglich zu machen.
           </p>
           <p className="mt-3">
-            Diese Erklärung gilt für die Website unter <strong>landhaus-schend.de</strong>.
+            Diese Erklärung gilt für die Website unter <strong>www.landhaus-schend.de</strong>.
           </p>
         </section>
 

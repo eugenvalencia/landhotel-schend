@@ -55,12 +55,12 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
               <img
                 src="/schend-logo-black.svg"
                 alt="Landhotel Schend Logo"
-                className="h-10 w-auto dark:hidden"
+                className="h-14 w-auto dark:hidden"
               />
               <img
                 src="/schend-logo-white.svg"
                 alt="Landhotel Schend Logo"
-                className="hidden h-10 w-auto dark:block"
+                className="hidden h-14 w-auto dark:block"
               />
               <div className="flex flex-col leading-tight">
                 <span className="font-display text-base text-primary">Landhotel Schend</span>
@@ -179,7 +179,7 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
               </div>
             </div>
 
-            <p className="font-medium text-foreground">Wir freuen uns auf Ihren Besuch! 🏔️</p>
+            <p className="font-medium text-foreground">Wir freuen uns auf Ihren Besuch.</p>
             <p className="text-xs text-muted-foreground">
               Bei Änderungen oder Stornierung erreichen Sie uns telefonisch unter
               <a href="tel:+4965731306" className="font-medium text-foreground hover:text-primary"> +49 6573 306</a>.
@@ -192,17 +192,17 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
               <img
                 src="/schend-logo-black.svg"
                 alt="Landhotel Schend Logo"
-                className="h-8 w-auto dark:hidden"
+                className="h-12 w-auto dark:hidden"
               />
               <img
                 src="/schend-logo-white.svg"
                 alt="Landhotel Schend Logo"
-                className="hidden h-8 w-auto dark:block"
+                className="hidden h-12 w-auto dark:block"
               />
               <span className="font-display text-base text-primary">Landhotel Schend</span>
             </div>
             <p className="mt-2 text-xs text-muted-foreground">
-              Ihr Familienhotel in der Vulkaneifel · landhaus-schend.de
+              Ihr Familienhotel in der Vulkaneifel · www.landhaus-schend.de
             </p>
           </div>
         </div>
@@ -223,7 +223,7 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
           <p className="font-semibold mb-1">Landhotel Schend</p>
           <p>
             Hallo {booking.guestName.split(" ")[0]}, Ihre Anfrage <span className="font-mono font-semibold">{displayBookingNumber}</span> ist eingegangen.
-            Wir bestätigen Ihre Buchung in Kürze. Geplanter Check-in: {formatDate(booking.checkIn)} ab 15:00 Uhr. Wir freuen uns auf Sie! 🏔️
+            Wir bestätigen Ihre Buchung in Kürze. Geplanter Check-in: {formatDate(booking.checkIn)} ab 15:00 Uhr. Wir freuen uns auf Sie.
           </p>
           <p className="text-xs text-muted-foreground mt-2">— Landhotel Schend, Vulkaneifel</p>
         </div>

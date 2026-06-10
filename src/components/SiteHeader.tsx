@@ -9,12 +9,10 @@ import HeaderWeather from "@/components/HeaderWeather";
 import HeaderMegaMenu from "@/components/HeaderMegaMenu";
 import { PAKETE } from "@/lib/pakete";
 
+// Das Hotel hat genau zwei Zimmer-Arten — KEINE Einzelzimmer, KEINE Suiten.
 const ROOMS_MEGA = [
-  { label: "Einzelzimmer", to: "/rooms/d47bcebd-a254-4880-8952-72a2929d2520", hint: "Gemütlich für Reisende — ab 65 €" },
-  { label: "Doppelzimmer Standard", to: "/rooms/8e3d91a0-0711-4cdf-a580-c2debb684d0c", hint: "Komfort mit Doppelbett und Balkon — ab 95 €" },
-  { label: "Doppelzimmer Komfort", to: "/rooms/5af7abab-0811-4e14-9b71-923c3afafbeb", hint: "Geräumig mit Terrasse — ab 105 €" },
-  { label: "Familienzimmer", to: "/rooms/2dffe866-7b1a-42d5-8ea9-29c9f2975994", hint: "Bis 4 Personen — ab 145 €" },
-  { label: "Junior Suite & Eifel-Suite", to: "/rooms/06183ce9-3314-4f82-aab9-40e8c7d32d86", hint: "Wohnbereich und Panoramablick — ab 165 €" },
+  { label: "Doppelzimmer", to: "/rooms/8e3d91a0-0711-4cdf-a580-c2debb684d0c", hint: "Komfortabel, mit Balkon — ab 57 € pro Person" },
+  { label: "Familienzimmer", to: "/rooms/2dffe866-7b1a-42d5-8ea9-29c9f2975994", hint: "Zwei getrennte Räume, bis 4 Personen — ab 170 €" },
 ];
 
 const PAKETE_MEGA = PAKETE.slice(0, 5).map((p) => ({
@@ -301,10 +299,6 @@ export default function SiteHeader() {
             <Button asChild className="mt-3 h-14 rounded-sm text-base">
               <Link to="/booking" onClick={() => setOpen(false)}>{t("nav.book")}</Link>
             </Button>
-            {/* Saison-Hint */}
-            <p className="text-center text-xs text-muted-foreground mt-3 mb-1">
-              Saison März – September · Sonst geschlossen
-            </p>
           </div>
         </div>
       )}

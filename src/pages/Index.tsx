@@ -23,8 +23,6 @@ import {
   handleSpotlightTilt, handleSpotlightTiltReset,
 } from "@/hooks/useMagnetic";
 import { cn } from "@/lib/utils";
-import { useWeather } from "@/hooks/useWeather";
-import { WeatherIcon } from "@/components/WeatherIcons";
 import {
   SCHEND_RESTAURANT, SCHEND_RESTAURANT_GALLERY, galleryForRoomType,
 } from "@/lib/photos";
@@ -32,7 +30,6 @@ import food0 from "@/assets/food-0.jpg";
 import food1 from "@/assets/food-1.jpg";
 import food2 from "@/assets/food-2.jpg";
 import food3 from "@/assets/food-3.jpg";
-import feiernImg from "@/assets/feiern.jpg";
 import { PAKETE } from "@/lib/pakete";
 
 // Marquee zeigt lokale Speisen + Restaurant-Stimmungen aus /public/fotos/
@@ -67,13 +64,10 @@ const USPS = [
 ] as const;
 
 const TYPE_DESCRIPTIONS: Record<string, string> = {
-  "Einzelzimmer": "Gemütliches Einzelzimmer mit Blick auf die Vulkaneifel",
+  "Doppelzimmer": "Komfortables Doppelzimmer mit Balkon oder Terrasse — auch zur Einzelnutzung buchbar",
   "Doppelzimmer Standard": "Komfortables Doppelzimmer mit Doppelbett und Balkon",
-  "Doppelzimmer Komfort": "Geräumiges Zimmer mit zwei Einzelbetten und Terrasse",
+  "Doppelzimmer Komfort": "Geräumiges Doppelzimmer mit Terrasse",
   "Familienzimmer": "Großes Familienzimmer für bis zu 4 Personen",
-  "Junior Suite": "Elegante Junior Suite mit Kingsize-Bett",
-  "Suite": "Unsere schönste Suite mit Wohnbereich und Panoramablick",
-  "Eifel-Suite": "Unsere schönste Suite mit Wohnbereich und Panoramablick",
 };
 
 type RoomCategory = { id: string; name: string; type: string; price: number };
@@ -84,7 +78,6 @@ const Index = () => {
   const magneticPrimary = useMagnetic<HTMLAnchorElement>(0.18, 12);
   const magneticSecondary = useMagnetic<HTMLAnchorElement>(0.15, 10);
   const heroBgRef = useRef<HTMLDivElement>(null);
-  const wxCur = useWeather(50.1303, 6.9594).data?.current;
 
   useSEO({
     title: "3-Sterne-Superior Hotel in der Vulkaneifel",
@@ -187,23 +180,6 @@ const Index = () => {
           className="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-black/55 via-black/20 to-transparent"
         />
         <div aria-hidden className="hero-grain absolute inset-0 z-[1] pointer-events-none" />
-
-        {wxCur && (
-          <div
-            className="absolute top-5 right-5 z-10 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90"
-            style={{ textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}
-            aria-label={`Wetter in der Vulkaneifel: ${Math.round(Number(wxCur.temperature_2m ?? 0))} Grad`}
-          >
-            <WeatherIcon code={Number(wxCur.weathercode ?? 0)} className="h-4 w-4 text-secondary shrink-0" />
-            <span className="tabular-nums text-sm font-medium leading-none">
-              {Math.round(Number(wxCur.temperature_2m ?? 0))}°
-            </span>
-            <span className="block h-3 w-px bg-white/30" aria-hidden />
-            <span className="text-[10px] tracking-[0.18em] uppercase leading-none text-white/75">
-              Vulkaneifel
-            </span>
-          </div>
-        )}
 
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
           {/* Eyebrow with hairlines */}
@@ -345,9 +321,7 @@ const Index = () => {
       <section id="rooms" className="bg-gradient-to-b from-background via-muted/20 to-background">
         <div className="container mx-auto px-4 py-20 md:py-28">
           <div className="text-center mb-14 md:mb-20">
-            <HairlineDivider className="mb-6 justify-center" />
-            <p className="eyebrow">{t("rooms.eyebrow")}</p>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">
+            <HairlineDivider className="mb-6 justify-center" />            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">
               {t("rooms.title")}
             </h2>
             <p className="text-muted-foreground mt-5 max-w-prose mx-auto leading-relaxed text-pretty">
@@ -419,7 +393,7 @@ const Index = () => {
       {/* RESTAURANT — asymmetrischer Magazin-Spread + Tagesgäste-Hook */}
       <section id="restaurant" className="bg-gradient-to-b from-muted/40 via-muted/20 to-muted/40">
         {/* Tagesgäste-Banner — Einheimische und Vorbeireisende ansprechen */}
-        <div className="bg-secondary/8 border-b border-border/60">
+        <div className="animate-pulse-banner border-y border-border/60">
           <div className="container mx-auto px-4 py-4 md:py-5">
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center">
               <span className="inline-flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
@@ -449,9 +423,7 @@ const Index = () => {
           </div>
 
           <div className="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center">
-            <HairlineDivider align="left" className="mb-5" />
-            <p className="eyebrow">{t("restaurant.eyebrow")}</p>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">
+            <HairlineDivider align="left" className="mb-5" />            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">
               {t("restaurant.title")}
             </h2>
             <div className="space-y-5 text-foreground/85 leading-relaxed max-w-prose">
@@ -466,7 +438,7 @@ const Index = () => {
               <p className="eyebrow mb-4">{t("restaurant.hours")}</p>
               <div className="text-sm space-y-2">
                 <div className="grid grid-cols-[140px_1fr] gap-x-6">
-                  <span className="font-medium">{t("restaurant.monSat")}</span>
+                  <span className="font-medium">{t("restaurant.openDays")}</span>
                   <span className="text-muted-foreground">17:30 – 20:00</span>
                 </div>
                 <div className="grid grid-cols-[140px_1fr] gap-x-6">
@@ -476,7 +448,14 @@ const Index = () => {
                     <p>17:30 – 20:00</p>
                   </div>
                 </div>
+                <div className="grid grid-cols-[140px_1fr] gap-x-6">
+                  <span className="font-medium">{t("restaurant.ruhetagLabel")}</span>
+                  <span className="text-muted-foreground">{t("restaurant.ruhetagDays")}</span>
+                </div>
               </div>
+              <p className="text-xs text-muted-foreground mt-3 leading-relaxed max-w-prose">
+                {t("restaurant.ruhetagNote")}
+              </p>
 
               {/* Brücke zur Standalone-Restaurant-Page */}
               <div className="mt-10 pt-6 border-t border-border/60">
@@ -515,29 +494,11 @@ const Index = () => {
 
         {/* Specials der Woche — drei Stempel-Karten für Aktionen */}
         <div className="container mx-auto px-4 py-14 md:py-20">
-          <div className="text-center mb-10 md:mb-12">
-            <p className="eyebrow">Im Restaurant</p>
-            <h3 className="font-display text-2xl md:text-3xl mt-3 text-balance">
-              Was Sie diese Saison erwartet
+          <div className="text-center mb-10 md:mb-12">            <h3 className="font-display text-2xl md:text-3xl mt-3 text-balance">
+              Aus unserer Küche
             </h3>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border/50 max-w-5xl mx-auto">
-            <div className="bg-background p-6 md:p-8 flex flex-col">
-              <p className="text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">
-                Wochen-Hit
-              </p>
-              <h4 className="font-display text-xl md:text-2xl mb-3 leading-tight">
-                Hamburgertag
-              </h4>
-              <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-                Ein Mal pro Woche unser Eifeler Burger mit Heim­pommes — Treffpunkt
-                für Einheimische und Hotelgäste.
-              </p>
-              <div className="hairline mt-6 mb-3" />
-              <p className="text-xs text-muted-foreground">
-                Tag und Uhrzeit erfragen — wir freuen uns über Reservierung.
-              </p>
-            </div>
+          <div className="grid sm:grid-cols-2 gap-px bg-border/50 max-w-3xl mx-auto">
             <div className="bg-background p-6 md:p-8 flex flex-col">
               <p className="text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">
                 Eifeler Klassiker
@@ -563,7 +524,7 @@ const Index = () => {
               </h4>
               <p className="text-sm text-muted-foreground leading-relaxed flex-1">
                 Hochzeiten, runde Geburtstage, Firmenessen — der Festsaal fasst
-                bis 80 Gäste, eingerichtet wie aus Großmutters Zeit.
+                bis 70 Gäste, eingerichtet wie aus Großmutters Zeit.
               </p>
               <div className="hairline mt-6 mb-3" />
               <p className="text-xs text-muted-foreground">
@@ -586,7 +547,7 @@ const Index = () => {
           <div className="lg:col-span-7">
             <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[560px] overflow-hidden shadow-card">
               <img
-                src={feiernImg}
+                src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg"
                 alt="Festlich gedeckter Saal im Landhotel Schend"
                 loading="lazy"
                 decoding="async"
@@ -595,9 +556,7 @@ const Index = () => {
             </div>
           </div>
           <div className="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center">
-            <HairlineDivider align="left" className="mb-5" />
-            <p className="eyebrow">{t("feiern.eyebrow")}</p>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">
+            <HairlineDivider align="left" className="mb-5" />            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">
               {t("feiern.title")}
             </h2>
             <p className="text-foreground/85 leading-relaxed max-w-prose">{t("feiern.text")}</p>
@@ -609,9 +568,7 @@ const Index = () => {
       <section id="pakete" className="bg-gradient-to-b from-muted/30 via-background to-muted/15">
         <div className="container mx-auto px-4 py-20 md:py-28">
           <div className="text-center mb-14 md:mb-20">
-            <HairlineDivider className="mb-6 justify-center" />
-            <p className="eyebrow">{t("pakete.eyebrow")}</p>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">
+            <HairlineDivider className="mb-6 justify-center" />            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">
               {t("pakete.title")}
             </h2>
             <p className="text-muted-foreground mt-5 max-w-prose mx-auto leading-relaxed text-pretty">
@@ -661,6 +618,37 @@ const Index = () => {
                 </span>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WELLNESS — Sauna & Ruhebereich, dezent, Nutzung auf Anfrage */}
+      <section id="wellness" className="bg-background border-t border-border/60">
+        <div className="grid lg:grid-cols-12 items-stretch">
+          <div className="lg:col-span-6 lg:order-last">
+            <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[460px] overflow-hidden shadow-card">
+              <HotelImage
+                src="/fotos/sauna-und-ruhebereich-mit-whirlpool-landhotel-schend-vulkaneifel.jpg"
+                alt="Sauna- und Ruhebereich mit Whirlpool im Landhotel Schend"
+                loading="lazy"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+          <div className="lg:col-span-6 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center">
+            <HairlineDivider align="left" className="mb-5" />            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">
+              {t("wellness.title")}
+            </h2>
+            <p className="text-foreground/85 leading-relaxed max-w-prose">{t("wellness.text")}</p>
+            <div className="mt-8">
+              <a
+                href="tel:+4965731306"
+                className="group inline-flex items-center gap-2 text-xs font-medium tracking-[0.2em] uppercase text-secondary hover:text-foreground transition-colors"
+              >
+                Nutzung anfragen · +49 6573 306
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>

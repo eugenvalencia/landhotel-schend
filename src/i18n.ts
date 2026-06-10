@@ -14,19 +14,19 @@ const resources = {
         faq: "FAQ",
         location: "URLAUBSREGION",
         book: "Jetzt buchen",
-        subtitle: "Ihr Familienhotel in Immerath | Vulkaneifel",
+        subtitle: "Immerath · Vulkaneifel",
       },
       hero: {
         eyebrow: "Kurzurlaub & Wanderhotel in der Vulkaneifel",
         title: "Willkommen im Landhotel Schend",
         text:
-          "Ihr ★★★ Superior Hotel in Immerath — Eifelsteig, Maare-Mosel-Radweg und Nürburgring direkt vor der Tür. 21 Zimmer mit Balkon, hauseigene Eifeler Landküche, Halbpension auf Wunsch und kostenlose Motorradgarage. Ideal für Ihren Kurzurlaub — direkt buchen, provisionsfrei.",
+          "Ihr ★★★ Superior Hotel in Immerath — Eifelsteig, Maare-Mosel-Radweg und Nürburgring direkt vor der Tür. 21 Zimmer mit Balkon, hauseigene Eifeler Landküche, Halbpension auf Wunsch und kostenlose Parkplätze. Ideal für Ihren Kurzurlaub — direkt buchen, provisionsfrei.",
         bookDirect: "Jetzt direkt buchen",
         starsBadge: "3 STERNE SUPERIOR",
       },
       usps: {
-        parking: "Kostenlose Parkplätze — videoüberwacht",
-        moto: "Genügend Motorrad-Parkplätze — videoüberwacht",
+        parking: "Kostenlose Parkplätze im Hof",
+        moto: "Motorrad-Stellplätze im Hof",
         halfboard: "Halbpension auf Wunsch",
         restaurant: "Hauseigenes Restaurant",
         rooms: "21 Zimmer mit Balkon/Terrasse",
@@ -38,7 +38,7 @@ const resources = {
         eyebrow: "Unsere Zimmer",
         title: "Zu Gast im Landhotel Schend",
         intro:
-          "21 individuell gestaltete Zimmer und Suiten — alle mit Balkon oder Terrasse und Blick in die Vulkaneifel.",
+          "21 individuell gestaltete Zimmer — alle mit Balkon oder Terrasse und Blick in die Vulkaneifel.",
         from: "ab",
         check: "Verfügbarkeit prüfen",
       },
@@ -53,14 +53,24 @@ const resources = {
         p4:
           "Neben vielfältigen Gerichten bieten wir Ihnen eine umfangreiche Getränkekarte und eine große Auswahl an erlesenen Weinen.",
         hours: "Öffnungszeiten",
-        monSat: "Montag – Samstag",
+        openDays: "Donnerstag – Samstag",
         sun: "Sonntag",
+        ruhetagLabel: "Ruhetag",
+        ruhetagDays: "Montag, Dienstag, Mittwoch",
+        ruhetagNote: "An den Ruhetagen kein À-la-carte. Hausgäste erhalten mit Voranmeldung ihr Halbpensions-Menü. An Feiertagen ist das Restaurant für Sie geöffnet.",
+        menuWeekly: "Unsere Speisekarte wechselt wöchentlich — das Wochenmenü teilen wir unseren Gästen morgens mit.",
       },
       feiern: {
         eyebrow: "Wir organisieren Ihre Feste",
         title: "Familien- & Firmenfeiern",
         text:
           "Laden Sie ein zu einem unvergesslichen Fest in ansprechendem Ambiente. Wir kümmern uns mit einem erfahrenen Team um die Details: von der Planung bis zur Dekoration und vom Rahmenprogramm bis zum von Ihnen gewünschten Menü oder Büffet. Feiern Sie bei uns Geburtstag, Kommunion oder Taufe wie auch geschäftliche Anlässe vom Kundenevent bis zur Weihnachtsfeier. Im eleganten Eichelbergzimmer können bis zu 70 Personen speisen, im behaglichen Kaminzimmer 35 und in unserer Dorfgaststätte und auf der Sonnenterrasse jeweils 40. Wir freuen uns, Sie beraten zu dürfen, und stellen Ihnen ein individuelles Paket zusammen.",
+      },
+      wellness: {
+        eyebrow: "Sauna & Ruhe",
+        title: "Sauna- & Ruhebereich im Haus",
+        text:
+          "Entspannen Sie nach einem Tag in der Vulkaneifel in unserem Sauna- und Ruhebereich mit Whirlpool. Die Nutzung stimmen wir gern persönlich mit Ihnen ab — sprechen Sie uns einfach an.",
       },
       pakete: {
         eyebrow: "Pakete & Angebote",
@@ -201,19 +211,19 @@ const resources = {
         faq: "FAQ",
         location: "REGION",
         book: "Book now",
-        subtitle: "Your family hotel in Immerath | Volcanic Eifel",
+        subtitle: "Immerath · Volcanic Eifel",
       },
       hero: {
         eyebrow: "Short break & hiking hotel in the Volcanic Eifel",
         title: "Welcome to Landhotel Schend",
         text:
-          "Your ★★★ Superior hotel in Immerath — Eifelsteig premium trail, Maare-Mosel cycle path and Nürburgring right at your door. 21 rooms with balcony, on-site Eifel regional cuisine, half-board on request and a free motorcycle garage. The ideal short break — book direct, commission-free.",
+          "Your ★★★ Superior hotel in Immerath — Eifelsteig premium trail, Maare-Mosel cycle path and Nürburgring right at your door. 21 rooms with balcony, on-site Eifel regional cuisine, half-board on request and free parking. The ideal short break — book direct, commission-free.",
         bookDirect: "Book directly now",
         starsBadge: "3-STAR SUPERIOR",
       },
       usps: {
         parking: "Free parking — video-monitored",
-        moto: "Plenty of motorcycle parking — video-monitored",
+        moto: "Motorcycle parking in the courtyard",
         halfboard: "Half-board on request",
         restaurant: "On-site restaurant",
         rooms: "21 rooms with balcony/terrace",
@@ -225,7 +235,7 @@ const resources = {
         eyebrow: "Our rooms",
         title: "A guest at Landhotel Schend",
         intro:
-          "21 individually designed rooms and suites — all with balcony or terrace and views of the Volcanic Eifel.",
+          "21 individually designed rooms — all with balcony or terrace and views of the Volcanic Eifel.",
         from: "from",
         check: "Check availability",
       },
@@ -239,14 +249,24 @@ const resources = {
           "We use only fresh, high-quality ingredients. Selected delicacies and seasonal specialities from our menu earn praise for our chef even from the most discerning guests.",
         p4: "Alongside our varied dishes you'll find an extensive drinks list and a fine selection of wines.",
         hours: "Opening hours",
-        monSat: "Monday – Saturday",
+        openDays: "Thursday – Saturday",
         sun: "Sunday",
+        ruhetagLabel: "Closed",
+        ruhetagDays: "Monday, Tuesday, Wednesday",
+        ruhetagNote: "No à la carte on closed days. House guests can have their half-board menu with advance notice — except on public holidays.",
+        menuWeekly: "Our menu changes weekly — we let our guests know each morning what's on offer.",
       },
       feiern: {
         eyebrow: "We organise your celebrations",
         title: "Family & Corporate Events",
         text:
           "Invite your guests to an unforgettable celebration in stylish surroundings. Our experienced team takes care of every detail — from planning and decoration to the entertainment programme and the menu or buffet of your choice. Celebrate birthdays, communions or christenings, as well as corporate events from customer evenings to Christmas parties. The elegant Eichelbergzimmer seats up to 70 guests, the cosy Kaminzimmer 35, and our village tavern and sun terrace 40 each. We'd love to advise you and put together an individual package.",
+      },
+      wellness: {
+        eyebrow: "Sauna & relaxation",
+        title: "Sauna & relaxation area in-house",
+        text:
+          "Unwind after a day in the Volcanic Eifel in our sauna and relaxation area with whirlpool. We're glad to arrange access with you personally — just ask.",
       },
       pakete: {
         eyebrow: "Packages & offers",
@@ -387,19 +407,19 @@ const resources = {
         faq: "FAQ",
         location: "RÉGION",
         book: "Réserver",
-        subtitle: "Votre hôtel familial à Immerath | Eifel volcanique",
+        subtitle: "Immerath · Eifel volcanique",
       },
       hero: {
         eyebrow: "Court séjour & hôtel de randonnée dans l'Eifel volcanique",
         title: "Bienvenue au Landhotel Schend",
         text:
-          "Votre hôtel ★★★ Superior à Immerath — sentier Eifelsteig, piste Maare-Mosel et Nürburgring à votre porte. 21 chambres avec balcon, cuisine maison de l'Eifel, demi-pension sur demande et garage à motos gratuit. L'escapade idéale — réservez en direct, sans commission.",
+          "Votre hôtel ★★★ Superior à Immerath — sentier Eifelsteig, piste Maare-Mosel et Nürburgring à votre porte. 21 chambres avec balcon, cuisine maison de l'Eifel, demi-pension sur demande et parking gratuit. L'escapade idéale — réservez en direct, sans commission.",
         bookDirect: "Réserver en direct",
         starsBadge: "3 ÉTOILES SUPERIOR",
       },
       usps: {
         parking: "Parking gratuit — vidéosurveillé",
-        moto: "Nombreuses places moto — vidéosurveillées",
+        moto: "Stationnement moto dans la cour",
         halfboard: "Demi-pension sur demande",
         restaurant: "Restaurant maison",
         rooms: "21 chambres avec balcon/terrasse",
@@ -411,7 +431,7 @@ const resources = {
         eyebrow: "Nos chambres",
         title: "Séjourner au Landhotel Schend",
         intro:
-          "21 chambres et suites individuelles — toutes avec balcon ou terrasse et vue sur l'Eifel volcanique.",
+          "21 chambres individuelles — toutes avec balcon ou terrasse et vue sur l'Eifel volcanique.",
         from: "à partir de",
         check: "Vérifier les disponibilités",
       },
@@ -427,14 +447,24 @@ const resources = {
         p4:
           "Une carte des boissons étoffée et une belle sélection de vins complètent nos plats variés.",
         hours: "Horaires d'ouverture",
-        monSat: "Lundi – Samedi",
+        openDays: "Jeudi – Samedi",
         sun: "Dimanche",
+        ruhetagLabel: "Fermé",
+        ruhetagDays: "Lundi, mardi, mercredi",
+        ruhetagNote: "Pas de service à la carte les jours de fermeture. Les clients de l'hôtel peuvent obtenir leur menu demi-pension sur réservation préalable — sauf les jours fériés.",
+        menuWeekly: "Notre carte change chaque semaine — nous informons nos clients chaque matin du menu proposé.",
       },
       feiern: {
         eyebrow: "Nous organisons vos fêtes",
         title: "Événements familiaux & d'entreprise",
         text:
           "Invitez vos proches à une fête inoubliable dans un cadre raffiné. Notre équipe expérimentée s'occupe de tout — de la planification à la décoration, du programme au menu ou buffet de votre choix. Anniversaires, communions, baptêmes ou événements professionnels : le salon Eichelbergzimmer accueille jusqu'à 70 personnes, le Kaminzimmer 35, la taverne du village et la terrasse ensoleillée 40 chacune. Nous vous conseillons volontiers pour composer une formule sur mesure.",
+      },
+      wellness: {
+        eyebrow: "Sauna & détente",
+        title: "Espace sauna & détente dans la maison",
+        text:
+          "Détendez-vous après une journée dans l'Eifel volcanique dans notre espace sauna et détente avec bain à remous. Nous organisons volontiers l'accès avec vous — il suffit de demander.",
       },
       pakete: {
         eyebrow: "Forfaits & offres",
@@ -575,19 +605,19 @@ const resources = {
         faq: "FAQ",
         location: "VAKANTIEREGIO",
         book: "Nu aanvragen",
-        subtitle: "Uw familiehotel in Immerath | Vulkaneifel",
+        subtitle: "Immerath · Vulkaneifel",
       },
       hero: {
         eyebrow: "Korte vakantie & wandelhotel in de Vulkaneifel",
         title: "Welkom in Landhotel Schend",
         text:
-          "Uw ★★★ Superior Hotel in Immerath — Eifelsteig, Maare-Mosel-fietsroute en Nürburgring vlak voor de deur. 21 kamers met balkon, eigen Eifeler streekkeuken, halfpension op aanvraag en gratis motorgarage. Ideaal voor uw korte vakantie — direct aanvragen, zonder commissie.",
+          "Uw ★★★ Superior Hotel in Immerath — Eifelsteig, Maare-Mosel-fietsroute en Nürburgring vlak voor de deur. 21 kamers met balkon, eigen Eifeler streekkeuken, halfpension op aanvraag en gratis parkeerplaatsen. Ideaal voor uw korte vakantie — direct aanvragen, zonder commissie.",
         bookDirect: "Direct aanvragen",
         starsBadge: "3 STERREN SUPERIOR",
       },
       usps: {
         parking: "Gratis parkeerplaatsen — videobewaakt",
-        moto: "Voldoende motorparkeerplaatsen — videobewaakt",
+        moto: "Motorparkeerplaatsen op de binnenplaats",
         halfboard: "Halfpension op aanvraag",
         restaurant: "Eigen restaurant",
         rooms: "21 kamers met balkon/terras",
@@ -599,7 +629,7 @@ const resources = {
         eyebrow: "Onze kamers",
         title: "Te gast in Landhotel Schend",
         intro:
-          "21 individueel ingerichte kamers en suites — allemaal met balkon of terras en uitzicht op de Vulkaneifel.",
+          "21 individueel ingerichte kamers — allemaal met balkon of terras en uitzicht op de Vulkaneifel.",
         from: "vanaf",
         check: "Beschikbaarheid controleren",
       },
@@ -614,14 +644,24 @@ const resources = {
         p4:
           "Naast veelzijdige gerechten bieden wij u een uitgebreide drankenkaart en een grote selectie aan voortreffelijke wijnen.",
         hours: "Openingstijden",
-        monSat: "Maandag – Zaterdag",
+        openDays: "Donderdag – Zaterdag",
         sun: "Zondag",
+        ruhetagLabel: "Rustdag",
+        ruhetagDays: "Maandag, dinsdag, woensdag",
+        ruhetagNote: "Op rustdagen geen à la carte. Hotelgasten kunnen hun halfpension-menu op aanvraag krijgen — behalve op feestdagen.",
+        menuWeekly: "Onze menukaart wisselt wekelijks — we laten onze gasten 's ochtends weten wat we aanbieden.",
       },
       feiern: {
         eyebrow: "Wij organiseren uw feest",
         title: "Familie- & Bedrijfsfeesten",
         text:
           "Nodig uit voor een onvergetelijk feest in een aansprekende sfeer. Wij zorgen met een ervaren team voor de details: van planning tot decoratie en van randprogramma tot het door u gewenste menu of buffet. Vier bij ons verjaardagen, communie of doop, evenals zakelijke gelegenheden van klantevenement tot kerstfeest. In de elegante Eichelbergkamer kunnen tot 70 personen dineren, in de gezellige Kaminzimmer 35 en in onze Dorfgaststätte en op het zonneterras telkens 40. Wij adviseren u graag en stellen een individueel pakket voor u samen.",
+      },
+      wellness: {
+        eyebrow: "Sauna & rust",
+        title: "Sauna- & rustruimte in huis",
+        text:
+          "Ontspan na een dag in de Vulkaneifel in onze sauna- en rustruimte met whirlpool. Het gebruik stemmen we graag persoonlijk met u af — vraag er gerust naar.",
       },
       pakete: {
         eyebrow: "Arrangementen & Aanbiedingen",

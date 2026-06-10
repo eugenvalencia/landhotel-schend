@@ -8,7 +8,7 @@ import CookieBanner from "./components/CookieBanner";
 import StickyMobileCTA from "./components/StickyMobileCTA";
 import A11yPanel from "./components/A11yPanel";
 import ErrorBoundary from "./components/ErrorBoundary";
-import SiteOffline from "./components/SiteOffline";
+import RouteLoader from "./components/RouteLoader";
 import MarketingChrome from "./components/MarketingChrome";
 import ScrollToTop from "./components/ScrollToTop";
 import PageFadeIn from "./components/PageFadeIn";
@@ -50,7 +50,7 @@ const App = () => {
         <MarketingChrome />
         <ScrollToTop />
         <ErrorBoundary>
-        <Suspense fallback={<SiteOffline variant="loading" />}>
+        <Suspense fallback={<RouteLoader />}>
           <PageFadeIn>
           <Routes>
             <Route path="/" element={<Index />} />

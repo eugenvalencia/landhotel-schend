@@ -17,37 +17,40 @@ const HERO_VIDEO = "/hero/schend-hero.mp4";
 const HERO_POSTER = "/hero/schend-hero-poster.jpg";
 
 const USPS = [
-  { label: "Kostenlose Parkplätze — videoüberwacht", icon: "park" },
-  { label: "Genügend Motorrad-Parkplätze — videoüberwacht", icon: "bike" },
+  { label: "Kostenlose Parkplätze im Hof", icon: "park" },
+  { label: "Motorrad-Stellplätze im Hof", icon: "bike" },
   { label: "Halbpension auf Wunsch", icon: "chef" },
   { label: "Hauseigenes Restaurant", icon: "utensils" },
   { label: "21 Zimmer mit Balkon/Terrasse", icon: "bed" },
   { label: "Kostenloses WLAN", icon: "wifi" },
   { label: "Großes Frühstücksbuffet", icon: "coffee" },
-  { label: "Booking.com 8.5 · Tripadvisor #1", icon: "trophy" },
+  { label: "Booking.com 8,7 · Tripadvisor Nr. 1", icon: "trophy" },
 ];
 
+// Marquee-Varianten (448px Höhe, ~574 KB statt 1,72 MB) — Original-Fotos
+// bleiben in /fotos & /pakete; hier nur die für das Laufband verkleinerten Kopien.
 const FOOD_PHOTOS = [
-  "/pakete/food-0.jpg",
-  "/fotos/haehnchen-mit-wedges-landhotel-schend.jpg",
-  "/pakete/food-1.jpg",
-  "/fotos/schnitzelteller-mit-pommes-landhotel-schend.jpg",
-  "/pakete/food-2.jpg",
-  "/fotos/rouladen-mit-rotkohl-und-kroketten-landhotel-schend.jpg",
-  "/pakete/food-3.jpg",
-  "/fotos/schlemmerplatte-landhotel-schend.jpg",
-  "/fotos/salat-buffet-mit-tomatenherz-landhotel-schend.jpg",
-  "/fotos/warmes-buffet-mit-chafing-dishes-landhotel-schend.jpg",
-  "/fotos/schnitzel-mit-salat-landhotel-schend.jpg",
-  "/fotos/cordon-bleu-mit-pommes-landhotel-schend.jpg",
+  "/marquee/food-0.jpg",
+  "/marquee/haehnchen-mit-wedges-landhotel-schend.jpg",
+  "/marquee/food-1.jpg",
+  "/marquee/schnitzelteller-mit-pommes-landhotel-schend.jpg",
+  "/marquee/food-2.jpg",
+  "/marquee/rouladen-mit-rotkohl-und-kroketten-landhotel-schend.jpg",
+  "/marquee/food-3.jpg",
+  "/marquee/schlemmerplatte-landhotel-schend.jpg",
+  "/marquee/salat-buffet-mit-tomatenherz-landhotel-schend.jpg",
+  "/marquee/warmes-buffet-mit-chafing-dishes-landhotel-schend.jpg",
+  "/marquee/schnitzel-mit-salat-landhotel-schend.jpg",
+  "/marquee/cordon-bleu-mit-pommes-landhotel-schend.jpg",
 ];
 
+// Region-Mosaik-Varianten (800px, ~642 KB statt 1,6 MB).
 const REGION_MOSAIC = [
-  { src: "/pakete/eifel-1.jpg", alt: "Eifel-Maar – Kratersee im Wald", cls: "row-span-2 md:h-[33rem]" },
-  { src: "/pakete/eifel-2.jpg", alt: "Aussichtsplattform in der Eifel bei Sonnenuntergang", cls: "md:col-span-2" },
-  { src: "/pakete/eifel-3.jpg", alt: "Schilf am Maar in der Vulkaneifel", cls: "row-span-2 md:h-[33rem]" },
-  { src: "/pakete/eifel-4.jpg", alt: "Ruderboote am Maar", cls: "" },
-  { src: "/pakete/eifel-5.jpg", alt: "Panorama der Vulkaneifel", cls: "" },
+  { src: "/region/eifel-1.jpg", alt: "Eifel-Maar – Kratersee im Wald", cls: "md:row-span-2 md:h-[33rem]" },
+  { src: "/region/eifel-2.jpg", alt: "Aussichtsplattform in der Eifel bei Sonnenuntergang", cls: "md:col-span-2" },
+  { src: "/region/eifel-3.jpg", alt: "Schilf am Maar in der Vulkaneifel", cls: "md:row-span-2 md:h-[33rem]" },
+  { src: "/region/eifel-4.jpg", alt: "Ruderboote am Maar", cls: "" },
+  { src: "/region/eifel-5.jpg", alt: "Panorama der Vulkaneifel", cls: "" },
 ];
 
 const TIMELINE = [
@@ -61,25 +64,24 @@ const TIMELINE = [
   { year: "Heute", event: "21 Zimmer, ★★★ Superior, 5. Generation" },
 ];
 
+// Echte Bewertungs-Plattformen — verlinkt auf die echten Schend-Profile.
+// Scores aus den öffentlichen Profilen (Stand-Snapshot, vor Go-Live mit Karin
+// final verifizieren — Bewertungen ändern sich). Keine erfundenen Zahlen,
+// keine erfundenen Bewertungs-Anzahlen, keine erfundenen Gäste-Zitate.
 const PLATFORMS = [
-  { name: "Google", score: "4,5 / 5", line: "Sehr gut", reviews: "142 Bewertungen" },
-  { name: "Booking.com", score: "8,5 / 10", line: "Sehr gut", reviews: "203 Bewertungen" },
-  { name: "Tripadvisor", score: "4,0 / 5", line: "Nr. 1 in Immerath", reviews: "89 Bewertungen" },
-  { name: "HRS", score: "8,7 / 10", line: "Empfehlenswert", reviews: "67 Bewertungen" },
-];
-const REVIEWS = [
-  { text: "Wunderschönes Hotel in traumhafter Lage. Das Frühstücksbuffet war legendär — so viel Auswahl haben wir selten erlebt. Zimmer sehr sauber und gemütlich.", author: "Familie Müller, Köln" },
-  { text: "Perfekte Lage für Wanderungen in der Vulkaneifel. Das Personal war außerordentlich freundlich und hilfsbereit. Sehr gerne wieder!", author: "Thomas K." },
-  { text: "Gemütliches Hotel mit hervorragendem Restaurant. Die Eifeler Küche hat uns begeistert. Genügend Motorrad-Parkplätze sind vorhanden und sicher videoüberwacht.", author: "Bikergruppe aus München" },
+  { name: "Booking.com", logo: "/reviews/booking.svg", score: "8,7 / 10", line: "Sehr gut · Nr. 1 in Immerath", href: "https://www.booking.com/hotel/de/landhaus-schend.html" },
+  { name: "Tripadvisor", logo: "/reviews/tripadvisor.svg", score: "4,0 / 5", line: "Nr. 1 in Immerath", href: "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html" },
+  { name: "HRS", mark: "HRS", brand: "#1d4ed8", score: "9,0 / 10", line: "100 % Weiterempfehlung", href: "https://www.hrs.com/en/hotel/schend-landhaus/a-542374/" },
+  { name: "Google", logo: "/reviews/google.svg", score: "", line: "Rezensionen auf Google lesen", href: "https://www.google.com/maps/search/?api=1&query=Landhaus+Schend+Immerath" },
 ];
 
 const FAQ_HOME = [
   { q: "Wo liegt das Landhotel Schend genau?", a: "In der Hauptstraße 9, 54552 Immerath, mitten in der Vulkaneifel. Köln ca. 90 Min, Frankfurt ca. 120 Min, Nürburgring ca. 45 Min." },
   { q: "Was kostet eine Übernachtung?", a: "Doppelzimmer ab 57 € pro Person/Nacht inkl. Frühstücksbuffet. Zur Einzelnutzung ab 80 €. Familienzimmer ab 170 €. Halbpension auf Wunsch +23 € pro Person/Tag." },
-  { q: "Gibt es einen sicheren Stellplatz für Motorräder?", a: "Ja — kostenlose, videoüberwachte Parkplätze und genügend Motorrad-Stellplätze. Beliebt bei Fahrern rund um den Nürburgring." },
+  { q: "Gibt es einen Stellplatz für Motorräder?", a: "Eine abschließbare Motorradgarage haben wir nicht — aber kostenlose Parkplätze und genügend Motorrad-Stellplätze direkt im Hof. Beliebt bei Fahrern rund um den Nürburgring." },
   { q: "Bieten Sie Halbpension an?", a: "Halbpension ist auf Wunsch buchbar (+23 € pro Person/Tag) — täglich frische Eifeler Landküche. Das große Frühstücksbuffet ist immer inklusive." },
   { q: "Warum direkt buchen statt über Booking.com?", a: "Bei Direktbuchung zahlen Sie keine Provision, bekommen den Bestpreis und sind bei Sonderwünschen flexibler — und unterstützen direkt unser Familienunternehmen." },
-  { q: "Wann hat das Hotel Saison?", a: "März bis Oktober durchgehend — die schönste Wander- und Radzeit der Eifel. November bis Februar Betriebsferien." },
+  { q: "Wann hat das Hotel Saison?", a: "Aktuelle Öffnungs- und Saisonzeiten erfragen Sie am besten telefonisch unter +49 6573 306 — wir geben Ihnen gern Auskunft." },
 ];
 
 const hotelGraph = {
@@ -117,7 +119,7 @@ const hotelGraph = {
         { "@type": "LocationFeatureSpecification", name: "Hauseigenes Restaurant", value: true },
         { "@type": "LocationFeatureSpecification", name: "Frühstücksbuffet", value: true },
         { "@type": "LocationFeatureSpecification", name: "Kostenloses WLAN", value: true },
-        { "@type": "LocationFeatureSpecification", name: "Kostenloser Parkplatz – videoüberwacht", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Kostenloser Parkplatz", value: true },
         { "@type": "LocationFeatureSpecification", name: "Motorrad-Stellplätze", value: true },
         { "@type": "LocationFeatureSpecification", name: "Balkon oder Terrasse", value: true },
         { "@type": "LocationFeatureSpecification", name: "Aufzug", value: true },
@@ -125,7 +127,6 @@ const hotelGraph = {
         { "@type": "LocationFeatureSpecification", name: "Massagen", value: true },
         { "@type": "LocationFeatureSpecification", name: "Familienzimmer", value: true },
       ],
-      aggregateRating: { "@type": "AggregateRating", ratingValue: "8.5", bestRating: "10", ratingCount: 250 },
       potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: "https://landhaus-schend.de/booking", actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] }, result: { "@type": "LodgingReservation", name: "Direktbuchung Zimmer" } },
     },
     {
@@ -133,10 +134,10 @@ const hotelGraph = {
       name: "Landhotel Schend", alternateName: "Landhaus Schend", url: "https://landhaus-schend.de/",
       logo: "https://landhaus-schend.de/schend-logo-black.svg",
       founder: { "@type": "Person", name: "Familie Schend" }, foundingDate: "1856",
-      contactPoint: { "@type": "ContactPoint", telephone: "+49-6573-306", contactType: "Reservierung", areaServed: "DE", availableLanguage: ["German", "English", "French"] },
+      contactPoint: { "@type": "ContactPoint", telephone: "+49-6573-306", contactType: "Reservierung", areaServed: "DE", availableLanguage: ["German"] },
       sameAs: ["https://www.facebook.com/Landhotel.Schend/", "https://www.booking.com/hotel/de/landhaus-schend.html", "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html"],
     },
-    { "@type": "WebSite", "@id": "https://landhaus-schend.de/#website", url: "https://landhaus-schend.de/", name: "Landhotel Schend", publisher: { "@id": "https://landhaus-schend.de/#organization" }, inLanguage: ["de-DE", "en-US", "fr-FR"] },
+    { "@type": "WebSite", "@id": "https://landhaus-schend.de/#website", url: "https://landhaus-schend.de/", name: "Landhotel Schend", publisher: { "@id": "https://landhaus-schend.de/#organization" }, inLanguage: ["de-DE"] },
   ],
 };
 
@@ -153,23 +154,27 @@ const uspIcon: Record<string, string> = {
 ---
 
 <Layout
-  description="Familiengeführtes 3-Sterne-Hotel in Immerath, Vulkaneifel — 21 Zimmer, Eifeler Landküche, Halbpension. Ideal zum Wandern. Provisionsfrei direkt buchen."
+  title="3-Sterne-Hotel & Kurzurlaub in der Vulkaneifel"
+  description="Familiengeführtes 3-Sterne-Hotel in Immerath, Vulkaneifel — 21 Zimmer, Eifeler Landküche, Halbpension. Ideal für Wandern & Kurzurlaub in der Eifel. Provisionsfrei direkt buchen."
   canonicalPath="/"
   ogType="hotel"
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(hotelGraph)} />
+  <!-- LCP: Hero-Poster früh entdecken + priorisieren (steckt sonst nur im video[poster]) -->
+  <link rel="preload" as="image" href={HERO_POSTER} fetchpriority="high" slot="head" />
 
   <!-- HERO -->
-  <section class="relative h-[100vh] min-h-[640px] max-h-[1100px] overflow-hidden">
+  <section id="top" class="relative h-[100vh] min-h-[640px] max-h-[1100px] overflow-hidden">
     <div data-hero-bg aria-hidden="true" class="absolute inset-0 will-change-transform" style="transform: scale(1.22)">
       <video
         data-hero-video
         class="absolute inset-0 w-full h-full object-cover"
         poster={HERO_POSTER}
+        autoplay
         muted
         loop
         playsinline
-        preload="auto"
+        preload="metadata"
         aria-hidden="true"
       >
         <source src={HERO_VIDEO} type="video/mp4" />
@@ -180,13 +185,6 @@ const uspIcon: Record<string, string> = {
     <div aria-hidden="true" class="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-black/55 via-black/20 to-transparent"></div>
     <div aria-hidden="true" class="hero-grain absolute inset-0 z-[1] pointer-events-none"></div>
 
-    <!-- Wetter (Open-Meteo, client) -->
-    <div data-weather hidden class="absolute top-5 right-5 z-10 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90" style="text-shadow:0 1px 3px rgba(0,0,0,0.5)">
-      <span data-weather-temp class="tabular-nums text-sm font-medium leading-none"></span>
-      <span class="block h-3 w-px bg-white/30" aria-hidden="true"></span>
-      <span class="text-[10px] tracking-[0.18em] uppercase leading-none text-white/75">Vulkaneifel</span>
-    </div>
-
     <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
       <div class="flex items-center gap-4 mb-10 md:mb-14">
         <span class="block h-px w-12 md:w-20 bg-white/65"></span>
@@ -196,17 +194,17 @@ const uspIcon: Record<string, string> = {
       <h1 class="headline-reveal font-display text-balance text-white text-[2.5rem] sm:text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] mb-7 md:mb-9 max-w-4xl" style="text-shadow:0 2px 14px rgba(0,0,0,0.55)">
         Willkommen im Landhotel Schend
       </h1>
-      <p class="font-display-italic text-balance text-white/95 text-lg md:text-2xl max-w-2xl leading-snug mb-9 md:mb-11" style="text-shadow:0 1px 8px rgba(0,0,0,0.55)">
-        Ihr ★★★ Superior Hotel in Immerath — Eifelsteig, Maare-Mosel-Radweg und Nürburgring direkt vor der Tür. Eifeler Landküche, Halbpension auf Wunsch, kostenlose Motorradgarage.
+      <p class="font-display-italic text-balance text-white/95 text-base sm:text-lg md:text-2xl max-w-2xl leading-snug mb-8 sm:mb-9 md:mb-11" style="text-shadow:0 1px 8px rgba(0,0,0,0.55)">
+        Ihr ★★★ Superior Hotel für den Kurzurlaub in der Vulkaneifel — Eifelsteig, Maare-Mosel-Radweg und Nürburgring direkt vor der Tür. Eifeler Landküche, Halbpension auf Wunsch, kostenlose Parkplätze.
       </p>
       <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 mb-10 md:mb-12 text-white/80" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">
-        <span class="text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium"><span class="text-secondary">★</span> Tripadvisor #1</span>
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span class="text-secondary">★</span> Tripadvisor #1</span>
         <span class="text-white/40" aria-hidden="true">·</span>
-        <span class="text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium">8,5 / 10 Booking</span>
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="8.7" data-count-decimals="1" data-count-mount="1" data-count-delay="600" data-count-dur="1400">8,7</span> / 10 Booking</span>
         <span class="text-white/40" aria-hidden="true">·</span>
-        <span class="text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium">165 Jahre Familie</span>
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="165" data-count-mount="1" data-count-delay="800" data-count-dur="1600">165</span> Jahre Familie</span>
         <span class="text-white/40 hidden sm:inline" aria-hidden="true">·</span>
-        <span class="hidden sm:inline text-[11px] md:text-xs tracking-[0.15em] uppercase font-medium">21 Zimmer mit Balkon</span>
+        <span class="hidden sm:inline text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="21" data-count-mount="1" data-count-delay="1000" data-count-dur="1200">21</span> Zimmer mit Balkon</span>
       </div>
       <div class="flex flex-col items-center gap-5">
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
@@ -249,9 +247,7 @@ const uspIcon: Record<string, string> = {
   <section id="rooms" class="bg-gradient-to-b from-background via-muted/20 to-background">
     <div class="container mx-auto px-4 py-20 md:py-28">
       <div class="text-center mb-14 md:mb-20" data-reveal>
-        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>
-        <p class="eyebrow">Unsere Zimmer</p>
-        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">Zu Gast im Landhotel Schend</h2>
+        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">Zu Gast im Landhotel Schend</h2>
         <p class="text-muted-foreground mt-5 max-w-prose mx-auto leading-relaxed text-pretty">
           Komfortable Doppelzimmer (auch zur Einzelnutzung) und großzügige Familienzimmer — alle mit Balkon oder Terrasse und Blick in die Vulkaneifel. Frühstücksbuffet inklusive.
         </p>
@@ -286,7 +282,7 @@ const uspIcon: Record<string, string> = {
 
   <!-- RESTAURANT (voll) -->
   <section id="restaurant" class="bg-gradient-to-b from-muted/40 via-muted/20 to-muted/40">
-    <div class="bg-secondary/10 border-b border-border/60">
+    <div class="animate-pulse-banner border-y border-border/60">
       <div class="container mx-auto px-4 py-4 md:py-5">
         <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center">
           <span class="inline-flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
@@ -305,9 +301,7 @@ const uspIcon: Record<string, string> = {
         </div>
       </div>
       <div class="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>
-        <span class="hairline block max-w-[3rem] mb-5"></span>
-        <p class="eyebrow">Kulinarik</p>
-        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">Landhaus Restaurant & Terrasse</h2>
+        <span class="hairline block max-w-[3rem] mb-5"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">Landhaus Restaurant & Terrasse</h2>
         <div class="space-y-5 text-foreground/85 leading-relaxed max-w-prose">
           <p class="drop-cap">Für den großen Hunger ist unser besonders gemütliches Restaurant genau die richtige Wahl — Eifeler und internationale Spezialitäten in stilvoller Atmosphäre, frisch gezapftes Bitburger und Produkte der Eifeler Landküche.</p>
           <p>Eine separate Karte für Kinder und eine Kinderspielecke bieten auch Familien ein attraktives Angebot. Hunde sind in der Dorfgaststätte erlaubt.</p>
@@ -317,8 +311,9 @@ const uspIcon: Record<string, string> = {
           <div class="hairline mb-5"></div>
           <p class="eyebrow mb-4">Öffnungszeiten</p>
           <div class="text-sm space-y-2">
-            <div class="grid grid-cols-[140px_1fr] gap-x-6"><span class="font-medium">Montag – Samstag</span><span class="text-muted-foreground">17:30 – 20:00</span></div>
+            <div class="grid grid-cols-[140px_1fr] gap-x-6"><span class="font-medium">Donnerstag – Samstag</span><span class="text-muted-foreground">17:30 – 20:00</span></div>
             <div class="grid grid-cols-[140px_1fr] gap-x-6"><span class="font-medium">Sonntag</span><div class="text-muted-foreground"><p>12:00 – 14:00</p><p>17:30 – 20:00</p></div></div>
+            <div class="grid grid-cols-[140px_1fr] gap-x-6"><span class="font-medium">Ruhetag</span><span class="text-muted-foreground">Montag, Dienstag, Mittwoch</span></div>
           </div>
           <div class="mt-10 pt-6 border-t border-border/60">
             <a href="/restaurant" class="group inline-flex items-center gap-2 text-xs font-medium tracking-[0.2em] uppercase text-secondary hover:text-foreground transition-colors">Volle Restaurant-Seite ansehen <span class="transition-transform duration-300 group-hover:translate-x-1">→</span></a>
@@ -330,21 +325,19 @@ const uspIcon: Record<string, string> = {
 
     <div class="overflow-hidden border-y border-border/60 py-6 bg-background">
       <div class="flex w-max animate-marquee">
-        {Array.from({ length: 4 }).flatMap(() => FOOD_PHOTOS.map((src) => (
+        {/* 2 Kopien genügen für nahtlosen -50%-Loop (vorher 4 = doppelte img/Requests) */}
+        {Array.from({ length: 2 }).flatMap(() => FOOD_PHOTOS.map((src) => (
           <img src={src} alt="Gericht aus dem Landhaus Restaurant" loading="lazy" decoding="async" class="h-44 md:h-56 w-auto object-cover rounded-md shadow-card mr-4" />
         )))}
       </div>
     </div>
 
     <div class="container mx-auto px-4 py-14 md:py-20">
-      <div class="text-center mb-10 md:mb-12" data-reveal>
-        <p class="eyebrow">Im Restaurant</p>
-        <h3 class="font-display text-2xl md:text-3xl mt-3 text-balance">Was Sie diese Saison erwartet</h3>
+      <div class="text-center mb-10 md:mb-12" data-reveal>        <h3 class="font-display text-2xl md:text-3xl mt-3 text-balance">Aus unserer Küche</h3>
       </div>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border/50 max-w-5xl mx-auto" data-reveal>
-        <div class="bg-background p-6 md:p-8 flex flex-col"><p class="text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">Wochen-Hit</p><h4 class="font-display text-xl md:text-2xl mb-3 leading-tight">Hamburgertag</h4><p class="text-sm text-muted-foreground leading-relaxed flex-1">Ein Mal pro Woche unser Eifeler Burger mit Heim­pommes — Treffpunkt für Einheimische und Hotelgäste.</p><div class="hairline mt-6 mb-3"></div><p class="text-xs text-muted-foreground">Tag und Uhrzeit erfragen — wir freuen uns über Reservierung.</p></div>
+      <div class="grid sm:grid-cols-2 gap-px bg-border/50 max-w-3xl mx-auto" data-reveal>
         <div class="bg-background p-6 md:p-8 flex flex-col"><p class="text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">Eifeler Klassiker</p><h4 class="font-display text-xl md:text-2xl mb-3 leading-tight">Halbpension nach Eifeler Art</h4><p class="text-sm text-muted-foreground leading-relaxed flex-1">3-Gang-Menü mit regionalen Zutaten — Wildgerichte im Herbst, Spargel im Frühjahr.</p><div class="hairline mt-6 mb-3"></div><p class="text-xs text-muted-foreground">+23 €/Person/Tag — zur Übernachtung zubuchbar.</p></div>
-        <div class="bg-background p-6 md:p-8 flex flex-col"><p class="text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">Für Gruppen</p><h4 class="font-display text-xl md:text-2xl mb-3 leading-tight">Festtafel & Feiern</h4><p class="text-sm text-muted-foreground leading-relaxed flex-1">Hochzeiten, runde Geburtstage, Firmenessen — der Festsaal fasst bis 80 Gäste.</p><div class="hairline mt-6 mb-3"></div><p class="text-xs text-muted-foreground">Auf Anfrage, gerne mit individuellem Menü.</p></div>
+        <div class="bg-background p-6 md:p-8 flex flex-col"><p class="text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">Für Gruppen</p><h4 class="font-display text-xl md:text-2xl mb-3 leading-tight">Festtafel & Feiern</h4><p class="text-sm text-muted-foreground leading-relaxed flex-1">Hochzeiten, runde Geburtstage, Firmenessen — der Festsaal fasst bis 70 Gäste.</p><div class="hairline mt-6 mb-3"></div><p class="text-xs text-muted-foreground">Auf Anfrage, gerne mit individuellem Menü.</p></div>
       </div>
       <div class="text-center mt-10"><a href="tel:+4965731306" class="inline-flex items-center gap-3 px-7 py-3.5 min-h-[52px] bg-primary text-primary-foreground rounded-sm text-xs sm:text-sm font-medium tracking-[0.2em] uppercase hover:bg-secondary hover:text-secondary-foreground transition-colors">Reservieren · +49 6573 306</a></div>
     </div>
@@ -352,13 +345,11 @@ const uspIcon: Record<string, string> = {
     <div class="grid lg:grid-cols-12 items-stretch">
       <div class="lg:col-span-7">
         <div class="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[560px] overflow-hidden shadow-card">
-          <img src="/pakete/feiern.jpg" alt="Festlich gedeckter Saal im Landhotel Schend" loading="lazy" decoding="async" class="w-full h-full object-cover" />
+          <img src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg" alt="Festlich gedeckter Festsaal mit Sektempfang im Landhotel Schend" loading="lazy" decoding="async" class="w-full h-full object-cover" />
         </div>
       </div>
       <div class="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>
-        <span class="hairline block max-w-[3rem] mb-5"></span>
-        <p class="eyebrow">Wir organisieren Ihre Feste</p>
-        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">Familien- & Firmenfeiern</h2>
+        <span class="hairline block max-w-[3rem] mb-5"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">Familien- & Firmenfeiern</h2>
         <p class="text-foreground/85 leading-relaxed max-w-prose">Laden Sie ein zu einem unvergesslichen Fest in ansprechendem Ambiente. Im eleganten Eichelbergzimmer speisen bis zu 70 Personen, im Kaminzimmer 35, in der Dorfgaststätte und auf der Sonnenterrasse jeweils 40. Wir stellen Ihnen ein individuelles Paket zusammen — von der Planung über die Dekoration bis zum Menü oder Büffet.</p>
       </div>
     </div>
@@ -368,9 +359,7 @@ const uspIcon: Record<string, string> = {
   <section id="pakete" class="bg-gradient-to-b from-muted/30 via-background to-muted/15">
     <div class="container mx-auto px-4 py-20 md:py-28">
       <div class="text-center mb-14 md:mb-20" data-reveal>
-        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>
-        <p class="eyebrow">Angebote & Pauschalen</p>
-        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">Pauschalen für Ihre Auszeit</h2>
+        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">Pauschalen für Ihre Auszeit</h2>
         <p class="text-muted-foreground mt-5 max-w-prose mx-auto leading-relaxed text-pretty">Wandern, Radfahren oder einfach durchatmen — stimmig kombiniert mit Eifeler Landküche.</p>
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -386,7 +375,7 @@ const uspIcon: Record<string, string> = {
               )}
             </div>
             <h3 class="font-display text-xl md:text-2xl mb-2 group-hover:text-secondary transition-colors text-balance">{p.title}</h3>
-            {p.highlights?.[0] && <p class="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">{p.highlights[0]}</p>}
+            {p.intro && <p class="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">{p.intro}</p>}
             <span class="text-xs font-medium tracking-[0.2em] uppercase text-secondary inline-flex items-center gap-2 transition-all group-hover:gap-3">Mehr erfahren <span>→</span></span>
           </a>
         ))}
@@ -394,12 +383,50 @@ const uspIcon: Record<string, string> = {
     </div>
   </section>
 
+  <!-- WELLNESS — dunkle "Atempause": Sauna & Ruhebereich, Nutzung auf Anfrage.
+       Bewusster dunkler Kontrast-Block (Kapitel-Ende) zwischen Pakete und Region. -->
+  <section id="wellness" class="relative bg-[hsl(220_22%_12%)] text-[hsl(38_30%_92%)] overflow-hidden">
+    <div class="grid lg:grid-cols-12 items-stretch">
+      <div class="lg:col-span-7 lg:order-last relative overflow-hidden">
+        <div class="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[520px] overflow-hidden">
+          <img
+            src="/fotos/sauna-und-ruhebereich-mit-whirlpool-landhotel-schend-vulkaneifel.jpg"
+            alt="Sauna- und Ruhebereich mit Whirlpool im Landhotel Schend"
+            loading="lazy"
+            decoding="async"
+            class="wellness-img w-full h-full object-cover"
+          />
+        </div>
+        <div aria-hidden="true" class="hidden lg:block absolute inset-y-0 left-0 w-32 bg-gradient-to-l from-transparent to-[hsl(220_22%_12%)]"></div>
+      </div>
+      <div class="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-28 flex flex-col justify-center" data-reveal>
+        <p class="text-[11px] tracking-[0.32em] uppercase text-[hsl(38_55%_62%)] mb-5 font-medium">Aufguss · Ruhe · Eifeler Stille</p>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mb-8 text-balance leading-[1.05]">Sauna- &amp; Ruhebereich im Haus</h2>
+        <p class="text-[hsl(38_30%_92%)]/80 leading-relaxed max-w-prose">
+          Nach einem Tag zwischen Maaren und Wäldern: ein stiller Rückzug mit Sauna,
+          Ruhebereich und Whirlpool. Die Nutzung stimmen wir gern persönlich mit Ihnen
+          ab — sprechen Sie uns einfach an.
+        </p>
+        <div class="mt-8">
+          <a href="tel:+4965731306" class="group inline-flex items-center gap-2 text-xs font-medium tracking-[0.2em] uppercase text-[hsl(38_55%_62%)] hover:text-[hsl(38_30%_92%)] transition-colors">
+            Nutzung anfragen · +49 6573 306
+            <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <style>
+    /* Sanfter Ken-Burns auf dem Wellness-Foto (Progressive Enhancement). */
+    .wellness-img { animation: wellness-zoom 20s ease-in-out infinite alternate; transform-origin: 60% 50%; }
+    @keyframes wellness-zoom { from { transform: scale(1); } to { transform: scale(1.07); } }
+    @media (prefers-reduced-motion: reduce) { .wellness-img { animation: none; } }
+  </style>
+
   <!-- URLAUBSREGION -->
   <section id="region" class="bg-background">
     <div class="container mx-auto px-4 py-20 md:py-28">
-      <div class="text-center mb-14 md:mb-20 max-w-3xl mx-auto" data-reveal>
-        <p class="eyebrow">Region</p>
-        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-6 text-balance leading-[1.05]">Urlaubsregion Eifel</h2>
+      <div class="text-center mb-14 md:mb-20 max-w-3xl mx-auto" data-reveal>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-6 text-balance leading-[1.05]">Urlaubsregion Eifel</h2>
         <p class="text-foreground/85 text-base md:text-lg leading-relaxed text-pretty">Unser Hotel schmiegt sich in die Kratermulde eines erloschenen Vulkans. Erleben Sie die Einzigartigkeit unserer Gesundheitslandschaft Vulkaneifel.</p>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mb-16 md:mb-20" data-reveal>
@@ -437,9 +464,7 @@ const uspIcon: Record<string, string> = {
           <img src="/fotos/landhotel-schend-zeichnung-innenhof-historisch.jpg" alt="Bleistift-Zeichnung des Landhotel Schend in Immerath mit Innenhof und Eingang" class="w-full h-full object-cover object-center contrast-110" loading="lazy" decoding="async" />
         </div>
       </div>
-      <div class="lg:col-span-6 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>
-        <p class="eyebrow">Über uns</p>
-        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-10 text-balance leading-[1.05]">Familienhotel seit 1856</h2>
+      <div class="lg:col-span-6 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-10 text-balance leading-[1.05]">Familienhotel seit 1856</h2>
         <div class="space-y-5 text-foreground/85 leading-relaxed max-w-prose">
           <p class="drop-cap">Anno 1856 wurde das Grundhaus erbaut und diente bereits damals als Gasthaus und zeitweise als Poststelle für den Ort.</p>
           <p>Seit <span class="font-display text-primary">1976</span> arbeiteten Tochter Roswitha und Ehemann Reinhold im Betrieb mit, den sie <span class="font-display text-primary">1993</span> übernahmen. <span class="font-display text-primary">1997</span> eröffneten sie das neue Gebäude als „Landhaus Schend", seit <span class="font-display text-primary">1999</span> mit 3 Sternen ausgezeichnet — heute in der 5. Generation.</p>
@@ -468,6 +493,7 @@ const uspIcon: Record<string, string> = {
       </div>
       <div class="md:hidden max-w-md mx-auto">
         <ol class="relative border-l-2 border-secondary/30 ml-3 space-y-6 pl-6">
+          <span aria-hidden="true" class="tl-glint-v"></span>
           {TIMELINE.map((item, i) => (
             <li class="tl-item relative" style={`--i:${i}`}>
               <span aria-hidden="true" class="absolute -left-[1.85rem] top-1 h-3 w-3 rounded-full bg-secondary ring-4 ring-background"></span>
@@ -484,28 +510,23 @@ const uspIcon: Record<string, string> = {
   <section id="reviews" class="bg-background border-y border-border/50">
     <div class="container mx-auto px-4 py-20 md:py-28">
       <div class="text-center max-w-2xl mx-auto mb-12" data-reveal>
-        <p class="eyebrow">Was Gäste sagen</p>
-        <h2 class="font-display text-4xl md:text-5xl mt-3 text-balance">Über 500 Bewertungen, 4,5 ★ im Schnitt</h2>
+        <p class="eyebrow">Bewertungen</p>
+        <h2 class="font-display text-4xl md:text-5xl mt-3 text-balance">Das sagen Gäste auf den Plattformen</h2>
+        <p class="text-muted-foreground mt-4 leading-relaxed text-pretty">Lesen Sie echte Bewertungen direkt bei Booking.com, Tripadvisor, HRS und Google.</p>
       </div>
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto mb-12">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
         {PLATFORMS.map((p, i) => (
-          <div class="text-center p-6 rounded-md border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
-            <p class="text-sm font-semibold text-muted-foreground">{p.name}</p>
-            <p class="font-display text-3xl text-secondary mt-2">{p.score}</p>
+          <a href={p.href} target="_blank" rel="noopener noreferrer" aria-label={`Bewertungen von ${p.name} ansehen (öffnet in neuem Tab)`} class="group text-center p-6 rounded-md border border-border bg-card shadow-card flex flex-col items-center transition-all hover:border-secondary hover:-translate-y-0.5" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+            {p.logo
+              ? <img src={p.logo} alt="" aria-hidden="true" width="36" height="36" class="h-9 w-9 mb-3 object-contain" />
+              : <span aria-hidden="true" class="grid place-items-center h-9 w-9 rounded-md text-white font-bold text-xs mb-3 shadow-sm" style={`background:${p.brand}`}>{p.mark}</span>}
+            <p class="text-sm font-semibold text-foreground">{p.name}</p>
+            {p.score
+              ? <p class="font-display text-3xl text-secondary mt-1 tabular-nums">{p.score}</p>
+              : <p class="font-display text-2xl text-secondary mt-2">Rezensionen</p>}
             <p class="text-xs text-foreground/70 mt-1">{p.line}</p>
-            <p class="text-[11px] text-muted-foreground mt-1">{p.reviews}</p>
-          </div>
-        ))}
-      </div>
-      <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-        {REVIEWS.map((r, i) => (
-          <figure class="p-6 rounded-md border border-border bg-card shadow-card flex flex-col" data-reveal style={`--reveal-delay:${i * 0.1}s`}>
-            <div class="flex gap-0.5 text-secondary mb-3" aria-hidden="true">
-              {[1, 2, 3, 4, 5].map(() => (<svg class="h-4 w-4 fill-secondary" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>))}
-            </div>
-            <blockquote class="text-sm text-foreground/85 leading-relaxed flex-1 text-pretty">„{r.text}"</blockquote>
-            <figcaption class="text-sm font-medium text-muted-foreground mt-4">— {r.author}</figcaption>
-          </figure>
+            <span class="text-[11px] tracking-[0.12em] uppercase text-secondary mt-3 inline-flex items-center gap-1 group-hover:gap-1.5 transition-all">Ansehen <span aria-hidden="true">→</span></span>
+          </a>
         ))}
       </div>
     </div>
@@ -514,9 +535,7 @@ const uspIcon: Record<string, string> = {
   <!-- FAQ (Auszug, alle auf /faq) -->
   <section id="faq" class="bg-gradient-to-b from-muted/15 via-background to-muted/15">
     <div class="container mx-auto px-4 py-20 md:py-28 max-w-3xl">
-      <div class="text-center mb-14" data-reveal>
-        <p class="eyebrow">Häufige Fragen</p>
-        <h2 class="font-display text-4xl md:text-5xl mt-4 text-balance">Was Gäste oft fragen</h2>
+      <div class="text-center mb-14" data-reveal>        <h2 class="font-display text-4xl md:text-5xl mt-4 text-balance">Was Gäste oft fragen</h2>
       </div>
       <div class="border-t border-border/70">
         {FAQ_HOME.map((f, i) => (
@@ -537,8 +556,65 @@ const uspIcon: Record<string, string> = {
     </style>
   </section>
 
-  <!-- STANDORT / KARTE -->
+  <!-- STANDORT / KARTE — id="location" sitzt in der Section selbst (kein Doppel-Anker) -->
   <LocationSection />
+
+  <!-- Abschnitts-Navigation (Punkte rechts) — zeigt die aktuelle Position auf der Seite -->
+  <nav id="section-dots" aria-label="Abschnitts-Navigation" data-visible="false" inert class="flex fixed right-2 lg:right-5 top-1/2 -translate-y-1/2 z-40 flex-col gap-1.5 lg:gap-3 opacity-0 pointer-events-none transition-opacity duration-500">
+    {[["top","Start"],["rooms","Zimmer"],["restaurant","Restaurant"],["pakete","Pakete"],["reviews","Bewertungen"],["location","Anfahrt"]].map(([id,label]) => (
+      <a href={`#${id}`} data-dot={id} aria-label={label} class="dot-link group relative grid place-items-center w-8 h-8 lg:w-5 lg:h-5">
+        <span class="dot block rounded-full w-2 h-2 lg:w-1.5 lg:h-1.5 bg-secondary/70 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out group-hover:bg-secondary group-hover:scale-110"></span>
+        <span class="absolute right-full mr-3 px-2.5 py-1 rounded-sm bg-foreground/95 text-background text-[10px] uppercase tracking-[0.18em] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-300 pointer-events-none">{label}</span>
+      </a>
+    ))}
+  </nav>
+  <style>
+    #section-dots[data-visible="true"] { opacity: 1; pointer-events: auto; }
+    #section-dots .dot-link[data-active="true"] .dot {
+      width: 0.75rem; height: 0.75rem;
+      background: hsl(var(--secondary));
+      box-shadow: 0 0 8px hsl(var(--secondary) / 0.4);
+    }
+  </style>
+  <script>
+    // Abschnitts-Punkte — aktive Section über Anchor-Punkt (40% Viewport),
+    // gespeist von der Lenis-Scroll-Brücke (window.__onScroll).
+    (function () {
+      const nav = document.getElementById("section-dots");
+      if (!nav) return;
+      const ids = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
+      const links = Array.from(nav.querySelectorAll<HTMLElement>("[data-dot]"));
+      const update = (y: number) => {
+        const anchorY = y + window.innerHeight * 0.4;
+        let bestId = "top";
+        let bestStart = -Infinity;
+        for (const id of ids) {
+          const el = document.getElementById(id);
+          if (!el) continue;
+          const rect = el.getBoundingClientRect();
+          const start = rect.top + y;
+          if (anchorY >= start && anchorY < start + rect.height && start > bestStart) {
+            bestStart = start;
+            bestId = id;
+          }
+        }
+        links.forEach((a) =>
+          a.setAttribute("data-active", a.getAttribute("data-dot") === bestId ? "true" : "false"),
+        );
+        const visible = y > window.innerHeight * 0.6;
+        nav.setAttribute("data-visible", visible ? "true" : "false");
+        // opacity:0 allein bleibt tabbar — inert nimmt die versteckten Punkte
+        // aus Tab-Reihenfolge + Screenreader (WCAG 2.4.3 / 2.4.7).
+        (nav as HTMLElement & { inert: boolean }).inert = !visible;
+      };
+      if ((window as any).__onScroll) (window as any).__onScroll(update);
+      else {
+        update(window.scrollY);
+        window.addEventListener("scroll", () => update(window.scrollY), { passive: true });
+      }
+      window.addEventListener("resize", () => update((window as any).__lenis?.scroll ?? window.scrollY));
+    })();
+  </script>
 
   <script>
     // Hero-Video nur abspielen, wenn der Nutzer Bewegung erlaubt — sonst bleibt
@@ -548,15 +624,28 @@ const uspIcon: Record<string, string> = {
     //   - spielt, sobald es im Viewport + Tab aktiv ist
     //   - pausiert nur, wenn es aus dem Bild gescrollt ist (spart Strom/Akku)
     //   - wirft sich nach Browser-Auto-Pause sofort wieder an
+    // Motion-Off = OS-prefers-reduced-motion ODER In-App-Komfort-Schalter
+    // (html.a11y-reduced-motion, gesetzt vom A11yPanel) — wie Layout.astro.
     const heroVideo = document.querySelector<HTMLVideoElement>("[data-hero-video]");
-    if (heroVideo && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const motionOff = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      || document.documentElement.classList.contains("a11y-reduced-motion");
+    if (heroVideo && motionOff) {
+      // Markup hat autoplay -> bei reduzierter Bewegung aktiv stoppen, Poster bleibt.
+      heroVideo.removeAttribute("autoplay");
+      heroVideo.pause();
+    } else if (heroVideo) {
       let inView = true;
       const tryPlay = () => {
         if (inView && !document.hidden && heroVideo.paused) heroVideo.play().catch(() => {});
       };
 
-      if (heroVideo.readyState >= 2) tryPlay();
-      else heroVideo.addEventListener("canplay", tryPlay, { once: true });
+      // Mobil holt bei preload="metadata" ohne .play() KEINE Mediendaten nach
+      // (canplay feuert dann nie). Darum sofort versuchen + an mehreren
+      // Lade-Events erneut anwerfen, statt nur auf canplay zu warten.
+      tryPlay();
+      heroVideo.addEventListener("loadedmetadata", tryPlay, { once: true });
+      heroVideo.addEventListener("loadeddata", tryPlay, { once: true });
+      heroVideo.addEventListener("canplay", tryPlay, { once: true });
 
       // Im Bild -> spielen, raus -> pausieren.
       if ("IntersectionObserver" in window) {
@@ -579,7 +668,7 @@ const uspIcon: Record<string, string> = {
 
     // Hero-Parallax (Bildebene scrollt langsamer, Scale bleibt erhalten).
     const bg = document.querySelector<HTMLElement>("[data-hero-bg]");
-    if (bg && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (bg && !motionOff) {
       let raf = 0;
       const applyParallax = (sy: number) => {
         cancelAnimationFrame(raf);
@@ -598,17 +687,5 @@ const uspIcon: Record<string, string> = {
       }
     }
 
-    // Live-Wetter (Open-Meteo) — im Datenschutz als Auftragsdienst gelistet.
-    const wx = document.querySelector<HTMLElement>("[data-weather]");
-    const wxt = document.querySelector<HTMLElement>("[data-weather-temp]");
-    if (wx && wxt) {
-      fetch("https://api.open-meteo.com/v1/forecast?latitude=50.1303&longitude=6.9594&current=temperature_2m")
-        .then((r) => r.json())
-        .then((d) => {
-          const t = d?.current?.temperature_2m;
-          if (typeof t === "number") { wxt.textContent = `${Math.round(t)}°`; wx.hidden = false; wx.classList.remove("hidden"); }
-        })
-        .catch(() => {});
-    }
   </script>
 </Layout>

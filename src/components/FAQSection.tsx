@@ -16,8 +16,12 @@ const FAQS_DE: FAQ[] = [
     a: "Wir haben 21 Zimmer — 19 Komfortzimmer und 2 Familienzimmer. Alle sind Nichtraucherzimmer mit Dusche/WC, Telefon, TV, kostenfreiem WLAN und Safe. Die meisten verfügen über einen Balkon oder eine Terrasse mit Blick auf die Vulkaneifel.",
   },
   {
-    q: "Gibt es eine Garage oder einen sicheren Stellplatz für Motorräder?",
-    a: "Ja. Wir bieten kostenlose, videoüberwachte Parkplätze und genügend Motorrad-Stellplätze. Damit sind wir ein beliebtes Hotel für Motorradfahrer rund um den Nürburgring und die kurvenreichen Straßen der Vulkaneifel.",
+    q: "Gibt es Einzelzimmer?",
+    a: "Klassische Einzelzimmer haben wir nicht. Alleinreisende buchen bei uns ein Doppelzimmer zur Einzelnutzung — ab 80 € pro Nacht inklusive großem Frühstücksbuffet. So haben Sie deutlich mehr Platz als in einem typischen Einzelzimmer.",
+  },
+  {
+    q: "Gibt es einen Stellplatz für Motorräder?",
+    a: "Eine abschließbare Motorradgarage haben wir nicht. Wir bieten aber kostenlose Parkplätze und genügend Motorrad-Stellplätze direkt im Hof — beliebt bei Fahrern rund um den Nürburgring und die kurvenreichen Straßen der Vulkaneifel.",
   },
   {
     q: "Bieten Sie Halbpension oder Vollpension an?",
@@ -25,7 +29,11 @@ const FAQS_DE: FAQ[] = [
   },
   {
     q: "Welche Erholungsmöglichkeiten gibt es im Haus?",
-    a: "Unser behagliches Kaminzimmer, die Sonnenterrasse und das gemütliche Restaurant laden zum Verweilen ein. Die ruhige Lage in der Kratermulde der Vulkaneifel — fernab vom Großstadttrubel — sorgt von selbst für Erholung. Wanderwege, Maare und Radrouten direkt vor der Tür sind ideal zum Durchatmen.",
+    a: "Unser behagliches Kaminzimmer, die Sonnenterrasse und das gemütliche Restaurant laden zum Verweilen ein. Im Haus gibt es zudem einen Sauna- und Ruhebereich mit Whirlpool. Die ruhige Lage in der Kratermulde der Vulkaneifel — fernab vom Großstadttrubel — sorgt von selbst für Erholung. Wanderwege, Maare und Radrouten direkt vor der Tür sind ideal zum Durchatmen.",
+  },
+  {
+    q: "Gibt es eine Sauna oder einen Wellnessbereich?",
+    a: "Ja, im Haus gibt es einen Sauna- und Ruhebereich mit Whirlpool. Die Nutzung stimmen wir gern individuell mit Ihnen ab — sprechen Sie uns bei der Buchung oder vor Ort einfach an.",
   },
   {
     q: "Ist Frühstück inklusive und wie sieht es aus?",
@@ -33,7 +41,7 @@ const FAQS_DE: FAQ[] = [
   },
   {
     q: "Hat das Restaurant einen Ruhetag?",
-    a: "Unser Landhaus Restaurant ist Montag bis Samstag von 17:30 bis 20:00 Uhr geöffnet. Sonntags servieren wir auch mittags von 12:00 bis 14:00 Uhr und abends von 17:30 bis 20:00 Uhr.",
+    a: "Ja — Montag, Dienstag und Mittwoch sind Ruhetage. An diesen Tagen gibt es kein À-la-carte; unser Halbpensions-Menü können Hausgäste mit Voranmeldung erhalten. An Feiertagen ist das Restaurant für Sie geöffnet. À-la-carte servieren wir Donnerstag bis Samstag von 17:30 bis 20:00 Uhr und sonntags von 12:00 bis 14:00 Uhr sowie 17:30 bis 20:00 Uhr. Unsere Speisekarte wechselt wöchentlich — das Wochenmenü geben wir morgens bekannt.",
   },
   {
     q: "Welche Küche serviert das Restaurant?",
@@ -73,7 +81,7 @@ const FAQS_DE: FAQ[] = [
   },
   {
     q: "Wann hat das Hotel Saison?",
-    a: "Wir sind von März bis Oktober durchgehend für Sie da — das ist die Haupt-Saison in der Eifel mit dem schönsten Wander- und Radwetter. Außerhalb dieser Zeit (November bis Februar) machen wir Betriebsferien. Für Anfragen außerhalb der Saison rufen Sie uns gerne an.",
+    a: "Unsere aktuellen Öffnungs- und Saisonzeiten erfragen Sie am besten direkt bei uns — telefonisch unter +49 6573 306 oder per E-Mail an info@landhaus-schend.de. Wir geben Ihnen gern Auskunft und helfen bei der Planung Ihres Aufenthalts.",
   },
   {
     q: "Wie kann ich direkt buchen?",

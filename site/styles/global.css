@@ -28,8 +28,11 @@
     --primary: 220 22% 18%;
     --primary-foreground: 38 35% 96%;
 
-    /* Secondary — brushed brass / muted gold (NOT shiny yellow) */
-    --secondary: 38 48% 38%;
+    /* Secondary — brushed brass / muted gold (NOT shiny yellow)
+       L 34% statt 38%: hält als Text auf Creme WCAG-AA (>=4,5:1); Buttons/Borders
+       optisch praktisch identisch. Auf dunklen Flächen (Footer) wird lokal eine
+       hellere Brass-Variante gesetzt. */
+    --secondary: 38 52% 34%;
     --secondary-foreground: 38 35% 96%;
 
     /* Muted — warm cream wash for soft sections */
@@ -276,6 +279,15 @@
     color: hsl(var(--secondary));
   }
 
+  /* Sichtbarer Tastatur-Fokus (WCAG 2.4.7) — gilt überall statt nur Browser-Default.
+     :where() = 0 Spezifität, damit bespoke Fokus-Stile (nav-underline/footer-link)
+     weiter greifen. */
+  :where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid hsl(var(--secondary));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
   /* Hairline divider — fades at the edges */
   .hairline {
     height: 1px;
@@ -320,6 +332,15 @@
     font-size: 17px;
     line-height: 1.55;
   }
+  /* Echter Fließtext mit text-sm (14px) auf 15px heben — der 17px-Body-Boost
+     greift sonst nicht, weil die Klasse direkt am Element gewinnt. Labels,
+     Eyebrows & Badges (text-xs, text-[10px]/[11px]) bleiben bewusst klein. */
+  p.text-sm,
+  li.text-sm,
+  ul.text-sm > li {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
 }
 
 @layer utilities {
@@ -328,13 +349,24 @@
     to { transform: translateX(-50%); }
   }
   .animate-marquee {
-    animation: marquee-x 60s linear infinite;
+    animation: marquee-x 110s linear infinite;
   }
   .animate-marquee:hover {
     animation-play-state: paused;
   }
   @media (prefers-reduced-motion: reduce) {
     .animate-marquee { animation: none; }
+  }
+  /* Tagesgäste-Banner — sanftes Brass-Pulsieren zieht den Blick, ohne Text-Flackern */
+  @keyframes pulse-tagesgaeste {
+    0%, 100% { background-color: hsl(var(--secondary) / 0.08); }
+    50% { background-color: hsl(var(--secondary) / 0.22); }
+  }
+  .animate-pulse-banner {
+    animation: pulse-tagesgaeste 2.6s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-pulse-banner { animation: none; background-color: hsl(var(--secondary) / 0.15); }
   }
 
   @keyframes fade-up {
@@ -382,30 +414,25 @@
     .hero-ken-burns { animation: none !important; }
   }
 
-  /* Conexa-Icon Diamant-Funkeln — Footer "Powered by". Nur das Icon funkelt:
-     lange ruhig & gedimmt, dann ein kurzer scharfer Glint — heller Gold-Weiß-
-     Funke MIT Scale-Pop (Diamant blitzt kurz auf). Der Pop verkauft das Funkeln;
-     reines Opacity-/Glow-Pulsieren las sich nur als sanftes Atmen.
-     (Eugen: pulsiert/funkelt wie Diamant, nur die Icon.) */
+  /* Conexa-Icon Diamant-Funkeln — Footer "Powered by".
+     Funkelt im SOS-Morse-Takt: · · ·  – – –  · · ·  (drei kurz, drei lang, drei
+     kurz, dann Wort-Pause). 1 Einheit ≈ 120 ms, voller Zyklus ≈ 4,1 s.
+     OFF-Stops = Pausen, ON-Stops = der Glint je Dit/Dah.
+     (Eugen 2026-06-06: im SOS-Morse-Takt funkeln.) */
   @keyframes conexa-diamond-pulse {
-    0%, 55%, 100% {
+    0%, 2.9%, 5.5%, 8.8%, 11.4%, 14.7%, 23.1%, 32.8%, 34.9%, 44.5%, 46.7%, 56.3%, 64.3%, 68%, 70.2%, 73.9%, 76.1%, 79.8%, 100% {
       filter: drop-shadow(0 0 1px rgba(255,255,255,0.25));
-      opacity: 0.55;
+      opacity: 0.3;
       transform: scale(1);
     }
-    64% {
+    0.4%, 2.5%, 5.9%, 8.4%, 11.8%, 14.3%, 23.5%, 32.4%, 35.3%, 44.1%, 47.1%, 55.9%, 64.7%, 67.6%, 70.6%, 73.5%, 76.5%, 79.4% {
       filter: drop-shadow(0 0 7px rgba(214,184,122,0.95)) drop-shadow(0 0 16px rgba(255,255,255,0.6)) brightness(1.6);
       opacity: 1;
-      transform: scale(1.3);
-    }
-    72% {
-      filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
-      opacity: 0.85;
-      transform: scale(1);
+      transform: scale(1.18);
     }
   }
   .conexa-diamond {
-    animation: conexa-diamond-pulse 3.6s ease-in-out infinite;
+    animation: conexa-diamond-pulse 4.1s linear infinite;
     transform-origin: center;
     will-change: transform, filter, opacity;
   }
@@ -627,9 +654,8 @@
   }
 
   /* Wander-Glint — nach dem Zeichnen der Linie läuft ein weicher Gold-Funke
-     drei Mal von 1856 nach Heute ("ein Funke Geschichte durch die Zeit"),
-     dann legt er sich. Eigenes Element auf der relativen Desktop-Spur,
-     kollidiert mit nichts. */
+     fortlaufend von 1856 nach Heute ("ein Funke Geschichte durch die Zeit").
+     Eigenes Element auf der relativen Desktop-Spur, kollidiert mit nichts. */
   .tl-glint {
     position: absolute;
     top: 3px;
@@ -643,7 +669,7 @@
     pointer-events: none;
   }
   .tl-reveal.visible .tl-glint {
-    animation: tl-glint-travel 4.2s ease-in-out 1.25s 3;
+    animation: tl-glint-travel 4.6s ease-in-out 1.25s infinite;
   }
   @keyframes tl-glint-travel {
     0%   { left: 0;    opacity: 0; transform: translateX(0); }
@@ -652,10 +678,34 @@
     100% { left: 100%; opacity: 0; transform: translateX(-100%); }
   }
 
+  /* Mobile-Timeline ist vertikal (linke Linie) — derselbe Funke wandert hier
+     fortlaufend von oben (1856) nach unten (Heute) die Linie entlang. */
+  .tl-glint-v {
+    position: absolute;
+    left: -4px;
+    top: 0;
+    width: 6px;
+    height: 56px;
+    border-radius: 9999px;
+    background: radial-gradient(closest-side, rgba(214, 184, 122, 0.9), rgba(214, 184, 122, 0) 70%);
+    filter: blur(1px);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .tl-reveal.visible .tl-glint-v {
+    animation: tl-glint-travel-v 5s ease-in-out 0.6s infinite;
+  }
+  @keyframes tl-glint-travel-v {
+    0%   { top: 0;    opacity: 0; transform: translateY(0); }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { top: 100%; opacity: 0; transform: translateY(-100%); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .tl-line { transform: scaleX(1); transition: none; }
     .tl-item { opacity: 1; transform: none; transition: none; }
-    .tl-glint { animation: none; opacity: 0; }
+    .tl-glint, .tl-glint-v { animation: none; opacity: 0; }
   }
 
   /* ── Hero-Politur ──────────────────────────────────────────────── */

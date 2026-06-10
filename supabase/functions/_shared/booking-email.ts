@@ -82,9 +82,9 @@ const TXT = {
       request: "Diese Eingangsbestätigung wurde automatisch erstellt — Ihre Buchung ist noch nicht verbindlich. Die verbindliche Bestätigung folgt, sobald wir die Verfügbarkeit geprüft haben. Bei Rückfragen, Sonderwünschen oder Änderungen erreichen Sie uns telefonisch oder per E-Mail — wir antworten in der Regel binnen weniger Stunden.",
       confirmation: "Diese Bestätigung wurde automatisch erstellt. Bei Rückfragen, Sonderwünschen oder Änderungen erreichen Sie uns telefonisch oder per E-Mail — wir antworten in der Regel binnen weniger Stunden.",
     },
-    season: "Hinweis: Wir öffnen saisonal von März bis September. Ihre Buchung liegt innerhalb dieses Zeitraums.",
+    season: "Bei Fragen zu Anreise und Öffnungszeiten erreichen Sie uns jederzeit telefonisch oder per E-Mail.",
     bye: "Herzliche Grüße aus der Vulkaneifel",
-    fam: "Familie Beimler & Team Landhotel Schend",
+    fam: "Ihr Team vom Landhotel Schend",
   },
   en: {
     subject: (bn: string, kind: EmailKind) =>
@@ -110,9 +110,9 @@ const TXT = {
       request: "This acknowledgement was generated automatically — your booking is not yet binding. A binding confirmation will follow once we have checked availability. For any questions, special requests or changes, please reach us by phone or email — we usually reply within a few hours.",
       confirmation: "This confirmation was generated automatically. For any questions, special requests or changes, please reach us by phone or email — we usually reply within a few hours.",
     },
-    season: "Note: We operate seasonally from March through September. Your booking is within that window.",
+    season: "For any questions about your arrival or our opening hours, you can reach us any time by phone or email.",
     bye: "Warm regards from the Volcanic Eifel",
-    fam: "The Beimler family & the Landhotel Schend team",
+    fam: "Your team at Landhotel Schend",
   },
   fr: {
     subject: (bn: string, kind: EmailKind) =>
@@ -138,9 +138,9 @@ const TXT = {
       request: "Cet accusé de réception est généré automatiquement — votre réservation n'est pas encore ferme. La confirmation définitive suivra après vérification des disponibilités. Pour toute question, demande spéciale ou modification, contactez-nous par téléphone ou e-mail — nous répondons en général sous quelques heures.",
       confirmation: "Cette confirmation est générée automatiquement. Pour toute question, demande spéciale ou modification, contactez-nous par téléphone ou e-mail — nous répondons en général sous quelques heures.",
     },
-    season: "Information : nous sommes ouverts de mars à septembre. Votre réservation se situe dans cette période.",
+    season: "Pour toute question sur votre arrivée ou nos horaires, contactez-nous à tout moment par téléphone ou e-mail.",
     bye: "Cordiales salutations de l'Eifel volcanique",
-    fam: "La famille Beimler et l'équipe du Landhotel Schend",
+    fam: "Votre équipe du Landhotel Schend",
   },
   nl: {
     subject: (bn: string, kind: EmailKind) =>
@@ -166,9 +166,9 @@ const TXT = {
       request: "Deze ontvangstbevestiging is automatisch aangemaakt — uw boeking is nog niet definitief. De definitieve bevestiging volgt zodra we de beschikbaarheid hebben gecontroleerd. Voor vragen, speciale wensen of wijzigingen kunt u ons telefonisch of per e-mail bereiken — we reageren meestal binnen enkele uren.",
       confirmation: "Deze bevestiging is automatisch aangemaakt. Voor vragen, speciale wensen of wijzigingen kunt u ons telefonisch of per e-mail bereiken — we reageren meestal binnen enkele uren.",
     },
-    season: "Let op: wij zijn geopend van maart tot en met september. Uw boeking valt binnen deze periode.",
+    season: "Voor vragen over uw aankomst of onze openingstijden kunt u ons altijd telefonisch of per e-mail bereiken.",
     bye: "Hartelijke groet uit de Vulkaan-Eifel",
-    fam: "Familie Beimler & het team van Landhotel Schend",
+    fam: "Uw team van Landhotel Schend",
   },
 } as const;
 

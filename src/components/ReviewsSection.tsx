@@ -107,7 +107,7 @@ const REVIEWS: Review[] = [
   {
     stars: 4,
     text:
-      "Gemütliches Hotel mit hervorragendem Restaurant. Die Eifeler Küche hat uns begeistert. Genügend Motorrad-Parkplätze sind vorhanden und sicher videoüberwacht.",
+      "Gemütliches Hotel mit hervorragendem Restaurant. Die Eifeler Küche hat uns begeistert. Genügend Motorrad-Stellplätze direkt im Hof sind vorhanden.",
     author: "Bikergruppe aus München",
     source: "Tripadvisor",
     date: "September 2025",

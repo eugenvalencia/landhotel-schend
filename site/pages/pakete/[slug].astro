@@ -27,7 +27,14 @@ const { paket } = Astro.props;
       </a>
       <p class="eyebrow !text-[hsl(38_48%_72%)]">Pauschale</p>
       <h1 class="font-display text-4xl md:text-6xl mt-3 text-balance leading-[1.05]">{paket.title}</h1>
-      {paket.price && <p class="font-display text-2xl md:text-3xl text-[hsl(38_48%_78%)] mt-5">{paket.price}</p>}
+      {paket.price && (
+        <div class="mt-5">
+          <p class="font-display text-2xl md:text-3xl text-[hsl(38_48%_78%)]">{paket.price}</p>
+          {(paket.priceSingle || paket.priceNote) && (
+            <p class="text-sm text-[hsl(38_30%_95%)]/80 mt-1">{[paket.priceSingle, paket.priceNote].filter(Boolean).join(" · ")}</p>
+          )}
+        </div>
+      )}
     </div>
   </section>
 
@@ -46,9 +53,12 @@ const { paket } = Astro.props;
       ))}
     </ul>
 
-    <div class="hairline my-10"></div>
-
-    <p class="text-foreground/85 leading-relaxed text-pretty">{paket.details}</p>
+    {paket.details && (
+      <>
+        <div class="hairline my-10"></div>
+        <p class="text-foreground/85 leading-relaxed text-pretty">{paket.details}</p>
+      </>
+    )}
 
     <!-- Galerie -->
     <div class="grid grid-cols-3 gap-3 mt-10">

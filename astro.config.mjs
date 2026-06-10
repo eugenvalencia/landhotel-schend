@@ -26,7 +26,11 @@ export default defineConfig({
   // @astrojs/react bleibt installiert, wird aber erst in Stufe 3 (Booking-Island)
   // als Integration registriert — sonst landet die ungenutzte React-Runtime als
   // Orphan-Bundle im Build (Zero-JS-Default, DR-029).
-  integrations: [sitemap()],
+  // noindex-Rechtsseiten (Impressum/Datenschutz/AGB) gehören NICHT in den Sitemap —
+  // sonst widersprüchliches Signal (eingereicht, aber per Meta noindex).
+  integrations: [
+    sitemap({ filter: (page) => !/\/(impressum|datenschutz|agb)\/?$/.test(page) }),
+  ],
   vite: {
     css: {
       // Eigene, explizite PostCSS-Pipeline mit der site-eigenen Tailwind-Config.

@@ -194,7 +194,7 @@ export default function LocationSection() {
                   rel="noopener noreferrer"
                   className="hover:text-secondary transition-colors"
                 >
-                  landhaus-schend.de
+                  www.landhaus-schend.de
                 </a>
               </li>
             </ul>
@@ -255,7 +255,7 @@ export default function LocationSection() {
                 Abfahrt Hillesheim, über B421 / B257
               </li>
               <li>
-                Kostenlose, videoüberwachte Parkplätze direkt am Hotel — auch Stellplätze
+                Kostenlose Parkplätze direkt am Hotel — auch Stellplätze
                 für Motorräder
               </li>
             </ul>

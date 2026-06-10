@@ -25,7 +25,7 @@ const restaurantSchema = {
   alternateName: "Restaurant Landhotel Schend",
   url: "https://landhaus-schend.de/restaurant",
   description:
-    "Hauseigenes Eifeler Restaurant des Landhotels Schend in Immerath/Vulkaneifel. Regional-typische Küche, auch für Tagesgäste offen. Hamburgertag, Halbpension, Festtafel für Hochzeiten und Familienfeiern bis 80 Personen.",
+    "Hauseigenes Eifeler Restaurant des Landhotels Schend in Immerath/Vulkaneifel. Regional-typische Küche, auch für Tagesgäste offen. Halbpension, Festtafel für Hochzeiten und Familienfeiern bis 70 Personen.",
   telephone: "+49-6573-306",
   email: "info@landhaus-schend.de",
   servesCuisine: ["Eifeler Landküche", "Deutsch", "Regional"],
@@ -42,7 +42,7 @@ const restaurantSchema = {
   },
   geo: { "@type": "GeoCoordinates", latitude: 50.1303, longitude: 6.9594 },
   openingHoursSpecification: [
-    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], opens: "17:30", closes: "20:00" },
+    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Thursday", "Friday", "Saturday"], opens: "17:30", closes: "20:00" },
     { "@type": "OpeningHoursSpecification", dayOfWeek: ["Sunday"], opens: "12:00", closes: "14:00" },
     { "@type": "OpeningHoursSpecification", dayOfWeek: ["Sunday"], opens: "17:30", closes: "20:00" },
   ],
@@ -51,7 +51,7 @@ const restaurantSchema = {
 
 <Layout
   title="Landhaus Restaurant — Eifeler Küche im Landhotel Schend Immerath"
-  description="Hauseigenes Eifeler Restaurant in Immerath/Vulkaneifel. Auch für Tagesgäste offen — Hamburgertag, Halbpension, Festtafel für Hochzeiten und Feiern bis 80 Personen. Tisch reservieren: +49 6573 306."
+  description="Hauseigenes Eifeler Restaurant in Immerath/Vulkaneifel. Auch für Tagesgäste offen — Halbpension, Festtafel für Hochzeiten und Feiern bis 70 Personen. Tisch reservieren: +49 6573 306."
   canonicalPath="/restaurant"
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(restaurantSchema)} />
@@ -79,7 +79,7 @@ const restaurantSchema = {
   </section>
 
   <!-- Tagesgäste-Banner -->
-  <section class="bg-secondary/10 border-b border-border/60">
+  <section class="animate-pulse-banner border-y border-border/60">
     <div class="container mx-auto px-4 py-5 md:py-6 text-center">
       <span class="inline-flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
         <svg class="h-4 w-4 text-secondary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
@@ -94,10 +94,9 @@ const restaurantSchema = {
       <div class="bg-background p-8 flex flex-col">
         <h3 class="font-display text-xl md:text-2xl mb-5 leading-tight">Öffnungszeiten</h3>
         <div class="space-y-3 text-sm flex-1">
-          <div><p class="font-medium">Montag – Samstag</p><p class="text-muted-foreground">17:30 – 20:00 Uhr</p></div>
+          <div><p class="font-medium">Donnerstag – Samstag</p><p class="text-muted-foreground">17:30 – 20:00 Uhr</p></div>
           <div><p class="font-medium">Sonntag</p><p class="text-muted-foreground">12:00 – 14:00 Uhr</p><p class="text-muted-foreground">17:30 – 20:00 Uhr</p></div>
-          <div class="hairline"></div>
-          <p class="text-xs text-muted-foreground italic">Saison März – September. Oktober bis Februar geschlossen.</p>
+          <div><p class="font-medium">Ruhetag: Montag, Dienstag, Mittwoch</p><p class="text-muted-foreground">Kein À-la-carte — Hausgäste erhalten mit Voranmeldung ihr Halbpensions-Menü. An Feiertagen ist das Restaurant für Sie geöffnet.</p></div>
         </div>
       </div>
       <div class="bg-background p-8 flex flex-col">
@@ -107,14 +106,13 @@ const restaurantSchema = {
           <li>Frische Zutaten von Eifeler Höfen</li>
           <li>3-Gang-Menü (Halbpension auf Wunsch)</li>
           <li>Wildgerichte im Herbst, Spargel im Frühjahr</li>
-          <li>Hamburgertag — wöchentliche Tradition</li>
         </ul>
-        <p class="text-xs text-muted-foreground italic mt-5">Speisekarte wechselt mit der Saison.</p>
+        <p class="text-xs text-muted-foreground italic mt-5">Unsere Speisekarte wechselt wöchentlich — das aktuelle Menü geben wir morgens bekannt.</p>
       </div>
       <div class="bg-background p-8 flex flex-col">
         <h3 class="font-display text-xl md:text-2xl mb-5 leading-tight">Festtafel & Feiern</h3>
         <p class="text-sm text-muted-foreground flex-1 leading-relaxed">
-          Unser Festsaal fasst bis 80 Gäste und ist eingerichtet wie aus Großmutters Zeit.
+          Unser Festsaal fasst bis 70 Gäste und ist eingerichtet wie aus Großmutters Zeit.
           Hochzeiten, runde Geburtstage, Firmenessen — wir gestalten mit Ihnen individuell.
         </p>
         <p class="text-xs text-muted-foreground italic mt-5">Anfrage telefonisch oder per Email.</p>
@@ -143,8 +141,8 @@ const restaurantSchema = {
           <a href="tel:+4965731306" class="flex items-center gap-4 group">
             <svg class="h-5 w-5 text-secondary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
             <span>
-              <span class="block font-display text-2xl group-hover:text-secondary transition-colors">+49 6573 306</span>
-              <span class="block text-sm text-muted-foreground">Familie Beimler nimmt persönlich ab</span>
+              <span class="block text-2xl font-semibold tabular-nums tracking-tight group-hover:text-secondary transition-colors">+49 6573 306</span>
+              <span class="block text-sm text-muted-foreground">Wir nehmen persönlich ab</span>
             </span>
           </a>
           <a href="mailto:info@landhaus-schend.de?subject=Tischreservierung" class="flex items-center gap-4 group">
@@ -170,7 +168,7 @@ const restaurantSchema = {
           <li>Köln · ca. 90 Min</li>
           <li>Frankfurt · ca. 120 Min</li>
           <li>Nürburgring · ca. 45 Min</li>
-          <li>Luxemburg · ca. 80 Min</li>
+          <li>Luxemburg · ca. 90 Min</li>
         </ul>
         <div class="mt-6">
           <a href="https://www.google.com/maps?q=Landhotel+Schend+Hauptstraße+9+54552+Immerath" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-medium text-secondary hover:text-foreground transition-colors underline underline-offset-4 decoration-secondary/40">
@@ -185,14 +183,14 @@ const restaurantSchema = {
   <section class="grid lg:grid-cols-12 items-stretch bg-muted/30">
     <div class="lg:col-span-6">
       <div class="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[480px] overflow-hidden">
-        <img src="/pakete/feiern.jpg" alt="Festlich gedeckter Saal im Landhotel Schend" loading="lazy" decoding="async" class="w-full h-full object-cover" />
+        <img src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg" alt="Festlich gedeckter Festsaal mit Sektempfang im Landhotel Schend" loading="lazy" decoding="async" class="w-full h-full object-cover" />
       </div>
     </div>
     <div class="lg:col-span-6 px-6 md:px-12 lg:px-16 py-16 md:py-20 flex flex-col justify-center" data-reveal>
-      <p class="eyebrow">Festsaal bis 80 Personen</p>
+      <p class="eyebrow">Festsaal bis 70 Personen</p>
       <h2 class="font-display text-3xl md:text-4xl lg:text-5xl mt-4 mb-6 text-balance leading-tight">Ihre Feier in unserem Hause</h2>
       <p class="text-foreground/85 leading-relaxed max-w-prose mb-6">
-        Vom intimen Geburtstag bis zur Hochzeit mit 80 Gästen — wir gestalten gemeinsam mit Ihnen
+        Vom intimen Geburtstag bis zur Hochzeit mit 70 Gästen — wir gestalten gemeinsam mit Ihnen
         das passende Menü und kümmern uns um jedes Detail. Tisch- und Saaldekoration, persönliche
         Menükarten, individuelle Wünsche — alles geht.
       </p>
