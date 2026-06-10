@@ -159,6 +159,17 @@ const robots = noindex
       }
       html.splash-skip #splash { display: none !important; }
       #splash.is-done { opacity: 0; pointer-events: none; }
+      .splash-stars { display: flex; gap: clamp(.35rem, 2vw, .6rem); margin-bottom: -.3rem; }
+      .splash-star {
+        width: clamp(16px, 4.6vw, 22px); height: auto;
+        color: hsl(38 48% 66%); fill: currentColor;
+        opacity: 0; transform: translateY(7px) scale(.55);
+        animation: splash-star-in .55s cubic-bezier(.22,1,.36,1) forwards;
+      }
+      .splash-star:nth-child(1) { animation-delay: .15s; }
+      .splash-star:nth-child(2) { animation-delay: .38s; }
+      .splash-star:nth-child(3) { animation-delay: .61s; }
+      @keyframes splash-star-in { to { opacity: 1; transform: none; } }
       .splash-mark {
         height: clamp(62px, 15vw, 112px); width: auto; aspect-ratio: 2048 / 871;
         -webkit-mask: url("/schend-mark.png") center / contain no-repeat;
@@ -195,6 +206,11 @@ const robots = noindex
 
   <body class="min-h-screen flex flex-col bg-background text-foreground">
     <div id="splash" role="presentation">
+      <span class="splash-stars" aria-hidden="true">
+        <svg class="splash-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="splash-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="splash-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </span>
       <span class="splash-mark" aria-hidden="true"></span>
       <span class="splash-word">Landhotel Schend</span>
       <div class="splash-bar" aria-hidden="true"><span class="splash-fill"></span></div>
@@ -212,14 +228,15 @@ const robots = noindex
           el.classList.add("is-done");
           setTimeout(function () { el.remove(); }, 600);
         };
+        // Splash ~2 s sichtbar (Desktop + Mobil), dann sanfter Reveal aufs Hero.
         if (reduce) {
           if (pct) pct.textContent = "100 %";
           if (fill) fill.style.width = "100%";
-          setTimeout(finish, 500);
+          setTimeout(finish, 2000);
           return;
         }
-        var t0 = null, DUR = 1100, ended = false;
-        var safety = setTimeout(function () { if (!ended) { ended = true; finish(); } }, 3300);
+        var t0 = null, DUR = 1600, ended = false;
+        var safety = setTimeout(function () { if (!ended) { ended = true; finish(); } }, 4200);
         function step(now) {
           if (t0 === null) t0 = now;
           var p = Math.min(1, (now - t0) / DUR);
@@ -227,7 +244,7 @@ const robots = noindex
           if (pct) pct.textContent = v + " %";
           if (fill) fill.style.width = v + "%";
           if (p < 1) requestAnimationFrame(step);
-          else if (!ended) { ended = true; clearTimeout(safety); setTimeout(finish, 280); }
+          else if (!ended) { ended = true; clearTimeout(safety); setTimeout(finish, 400); } // 100 % halten -> Fade bei ~2,0 s
         }
         requestAnimationFrame(step);
       })();
