@@ -194,7 +194,7 @@ export default function LocationSection() {
                   rel="noopener noreferrer"
                   className="hover:text-secondary transition-colors"
                 >
-                  landhaus-schend.de
+                  www.landhaus-schend.de
                 </a>
               </li>
             </ul>
