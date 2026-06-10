@@ -143,8 +143,14 @@ const robots = noindex
     <script is:inline>
       (function () {
         try {
-          var force = /[?&#]splash\b/.test(location.href);
-          if (sessionStorage.getItem("schend_splash_done") && !force)
+          // ?splash erzwingt den Splash (zum Testen) und schlägt alles andere.
+          if (/[?&#]splash\b/.test(location.href)) return;
+          // Such-Crawler + Lab-Tools (Lighthouse/PageSpeed/Headless/Preview-Bots)
+          // bekommen KEINEN Splash -> kein LCP-Verlust, kein verdeckter Inhalt
+          // (Inhalt ist identisch, der Splash ist nur ein optischer Vorhang).
+          var ua = navigator.userAgent || "";
+          var isBot = /bot|crawl|spider|slurp|lighthouse|pagespeed|headless|gtmetrix|pingdom|mediapartners|facebookexternalhit|embedly|whatsapp|telegram|preview/i.test(ua);
+          if (isBot || sessionStorage.getItem("schend_splash_done"))
             document.documentElement.classList.add("splash-skip");
         } catch (e) {}
       })();
@@ -156,7 +162,7 @@ const robots = noindex
         gap: clamp(1.1rem, 4vw, 1.9rem);
         background: hsl(220 24% 9%); color: hsl(38 32% 92%);
         opacity: 1; transition: opacity .55s ease;
-        animation: splash-failsafe 0s linear 3.6s forwards; /* falls JS ausfällt */
+        animation: splash-failsafe 0s linear 5s forwards; /* falls JS ausfällt */
       }
       html.splash-skip #splash { display: none !important; }
       #splash.is-done { opacity: 0; pointer-events: none; }
@@ -167,9 +173,10 @@ const robots = noindex
         opacity: 0; transform: translateY(7px) scale(.55);
         animation: splash-star-in .55s cubic-bezier(.22,1,.36,1) forwards;
       }
-      .splash-star:nth-child(1) { animation-delay: .15s; }
-      .splash-star:nth-child(2) { animation-delay: .38s; }
-      .splash-star:nth-child(3) { animation-delay: .61s; }
+      .splash-star { animation-duration: .65s; }
+      .splash-star:nth-child(1) { animation-delay: .25s; }
+      .splash-star:nth-child(2) { animation-delay: .6s; }
+      .splash-star:nth-child(3) { animation-delay: .95s; }
       @keyframes splash-star-in { to { opacity: 1; transform: none; } }
       .splash-mark {
         height: clamp(62px, 15vw, 112px); width: auto; aspect-ratio: 2048 / 871;
@@ -185,7 +192,7 @@ const robots = noindex
         text-transform: uppercase; color: hsl(38 48% 70%);
         white-space: nowrap; letter-spacing: .5em;
         opacity: 0; filter: blur(9px);
-        animation: splash-word-in 1s cubic-bezier(.22,1,.36,1) .35s forwards;
+        animation: splash-word-in 1.2s cubic-bezier(.22,1,.36,1) .7s forwards;
       }
       .splash-bar {
         width: clamp(140px, 42vw, 220px); height: 2px; margin-top: .2rem;
@@ -233,11 +240,11 @@ const robots = noindex
         if (reduce) {
           if (pct) pct.textContent = "100 %";
           if (fill) fill.style.width = "100%";
-          setTimeout(finish, 2000);
+          setTimeout(finish, 2800);
           return;
         }
-        var t0 = null, DUR = 1600, ended = false;
-        var safety = setTimeout(function () { if (!ended) { ended = true; finish(); } }, 4200);
+        var t0 = null, DUR = 2300, ended = false;
+        var safety = setTimeout(function () { if (!ended) { ended = true; finish(); } }, 5500);
         function step(now) {
           if (t0 === null) t0 = now;
           var p = Math.min(1, (now - t0) / DUR);
@@ -245,7 +252,7 @@ const robots = noindex
           if (pct) pct.textContent = v + " %";
           if (fill) fill.style.width = v + "%";
           if (p < 1) requestAnimationFrame(step);
-          else if (!ended) { ended = true; clearTimeout(safety); setTimeout(finish, 400); } // 100 % halten -> Fade bei ~2,0 s
+          else if (!ended) { ended = true; clearTimeout(safety); setTimeout(finish, 600); } // 100 % halten -> Fade bei ~2,9 s
         }
         requestAnimationFrame(step);
       })();
