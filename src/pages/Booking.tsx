@@ -659,8 +659,8 @@ export default function Booking() {
                 </Select>
               </div>
               {nights > 0 && room && (
-                <div className="rounded-lg bg-accent p-3 text-sm flex justify-between">
-                  <span className="text-muted-foreground">
+                <div className="rounded-lg bg-accent text-accent-foreground p-3 text-sm flex justify-between">
+                  <span className="text-accent-foreground/85">
                     {nights} {nights === 1 ? "Nacht" : "Nächte"} × {eur(roomRatePerNight)}
                     {room.price_per_person && !(persons <= 1 && room.single_use_price != null) ? ` (${persons} P. × ${eur(room.price_per_night)})` : ""}
                   </span>

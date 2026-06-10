@@ -112,7 +112,7 @@ export default function SiteFooter() {
       <div className="border-t border-[hsl(38_30%_92%)]/12">
         <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-[hsl(38_30%_92%)]/65">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5 text-center sm:text-left">
-            <p>© {new Date().getFullYear()} Landhotel Schend · landhaus-schend.de</p>
+            <p>© {new Date().getFullYear()} Landhotel Schend · www.landhaus-schend.de</p>
             <span className="hidden sm:inline text-[hsl(38_30%_92%)]/25">·</span>
             <p className="text-[11px] tracking-wide text-[hsl(38_30%_92%)]/55">
               Powered by{" "}
