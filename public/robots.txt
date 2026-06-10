@@ -39,5 +39,5 @@ Allow: /
 User-agent: anthropic-ai
 Allow: /
 
-# Sitemap
-Sitemap: https://landhaus-schend.de/sitemap.xml
+# Sitemap (von @astrojs/sitemap beim Build generiert)
+Sitemap: https://landhaus-schend.de/sitemap-index.xml

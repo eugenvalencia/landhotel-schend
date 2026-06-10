@@ -28,8 +28,11 @@
     --primary: 220 22% 18%;
     --primary-foreground: 38 35% 96%;
 
-    /* Secondary — brushed brass / muted gold (NOT shiny yellow) */
-    --secondary: 38 48% 38%;
+    /* Secondary — brushed brass / muted gold (NOT shiny yellow)
+       L 34% statt 38%: hält als Text auf Creme WCAG-AA (>=4,5:1); Buttons/Borders
+       optisch praktisch identisch. Auf dunklen Flächen (Footer) wird lokal eine
+       hellere Brass-Variante gesetzt. */
+    --secondary: 38 52% 34%;
     --secondary-foreground: 38 35% 96%;
 
     /* Muted — warm cream wash for soft sections */
@@ -276,6 +279,15 @@
     color: hsl(var(--secondary));
   }
 
+  /* Sichtbarer Tastatur-Fokus (WCAG 2.4.7) — gilt überall statt nur Browser-Default.
+     :where() = 0 Spezifität, damit bespoke Fokus-Stile (nav-underline/footer-link)
+     weiter greifen. */
+  :where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid hsl(var(--secondary));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
   /* Hairline divider — fades at the edges */
   .hairline {
     height: 1px;
@@ -328,13 +340,24 @@
     to { transform: translateX(-50%); }
   }
   .animate-marquee {
-    animation: marquee-x 60s linear infinite;
+    animation: marquee-x 110s linear infinite;
   }
   .animate-marquee:hover {
     animation-play-state: paused;
   }
   @media (prefers-reduced-motion: reduce) {
     .animate-marquee { animation: none; }
+  }
+  /* Tagesgäste-Banner — sanftes Brass-Pulsieren zieht den Blick, ohne Text-Flackern */
+  @keyframes pulse-tagesgaeste {
+    0%, 100% { background-color: hsl(var(--secondary) / 0.08); }
+    50% { background-color: hsl(var(--secondary) / 0.22); }
+  }
+  .animate-pulse-banner {
+    animation: pulse-tagesgaeste 2.6s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-pulse-banner { animation: none; background-color: hsl(var(--secondary) / 0.15); }
   }
 
   @keyframes fade-up {

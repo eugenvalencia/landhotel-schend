@@ -28,12 +28,12 @@ const FAMILIENZIMMER_FOTOS = [
  * Fotos existieren, ergänzen verwandte Zimmer-Fotos (statt toter /pics-Links).
  */
 export const SCHEND_ROOM_GALLERY: Record<string, string[]> = {
-  "Einzelzimmer": [
-    "/fotos/einzelzimmer-mit-bad-landhotel-schend-vulkaneifel.jpg",
-  ],
   "Doppelzimmer": [
-    "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-mit-balkon-gelb-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-renoviert-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-modern-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-mit-sofa-landhotel-schend-vulkaneifel.jpg",
   ],
   "Doppelzimmer Standard": [
     "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",

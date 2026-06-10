@@ -36,7 +36,7 @@ export const ROOM_AUSSTATTUNG = [
   "moderne, komfortable Ausstattung",
 ];
 
-export const HAUS_SONSTIGES = ["Frühstück oder Halbpension", "Sauna im Haus", "Massagen"];
+export const HAUS_SONSTIGES = ["Frühstück oder Halbpension", "Sauna & Ruhebereich (auf Anfrage)", "Massagen auf Anfrage"];
 
 export const EXTRAS = [
   "Kinderermäßigung im Elternzimmer: bis 2 Jahre kostenlos",

@@ -55,6 +55,10 @@ supabase/.temp/
 /_originale-upload-2026-06-01/
 /public/fotos/karin 01.02.2026/
 
+# Karin-Lieferung 10.06.2026: Halte-Ordner mit WhatsApp-Chat-Screenshots (PRIVAT!)
+# + Wellness-/Sauna-Foto, das erst nach Karins Freigabe gezeigt wird.
+/_zimmer-fotos-2026-06-10-source/
+
 # Hero-Video Roh-Quellen (Runway-Downloads, noch mit Wasserzeichen) — nicht deployen/committen.
 # Das ausgelieferte Hero-Video liegt sauber unter /public/hero/.
 /_hero-video-source/

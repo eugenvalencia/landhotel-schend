@@ -12,6 +12,7 @@ import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import A11yPanel from "../components/A11yPanel.astro";
 import StickyCTA from "../components/StickyCTA.astro";
+import Lightbox from "../components/Lightbox.astro";
 import { ORIGIN, SITE_NAME } from "../lib/site";
 
 interface Props {
@@ -137,6 +138,9 @@ const robots = noindex
 
   <body class="min-h-screen flex flex-col bg-background text-foreground">
     <a href="#main" class="skip-link">Zum Inhalt springen</a>
+    <div id="reading-progress" aria-hidden="true" class="fixed top-0 inset-x-0 h-[2px] z-[60] pointer-events-none">
+      <div class="reading-progress-fill h-full bg-secondary origin-left" style="transform:scaleX(0);transition:transform 80ms linear"></div>
+    </div>
     <SiteHeader />
     <main id="main" class="flex-1">
       <slot />
@@ -144,6 +148,7 @@ const robots = noindex
     <SiteFooter />
     <StickyCTA />
     <A11yPanel />
+    <Lightbox />
 
     <style is:global>
       /* Skip-Link — visuell versteckt bis Tastatur-Fokus (a11y). */
@@ -357,6 +362,59 @@ const robots = noindex
           }),
         );
       }
+
+      // 6) Reading-Progress — 2px Brass-Linie oben, folgt der Scroll-Position (Lenis-Brücke).
+      const rpFill = document.querySelector<HTMLElement>(".reading-progress-fill");
+      if (rpFill) {
+        (window as any).__onScroll((y: number) => {
+          const docH = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = docH > 0 ? Math.max(0, Math.min(1, y / docH)) : 0;
+          rpFill.style.transform = `scaleX(${pct})`;
+        });
+      }
+
+      // 7) CountUp — Zahlen mit [data-count-to] zählen hoch (beim Mount oder beim Scroll-in).
+      //    Attribute: data-count-to, -decimals, -dur, -delay, -mount="1" (above-the-fold).
+      (function () {
+        const fmt = (v: number, dec: number) =>
+          dec === 0 ? Math.round(v).toString() : v.toFixed(dec).replace(".", ",");
+        const run = (el: HTMLElement) => {
+          if (el.dataset.counted) return;
+          el.dataset.counted = "1";
+          const to = parseFloat(el.dataset.countTo || "0");
+          const dec = parseInt(el.dataset.countDecimals || "0", 10);
+          const dur = parseInt(el.dataset.countDur || "1400", 10);
+          if (reduce || isNaN(to)) { el.textContent = fmt(to, dec); return; }
+          const t0 = performance.now();
+          const stepFn = (now: number) => {
+            const t = Math.min(1, (now - t0) / dur);
+            el.textContent = fmt(to * (1 - Math.pow(1 - t, 3)), dec);
+            if (t < 1) requestAnimationFrame(stepFn);
+            else el.textContent = fmt(to, dec);
+          };
+          requestAnimationFrame(stepFn);
+        };
+        document.querySelectorAll<HTMLElement>("[data-count-to]").forEach((el) => {
+          if (el.dataset.countMount === "1") {
+            window.setTimeout(() => run(el), parseInt(el.dataset.countDelay || "0", 10));
+          } else {
+            const obs = new IntersectionObserver(
+              (entries) => {
+                entries.forEach((e) => {
+                  if (e.isIntersecting) {
+                    const d = parseInt(el.dataset.countDelay || "0", 10);
+                    if (d > 0) window.setTimeout(() => run(el), d);
+                    else run(el);
+                    obs.disconnect();
+                  }
+                });
+              },
+              { threshold: 0.35, rootMargin: "0px 0px -10% 0px" },
+            );
+            obs.observe(el);
+          }
+        });
+      })();
     </script>
   </body>
 </html>

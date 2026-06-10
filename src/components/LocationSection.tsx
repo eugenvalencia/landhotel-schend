@@ -255,7 +255,7 @@ export default function LocationSection() {
                 Abfahrt Hillesheim, über B421 / B257
               </li>
               <li>
-                Kostenlose, videoüberwachte Parkplätze direkt am Hotel — auch Stellplätze
+                Kostenlose Parkplätze direkt am Hotel — auch Stellplätze
                 für Motorräder
               </li>
             </ul>

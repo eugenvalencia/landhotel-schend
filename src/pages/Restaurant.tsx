@@ -10,7 +10,6 @@ import food0 from "@/assets/food-0.jpg";
 import food1 from "@/assets/food-1.jpg";
 import food2 from "@/assets/food-2.jpg";
 import food3 from "@/assets/food-3.jpg";
-import feiernImg from "@/assets/feiern.jpg";
 
 const FOOD_PHOTOS = [
   food0, SCHEND_RESTAURANT_GALLERY[1], food1, SCHEND_RESTAURANT_GALLERY[2],
@@ -26,7 +25,7 @@ const restaurantJsonLd = {
   alternateName: "Restaurant Landhotel Schend",
   url: "https://landhaus-schend.de/restaurant",
   description:
-    "Hauseigenes Eifeler Restaurant des Landhotels Schend in Immerath/Vulkaneifel. Regional-typische Küche, auch für Tagesgäste offen. Hamburgertag, Halbpension, Festtafel für Hochzeiten und Familienfeiern bis 80 Personen.",
+    "Hauseigenes Eifeler Restaurant des Landhotels Schend in Immerath/Vulkaneifel. Regional-typische Küche, auch für Tagesgäste offen. Halbpension, Festtafel für Hochzeiten und Familienfeiern bis 70 Personen.",
   telephone: "+49-6573-306",
   email: "info@landhaus-schend.de",
   servesCuisine: ["Eifeler Landküche", "Deutsch", "Regional"],
@@ -43,7 +42,7 @@ const restaurantJsonLd = {
   },
   geo: { "@type": "GeoCoordinates", latitude: 50.1303, longitude: 6.9594 },
   openingHoursSpecification: [
-    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], opens: "17:30", closes: "20:00" },
+    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Thursday","Friday","Saturday"], opens: "17:30", closes: "20:00" },
     { "@type": "OpeningHoursSpecification", dayOfWeek: ["Sunday"], opens: "12:00", closes: "14:00" },
     { "@type": "OpeningHoursSpecification", dayOfWeek: ["Sunday"], opens: "17:30", closes: "20:00" },
   ],
@@ -57,7 +56,7 @@ export default function Restaurant() {
   useSEO({
     title: "Landhaus Restaurant — Eifeler Küche im Landhotel Schend Immerath",
     description:
-      "Hauseigenes Eifeler Restaurant in Immerath/Vulkaneifel. Auch für Tagesgäste offen — Hamburgertag, Halbpension, Festtafel für Hochzeiten und Feiern bis 80 Personen. Tisch reservieren: +49 6573 306.",
+      "Hauseigenes Eifeler Restaurant in Immerath/Vulkaneifel. Auch für Tagesgäste offen — Halbpension, Festtafel für Hochzeiten und Feiern bis 70 Personen. Tisch reservieren: +49 6573 306.",
     canonical: "/restaurant",
   });
 
@@ -136,7 +135,7 @@ export default function Restaurant() {
         </section>
 
         {/* TAGESGÄSTE-Banner */}
-        <section className="bg-secondary/10 border-b border-border/60">
+        <section className="animate-pulse-banner border-y border-border/60">
           <div className="container mx-auto px-4 py-5 md:py-6">
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center">
               <span className="inline-flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
@@ -158,7 +157,7 @@ export default function Restaurant() {
               </h3>
               <div className="space-y-3 text-sm flex-1">
                 <div>
-                  <p className="font-medium">Montag – Samstag</p>
+                  <p className="font-medium">Donnerstag – Samstag</p>
                   <p className="text-muted-foreground">17:30 – 20:00 Uhr</p>
                 </div>
                 <div>
@@ -166,10 +165,12 @@ export default function Restaurant() {
                   <p className="text-muted-foreground">12:00 – 14:00 Uhr</p>
                   <p className="text-muted-foreground">17:30 – 20:00 Uhr</p>
                 </div>
-                <div className="hairline" />
-                <p className="text-xs text-muted-foreground italic">
-                  Saison März – September. Oktober bis Februar geschlossen.
-                </p>
+                <div>
+                  <p className="font-medium">Ruhetag: Montag, Dienstag, Mittwoch</p>
+                  <p className="text-muted-foreground">
+                    Kein À-la-carte — Halbpension für Hausgäste mit Voranmeldung (außer an Feiertagen).
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -184,10 +185,9 @@ export default function Restaurant() {
                 <li>Frische Zutaten von Eifeler Höfen</li>
                 <li>3-Gang-Menü (Halbpension auf Wunsch)</li>
                 <li>Wildgerichte im Herbst, Spargel im Frühjahr</li>
-                <li>Hamburgertag — wöchentliche Tradition</li>
               </ul>
               <p className="text-xs text-muted-foreground italic mt-5">
-                Speisekarte wechselt mit der Saison.
+                Unsere Speisekarte wechselt wöchentlich — das aktuelle Menü geben wir morgens bekannt.
               </p>
             </div>
 
@@ -198,7 +198,7 @@ export default function Restaurant() {
                 Festtafel & Feiern
               </h3>
               <p className="text-sm text-muted-foreground flex-1 leading-relaxed">
-                Unser Festsaal fasst bis 80 Gäste und ist eingerichtet wie aus
+                Unser Festsaal fasst bis 70 Gäste und ist eingerichtet wie aus
                 Großmutters Zeit. Hochzeiten, runde Geburtstage, Firmenessen — wir
                 gestalten mit Ihnen individuell.
               </p>
@@ -242,11 +242,11 @@ export default function Restaurant() {
                 >
                   <Phone className="h-5 w-5 text-secondary shrink-0" strokeWidth={1.5} />
                   <div>
-                    <p className="font-display text-2xl group-hover:text-secondary transition-colors">
+                    <p className="text-2xl font-semibold tabular-nums tracking-tight group-hover:text-secondary transition-colors">
                       +49 6573 306
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Familie Beimler nimmt persönlich ab
+                      Wir nehmen persönlich ab
                     </p>
                   </div>
                 </a>
@@ -288,7 +288,7 @@ export default function Restaurant() {
                 <li>Köln · ca. 90 Min</li>
                 <li>Frankfurt · ca. 120 Min</li>
                 <li>Nürburgring · ca. 45 Min</li>
-                <li>Luxemburg · ca. 80 Min</li>
+                <li>Luxemburg · ca. 90 Min</li>
               </ul>
               <div className="mt-6">
                 <a
@@ -309,7 +309,7 @@ export default function Restaurant() {
           <div className="lg:col-span-6">
             <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[480px] overflow-hidden">
               <img
-                src={feiernImg}
+                src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg"
                 alt="Festlich gedeckter Saal im Landhotel Schend"
                 loading="lazy"
                 decoding="async"
@@ -318,12 +318,12 @@ export default function Restaurant() {
             </div>
           </div>
           <div className="lg:col-span-6 px-6 md:px-12 lg:px-16 py-16 md:py-20 flex flex-col justify-center">
-            <p className="eyebrow">Festsaal bis 80 Personen</p>
+            <p className="eyebrow">Festsaal bis 70 Personen</p>
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl mt-4 mb-6 text-balance leading-tight">
               Ihre Feier in unserem Hause
             </h2>
             <p className="text-foreground/85 leading-relaxed max-w-prose mb-6">
-              Vom intimen Geburtstag bis zur Hochzeit mit 80 Gästen — wir gestalten
+              Vom intimen Geburtstag bis zur Hochzeit mit 70 Gästen — wir gestalten
               gemeinsam mit Ihnen das passende Menü und kümmern uns um jedes Detail.
               Tisch- und Saaldekoration, persönliche Menükarten, individuelle
               Wünsche — alles geht.

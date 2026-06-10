@@ -21,18 +21,23 @@ const FAMILIENZIMMER_FOTOS = [
 ];
 
 export const SCHEND_ROOM_GALLERY: Record<string, string[]> = {
-  "Einzelzimmer": ["/fotos/einzelzimmer-mit-bad-landhotel-schend-vulkaneifel.jpg"],
+  // Echte Doppelzimmer-Fotos (Karin 10.06.2026) — Teppich-Klassiker + renovierte
+  // Zimmer mit Holzboden. Reihenfolge: hell/Balkon zuerst.
   "Doppelzimmer": [
-    "/fotos/doppelzimmer-modern-mit-sofa-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-mit-balkon-gelb-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-renoviert-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-modern-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-mit-sofa-landhotel-schend-vulkaneifel.jpg",
     "/fotos/doppelzimmer-bad-mit-ebenerdiger-dusche-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
   ],
   "Doppelzimmer Standard": [
-    "/fotos/doppelzimmer-modern-mit-sofa-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-mit-balkon-gelb-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-renoviert-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-modern-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-mit-sofa-landhotel-schend-vulkaneifel.jpg",
     "/fotos/doppelzimmer-bad-mit-ebenerdiger-dusche-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
   ],
   "Komfort": [
     "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",

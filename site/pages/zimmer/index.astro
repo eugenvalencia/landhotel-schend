@@ -8,7 +8,7 @@ import { ROOM_TYPES, ROOM_INTRO, ROOM_RATES, ROOM_AUSSTATTUNG, HAUS_SONSTIGES, E
 
 <Layout
   title="Zimmer & Preise — Doppel- und Familienzimmer in der Vulkaneifel"
-  description="Komfortable Doppelzimmer (ab 57 € p.P., auch zur Einzelnutzung) und großzügige Familienzimmer im Landhotel Schend, Immerath — alle mit Balkon/Terrasse, Frühstück inklusive. Sauna im Haus, Massagen. Provisionsfrei direkt buchen."
+  description="Komfortable Doppelzimmer (ab 57 € p.P., auch zur Einzelnutzung) und großzügige Familienzimmer im Landhotel Schend, Immerath — alle mit Balkon/Terrasse, Frühstück inklusive. Sauna & Ruhebereich auf Anfrage. Provisionsfrei direkt buchen."
   canonicalPath="/zimmer"
 >
   <!-- Intro -->
@@ -26,7 +26,7 @@ import { ROOM_TYPES, ROOM_INTRO, ROOM_RATES, ROOM_AUSSTATTUNG, HAUS_SONSTIGES, E
   <section class="container mx-auto px-4 pb-8">
     <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
       {ROOM_RATES.map((r, i) => (
-        <div class="flex flex-col rounded-md border border-border bg-[hsl(38_38%_94%)] shadow-card p-7" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+        <div class="flex flex-col rounded-md border border-border bg-card text-card-foreground shadow-card p-7" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
           <h2 class="font-display text-2xl leading-tight">
             {r.title}
             {r.sub && <span class="block text-sm tracking-[0.18em] uppercase text-muted-foreground mt-1">{r.sub}</span>}

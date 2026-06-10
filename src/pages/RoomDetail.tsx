@@ -13,21 +13,16 @@ import { cn } from "@/lib/utils";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
+// Genau zwei Zimmer-Arten — KEINE Einzelzimmer, KEINE Suiten (siehe site/lib/rooms.ts).
 const TYPE_DESCRIPTIONS: Record<string, string> = {
-  "Einzelzimmer":
-    "Gemütliches Einzelzimmer mit Blick auf die Vulkaneifel. Ideal für Geschäftsreisende und Solo-Urlauber. Inklusive Frühstücksbuffet und kostenlosem WLAN.",
+  "Doppelzimmer":
+    "Komfortables Doppelzimmer mit Doppelbett, überwiegend mit Balkon oder Terrasse und Blick in die Vulkaneifel-Landschaft. Bei Bedarf auch zur Einzelnutzung buchbar. Inklusive Frühstücksbuffet und kostenlosem WLAN.",
   "Doppelzimmer Standard":
     "Komfortables Doppelzimmer mit Doppelbett, Balkon und Eifel-Blick. Liebevoll eingerichtet mit allem, was Sie für einen erholsamen Aufenthalt brauchen.",
   "Doppelzimmer Komfort":
-    "Geräumiges Komfort-Zimmer mit zwei Einzelbetten und großzügiger Terrasse. Perfekt für Freunde oder Paare, die mehr Platz wünschen.",
+    "Geräumiges Doppelzimmer mit großzügiger Terrasse. Perfekt für Paare, die mehr Platz wünschen.",
   "Familienzimmer":
-    "Großes Familienzimmer für bis zu 4 Personen, mit kindgerechter Ausstattung und viel Platz zum Wohlfühlen.",
-  "Junior Suite":
-    "Elegante Junior Suite mit Kingsize-Bett, Sitzecke und Premium-Ausstattung. Ein Hauch von Luxus inmitten der Vulkaneifel.",
-  "Suite":
-    "Unsere schönste Suite mit Wohnbereich, Panoramablick und edler Ausstattung – das Beste, was Landhotel Schend zu bieten hat.",
-  "Eifel-Suite":
-    "Unsere schönste Suite mit Wohnbereich, Panoramablick und edler Ausstattung – das Beste, was Landhotel Schend zu bieten hat.",
+    "Großzügiges Familienzimmer mit zwei getrennten Räumen für bis zu 4 Personen, mit kindgerechter Ausstattung und viel Platz zum Wohlfühlen.",
 };
 
 type Room = {

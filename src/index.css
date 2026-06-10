@@ -325,13 +325,24 @@
     to { transform: translateX(-50%); }
   }
   .animate-marquee {
-    animation: marquee-x 60s linear infinite;
+    animation: marquee-x 110s linear infinite;
   }
   .animate-marquee:hover {
     animation-play-state: paused;
   }
   @media (prefers-reduced-motion: reduce) {
     .animate-marquee { animation: none; }
+  }
+  /* Tagesgäste-Banner — sanftes Brass-Pulsieren zieht den Blick, ohne Text-Flackern */
+  @keyframes pulse-tagesgaeste {
+    0%, 100% { background-color: hsl(var(--secondary) / 0.08); }
+    50% { background-color: hsl(var(--secondary) / 0.22); }
+  }
+  .animate-pulse-banner {
+    animation: pulse-tagesgaeste 2.6s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-pulse-banner { animation: none; background-color: hsl(var(--secondary) / 0.15); }
   }
 
   @keyframes fade-up {

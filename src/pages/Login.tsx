@@ -83,7 +83,7 @@ export default function Login() {
           </p>
           <CardTitle className="font-display text-3xl">Anmelden</CardTitle>
           <p className="text-sm text-muted-foreground mt-2">
-            Für Familie Beimler und Mitarbeitende
+            Für das Hotel-Team
           </p>
         </CardHeader>
         <CardContent>

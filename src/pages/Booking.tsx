@@ -53,20 +53,25 @@ type Extra = {
   per_night: boolean;
 };
 
+// Echtes Inventar: 19 Doppelzimmer + 2 Familienzimmer = 21. KEINE Einzelzimmer,
+// KEINE Suiten (siehe site/lib/rooms.ts). Im Live-Betrieb liefert die DB die echten
+// Zimmer; diese Liste ist nur Initial-/Fallback-Zustand.
+const FALLBACK_DZ_IDS = [
+  "d47bcebd-a254-4880-8952-72a2929d2520", "6d45c8cb-d584-43b4-ad7b-4f54d7f4c8de", "ade89315-160a-4211-b7ee-7dfbf4e7eeb3",
+  "8e3d91a0-0711-4cdf-a580-c2debb684d0c", "e288b28f-affb-4a18-b95e-991b28e15306", "b350d97f-8f76-4144-be97-6a2f18d69c6b", "cbdb5c64-5843-44e7-a802-da8b361ccb7a", "8ea5ebaa-2570-45c3-8340-112391ae422b", "a75e046c-6f0b-4ddc-bce6-77f5f4141644", "2f539adf-8c88-440f-8900-996ebbb764b8",
+  "5af7abab-0811-4e14-9b71-923c3afafbeb", "c219233b-4571-4196-a697-c49c3412d4b1", "0e940352-a7a7-4d5d-890a-4db63ad9e2fc", "05af9142-9a56-4583-a2de-c3e11cdd6380", "dce1e187-c5fd-4649-950c-03d51236261c", "e67d9828-126c-4700-b223-a3acb88ceb44",
+  "ab65f06b-385c-4f6a-ad3c-5b9c4de47495", "8460eb23-82ff-4280-a1f1-ca01f97733bd", "06183ce9-3314-4f82-aab9-40e8c7d32d86",
+];
+
 const FALLBACK_ROOMS: Room[] = [
-  { id: "d47bcebd-a254-4880-8952-72a2929d2520", room_number: 1, name: "Zimmer 1", room_type: "Einzelzimmer", bed_description: "Einzelbett", max_persons: 1, price_per_night: 65, amenities: [], photos: [], status: "aktiv" },
-  { id: "6d45c8cb-d584-43b4-ad7b-4f54d7f4c8de", room_number: 2, name: "Zimmer 2", room_type: "Einzelzimmer", bed_description: "Einzelbett", max_persons: 1, price_per_night: 65, amenities: [], photos: [], status: "aktiv" },
-  { id: "ade89315-160a-4211-b7ee-7dfbf4e7eeb3", room_number: 3, name: "Zimmer 3", room_type: "Einzelzimmer", bed_description: "Einzelbett", max_persons: 1, price_per_night: 65, amenities: [], photos: [], status: "aktiv" },
-  ...[4, 5, 6, 7, 8, 9, 10].map((n, i) => ({ id: ["8e3d91a0-0711-4cdf-a580-c2debb684d0c", "e288b28f-affb-4a18-b95e-991b28e15306", "b350d97f-8f76-4144-be97-6a2f18d69c6b", "cbdb5c64-5843-44e7-a802-da8b361ccb7a", "8ea5ebaa-2570-45c3-8340-112391ae422b", "a75e046c-6f0b-4ddc-bce6-77f5f4141644", "2f539adf-8c88-440f-8900-996ebbb764b8"][i], room_number: n, name: `Zimmer ${n}`, room_type: "Doppelzimmer Standard", bed_description: "Doppelbett", max_persons: 2, price_per_night: 95, amenities: [], photos: [], status: "aktiv" })),
-  ...[11, 12, 13, 14, 15, 16].map((n, i) => ({ id: ["5af7abab-0811-4e14-9b71-923c3afafbeb", "c219233b-4571-4196-a697-c49c3412d4b1", "0e940352-a7a7-4d5d-890a-4db63ad9e2fc", "05af9142-9a56-4583-a2de-c3e11cdd6380", "dce1e187-c5fd-4649-950c-03d51236261c", "e67d9828-126c-4700-b223-a3acb88ceb44"][i], room_number: n, name: `Zimmer ${n}`, room_type: "Doppelzimmer Komfort", bed_description: "Doppelbett", max_persons: 2, price_per_night: 105, amenities: [], photos: [], status: "aktiv" })),
-  ...[17, 18, 19].map((n, i) => ({ id: ["2dffe866-7b1a-42d5-8ea9-29c9f2975994", "d1bd202f-eedf-45e9-be4c-18a43742ca12", "ab65f06b-385c-4f6a-ad3c-5b9c4de47495"][i], room_number: n, name: `Zimmer ${n}`, room_type: "Familienzimmer", bed_description: "Doppelbett und Schlafsofa", max_persons: 4, price_per_night: 145, amenities: [], photos: [], status: "aktiv" })),
-  { id: "8460eb23-82ff-4280-a1f1-ca01f97733bd", room_number: 20, name: "Junior Suite", room_type: "Junior Suite", bed_description: "Doppelbett und Wohnbereich", max_persons: 2, price_per_night: 165, amenities: [], photos: [], status: "aktiv" },
-  { id: "06183ce9-3314-4f82-aab9-40e8c7d32d86", room_number: 21, name: "Eifel-Suite", room_type: "Suite", bed_description: "Doppelbett und separater Wohnbereich", max_persons: 2, price_per_night: 195, amenities: [], photos: [], status: "aktiv" },
+  ...FALLBACK_DZ_IDS.map((id, i) => ({ id, room_number: i + 1, name: `Zimmer ${i + 1}`, room_type: "Doppelzimmer", bed_description: "Doppelbett", max_persons: 2, price_per_night: 95, amenities: [], photos: [], status: "aktiv" })),
+  { id: "2dffe866-7b1a-42d5-8ea9-29c9f2975994", room_number: 20, name: "Familienzimmer 20", room_type: "Familienzimmer", bed_description: "Zwei getrennte Zimmer, 4 Schlafplätze", max_persons: 4, price_per_night: 170, amenities: [], photos: [], status: "aktiv" },
+  { id: "d1bd202f-eedf-45e9-be4c-18a43742ca12", room_number: 21, name: "Familienzimmer 21", room_type: "Familienzimmer", bed_description: "Zwei getrennte Zimmer, 4 Schlafplätze", max_persons: 4, price_per_night: 170, amenities: [], photos: [], status: "aktiv" },
 ];
 
 const FALLBACK_EXTRAS: Extra[] = [
   { id: "2177e1d4-cb02-49d5-b1bb-ae995fd19d7a", name: "Frühstück", price: 12, per_night: true },
-  { id: "595b0d19-c04d-4c13-a44b-53c478baa9b3", name: "Halbpension", price: 28, per_night: true },
+  { id: "595b0d19-c04d-4c13-a44b-53c478baa9b3", name: "Halbpension", price: 23, per_night: true },
   { id: "04801a2c-88db-418a-ac8a-177bf145912b", name: "Fahrrad", price: 15, per_night: false },
   { id: "3c738498-11a0-4b52-aa92-d7bfef4bdae1", name: "Late Check-out", price: 20, per_night: false },
   { id: "1d6b93b1-78aa-4fa7-8bde-a24600290d29", name: "Früh Check-in", price: 20, per_night: false },
@@ -533,8 +538,9 @@ export default function Booking() {
             <CardContent className="space-y-4">
               {!roomIdParam && (
                 <div>
-                  <Label>Zimmer</Label>
+                  <Label htmlFor="room-select">Zimmer</Label>
                   <select
+                    id="room-select"
                     value={room?.id ?? ""}
                     onChange={(event) => setRoom(rooms.find((r) => r.id === event.target.value) ?? null)}
                     className="mt-1.5 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
@@ -573,10 +579,10 @@ export default function Booking() {
               )}
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <Label>Check-in</Label>
+                  <Label htmlFor="checkin-trigger">Check-in</Label>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="outline" className="w-full justify-start mt-1.5">
+                      <Button id="checkin-trigger" aria-label="Check-in-Datum wählen" variant="outline" className="w-full justify-start mt-1.5">
                         <CalendarIcon className="h-4 w-4" />
                         {checkIn ? format(checkIn, "PPP", { locale: de }) : "Datum wählen"}
                       </Button>
@@ -607,10 +613,10 @@ export default function Booking() {
                   </Popover>
                 </div>
                 <div>
-                  <Label>Check-out</Label>
+                  <Label htmlFor="checkout-trigger">Check-out</Label>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="outline" className="w-full justify-start mt-1.5" disabled={!checkIn}>
+                      <Button id="checkout-trigger" aria-label="Check-out-Datum wählen" variant="outline" className="w-full justify-start mt-1.5" disabled={!checkIn}>
                         <CalendarIcon className="h-4 w-4" />
                         {checkOut ? format(checkOut, "PPP", { locale: de }) : "Datum wählen"}
                       </Button>
@@ -640,9 +646,9 @@ export default function Booking() {
                 </div>
               </div>
               <div>
-                <Label>Personen</Label>
+                <Label htmlFor="persons-trigger">Personen</Label>
                 <Select value={String(persons)} onValueChange={(v) => setPersons(Number(v))}>
-                  <SelectTrigger className="mt-1.5 w-32">
+                  <SelectTrigger id="persons-trigger" aria-label="Anzahl Personen" className="mt-1.5 w-32">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
