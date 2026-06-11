@@ -69,6 +69,12 @@ const FALLBACK_ROOMS: Room[] = [
   { id: "d1bd202f-eedf-45e9-be4c-18a43742ca12", room_number: 21, name: "Familienzimmer 21", room_type: "Familienzimmer", bed_description: "Zwei getrennte Zimmer, 4 Schlafplätze", max_persons: 4, price_per_night: 170, amenities: [], photos: [], status: "aktiv" },
 ];
 
+// Kurzbeschreibung je Zimmer-Typ — der Gast bucht eine Kategorie, kein Zimmer Nr. X.
+const TYPE_BLURB: Record<string, string> = {
+  Doppelzimmer: "Komfortabel, mit Balkon oder Terrasse — auch zur Einzelnutzung.",
+  Familienzimmer: "Zwei getrennte Bereiche, bis zu 4 Personen — ideal für Familien.",
+};
+
 const FALLBACK_EXTRAS: Extra[] = [
   { id: "2177e1d4-cb02-49d5-b1bb-ae995fd19d7a", name: "Frühstück", price: 12, per_night: true },
   { id: "595b0d19-c04d-4c13-a44b-53c478baa9b3", name: "Halbpension", price: 23, per_night: true },
@@ -112,6 +118,7 @@ export default function Booking() {
 
   const [room, setRoom] = useState<Room | null>(null);
   const [rooms, setRooms] = useState<Room[]>(FALLBACK_ROOMS);
+  const [selectedTypeKey, setSelectedTypeKey] = useState<string | null>(null);
   const [extras, setExtras] = useState<Extra[]>(FALLBACK_EXTRAS);
   const [checkIn, setCheckIn] = useState<Date | undefined>();
   const [checkOut, setCheckOut] = useState<Date | undefined>();
@@ -216,6 +223,44 @@ export default function Booking() {
     return candidate ?? rooms.find((r) => r.id !== room.id && !conflict(r.id)) ?? null;
   }, [room, rooms, checkIn, checkOut, allBookings]);
 
+  // ---- Buchen nach Typ: der Gast wählt Kategorie + Foto, nicht 21 Zimmernummern ----
+  const roomTypes = useMemo(() => {
+    const byType = new Map<string, Room[]>();
+    for (const r of rooms) {
+      const list = byType.get(r.room_type) ?? [];
+      list.push(r);
+      byType.set(r.room_type, list);
+    }
+    return Array.from(byType.entries())
+      .map(([key, list]) => {
+        const minPrice = Math.min(...list.map((r) => r.price_per_night));
+        const ref = list.find((r) => r.price_per_night === minPrice) ?? list[0];
+        return {
+          key,
+          rooms: list,
+          minPrice,
+          pricePerPerson: !!ref.price_per_person,
+          singleUsePrice: ref.single_use_price ?? null,
+          maxPersons: Math.max(...list.map((r) => r.max_persons)),
+        };
+      })
+      .sort((a, b) => a.minPrice - b.minPrice);
+  }, [rooms]);
+
+  // Verfügbarkeit je Typ = ist für die gewählten Daten mindestens EIN Zimmer dieses Typs frei?
+  const typeAvailability = useMemo(() => {
+    const map: Record<string, boolean> = {};
+    const hasDates = !!(checkIn && checkOut);
+    const inIso = hasDates ? toISODate(checkIn) : "";
+    const outIso = hasDates ? toISODate(checkOut) : "";
+    for (const t of roomTypes) {
+      map[t.key] = !hasDates || t.rooms.some(
+        (r) => !allBookings.some((b) => b.room_id === r.id && b.check_in < outIso && b.check_out > inIso)
+      );
+    }
+    return map;
+  }, [roomTypes, allBookings, checkIn, checkOut]);
+
   useEffect(() => {
     // Cleanup-Flag verhindert setState auf unmounted Component bei schnellem Routenwechsel
     let active = true;
@@ -231,7 +276,7 @@ export default function Booking() {
       setRooms(list);
       if (roomIdParam) {
         const found = list.find((r) => r.id === roomIdParam);
-        if (found) setRoom(found);
+        if (found) setSelectedTypeKey(found.room_type);
       }
 
       const extrasOk = extrasRes.status === "fulfilled" && !extrasRes.value.error && extrasRes.value.data?.length;
@@ -280,6 +325,24 @@ export default function Booking() {
     if (room && persons > room.max_persons) setPersons(room.max_persons);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room?.id]);
+
+  // Hält das konkrete, FREIE Zimmer passend zum gewählten Typ + Daten — der Gast
+  // sieht nur die Kategorie, der Server bekommt eine echte Zimmer-ID. Ist der Typ
+  // für die Daten ausgebucht, wird room=null (die Karte zeigt dann „Belegt").
+  useEffect(() => {
+    if (!selectedTypeKey) { setRoom(null); return; }
+    const hasDates = !!(checkIn && checkOut);
+    const inIso = hasDates ? toISODate(checkIn) : "";
+    const outIso = hasDates ? toISODate(checkOut) : "";
+    const free = rooms
+      .filter((r) => r.room_type === selectedTypeKey)
+      .sort((a, b) => a.room_number - b.room_number)
+      .find((r) => !hasDates || !allBookings.some(
+        (b) => b.room_id === r.id && b.check_in < outIso && b.check_out > inIso
+      ));
+    setRoom(free ?? null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTypeKey, checkIn, checkOut, allBookings, rooms]);
 
   // Wünsche auf Anfrage (keine berechneten Positionen — landen in den Notizen).
   // Ehrlich: KEIN Suite-Upgrade (es gibt keine Suiten) und kein „Frühstück
@@ -504,7 +567,7 @@ export default function Booking() {
               {confirmed
                 ? "Vielen Dank — wir bestätigen Ihre Anfrage in Kürze per Email."
                 : room
-                  ? `Zimmer ${room.room_number} · ${room.room_type}`
+                  ? room.room_type
                   : "Wählen Sie Ihr Zimmer und Reisedaten"}
             </p>
           </div>
@@ -532,7 +595,7 @@ export default function Booking() {
               {confirmed
                 ? "Vielen Dank — wir bestätigen Ihre Anfrage in Kürze per Email."
                 : room
-                  ? `Zimmer ${room.room_number} · ${room.room_type}`
+                  ? room.room_type
                   : "Wählen Sie Ihr Zimmer und Reisedaten"}
             </p>
           </div>
@@ -554,47 +617,7 @@ export default function Booking() {
               <CardTitle className="font-display text-xl md:text-2xl">1. Reisedaten</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {!roomIdParam && (
-                <div>
-                  <Label htmlFor="room-select">Zimmer</Label>
-                  <select
-                    id="room-select"
-                    value={room?.id ?? ""}
-                    onChange={(event) => setRoom(rooms.find((r) => r.id === event.target.value) ?? null)}
-                    className="mt-1.5 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                  >
-                    <option value="">Zimmer auswählen</option>
-                    {rooms.map((r) => (
-                      <option key={r.id} value={r.id}>
-                        Nr. {r.room_number} · {r.room_type} · {eur(r.price_per_night)}/Nacht
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-              {room && availabilityWindows.length > 0 && (
-                <div className="rounded-lg border bg-muted/30 p-3 text-xs space-y-1.5">
-                  <div className="font-semibold text-sm flex items-center gap-2">
-                    <CalendarIcon className="h-4 w-4 text-secondary" />
-                    Zimmer {room.room_number} – nächste Zeiträume
-                  </div>
-                  {availabilityWindows.map((w, i) => (
-                    <div key={i} className="flex items-center gap-2">
-                      {w.available ? (
-                        <CheckCircle className="h-3.5 w-3.5 text-success shrink-0" />
-                      ) : (
-                        <AlertCircle className="h-3.5 w-3.5 text-destructive shrink-0" />
-                      )}
-                      <span className="text-muted-foreground">
-                        {format(w.from, "dd.MM.", { locale: de })} – {format(w.to, "dd.MM.", { locale: de })}:
-                      </span>
-                      <span className={cn("font-medium", w.available ? "text-success" : "text-destructive")}>
-                        {w.available ? "Verfügbar" : "Belegt"}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
+              {/* Datum zuerst — danach zeigen wir, welche Zimmer-Typen frei sind */}
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="checkin-trigger">Check-in</Label>
@@ -613,20 +636,10 @@ export default function Booking() {
                           setCheckIn(d);
                           if (d && checkOut && checkOut <= d) setCheckOut(undefined);
                         }}
-                        disabled={(d) =>
-                          d < new Date(new Date().setHours(0, 0, 0, 0)) || isDateBlocked(d)
-                        }
-                        modifiers={{ booked: (d) => isDateBlocked(d) }}
-                        modifiersClassNames={{
-                          booked: "line-through text-destructive/60 bg-destructive/10",
-                        }}
+                        disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
                         locale={de}
                         className={cn("p-3 pointer-events-auto")}
                       />
-                      <div className="px-3 pb-3 text-[11px] text-muted-foreground flex items-center gap-3">
-                        <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-destructive/40" /> Belegt</span>
-                        <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-success" /> Verfügbar</span>
-                      </div>
                     </PopoverContent>
                   </Popover>
                 </div>
@@ -644,21 +657,10 @@ export default function Booking() {
                         mode="single"
                         selected={checkOut}
                         onSelect={setCheckOut}
-                        disabled={(d) => {
-                          if (!checkIn) return true;
-                          if (d <= checkIn) return true;
-                          // Block any checkout date past the next booking's start
-                          if (maxCheckout && d > maxCheckout) return true;
-                          return false;
-                        }}
+                        disabled={(d) => !checkIn || d <= checkIn}
                         locale={de}
                         className={cn("p-3 pointer-events-auto")}
                       />
-                      {maxCheckout && (
-                        <div className="px-3 pb-3 text-[11px] text-muted-foreground">
-                          Spätester Check-out: {format(maxCheckout, "dd.MM.yyyy", { locale: de })}
-                        </div>
-                      )}
                     </PopoverContent>
                   </Popover>
                 </div>
@@ -676,6 +678,93 @@ export default function Booking() {
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* Zimmer-Auswahl nach Typ + Foto (nicht nach Zimmernummer) */}
+              <div>
+                <Label className="block">Zimmer</Label>
+                <p className="text-xs text-muted-foreground mt-1 mb-3">
+                  {checkIn && checkOut
+                    ? `Frei für ${format(checkIn, "dd.MM.", { locale: de })} – ${format(checkOut, "dd.MM.", { locale: de })}:`
+                    : "Wählen Sie zuerst Ihre Daten — dann sehen Sie, was frei ist."}
+                </p>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {roomTypes.map((t) => {
+                    const selected = selectedTypeKey === t.key;
+                    const hasDates = !!(checkIn && checkOut);
+                    const free = typeAvailability[t.key] ?? true;
+                    const overCapacity = persons > t.maxPersons;
+                    const disabled = (hasDates && !free) || overCapacity;
+                    const blurb = TYPE_BLURB[t.key] ?? t.rooms[0]?.bed_description ?? "";
+                    // Preis folgt der Personenzahl: 1 Person = Einzelnutzung, sonst pro Person × N (bzw. Pauschale).
+                    const singleUse = persons <= 1 && t.singleUsePrice != null;
+                    const ratePerNight = singleUse
+                      ? t.singleUsePrice
+                      : t.pricePerPerson
+                        ? t.minPrice * persons
+                        : t.minPrice;
+                    const priceNote = singleUse
+                      ? "Einzelnutzung"
+                      : t.pricePerPerson
+                        ? `${eur(t.minPrice)} p.P. × ${persons}`
+                        : null;
+                    return (
+                      <button
+                        type="button"
+                        key={t.key}
+                        disabled={disabled}
+                        onClick={() => setSelectedTypeKey(t.key)}
+                        aria-pressed={selected}
+                        className={cn(
+                          "group relative text-left rounded-lg border overflow-hidden transition-all focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                          selected ? "border-secondary ring-2 ring-secondary/40" : "border-input hover:border-secondary/60",
+                          disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
+                        )}
+                      >
+                        <div className="aspect-[4/3] overflow-hidden bg-muted">
+                          <img
+                            src={photoForRoomType(t.key)}
+                            alt={t.key}
+                            loading="lazy"
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                          />
+                        </div>
+                        <div className="p-3 space-y-1">
+                          <div className="flex items-center justify-between gap-2">
+                            <h3 className="font-display text-base leading-tight">{t.key}</h3>
+                            {selected && <CheckCircle2 className="h-4 w-4 text-secondary shrink-0" />}
+                          </div>
+                          <p className="text-xs text-muted-foreground leading-snug">{blurb}</p>
+                          <div className="flex items-end justify-between gap-2 pt-1">
+                            <div className="min-w-0">
+                              {overCapacity ? (
+                                <span className="text-xs font-medium text-muted-foreground">max. {t.maxPersons} {t.maxPersons === 1 ? "Person" : "Personen"}</span>
+                              ) : (
+                                <>
+                                  <span className="block text-sm font-semibold text-secondary whitespace-nowrap">{eur(ratePerNight)} / Nacht</span>
+                                  {priceNote && <span className="block text-[10px] text-muted-foreground leading-tight">{priceNote}</span>}
+                                </>
+                              )}
+                            </div>
+                            {hasDates && !overCapacity && (
+                              <span className={cn("text-[11px] font-medium inline-flex items-center gap-1 shrink-0", free ? "text-success" : "text-destructive")}>
+                                {free ? <CheckCircle className="h-3 w-3" /> : <AlertCircle className="h-3 w-3" />}
+                                {free ? "Verfügbar" : "Belegt"}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+                {checkIn && checkOut && selectedTypeKey && !room && (
+                  <p className="mt-3 text-sm text-destructive flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4 shrink-0" />
+                    Für diese Daten ist dieser Zimmertyp leider belegt — bitte andere Daten wählen.
+                  </p>
+                )}
+              </div>
+
               {nights > 0 && room && (
                 <div className="rounded-lg bg-accent text-accent-foreground p-3 text-sm flex justify-between">
                   <span className="text-accent-foreground/85">
@@ -683,29 +772,6 @@ export default function Booking() {
                     {room.price_per_person && !(persons <= 1 && room.single_use_price != null) ? ` (${persons} P. × ${eur(room.price_per_night)})` : ""}
                   </span>
                   <span className="font-semibold">{eur(roomTotal)}</span>
-                </div>
-              )}
-              {alternativeRoom && (
-                <div className="rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm space-y-2">
-                  <div className="flex items-start gap-2">
-                    <AlertCircle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
-                    <div>
-                      <p className="font-semibold text-destructive">
-                        {room?.name} ist in diesem Zeitraum belegt.
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Alternative: Zimmer {alternativeRoom.room_number} ({alternativeRoom.room_type}) – {eur(alternativeRoom.price_per_night)}/Nacht
-                      </p>
-                    </div>
-                  </div>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setRoom(alternativeRoom)}
-                  >
-                    Zu Zimmer {alternativeRoom.room_number} wechseln
-                  </Button>
                 </div>
               )}
             </CardContent>
