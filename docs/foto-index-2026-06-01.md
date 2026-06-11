@@ -84,3 +84,20 @@ Verworfen: ~11 Near-Duplikat-Schneebilder + 2 Screenshots mit UI/Text-Overlay (n
 - `20191130_105922.jpg` — unscharf/schief, kein erkennbares Motiv.
 - `20191206_093123.jpg` — gedreht, sehr privat wirkende Weihnachtsdeko.
 - `Screenshot_20210418-073015_WhatsApp.jpg` — Near-Duplikat von `grillteller-tablett-am-fenstertisch` (weicher), redundant.
+
+## Doppelzimmer — Profi-Upload 11.06.2026 (7 neue, alle übernommen)
+
+Hochwertige Zimmer-/Bad-Aufnahmen (2 Bäder im Hochformat). Roh-Originale (UUID-Namen)
+in `_originale-upload-2026-06-11/` (gitignored). Pipeline wie oben (auto-orient + max
+2000px + Q82 + EXIF-strip). Stehen in der Doppelzimmer-Galerie ganz vorne — Const
+`DOPPELZIMMER_FOTOS` in `site/lib/photos.ts` **und** `src/lib/photos.ts`.
+
+| Datei (`public/fotos/`) | Alt-Text | Hinweis |
+|---|---|---|
+| ⭐ doppelzimmer-komfort-mit-sofa-und-holzlamellenwand-landhotel-schend-vulkaneifel.jpg | Modernes Komfort-Doppelzimmer mit grauem Sofa und Holzlamellenwand im Landhotel Schend in der Vulkaneifel | Stärkstes Zimmer-Motiv — DZ-Galerie-Hero |
+| ⭐ doppelzimmer-komfort-mit-doppelbett-und-holzboden-landhotel-schend-vulkaneifel.jpg | Helles Komfort-Doppelzimmer mit Doppelbett, roten Akzentkissen und Holzboden im Landhotel Schend | Hochformat |
+| doppelzimmer-mit-doppelbett-und-kleiderschrank-landhotel-schend-vulkaneifel.jpg | Komfortables Doppelzimmer mit Doppelbett und Kleiderschrank im Landhotel Schend in der Vulkaneifel | Landhaus-Klassiker |
+| doppelzimmer-mit-doppelbett-und-sat-tv-landhotel-schend-vulkaneifel.jpg | Doppelzimmer mit Doppelbett und Sat-TV im Landhotel Schend in der Vulkaneifel | Nah-Dublette des vorigen |
+| doppelzimmer-eingang-mit-ebenerdiger-dusche-landhotel-schend-vulkaneifel.jpg | Eingangsbereich eines Doppelzimmers mit Blick auf die ebenerdige Dusche im Landhotel Schend | |
+| doppelzimmer-bad-mit-walk-in-dusche-und-rundspiegel-landhotel-schend-vulkaneifel.jpg | Modernes Doppelzimmer-Bad mit ebenerdiger Walk-in-Dusche und Rundspiegel im Landhotel Schend | Hochformat |
+| doppelzimmer-bad-mit-dusche-waschbecken-und-wc-landhotel-schend-vulkaneifel.jpg | Doppelzimmer-Bad mit Dusche, Waschbecken und WC im Landhotel Schend in der Vulkaneifel | |

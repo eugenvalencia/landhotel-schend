@@ -23,32 +23,43 @@ const FAMILIENZIMMER_FOTOS = [
   "/fotos/familienzimmer-wohnbereich-mit-tv-landhotel-schend-vulkaneifel.jpg",
 ];
 
+// Doppelzimmer-Galerie. Neue Profi-Fotos (Schend 11.06.2026) zuerst — helles
+// Komfort-Zimmer → Landhaus-Klassiker → Eingang → modernes Bad —, dann die bisherigen.
+const DOPPELZIMMER_FOTOS = [
+  "/fotos/doppelzimmer-komfort-mit-sofa-und-holzlamellenwand-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-komfort-mit-doppelbett-und-holzboden-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-doppelbett-und-kleiderschrank-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-doppelbett-und-sat-tv-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-eingang-mit-ebenerdiger-dusche-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-bad-mit-walk-in-dusche-und-rundspiegel-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-bad-mit-dusche-waschbecken-und-wc-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-balkon-gelb-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-renoviert-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-modern-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-sofa-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-bad-mit-ebenerdiger-dusche-landhotel-schend-vulkaneifel.jpg",
+];
+
+// Komfort-Variante — moderne Profi-Zimmer + Bad zuerst.
+const DOPPELZIMMER_KOMFORT_FOTOS = [
+  "/fotos/doppelzimmer-komfort-mit-sofa-und-holzlamellenwand-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-komfort-mit-doppelbett-und-holzboden-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-bad-mit-walk-in-dusche-und-rundspiegel-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
+];
+
 /**
  * Pro Zimmer-Typ eine Galerie — alle self-hosted. Wo für einen Typ nur wenige echte
  * Fotos existieren, ergänzen verwandte Zimmer-Fotos (statt toter /pics-Links).
  */
 export const SCHEND_ROOM_GALLERY: Record<string, string[]> = {
-  "Doppelzimmer": [
-    "/fotos/doppelzimmer-mit-balkon-gelb-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-renoviert-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-modern-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-mit-sofa-landhotel-schend-vulkaneifel.jpg",
-  ],
-  "Doppelzimmer Standard": [
-    "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
-  ],
-  "Komfort": [
-    "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
-  ],
-  "Doppelzimmer Komfort": [
-    "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
-  ],
+  "Doppelzimmer": DOPPELZIMMER_FOTOS,
+  "Doppelzimmer Standard": DOPPELZIMMER_FOTOS,
+  "Komfort": DOPPELZIMMER_KOMFORT_FOTOS,
+  "Doppelzimmer Komfort": DOPPELZIMMER_KOMFORT_FOTOS,
   "Familie": FAMILIENZIMMER_FOTOS,
   "Familienzimmer": FAMILIENZIMMER_FOTOS,
   "Junior Suite": [

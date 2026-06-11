@@ -52,8 +52,10 @@ supabase/.temp/
 .claude/
 
 # Roh-Foto-Uploads (lokales Backup der Originale, nicht deployen/committen)
-/_originale-upload-2026-06-01/
+/_originale-upload-*/
+/_dz-source/
 /public/fotos/karin 01.02.2026/
+/public/fotos/*.zip
 
 # Karin-Lieferung 10.06.2026: Halte-Ordner mit WhatsApp-Chat-Screenshots (PRIVAT!)
 # + Wellness-/Sauna-Foto, das erst nach Karins Freigabe gezeigt wird.
