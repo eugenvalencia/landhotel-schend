@@ -20,35 +20,41 @@ const FAMILIENZIMMER_FOTOS = [
   "/fotos/familienzimmer-wohnbereich-mit-tv-landhotel-schend-vulkaneifel.jpg",
 ];
 
+// Doppelzimmer-Galerie. Reihenfolge: neue Profi-Fotos (Schend 11.06.2026) zuerst —
+// helles Komfort-Zimmer → Landhaus-Klassiker → Eingang → modernes Bad —, danach die
+// bisherigen echten Aufnahmen.
+const DOPPELZIMMER_FOTOS = [
+  "/fotos/doppelzimmer-komfort-mit-sofa-und-holzlamellenwand-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-komfort-mit-doppelbett-und-holzboden-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-doppelbett-und-kleiderschrank-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-doppelbett-und-sat-tv-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-eingang-mit-ebenerdiger-dusche-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-bad-mit-walk-in-dusche-und-rundspiegel-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-bad-mit-dusche-waschbecken-und-wc-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-balkon-gelb-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-renoviert-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-modern-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-sofa-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-bad-mit-ebenerdiger-dusche-landhotel-schend-vulkaneifel.jpg",
+];
+
+// Komfort-Variante — die beiden modernen Profi-Zimmer + Bad zuerst.
+const DOPPELZIMMER_KOMFORT_FOTOS = [
+  "/fotos/doppelzimmer-komfort-mit-sofa-und-holzlamellenwand-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-komfort-mit-doppelbett-und-holzboden-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-bad-mit-walk-in-dusche-und-rundspiegel-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
+];
+
 export const SCHEND_ROOM_GALLERY: Record<string, string[]> = {
-  // Echte Doppelzimmer-Fotos (Karin 10.06.2026) — Teppich-Klassiker + renovierte
-  // Zimmer mit Holzboden. Reihenfolge: hell/Balkon zuerst.
-  "Doppelzimmer": [
-    "/fotos/doppelzimmer-mit-balkon-gelb-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-renoviert-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-modern-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-mit-sofa-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-bad-mit-ebenerdiger-dusche-landhotel-schend-vulkaneifel.jpg",
-  ],
-  "Doppelzimmer Standard": [
-    "/fotos/doppelzimmer-mit-balkon-gelb-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-renoviert-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-modern-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-mit-sofa-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-bad-mit-ebenerdiger-dusche-landhotel-schend-vulkaneifel.jpg",
-  ],
-  "Komfort": [
-    "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
-  ],
-  "Doppelzimmer Komfort": [
-    "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
-  ],
+  // Echte Doppelzimmer-Fotos. Reihenfolge: neue Profi-Aufnahmen zuerst (siehe Consts oben).
+  "Doppelzimmer": DOPPELZIMMER_FOTOS,
+  "Doppelzimmer Standard": DOPPELZIMMER_FOTOS,
+  "Komfort": DOPPELZIMMER_KOMFORT_FOTOS,
+  "Doppelzimmer Komfort": DOPPELZIMMER_KOMFORT_FOTOS,
   "Familie": FAMILIENZIMMER_FOTOS,
   "Familienzimmer": FAMILIENZIMMER_FOTOS,
   "Junior Suite": [
