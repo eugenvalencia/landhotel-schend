@@ -29,7 +29,6 @@ const DOPPELZIMMER_FOTOS = [
   "/fotos/doppelzimmer-komfort-mit-sofa-und-holzlamellenwand-landhotel-schend-vulkaneifel.jpg",
   "/fotos/doppelzimmer-komfort-mit-doppelbett-und-holzboden-landhotel-schend-vulkaneifel.jpg",
   "/fotos/doppelzimmer-mit-doppelbett-und-kleiderschrank-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-mit-doppelbett-und-sat-tv-landhotel-schend-vulkaneifel.jpg",
   "/fotos/doppelzimmer-eingang-mit-ebenerdiger-dusche-landhotel-schend-vulkaneifel.jpg",
   "/fotos/doppelzimmer-bad-mit-walk-in-dusche-und-rundspiegel-landhotel-schend-vulkaneifel.jpg",
   "/fotos/doppelzimmer-bad-mit-dusche-waschbecken-und-wc-landhotel-schend-vulkaneifel.jpg",

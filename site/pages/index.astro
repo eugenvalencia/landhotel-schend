@@ -391,7 +391,9 @@ const uspIcon: Record<string, string> = {
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mb-16 md:mb-20" data-reveal>
         {REGION_MOSAIC.map((m) => (
-          <Pic src={m.src} alt={m.alt} loading="lazy" decoding="async" class:list={["w-full h-48 md:h-64 object-cover rounded-md shadow-card", m.cls]} />
+          <!-- Plain <img>: CSS-Grid row/col-span funktioniert nicht zuverlässig durch
+               einen <picture display:contents>-Wrapper. Region-Bilder sind klein → WebP hier verzichtbar. -->
+          <img src={m.src} alt={m.alt} loading="lazy" decoding="async" class:list={["w-full h-48 md:h-64 object-cover rounded-md shadow-card", m.cls]} />
         ))}
       </div>
       <div class="max-w-prose mx-auto space-y-12" data-reveal>
