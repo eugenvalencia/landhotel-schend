@@ -23,8 +23,8 @@ export type RoomType = {
 export const ROOM_INTRO = [
   "Fühlen Sie sich wie zuhause in unseren komfortablen Doppelzimmern. Bei Bedarf kann das Zimmer auch als Einzelperson genutzt werden.",
   "Großzügige Familienzimmer bieten Kindern wie Eltern Freiraum.",
-  "Wohlfühl-Ambiente für Familien, Paare und Einzelreisende. Großzügig und modern eingerichtet bieten unsere 19 Komfort- und 2 Familienzimmer optimale Voraussetzungen, zu entspannen. Genießen Sie von Balkon oder Terrasse aus den Blick in die wunderbare Naturlandschaft und nach einer ausgiebigen Ausflugtour die Annehmlichkeiten eines komfortablen Bades.",
-  "Ein WLAN-Anschluss steht Ihnen ebenso zur Verfügung wie Telefon und Sat-TV oder Dusche und WC. Unsere Doppel- und Familienzimmer sind alle Nichtraucherzimmer, erreichbar per Lift und auf Wunsch ausgestattet mit zusätzlichen Kinderbetten. Bis 2 Jahre übernachten Kinder kostenlos, bis 12 Jahre um 50 % ermäßigt, im Elternzimmer.",
+  "Wohlfühl-Ambiente für Familien, Paare und Einzelreisende. Großzügig und modern eingerichtet bieten unsere 19 Komfort- und 2 Familienzimmer optimale Voraussetzungen, zu entspannen. Viele Doppelzimmer bieten von Balkon oder Terrasse aus den Blick in die wunderbare Naturlandschaft — und nach einer ausgiebigen Ausflugtour die Annehmlichkeiten eines komfortablen Bades.",
+  "Ein WLAN-Anschluss steht Ihnen ebenso zur Verfügung wie Telefon und Sat-TV oder Dusche und WC. Unsere Doppel- und Familienzimmer sind alle Nichtraucherzimmer und auf Wunsch ausgestattet mit zusätzlichen Kinderbetten. Bis 2 Jahre übernachten Kinder kostenlos, bis 12 Jahre um 50 % ermäßigt, im Elternzimmer.",
 ];
 
 export const ROOM_AUSSTATTUNG = [
@@ -36,7 +36,7 @@ export const ROOM_AUSSTATTUNG = [
   "moderne, komfortable Ausstattung",
 ];
 
-export const HAUS_SONSTIGES = ["Frühstück oder Halbpension", "Sauna & Ruhebereich (auf Anfrage)", "Massagen auf Anfrage"];
+export const HAUS_SONSTIGES = ["Frühstück oder Halbpension", "Massagen auf Anfrage"];
 
 export const EXTRAS = [
   "Kinderermäßigung im Elternzimmer: bis 2 Jahre kostenlos",
@@ -83,8 +83,6 @@ const ROOM_AMENITIES = [
   "Telefon & Sat-TV",
   "Kostenfreies WLAN",
   "Safe",
-  "Überwiegend Balkon oder Terrasse",
-  "Erreichbar per Lift",
   "Großes Frühstück inklusive",
   "Halbpension auf Wunsch (zzgl. 23 €/Person/Tag)",
 ];
@@ -101,8 +99,8 @@ export const ROOM_TYPES: RoomType[] = [
     bed: "Doppelbett",
     hint: "Komfortabel, mit Balkon — auch zur Einzelnutzung",
     description:
-      "Fühlen Sie sich wie zuhause in unseren komfortablen Doppelzimmern — modern eingerichtet, überwiegend mit Balkon oder Terrasse und Blick in die wunderbare Vulkaneifel-Landschaft. Bei Bedarf kann das Zimmer auch zur Einzelnutzung gebucht werden (ab 80 € pro Nacht). Alle Zimmer sind Nichtraucherzimmer und per Lift erreichbar.",
-    amenities: ROOM_AMENITIES,
+      "Fühlen Sie sich wie zuhause in unseren komfortablen Doppelzimmern — modern eingerichtet, überwiegend mit Balkon oder Terrasse und Blick in die wunderbare Vulkaneifel-Landschaft. Bei Bedarf kann das Zimmer auch zur Einzelnutzung gebucht werden (ab 80 € pro Nacht). Alle Zimmer sind Nichtraucherzimmer.",
+    amenities: [...ROOM_AMENITIES, "Überwiegend Balkon oder Terrasse"],
     gallery: galleryForRoomType("Doppelzimmer Standard"),
   },
   {

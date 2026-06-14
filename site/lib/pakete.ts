@@ -27,12 +27,11 @@ export const PAKETE: Paket[] = [
       "4× Übernachtung",
       "4× Halbpension",
       "4× Frühstücksbuffet",
-      "1× Nutzung der hauseigenen Sauna",
       "2× Proviant für den Wandertag",
       "Moderne, komfortable Ausstattung",
     ],
     details:
-      "Wir packen dafür Ihren Rucksack — mit Eifler Spezialitäten und individuellen Wandertipps. Wieder zurück, entspannen Sie in unserer Sauna und genießen erholsamen Schlaf inmitten des Vulkans.",
+      "Wir packen dafür Ihren Rucksack — mit Eifler Spezialitäten und individuellen Wandertipps. Wieder zurück, genießen Sie erholsamen Schlaf inmitten des Vulkans.",
     price: "ab 339 € p. P.",
     priceSingle: "Einzelnutzung ab 399 €",
     priceNote: "Familienzimmer auf Anfrage",
@@ -63,12 +62,11 @@ export const PAKETE: Paket[] = [
     cover: "/pakete/eifel-3.jpg",
     gallery: ["/pakete/eifel-3.jpg", "/pakete/eifel-4.jpg", "/pakete/food-0.jpg"],
     intro:
-      "Sie wollen einfach mal abschalten und es sich rundum gut gehen lassen? Dann sind unsere drei Tage der Erholung das Richtige für Sie. Entschleunigen Sie bei einem Besuch in unserem Wellness mit Whirlpool, Sauna, Solarium und speziellen Massagen.",
+      "Sie wollen einfach mal abschalten und es sich rundum gut gehen lassen? Dann sind unsere drei Tage der Erholung das Richtige für Sie. Entschleunigen Sie bei wohltuenden Anwendungen und speziellen Massagen.",
     highlights: [
       "3× Übernachtung",
       "3× Halbpension",
       "3× Frühstücksbuffet",
-      "1× Nutzung der hauseigenen Sauna",
       "1× Willkommensgetränk",
     ],
     details:
@@ -89,7 +87,6 @@ export const PAKETE: Paket[] = [
       "4× Halbpension",
       "4× Frühstücksbuffet",
       "4× Proviant für den Wandertag",
-      "4× Nutzung der hauseigenen Sauna",
       "Rücken- oder Fußmassage auf Wunsch (zzgl. 25 € pro Person)",
     ],
     details:
@@ -109,7 +106,6 @@ export const PAKETE: Paket[] = [
       "5× Übernachtung",
       "5× Halbpension",
       "5× Frühstücksbuffet",
-      "2× Nutzung der hauseigenen Sauna",
       "5× Proviant für den Wandertag",
       "1× Willkommensgetränk",
     ],

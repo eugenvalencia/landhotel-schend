@@ -65,3 +65,6 @@ supabase/.temp/
 # Das ausgelieferte Hero-Video liegt sauber unter /public/hero/.
 /_hero-video-source/
 /public/fotos/schend foto verbessert.png
+
+# Roh-Foto-Uploads zur Sichtung (nicht in /public → kein Deploy-Leak)
+_review-fotos-*-source/

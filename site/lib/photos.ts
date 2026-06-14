@@ -77,6 +77,8 @@ export const SCHEND_ROOM_PHOTO: Record<string, string> = Object.fromEntries(
 );
 
 export const SCHEND_RESTAURANT_GALLERY = [
+  // Neue helle Speisesaal-Aufnahme (Schend 14.06.2026) als Leitbild zuerst.
+  "/fotos/restaurant-speisesaal-mit-buffet-landhotel-schend.jpg",
   "/fotos/restaurant-panorama-1-landhotel-schend.jpg",
   "/fotos/restaurant-panorama-2-landhotel-schend.jpg",
   "/fotos/restaurant-panorama-3-landhotel-schend.jpg",
