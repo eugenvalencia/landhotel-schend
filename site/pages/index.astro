@@ -153,7 +153,7 @@ const uspIcon: Record<string, string> = {
 
 <Layout
   title="3-Sterne-Hotel & Kurzurlaub in der Vulkaneifel"
-  description="Familiengeführtes 3-Sterne-Hotel in Immerath, Vulkaneifel — 21 Zimmer, Eifeler Landküche, Halbpension. Ideal für Wandern & Kurzurlaub in der Eifel. Provisionsfrei direkt buchen."
+  description="Familiengeführtes 3-Sterne-Hotel in Immerath, Vulkaneifel — 21 Zimmer, Eifeler Landküche, Halbpension. Ideal zum Wandern. Provisionsfrei direkt buchen."
   canonicalPath="/"
   ogType="hotel"
 >
@@ -168,11 +168,10 @@ const uspIcon: Record<string, string> = {
         data-hero-video
         class="absolute inset-0 w-full h-full object-cover"
         poster={HERO_POSTER}
-        autoplay
         muted
         loop
         playsinline
-        preload="metadata"
+        preload="none"
         aria-hidden="true"
       >
         <source src={HERO_VIDEO} type="video/mp4" />
@@ -202,7 +201,7 @@ const uspIcon: Record<string, string> = {
         <span class="text-white/40" aria-hidden="true">·</span>
         <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="165" data-count-mount="1" data-count-delay="800" data-count-dur="1600">165</span> Jahre Familie</span>
         <span class="text-white/40 hidden sm:inline" aria-hidden="true">·</span>
-        <span class="hidden sm:inline text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="21" data-count-mount="1" data-count-delay="1000" data-count-dur="1200">21</span> Zimmer mit Balkon</span>
+        <span class="hidden sm:inline text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="21" data-count-mount="1" data-count-delay="1000" data-count-dur="1200">21</span> Komfortzimmer</span>
       </div>
       <div class="flex flex-col items-center gap-5">
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
@@ -325,7 +324,7 @@ const uspIcon: Record<string, string> = {
       <div class="flex w-max animate-marquee">
         {/* 2 Kopien genügen für nahtlosen -50%-Loop (vorher 4 = doppelte img/Requests) */}
         {Array.from({ length: 2 }).flatMap(() => FOOD_PHOTOS.map((src) => (
-          <img src={src} alt="Gericht aus dem Landhaus Restaurant" loading="lazy" decoding="async" class="h-44 md:h-56 w-auto object-cover rounded-md shadow-card mr-4" />
+          <img src={src} alt="" aria-hidden="true" loading="lazy" decoding="async" class="h-44 md:h-56 w-auto object-cover rounded-md shadow-card mr-4" />
         )))}
       </div>
     </div>
@@ -589,9 +588,9 @@ const uspIcon: Record<string, string> = {
     const heroVideo = document.querySelector<HTMLVideoElement>("[data-hero-video]");
     const motionOff = window.matchMedia("(prefers-reduced-motion: reduce)").matches
       || document.documentElement.classList.contains("a11y-reduced-motion");
-    if (heroVideo && motionOff) {
-      // Markup hat autoplay -> bei reduzierter Bewegung aktiv stoppen, Poster bleibt.
-      heroVideo.removeAttribute("autoplay");
+    // Mobil (< 768px) das 2,4-MB-Hero-Video NICHT laden/abspielen — Poster bleibt LCP.
+    const noHeroVideo = motionOff || !window.matchMedia("(min-width: 768px)").matches;
+    if (heroVideo && noHeroVideo) {
       heroVideo.pause();
     } else if (heroVideo) {
       let inView = true;

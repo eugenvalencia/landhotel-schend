@@ -329,7 +329,7 @@
    nicht zwingend gebraucht wird. Buttons/Inputs separat (s.o.). */
 @media (max-width: 767px) {
   body {
-    font-size: 17px;
+    font-size: 1.0625rem;
     line-height: 1.55;
   }
   /* Echter Fließtext mit text-sm (14px) auf 15px heben — der 17px-Body-Boost

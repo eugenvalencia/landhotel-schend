@@ -50,8 +50,8 @@ const restaurantSchema = {
 ---
 
 <Layout
-  title="Landhaus Restaurant — Eifeler Küche im Landhotel Schend Immerath"
-  description="Hauseigenes Eifeler Restaurant in Immerath/Vulkaneifel. Auch für Tagesgäste offen — Halbpension, Festtafel für Hochzeiten und Feiern bis 70 Personen. Tisch reservieren: +49 6573 306."
+  title="Landhaus Restaurant — Eifeler Küche"
+  description="Eifeler Restaurant in Immerath/Vulkaneifel — auch für Tagesgäste. Halbpension, Festtafel für Feiern bis 70 Personen. Tisch reservieren: +49 6573 306."
   canonicalPath="/restaurant"
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(restaurantSchema)} />
@@ -124,9 +124,9 @@ const restaurantSchema = {
   <!-- Food-Marquee -->
   <section class="overflow-hidden border-y border-border/60 py-6 bg-muted/20">
     <div class="flex w-max animate-marquee">
-      {Array.from({ length: 4 }).flatMap(() =>
+      {Array.from({ length: 2 }).flatMap(() =>
         FOOD_PHOTOS.map((src) => (
-          <img src={src} alt="Gericht aus dem Landhaus Restaurant" loading="lazy" decoding="async" class="h-44 md:h-56 w-auto object-cover rounded-md shadow-card mr-4" />
+          <img src={src} alt="" aria-hidden="true" loading="lazy" decoding="async" class="h-44 md:h-56 w-auto object-cover rounded-md shadow-card mr-4" />
         )),
       )}
     </div>
