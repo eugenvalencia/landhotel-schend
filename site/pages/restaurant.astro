@@ -2,6 +2,7 @@
 // Restaurant — eigene Seite (auch für Tagesgäste + SEO). Content 1:1 aus
 // src/pages/Restaurant.tsx, Restaurant-Schema portiert.
 import Layout from "../layouts/Layout.astro";
+import Pic from "../components/Pic.astro";
 import { SCHEND_RESTAURANT } from "../lib/photos";
 
 // Food-Marquee — food-Fotos + Restaurant-Panoramen interleaved.
@@ -59,7 +60,7 @@ const restaurantSchema = {
 
   <!-- HERO -->
   <section class="relative h-[60vh] min-h-[420px] max-h-[680px] overflow-hidden">
-    <img src={SCHEND_RESTAURANT} alt="Landhaus Restaurant & Terrasse im Landhotel Schend" class="absolute inset-0 w-full h-full object-cover hero-ken-burns" fetchpriority="high" decoding="async" />
+    <Pic src={SCHEND_RESTAURANT} alt="Landhaus Restaurant & Terrasse im Landhotel Schend" class="absolute inset-0 w-full h-full object-cover hero-ken-burns" fetchpriority="high" decoding="async" />
     <div aria-hidden="true" class="absolute inset-0 bg-black/35"></div>
     <div aria-hidden="true" class="absolute inset-x-0 bottom-0 h-60 bg-gradient-to-t from-black/55 via-black/15 to-transparent"></div>
     <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 text-white">
@@ -127,7 +128,7 @@ const restaurantSchema = {
     <div class="flex w-max animate-marquee">
       {Array.from({ length: 2 }).flatMap(() =>
         FOOD_PHOTOS.map((src) => (
-          <img src={src} alt="" aria-hidden="true" loading="lazy" decoding="async" class="h-44 md:h-56 w-auto object-cover rounded-md shadow-card mr-4" />
+          <Pic src={src} alt="" aria-hidden="true" loading="lazy" decoding="async" class="h-44 md:h-56 w-auto object-cover rounded-md shadow-card mr-4" />
         )),
       )}
     </div>
@@ -185,7 +186,7 @@ const restaurantSchema = {
   <section class="grid lg:grid-cols-12 items-stretch bg-muted/30">
     <div class="lg:col-span-6">
       <div class="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[480px] overflow-hidden">
-        <img src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg" alt="Festlich gedeckter Festsaal mit Sektempfang im Landhotel Schend" loading="lazy" decoding="async" class="w-full h-full object-cover" />
+        <Pic src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg" alt="Festlich gedeckter Festsaal mit Sektempfang im Landhotel Schend" loading="lazy" decoding="async" class="w-full h-full object-cover" />
       </div>
     </div>
     <div class="lg:col-span-6 px-6 md:px-12 lg:px-16 py-16 md:py-20 flex flex-col justify-center" data-reveal>

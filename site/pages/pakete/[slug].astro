@@ -1,6 +1,7 @@
 ---
 // Paket-Detail — eigene URL /pakete/[slug] (DR-029), prerendered pro Paket.
 import Layout from "../../layouts/Layout.astro";
+import Pic from "../../components/Pic.astro";
 import { PAKETE } from "../../lib/pakete";
 
 export function getStaticPaths() {
@@ -29,7 +30,7 @@ const breadcrumb = {
 
   <!-- Hero -->
   <section class="relative">
-    <img src={paket.cover} alt={paket.title} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
+    <Pic src={paket.cover} alt={paket.title} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
     <div class="absolute inset-0 gradient-hero"></div>
     <div class="relative container mx-auto px-4 py-24 md:py-32 max-w-3xl text-[hsl(38_30%_95%)]" style="text-shadow:0 1px 8px rgba(0,0,0,0.45)">
       <a href="/pakete" class="inline-flex items-center gap-1.5 text-sm text-[hsl(38_30%_95%)]/80 hover:text-[hsl(38_30%_95%)] transition-colors mb-5">
@@ -75,7 +76,7 @@ const breadcrumb = {
     <div class="grid grid-cols-3 gap-3 mt-10">
       {paket.gallery.map((src, i) => (
         <div class="aspect-[4/3] overflow-hidden rounded-md" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
-          <img src={src} alt={`${paket.title} — Eindruck ${i + 1}`} class="w-full h-full object-cover" loading="lazy" decoding="async" />
+          <Pic src={src} alt={`${paket.title} — Eindruck ${i + 1}`} class="w-full h-full object-cover" loading="lazy" decoding="async" />
         </div>
       ))}
     </div>

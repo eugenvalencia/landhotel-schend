@@ -2,6 +2,7 @@
 // Urlaubsregion — eigene Seite (wie Original-Menü). Inhalte real aus den
 // FAQ-Angaben (Eifelsteig, Maare, Radwege, Nürburgring, Distanzen).
 import Layout from "../layouts/Layout.astro";
+import Pic from "../components/Pic.astro";
 
 const HIGHLIGHTS = [
   {
@@ -50,7 +51,7 @@ const DISTANZEN = [
 >
   <!-- Hero -->
   <section class="relative">
-    <img src="/pakete/eifel-2.jpg" alt="Landschaft der Vulkaneifel" class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
+    <Pic src="/pakete/eifel-2.jpg" alt="Landschaft der Vulkaneifel" class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
     <div class="absolute inset-0 gradient-hero"></div>
     <div class="relative container mx-auto px-4 py-24 md:py-32 max-w-3xl text-[hsl(38_30%_95%)]" style="text-shadow:0 1px 8px rgba(0,0,0,0.45)">
       <p class="eyebrow !text-[hsl(38_48%_72%)]">Urlaubsregion</p>
@@ -69,7 +70,7 @@ const DISTANZEN = [
       {HIGHLIGHTS.map((h, i) => (
         <article class="spotlight rounded-md overflow-hidden border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${(i % 2) * 0.1}s`}>
           <div class="aspect-[16/10] overflow-hidden">
-            <img src={h.img} alt={h.title} class="w-full h-full object-cover" loading="lazy" decoding="async" />
+            <Pic src={h.img} alt={h.title} class="w-full h-full object-cover" loading="lazy" decoding="async" />
           </div>
           <div class="p-6">
             <h2 class="font-display text-2xl">{h.title}</h2>

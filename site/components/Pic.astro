@@ -1,0 +1,18 @@
+---
+// <Pic> — Bild mit WebP-Quelle + JPG/PNG-Fallback (Progressive Enhancement).
+// Rendert <picture class="contents">, damit der Wrapper im Layout "verschwindet"
+// (display:contents) und das innere <img> sich exakt wie vorher verhält — alle
+// Klassen/Attribute (class, loading, width/height, fetchpriority, data-lightbox …)
+// werden 1:1 durchgereicht. WebP-Datei muss neben dem Original liegen (gen-Skript).
+const { src, ...rest } = Astro.props as { src: string; [key: string]: unknown };
+const canWebp = typeof src === "string" && /\.(jpe?g|png)$/i.test(src);
+const webp = canWebp ? src.replace(/\.(jpe?g|png)$/i, ".webp") : src;
+---
+{canWebp ? (
+  <picture class="contents">
+    <source srcset={webp} type="image/webp" />
+    <img src={src} {...rest} />
+  </picture>
+) : (
+  <img src={src} {...rest} />
+)}

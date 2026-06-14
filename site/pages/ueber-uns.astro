@@ -3,6 +3,7 @@
 // src/components/AboutSection.tsx. Timeline statisch sichtbar gerendert
 // (kein JS-abhängiges Reveal → Content steht ohne JS im HTML).
 import Layout from "../layouts/Layout.astro";
+import Pic from "../components/Pic.astro";
 import { ORIGIN } from "../lib/site";
 
 const TIMELINE = [
@@ -45,7 +46,7 @@ const aboutSchema = {
   <section class="grid lg:grid-cols-12 items-stretch">
     <div class="lg:col-span-6">
       <div class="aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden shadow-elevated">
-        <img
+        <Pic
           src="/fotos/landhotel-schend-zeichnung-innenhof-historisch.jpg"
           alt="Bleistift-Zeichnung des Landhotel Schend in Immerath mit Innenhof und Eingang"
           class="w-full h-full object-cover object-center contrast-110"
@@ -101,7 +102,7 @@ const aboutSchema = {
   <section class="container mx-auto px-4 py-16 md:py-20 border-t border-border/40">
     <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-10 md:gap-14 items-center">
       <div class="aspect-[4/3] overflow-hidden rounded-md shadow-card">
-        <img
+        <Pic
           src="/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg"
           alt="Landhotel Schend in Immerath mit Rosen vor der Fassade"
           loading="lazy"
