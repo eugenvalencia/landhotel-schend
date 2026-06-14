@@ -988,6 +988,12 @@ export default function Booking() {
                 {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle className="h-4 w-4" />}
                 {submitting ? "Anfrage wird gesendet..." : "Anfrage senden"}
               </Button>
+              <p className="text-xs text-muted-foreground text-center leading-relaxed">
+                Mit dem Absenden willigen Sie ein, dass wir Ihre Angaben zur Bearbeitung Ihrer
+                Anfrage verarbeiten. Details in unserer{" "}
+                <Link to="/datenschutz" className="font-medium text-foreground underline hover:text-primary">Datenschutzerklärung</Link>.
+                Es entstehen keine Kosten, keine Online-Zahlung.
+              </p>
               <p className="text-xs text-muted-foreground text-center">
                 Bei Änderungen oder Stornierung einfach anrufen: <a href="tel:+4965731306" className="font-medium text-foreground hover:text-primary">+49 6573 306</a>
               </p>

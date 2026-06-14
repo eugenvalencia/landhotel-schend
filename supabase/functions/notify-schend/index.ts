@@ -1,7 +1,9 @@
 // Edge Function: notify-schend
 // Wird nach erfolgreichem INSERT in bookings vom Postgres-Trigger asynchron aufgerufen.
 // Macht zwei Dinge PARALLEL und unabhängig voneinander:
-//   1. Push an n8n-Webhook → n8n qualifiziert + benachrichtigt den Inhaber
+//   1. Interne Buchungs-Benachrichtigung an den Inhaber via Resend — KEINE KI,
+//      keine externe Qualifizierung. Gast-Daten bleiben auf der EU-Resend-Strecke;
+//      es findet keinerlei KI-Verarbeitung der Anfrage statt.
 //   2. Direkt-Bestätigungsmail an den Gast via Resend (DSGVO-konform via EU-Region)
 //
 // Fehler in einem Pfad sollen den anderen Pfad NICHT blockieren.
@@ -11,20 +13,18 @@
 //   Body: { booking_id: string }
 //
 // ENV (in Supabase Dashboard setzen):
-//   N8N_WEBHOOK_URL           = https://n8n.conexadigital.eu/webhook/landhaus-schend-lead
-//   N8N_WEBHOOK_SECRET        = <shared secret zwischen Edge Function und n8n>
 //   RESEND_API_KEY            = re_xxxxxxxxxxxx  (https://resend.com/api-keys)
 //   RESEND_FROM_EMAIL         = buchung@landhaus-schend.de  (verifizierte Sender-Domain)
+//   OWNER_NOTIFY_EMAIL        = info@landhaus-schend.de  (Postfach für interne Buchungs-Alerts)
 //   SUPABASE_URL              = (auto)
 //   SUPABASE_SERVICE_ROLE_KEY = (auto)
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { renderBookingEmail, type EmailKind } from "../_shared/booking-email.ts";
 
-const N8N_WEBHOOK_URL = Deno.env.get("N8N_WEBHOOK_URL") ?? "";
-const N8N_WEBHOOK_SECRET = Deno.env.get("N8N_WEBHOOK_SECRET") ?? "";
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 const RESEND_FROM_EMAIL = Deno.env.get("RESEND_FROM_EMAIL") ?? "buchung@landhaus-schend.de";
+const OWNER_NOTIFY_EMAIL = Deno.env.get("OWNER_NOTIFY_EMAIL") ?? "info@landhaus-schend.de";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
@@ -54,16 +54,63 @@ interface BranchResult {
   detail?: string;
 }
 
-async function pushToN8n(payload: unknown): Promise<BranchResult> {
-  if (!N8N_WEBHOOK_URL) return { ok: false, status: 0, detail: "N8N_WEBHOOK_URL not configured" };
+// Interne Buchungs-Benachrichtigung an den Inhaber — reiner Resend-Versand an das
+// Hotel-Postfach. KEINE KI, kein externer Qualifizierungs-Dienst: die Gast-Daten
+// werden ausschließlich an das Hotel selbst zugestellt. Reply-To = Gast, damit der
+// Inhaber direkt aus der Mail antworten kann.
+async function notifyOwner(args: {
+  bookingNumber: string;
+  guestName: string;
+  guestEmail: string;
+  guestPhone: string | null;
+  roomName: string;
+  checkIn: string;
+  checkOut: string;
+  nights: number;
+  extras: Array<{ name: string; price: number; per_night: boolean }>;
+  totalPrice: number;
+  notes: string;
+  language: string | null;
+}): Promise<BranchResult> {
+  if (!RESEND_API_KEY) return { ok: false, status: 0, detail: "RESEND_API_KEY not configured" };
+  const esc = (s: string) =>
+    s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string);
+  const extrasTxt = args.extras.length
+    ? args.extras.map((e) => `${e.name} (${e.price} €${e.per_night ? "/Nacht" : ""})`).join(", ")
+    : "—";
+  const rows: Array<[string, string]> = [
+    ["Buchungsnummer", args.bookingNumber],
+    ["Gast", args.guestName],
+    ["E-Mail", args.guestEmail],
+    ["Telefon", args.guestPhone || "—"],
+    ["Zimmer", args.roomName],
+    ["Anreise", args.checkIn],
+    ["Abreise", args.checkOut],
+    ["Nächte", String(args.nights)],
+    ["Extras", extrasTxt],
+    ["Gesamt", `${args.totalPrice} €`],
+    ["Sprache", (args.language || "de").toUpperCase()],
+    ["Notiz", args.notes || "—"],
+  ];
+  const html = `<h2 style="font-family:Arial,sans-serif">Neue Buchungsanfrage #${esc(args.bookingNumber)}</h2>
+<table cellpadding="6" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px">
+${rows.map(([k, v]) => `<tr><td style="color:#666">${esc(k)}</td><td><strong>${esc(v)}</strong></td></tr>`).join("\n")}
+</table>
+<p style="font-family:Arial,sans-serif;font-size:13px;color:#666">Die Anfrage liegt auch im Rezeptions-Board. Auf diese E-Mail antworten geht direkt an den Gast.</p>`;
+  const text = `Neue Buchungsanfrage #${args.bookingNumber}\n\n` + rows.map(([k, v]) => `${k}: ${v}`).join("\n");
   try {
-    const r = await fetch(N8N_WEBHOOK_URL, {
+    const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Webhook-Secret": N8N_WEBHOOK_SECRET,
-      },
-      body: JSON.stringify(payload),
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${RESEND_API_KEY}` },
+      body: JSON.stringify({
+        from: `Landhotel Schend Buchung <${RESEND_FROM_EMAIL}>`,
+        to: [OWNER_NOTIFY_EMAIL],
+        reply_to: args.guestEmail,
+        subject: `Neue Buchungsanfrage #${args.bookingNumber} — ${args.guestName}`,
+        html,
+        text,
+        tags: [{ name: "type", value: "owner-alert" }],
+      }),
     });
     return { ok: r.status >= 200 && r.status < 300, status: r.status, detail: await r.text().catch(() => "") };
   } catch (e) {
@@ -157,31 +204,8 @@ Deno.serve(async (req) => {
   const co = new Date(booking.check_out);
   const nights = Math.max(1, Math.round((co.getTime() - ci.getTime()) / 86_400_000));
 
-  // n8n-Payload (für Owner-Qualification über Claude)
   const room = booking.rooms as { name?: string; room_type?: string; bed_description?: string } | null;
   const extras = (booking.extras ?? []) as Array<{ name: string; price: number; per_night: boolean }>;
-
-  const n8nPayload = {
-    source: "landhaus-schend.de",
-    booking_id: booking.id,
-    booking_number: booking.booking_number,
-    preferred_language: booking.preferred_language,
-    guest: {
-      name: booking.guest_name,
-      email: booking.guest_email,
-      phone: booking.guest_phone,
-    },
-    stay: {
-      check_in: booking.check_in,
-      check_out: booking.check_out,
-      nights,
-    },
-    room: booking.rooms,
-    extras,
-    notes: booking.notes ?? "",
-    total_price: booking.total_price,
-    created_at: booking.created_at,
-  };
 
   // Gast-Email Payload rendern
   const emailPayload = renderBookingEmail({
@@ -199,13 +223,26 @@ Deno.serve(async (req) => {
     notes: booking.notes ?? "",
   });
 
-  // Parallel: n8n + Gast-Email. Beide Pfade sind voneinander unabhängig.
-  // n8n läuft nur bei einer NEUEN Anfrage (Owner-Qualifikation via Claude);
-  // beim Bestätigen geht ausschließlich die verbindliche Gast-Mail raus.
-  const [n8nResult, mailResult] = await Promise.all([
+  // Parallel: Inhaber-Alert + Gast-Email. Beide Pfade sind voneinander unabhängig.
+  // Der Inhaber-Alert geht nur bei einer NEUEN Anfrage raus; beim Bestätigen geht
+  // ausschließlich die verbindliche Gast-Mail raus. KEINE KI im Spiel.
+  const [ownerResult, mailResult] = await Promise.all([
     kind === "request"
-      ? pushToN8n(n8nPayload)
-      : Promise.resolve<BranchResult>({ ok: true, status: 0, detail: "n8n skipped (confirmation)" }),
+      ? notifyOwner({
+          bookingNumber: booking.booking_number,
+          guestName: booking.guest_name,
+          guestEmail: booking.guest_email,
+          guestPhone: booking.guest_phone,
+          roomName: room?.name ?? "Zimmer",
+          checkIn: booking.check_in,
+          checkOut: booking.check_out,
+          nights,
+          extras,
+          totalPrice: Number(booking.total_price ?? 0),
+          notes: booking.notes ?? "",
+          language: booking.preferred_language,
+        })
+      : Promise.resolve<BranchResult>({ ok: true, status: 0, detail: "owner alert skipped (confirmation)" }),
     sendGuestConfirmation({ guestEmail: booking.guest_email, payload: emailPayload, kind }),
   ]);
 
@@ -223,7 +260,7 @@ Deno.serve(async (req) => {
       booking_id: booking.id,
       booking_number: booking.booking_number,
       lang: emailPayload.language,
-      n8n: { ok: n8nResult.ok, status: n8nResult.status },
+      owner: { ok: ownerResult.ok, status: ownerResult.status },
       mail: { ok: mailResult.ok, status: mailResult.status, detail: mailResult.ok ? undefined : mailResult.detail?.slice(0, 200) },
       ts: new Date().toISOString(),
     }),
@@ -231,8 +268,8 @@ Deno.serve(async (req) => {
 
   return new Response(
     JSON.stringify({
-      ok: n8nResult.ok && mailResult.ok,
-      n8n: { ok: n8nResult.ok, status: n8nResult.status },
+      ok: ownerResult.ok && mailResult.ok,
+      owner: { ok: ownerResult.ok, status: ownerResult.status },
       mail: { ok: mailResult.ok, status: mailResult.status },
     }),
     { headers: jsonHeaders },
