@@ -62,7 +62,7 @@ export const ROOM_RATES = [
     price: "ab 170 €",
     unit: "pro Nacht",
     halfboard: "Halbpension zzgl. 23 € Person/Tag",
-    features: ["Nutzung mit 2 Personen möglich – ab 130 €", "zwei getrennte Zimmer mit 4 Schlafplätzen", "Nichtraucherzimmer", "DU/WC, Telefon, TV, WLAN, Safe"],
+    features: ["Nutzung mit 2 Personen möglich – ab 130 €", "zwei getrennte Räume mit gemeinsamem Bad, 4 Schlafplätze", "ohne Balkon", "Nichtraucherzimmer", "DU/WC, Telefon, TV, WLAN, Safe"],
     href: "/zimmer/familienzimmer",
   },
   {
@@ -111,10 +111,10 @@ export const ROOM_TYPES: RoomType[] = [
     priceNote: "Nutzung mit 2 Personen möglich – ab 130 €",
     maxPersons: 4,
     bed: "Zwei getrennte Zimmer, 4 Schlafplätze",
-    hint: "Zwei getrennte Räume, bis 4 Personen",
+    hint: "Zwei getrennte Räume mit gemeinsamem Bad — ohne Balkon",
     description:
-      "Großzügige Familienzimmer mit zwei getrennten Räumen und vier Schlafplätzen bieten Kindern wie Eltern Freiraum. Wir haben zwei Familienzimmer — auf Wunsch mit zusätzlichen Kinderbetten ausgestattet. Kinder bis 2 Jahre übernachten kostenlos, bis 12 Jahre um 50 % ermäßigt im Elternzimmer. Eine Nutzung mit nur 2 Personen ist ebenfalls möglich (ab 130 €).",
-    amenities: [...ROOM_AMENITIES, "Zwei getrennte Zimmer mit 4 Schlafplätzen", "Zusätzliche Kinderbetten auf Wunsch"],
+      "Großzügige Familienzimmer mit zwei getrennten Räumen und einem gemeinsamen Bad bieten Kindern wie Eltern Freiraum — vier Schlafplätze, ohne Balkon. Wir haben zwei Familienzimmer — auf Wunsch mit zusätzlichen Kinderbetten ausgestattet. Kinder bis 2 Jahre übernachten kostenlos, bis 12 Jahre um 50 % ermäßigt im Elternzimmer. Eine Nutzung mit nur 2 Personen ist ebenfalls möglich (ab 130 €).",
+    amenities: [...ROOM_AMENITIES, "Zwei getrennte Räume mit gemeinsamem Bad", "Vier Schlafplätze", "Ohne Balkon/Terrasse", "Zusätzliche Kinderbetten auf Wunsch"],
     gallery: galleryForRoomType("Familienzimmer"),
   },
 ];
