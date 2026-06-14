@@ -61,7 +61,8 @@ const TIMELINE = [
   { year: "1993", event: "Übernahme durch die Tochter" },
   { year: "1997", event: "Neueröffnung als „Landhaus Schend\"" },
   { year: "1999", event: "Erste 3-Sterne-Klassifizierung" },
-  { year: "Heute", event: "21 Zimmer, ★★★ Superior, 5. Generation" },
+  { year: "2019", event: "Übernahme durch Familie Beimler" },
+  { year: "Heute", event: "21 Zimmer, ★★★ Superior — geführt von Familie Beimler" },
 ];
 
 // Echte Bewertungs-Plattformen — verlinkt auf die echten Schend-Profile.
@@ -111,7 +112,6 @@ const hotelGraph = {
       checkinTime: "15:00",
       checkoutTime: "11:00",
       numberOfRooms: 21,
-      petsAllowed: "Hunde sind in der Dorfgaststätte erlaubt",
       smokingAllowed: false,
       amenityFeature: [
         { "@type": "LocationFeatureSpecification", name: "Halbpension auf Wunsch", value: true },
@@ -122,8 +122,6 @@ const hotelGraph = {
         { "@type": "LocationFeatureSpecification", name: "Kostenloser Parkplatz", value: true },
         { "@type": "LocationFeatureSpecification", name: "Motorrad-Stellplätze", value: true },
         { "@type": "LocationFeatureSpecification", name: "Balkon oder Terrasse", value: true },
-        { "@type": "LocationFeatureSpecification", name: "Aufzug", value: true },
-        { "@type": "LocationFeatureSpecification", name: "Sauna im Haus", value: true },
         { "@type": "LocationFeatureSpecification", name: "Massagen", value: true },
         { "@type": "LocationFeatureSpecification", name: "Familienzimmer", value: true },
       ],
@@ -304,7 +302,6 @@ const uspIcon: Record<string, string> = {
         <span class="hairline block max-w-[3rem] mb-5"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">Landhaus Restaurant & Terrasse</h2>
         <div class="space-y-5 text-foreground/85 leading-relaxed max-w-prose">
           <p class="drop-cap">Für den großen Hunger ist unser besonders gemütliches Restaurant genau die richtige Wahl — Eifeler und internationale Spezialitäten in stilvoller Atmosphäre, frisch gezapftes Bitburger und Produkte der Eifeler Landküche.</p>
-          <p>Eine separate Karte für Kinder und eine Kinderspielecke bieten auch Familien ein attraktives Angebot. Hunde sind in der Dorfgaststätte erlaubt.</p>
           <p>Wir verwenden ausschließlich qualitativ hochwertige, frische Zutaten — saisonale Spezialitäten, die selbst verwöhnte Gaumen begeistern.</p>
         </div>
         <div class="mt-12">
@@ -315,6 +312,7 @@ const uspIcon: Record<string, string> = {
             <div class="grid grid-cols-[140px_1fr] gap-x-6"><span class="font-medium">Sonntag</span><div class="text-muted-foreground"><p>12:00 – 14:00</p><p>17:30 – 20:00</p></div></div>
             <div class="grid grid-cols-[140px_1fr] gap-x-6"><span class="font-medium">Ruhetag</span><span class="text-muted-foreground">Montag, Dienstag, Mittwoch</span></div>
           </div>
+          <p class="text-xs text-muted-foreground mt-3">Mo–Mi kein À-la-carte — auf Anmeldung verwöhnen wir Sie gern mit unseren liebevoll kreierten Menüs.</p>
           <div class="mt-10 pt-6 border-t border-border/60">
             <a href="/restaurant" class="group inline-flex items-center gap-2 text-xs font-medium tracking-[0.2em] uppercase text-secondary hover:text-foreground transition-colors">Volle Restaurant-Seite ansehen <span class="transition-transform duration-300 group-hover:translate-x-1">→</span></a>
             <p class="text-xs text-muted-foreground mt-2">Mit Festtafel-Anfrage und Anfahrt für Tagesgäste</p>
@@ -383,45 +381,7 @@ const uspIcon: Record<string, string> = {
     </div>
   </section>
 
-  <!-- WELLNESS — dunkle "Atempause": Sauna & Ruhebereich, Nutzung auf Anfrage.
-       Bewusster dunkler Kontrast-Block (Kapitel-Ende) zwischen Pakete und Region. -->
-  <section id="wellness" class="relative bg-[hsl(220_22%_12%)] text-[hsl(38_30%_92%)] overflow-hidden">
-    <div class="grid lg:grid-cols-12 items-stretch">
-      <div class="lg:col-span-7 lg:order-last relative overflow-hidden">
-        <div class="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[520px] overflow-hidden">
-          <img
-            src="/fotos/sauna-und-ruhebereich-mit-whirlpool-landhotel-schend-vulkaneifel.jpg"
-            alt="Sauna- und Ruhebereich mit Whirlpool im Landhotel Schend"
-            loading="lazy"
-            decoding="async"
-            class="wellness-img w-full h-full object-cover"
-          />
-        </div>
-        <div aria-hidden="true" class="hidden lg:block absolute inset-y-0 left-0 w-32 bg-gradient-to-l from-transparent to-[hsl(220_22%_12%)]"></div>
-      </div>
-      <div class="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-28 flex flex-col justify-center" data-reveal>
-        <p class="text-[11px] tracking-[0.32em] uppercase text-[hsl(38_55%_62%)] mb-5 font-medium">Aufguss · Ruhe · Eifeler Stille</p>
-        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mb-8 text-balance leading-[1.05]">Sauna- &amp; Ruhebereich im Haus</h2>
-        <p class="text-[hsl(38_30%_92%)]/80 leading-relaxed max-w-prose">
-          Nach einem Tag zwischen Maaren und Wäldern: ein stiller Rückzug mit Sauna,
-          Ruhebereich und Whirlpool. Die Nutzung stimmen wir gern persönlich mit Ihnen
-          ab — sprechen Sie uns einfach an.
-        </p>
-        <div class="mt-8">
-          <a href="tel:+4965731306" class="group inline-flex items-center gap-2 text-xs font-medium tracking-[0.2em] uppercase text-[hsl(38_55%_62%)] hover:text-[hsl(38_30%_92%)] transition-colors">
-            Nutzung anfragen · +49 6573 306
-            <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-  <style>
-    /* Sanfter Ken-Burns auf dem Wellness-Foto (Progressive Enhancement). */
-    .wellness-img { animation: wellness-zoom 20s ease-in-out infinite alternate; transform-origin: 60% 50%; }
-    @keyframes wellness-zoom { from { transform: scale(1); } to { transform: scale(1.07); } }
-    @media (prefers-reduced-motion: reduce) { .wellness-img { animation: none; } }
-  </style>
+  <!-- WELLNESS-Sektion entfernt (Karin 13.06.2026: Sauna wird nicht mehr beworben). -->
 
   <!-- URLAUBSREGION -->
   <section id="region" class="bg-background">
@@ -467,7 +427,7 @@ const uspIcon: Record<string, string> = {
       <div class="lg:col-span-6 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-10 text-balance leading-[1.05]">Familienhotel seit 1856</h2>
         <div class="space-y-5 text-foreground/85 leading-relaxed max-w-prose">
           <p class="drop-cap">Anno 1856 wurde das Grundhaus erbaut und diente bereits damals als Gasthaus und zeitweise als Poststelle für den Ort.</p>
-          <p>Seit <span class="font-display text-primary">1976</span> arbeiteten Tochter Roswitha und Ehemann Reinhold im Betrieb mit, den sie <span class="font-display text-primary">1993</span> übernahmen. <span class="font-display text-primary">1997</span> eröffneten sie das neue Gebäude als „Landhaus Schend", seit <span class="font-display text-primary">1999</span> mit 3 Sternen ausgezeichnet — heute in der 5. Generation.</p>
+          <p>Seit <span class="font-display text-primary">1976</span> arbeiteten Tochter Roswitha und Ehemann Reinhold im Betrieb mit, den sie <span class="font-display text-primary">1993</span> übernahmen. <span class="font-display text-primary">1997</span> eröffneten sie das neue Gebäude als „Landhaus Schend", seit <span class="font-display text-primary">1999</span> mit 3 Sternen ausgezeichnet. Seit 2019 führt Familie Beimler das Landhaus und pflegt die Tradition weiter.</p>
         </div>
         <div class="mt-8"><a href="/ueber-uns" class="text-sm font-semibold text-secondary hover:text-foreground transition-colors">Unsere ganze Geschichte →</a></div>
       </div>
@@ -481,7 +441,7 @@ const uspIcon: Record<string, string> = {
       <div class="hidden md:block relative max-w-6xl mx-auto">
         <div aria-hidden="true" class="tl-line absolute left-0 right-0 top-1.5 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent"></div>
         <span aria-hidden="true" class="tl-glint"></span>
-        <ol class="relative grid grid-cols-8 gap-2">
+        <ol class="relative grid grid-cols-9 gap-2">
           {TIMELINE.map((item, i) => (
             <li class="tl-item flex flex-col items-center text-center" style={`--i:${i}`}>
               <span aria-hidden="true" class="block h-3 w-3 rounded-full bg-secondary ring-4 ring-background relative z-10"></span>
