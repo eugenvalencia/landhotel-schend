@@ -66,40 +66,16 @@ Diese Website wird auf einer Infrastruktur betrieben, die unser Auftragsverarbei
 
 ### b) Backend / Buchungsanfragen — Supabase
 
-Ihre Buchungs-Anfrage und Kontodaten (sofern Sie ein Konto erstellen) werden in einer verschlüsselten Datenbank des Anbieters **Supabase Inc.** (970 Toa Payoh North, #07-04, Singapore 318992) gespeichert. Die Server-Region ist **Frankfurt/Deutschland (eu-central-1)**. Mit Supabase besteht ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO sowie EU-SCC für etwaigen Konzernzugriff aus den USA. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen, Vertragsanbahnung).
+Ihre Buchungs-Anfrage wird in einer verschlüsselten Datenbank des Anbieters **Supabase Inc.** (970 Toa Payoh North, #07-04, Singapore 318992) gespeichert. Die Server-Region ist **Frankfurt/Deutschland (eu-central-1)**. Mit Supabase besteht ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO sowie EU-SCC für etwaigen Konzernzugriff aus den USA. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen, Vertragsanbahnung).
 
 ### c) E-Mail-Versand & -Empfang — IONOS
 
 E-Mail-Korrespondenz an info@landhaus-schend.de wird über die Mail-Infrastruktur der **IONOS SE** (Elgendorfer Str. 57, 56410 Montabaur) abgewickelt. IONOS erfasst dabei verarbeitungstechnisch notwendige Daten (Absender, Zeitstempel, E-Mail-Inhalt). Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung) oder Art. 6 Abs. 1 lit. f DSGVO bei sonstigen Anfragen. Datenschutz IONOS: [ionos.de/terms-gtc/terms-privacy](https://www.ionos.de/terms-gtc/terms-privacy)
 
-### d) Wetter-Anzeige — Open-Meteo
+### d) Karten-Darstellung — Google Maps
 
-Im Seitenkopf wird das aktuelle Wetter in der Vulkaneifel angezeigt. Die Daten kommen von **Open-Meteo** (open-meteo.com, Open-Meteo Bart Roosens, Zürich/Schweiz). Beim Aufruf werden lediglich der Standort des Hotels (Längen-/Breitengrad — keine Nutzer-Position) und Ihre IP-Adresse an Open-Meteo übermittelt. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse, ansprechende Wetter-Information bereitzustellen). Die Schweiz besitzt einen Angemessenheitsbeschluss der EU-Kommission (Art. 45 DSGVO) — kein zusätzlicher Drittland-Schutz nötig.
+Zur Anfahrt-Darstellung binden wir **Google Maps** ein (Anbieter: Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland; Mutterkonzern Google LLC, USA). Die Karte wird **erst nach Ihrem ausdrücklichen Klick** („Karte laden") geladen — vorher werden keine Daten an Google übertragen. Mit dem Laden werden u. a. Ihre IP-Adresse und Nutzungsdaten an Google übermittelt, auch in die USA. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung durch Klick). Den USA-Transfer stützt Google auf den EU-US Data Privacy Framework bzw. EU-Standardvertragsklauseln. Die vollständige Adresse steht als Text daneben — Sie müssen die Karte nicht laden.
 
-### e) Karten-Darstellung
-
-Karten werden — sofern eingebunden — über **OpenStreetMap** (OpenStreetMap Foundation, Vereinigtes Königreich) bereitgestellt. Das Vereinigte Königreich besitzt einen Angemessenheitsbeschluss der EU-Kommission. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.
-
-### f) Schend-Partner-Empfehlungs-Tool
-
-Auf unserer Seite finden Sie persönliche Partner-Empfehlungen im Umkreis von 35 km (Wellness, Familie, E-Bike, Erlebnis-Museum etc.). Das technische Tool dahinter wird betrieben von unserem Auftragsverarbeiter **Conexa Digital** (Inhaber Eugen Neifer) auf Server-Infrastruktur der **Hetzner Online GmbH** (Industriestraße 25, 91710 Gunzenhausen, Server-Standort Deutschland) als Sub-Auftragsverarbeiter. Mit beiden Anbietern bestehen Auftragsverarbeitungsverträge nach Art. 28 DSGVO; die Sub-AV-Beauftragung Hetzner ist im AVV mit Conexa Digital ausdrücklich freigegeben.
-
-**Verarbeitete Daten:**
-
-- **Schend-Code-Anfrage:** Wenn Sie einen Rabatt-Code für einen Partner anfordern, speichern wir Ihre E-Mail-Adresse, Ihren Namen und den gewählten Partner. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung) bzw. Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung Beherbergungsvertrag mit Mehrwert-Leistung).
-- **Klick-Statistik:** Wir erfassen pseudonymisiert, welche Partner-Karten geklickt werden, um unsere Empfehlungen zu verbessern. Es werden keine Cookies gesetzt, die eine Wiedererkennung über mehrere Sitzungen hinweg ermöglichen. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Verbesserung des Empfehlungs-Services).
-- **Termin-im-Hotel-Anfrage:** Wenn Sie über das Partner-Modul eine Terminvermittlung anfragen, übermitteln wir Name, Wunschtermin und gewünschten Partner an unsere Rezeption. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.
-- **Code-Einlöse:** Bei Einlösung des Rabatt-Codes vor Ort beim Partner meldet der Partner an uns / Conexa Digital die Einlöse zurück (anonyme Code-Nummer, kein Personenbezug). Zweck: Abrechnung Provision Conexa↔Partner.
-
-**Speicherdauer:** Code-Anfragen und Termin-Anfragen 12 Monate nach Aufenthalt; pseudonyme Klick-Statistiken 24 Monate (danach Aggregation und Anonymisierung).
-
-**Empfänger:** Conexa Digital (AV), Hetzner Online GmbH (Sub-AV), sowie der jeweilige Partner, wenn Sie aktiv einen Termin oder Code anfragen. Keine sonstige Weitergabe.
-
-**Drittland-Transfer:** Keiner — Verarbeitung erfolgt vollständig in Deutschland (Hetzner-Rechenzentren Falkenstein/Nürnberg/Gunzenhausen).
-
-### g) KI-gestützte Inhalts-Generierung
-
-Einzelne Texte und Empfehlungen auf dieser Website (z.B. „Heute gut für…"-Tipps unter dem Wetter-Widget, generierte Bild-Beschreibungen) werden mit Unterstützung Künstlicher Intelligenz (Anthropic Claude API über Conexa Digital) erstellt und vor Veröffentlichung redaktionell geprüft. Bei der Generierung werden keine personen­bezogenen Gäste-Daten verarbeitet. Rechtsgrundlage des Anbieter-Einsatzes: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an ansprechender, hyperlokaler Information). Die Anthropic-Dienste werden in der EU-Region betrieben. Hinweis nach EU-AI-Act (VO 2024/1689, anwendbar ab 02.08.2026): KI-unterstützte Inhalte werden als solche gekennzeichnet, sobald die Markierungs-Pflicht greift.
 
 ## 7. Datenerfassung auf dieser Website
 
@@ -107,11 +83,11 @@ Einzelne Texte und Empfehlungen auf dieser Website (z.B. „Heute gut für…"-T
 
 Unsere Internetseiten verwenden so genannte „Cookies" und ähnliche Speicher-Techniken (localStorage). Konkret speichern wir:
 
-- **Cookie-Consent-Status** (`schend_cookie_consent_v1`, localStorage) — speichert Ihre Entscheidung zum Cookie-Hinweis. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG (unbedingt erforderlich für die Funktion des Hinweises).
-- **Auth-Session** (sofern Sie ein Konto erstellt haben) — Supabase-Auth-Token, gespeichert in localStorage. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO + § 25 Abs. 2 Nr. 2 TDDDG.
-- **Sprach-/Theme-Präferenz** — Ihre Sprach-Wahl (DE/EN/FR/NL) und Theme (Light/Dark) werden in localStorage gespeichert. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG.
+- **Theme-Präferenz** (`theme`, localStorage) — speichert, ob Sie die Seite hell oder dunkel anzeigen. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG (technisch erforderlich für die von Ihnen gewählte Darstellung).
+- **Barrierefreiheits-Komfort** (`schend_a11y_v1`, localStorage) — speichert Ihre Einstellungen zu Schriftgröße, Kontrast und reduzierter Bewegung. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG.
+- **Start-Animation** (`schend_splash_done`, sessionStorage) — merkt sich für die Dauer Ihres Besuchs, dass die Begrüßungs-Animation bereits gezeigt wurde. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG.
 
-Wir nutzen **kein Tracking**, **keine Werbe-Cookies** und keine Drittanbieter-Analytics. Sie können Ihre Browser-Einstellungen so anpassen, dass Cookies / localStorage komplett blockiert werden — das kann jedoch die Funktion der Website einschränken (z.B. Anmeldung nicht möglich).
+Wir nutzen **kein Tracking**, **keine Werbe-Cookies** und keine Drittanbieter-Analytics. Sie können Ihre Browser-Einstellungen so anpassen, dass Cookies / localStorage komplett blockiert werden — das kann jedoch die Funktion der Website einschränken (z.B. gehen Ihre Theme- und Komfort-Einstellungen verloren).
 
 ### Server-Log-Dateien
 
@@ -143,15 +119,17 @@ Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenomm
 
 **Speicherdauer:** Bis zur vollständigen Abwicklung der Anfrage / des Aufenthalts. Buchungsrelevante Belege (Rechnungen) werden nach § 257 HGB / § 147 AO bis zu 10 Jahre aufbewahrt.
 
-**Empfänger:** Supabase (siehe Ziffer 6 b) als Auftragsverarbeiter.
+**Empfänger / Auftragsverarbeiter:**
+
+- **Supabase Inc.** — Datenbank-Hosting (Server-Region Frankfurt/Deutschland), siehe Ziffer 6 b.
+- **Conexa Digital** (Inhaber Eugen Neifer) — technischer Dienstleister für den Betrieb der Buchungs-Technik sowie die Weiterleitung Ihrer Anfrage an unsere Rezeption; betrieben auf Server-Infrastruktur der **Hetzner Online GmbH** (Standort Deutschland) als Sub-Auftragsverarbeiter. Über Annahme oder Ablehnung Ihrer Anfrage entscheidet ausschließlich ein Mensch.
+- **Resend** (Resend Inc., USA; Versand über EU-Region) — Versand der Bestätigungs-E-Mail an Sie. Übermittelt werden Ihre E-Mail-Adresse und die Eckdaten Ihrer Anfrage. USA-Transfer gestützt auf EU-Standardvertragsklauseln.
+
+Mit allen genannten Dienstleistern bestehen Auftragsverarbeitungsverträge nach Art. 28 DSGVO. Eine Weitergabe an sonstige Dritte erfolgt nicht.
 
 ### Anfrage per E-Mail, Telefon oder Fax
 
 Wenn Sie uns per E-Mail (info@landhaus-schend.de), Telefon (+49 6573 306) oder Fax (+49 6573 99815) kontaktieren, wird Ihre Anfrage inklusive aller daraus hervorgehenden personenbezogenen Daten (Name, Anfrage-Inhalt, Kontaktdaten) zum Zwecke der Bearbeitung bei uns gespeichert. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO bei Vertragsanbahnung, sonst Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an zügiger Bearbeitung). Daten werden nicht ohne Ihre Einwilligung weitergegeben.
-
-### Kundenkonto (optional)
-
-Sie können freiwillig ein Kundenkonto anlegen, um Buchungs-Anfragen schneller zu stellen und Ihre Aufenthalts-Historie einzusehen. Dabei verarbeiten wir Ihre E-Mail-Adresse und ein verschlüsselt gespeichertes Passwort. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung); Sie können Ihr Konto jederzeit löschen, indem Sie sich an uns wenden oder die Selbstlöschung im Dashboard nutzen.
 
 ## 8. Meldepflicht bei Übernachtung
 
@@ -159,7 +137,7 @@ Aufgrund des Bundesmeldegesetzes (BMG) sind wir verpflichtet, bei ausländischen
 
 ## 9. Keine automatisierte Entscheidungsfindung
 
-Eine automatisierte Entscheidungsfindung im Sinne von Art. 22 DSGVO (z.B. Profiling mit rechtlicher Wirkung) findet nicht statt. Sie werden ausschließlich durch menschliche Sachbearbeitung betreut.
+Eine ausschließlich automatisierte Entscheidung im Sinne von Art. 22 DSGVO (Entscheidung ohne menschliches Zutun mit rechtlicher Wirkung Ihnen gegenüber) findet nicht statt. Sie werden ausschließlich durch menschliche Sachbearbeitung betreut.
 
 ## 10. Aktualität dieser Datenschutzerklärung
 

@@ -130,7 +130,7 @@ const Datenschutz = () => {
 
           <h3 className="font-semibold mt-4 mb-1">b) Backend / Buchungsanfragen — Supabase</h3>
           <p>
-            Ihre Buchungs-Anfrage und Kontodaten (sofern Sie ein Konto erstellen) werden in einer
+            Ihre Buchungs-Anfrage wird in einer
             verschlüsselten Datenbank des Anbieters <strong>Supabase Inc.</strong>
             (970 Toa Payoh North, #07-04, Singapore 318992) gespeichert. Die Server-Region ist
             <strong> Frankfurt/Deutschland (eu-central-1)</strong>. Mit Supabase besteht ein
@@ -158,87 +158,16 @@ const Datenschutz = () => {
             </a>
           </p>
 
-          <h3 className="font-semibold mt-4 mb-1">d) Wetter-Anzeige — Open-Meteo</h3>
+          <h3 className="font-semibold mt-4 mb-1">d) Karten-Darstellung — Google Maps</h3>
           <p>
-            Im Seitenkopf wird das aktuelle Wetter in der Vulkaneifel angezeigt. Die Daten kommen
-            von <strong>Open-Meteo</strong> (open-meteo.com, Open-Meteo Bart Roosens, Zürich/Schweiz).
-            Beim Aufruf werden lediglich der Standort des Hotels (Längen-/Breitengrad — keine
-            Nutzer-Position) und Ihre IP-Adresse an Open-Meteo übermittelt. Rechtsgrundlage:
-            Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse, ansprechende Wetter-Information
-            bereitzustellen). Die Schweiz besitzt einen Angemessenheitsbeschluss der EU-Kommission
-            (Art. 45 DSGVO) — kein zusätzlicher Drittland-Schutz nötig.
-          </p>
-
-          <h3 className="font-semibold mt-4 mb-1">e) Karten-Darstellung</h3>
-          <p>
-            Karten werden — sofern eingebunden — über <strong>OpenStreetMap</strong>
-            (OpenStreetMap Foundation, Vereinigtes Königreich) bereitgestellt. Das Vereinigte
-            Königreich besitzt einen Angemessenheitsbeschluss der EU-Kommission. Rechtsgrundlage:
-            Art. 6 Abs. 1 lit. f DSGVO.
-          </p>
-
-          <h3 className="font-semibold mt-4 mb-1">f) Schend-Partner-Empfehlungs-Tool</h3>
-          <p>
-            Auf unserer Seite finden Sie persönliche Partner-Empfehlungen im Umkreis von 35 km
-            (Wellness, Familie, E-Bike, Erlebnis-Museum etc.). Das technische Tool dahinter wird
-            betrieben von unserem Auftragsverarbeiter <strong>Conexa Digital</strong> (Inhaber
-            Eugen Neifer) auf Server-Infrastruktur der <strong>Hetzner Online GmbH</strong>
-            (Industriestraße 25, 91710 Gunzenhausen, Server-Standort Deutschland) als Sub-Auftragsverarbeiter.
-            Mit beiden Anbietern bestehen Auftragsverarbeitungsverträge nach Art. 28 DSGVO; die
-            Sub-AV-Beauftragung Hetzner ist im AVV mit Conexa Digital ausdrücklich freigegeben.
-          </p>
-          <p className="mt-3">
-            <strong>Verarbeitete Daten:</strong>
-          </p>
-          <ul className="list-disc pl-6 mt-2 space-y-1">
-            <li>
-              <strong>Schend-Code-Anfrage:</strong> Wenn Sie einen Rabatt-Code für einen Partner
-              anfordern, speichern wir Ihre E-Mail-Adresse, Ihren Namen und den gewählten Partner.
-              Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung) bzw. Art. 6 Abs. 1 lit. b
-              DSGVO (Vertragsanbahnung Beherbergungsvertrag mit Mehrwert-Leistung).
-            </li>
-            <li>
-              <strong>Klick-Statistik:</strong> Wir erfassen pseudonymisiert, welche Partner-Karten
-              geklickt werden, um unsere Empfehlungen zu verbessern. Es werden keine Cookies
-              gesetzt, die eine Wiedererkennung über mehrere Sitzungen hinweg ermöglichen. Rechtsgrundlage:
-              Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Verbesserung des Empfehlungs-Services).
-            </li>
-            <li>
-              <strong>Termin-im-Hotel-Anfrage:</strong> Wenn Sie über das Partner-Modul eine
-              Terminvermittlung anfragen, übermitteln wir Name, Wunschtermin und gewünschten
-              Partner an unsere Rezeption. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.
-            </li>
-            <li>
-              <strong>Code-Einlöse:</strong> Bei Einlösung des Rabatt-Codes vor Ort beim Partner
-              meldet der Partner an uns / Conexa Digital die Einlöse zurück (anonyme Code-Nummer,
-              kein Personenbezug). Zweck: Abrechnung Provision Conexa↔Partner.
-            </li>
-          </ul>
-          <p className="mt-3">
-            <strong>Speicherdauer:</strong> Code-Anfragen und Termin-Anfragen 12 Monate nach
-            Aufenthalt; pseudonyme Klick-Statistiken 24 Monate (danach Aggregation und Anonymisierung).
-          </p>
-          <p className="mt-3">
-            <strong>Empfänger:</strong> Conexa Digital (AV), Hetzner Online GmbH (Sub-AV),
-            sowie der jeweilige Partner, wenn Sie aktiv einen Termin oder Code anfragen.
-            Keine sonstige Weitergabe.
-          </p>
-          <p className="mt-3">
-            <strong>Drittland-Transfer:</strong> Keiner — Verarbeitung erfolgt vollständig in
-            Deutschland (Hetzner-Rechenzentren Falkenstein/Nürnberg/Gunzenhausen).
-          </p>
-
-          <h3 className="font-semibold mt-4 mb-1">g) KI-gestützte Inhalts-Generierung</h3>
-          <p>
-            Einzelne Texte und Empfehlungen auf dieser Website (z.B. „Heute gut für…"-Tipps unter
-            dem Wetter-Widget, generierte Bild-Beschreibungen) werden mit Unterstützung
-            Künstlicher Intelligenz (Anthropic Claude API über Conexa Digital) erstellt und vor
-            Veröffentlichung redaktionell geprüft. Bei der Generierung werden keine
-            personen­bezogenen Gäste-Daten verarbeitet. Rechtsgrundlage des Anbieter-Einsatzes:
-            Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an ansprechender,
-            hyperlokaler Information). Die Anthropic-Dienste werden in der EU-Region betrieben.
-            Hinweis nach EU-AI-Act (VO 2024/1689, anwendbar ab 02.08.2026): KI-unterstützte
-            Inhalte werden als solche gekennzeichnet, sobald die Markierungs-Pflicht greift.
+            Zur Anfahrt-Darstellung binden wir <strong>Google Maps</strong> ein (Anbieter:
+            Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland; Mutterkonzern
+            Google LLC, USA). Die Karte wird <strong>erst nach Ihrem ausdrücklichen Klick</strong>
+            („Karte laden") geladen — vorher werden keine Daten an Google übertragen. Mit dem Laden
+            werden u.&nbsp;a. Ihre IP-Adresse und Nutzungsdaten an Google übermittelt, auch in die USA.
+            Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung durch Klick). Den USA-Transfer
+            stützt Google auf den EU-US Data Privacy Framework bzw. EU-Standardvertragsklauseln.
+            Die vollständige Adresse steht als Text daneben — Sie müssen die Karte nicht laden.
           </p>
         </section>
 
@@ -252,25 +181,26 @@ const Datenschutz = () => {
           </p>
           <ul className="list-disc pl-6 mt-2 space-y-1">
             <li>
-              <strong>Cookie-Consent-Status</strong> (<code>schend_cookie_consent_v1</code>, localStorage) —
-              speichert Ihre Entscheidung zum Cookie-Hinweis. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG
-              (unbedingt erforderlich für die Funktion des Hinweises).
+              <strong>Theme-Präferenz</strong> (<code>theme</code>, localStorage) — speichert, ob Sie
+              die Seite hell oder dunkel anzeigen. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG (technisch
+              erforderlich für die von Ihnen gewählte Darstellung).
             </li>
             <li>
-              <strong>Auth-Session</strong> (sofern Sie ein Konto erstellt haben) — Supabase-Auth-Token,
-              gespeichert in localStorage. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO + § 25 Abs. 2
-              Nr. 2 TDDDG.
+              <strong>Barrierefreiheits-Komfort</strong> (<code>schend_a11y_v1</code>, localStorage) —
+              speichert Ihre Einstellungen zu Schriftgröße, Kontrast und reduzierter Bewegung.
+              Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG.
             </li>
             <li>
-              <strong>Sprach-/Theme-Präferenz</strong> — Ihre Sprach-Wahl (DE/EN/FR/NL) und Theme
-              (Light/Dark) werden in localStorage gespeichert. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG.
+              <strong>Start-Animation</strong> (<code>schend_splash_done</code>, sessionStorage) —
+              merkt sich für die Dauer Ihres Besuchs, dass die Begrüßungs-Animation bereits gezeigt
+              wurde. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG.
             </li>
           </ul>
           <p className="mt-3">
             Wir nutzen <strong>kein Tracking</strong>, <strong>keine Werbe-Cookies</strong> und keine
             Drittanbieter-Analytics. Sie können Ihre Browser-Einstellungen so anpassen, dass
             Cookies / localStorage komplett blockiert werden — das kann jedoch die Funktion der
-            Website einschränken (z.B. Anmeldung nicht möglich).
+            Website einschränken (z.B. gehen Ihre Theme- und Komfort-Einstellungen verloren).
           </p>
 
           <h3 className="font-semibold mt-4 mb-1">Server-Log-Dateien</h3>
@@ -314,9 +244,14 @@ const Datenschutz = () => {
             <strong>Speicherdauer:</strong> Bis zur vollständigen Abwicklung der Anfrage / des
             Aufenthalts. Buchungsrelevante Belege (Rechnungen) werden nach § 257 HGB / § 147 AO bis
             zu 10 Jahre aufbewahrt.
-            <br />
-            <strong>Empfänger:</strong> Supabase (siehe Ziffer 6 b) als Auftragsverarbeiter.
           </p>
+          <p className="mt-3"><strong>Empfänger / Auftragsverarbeiter:</strong></p>
+          <ul className="list-disc pl-6 mt-2 space-y-1">
+            <li><strong>Supabase Inc.</strong> — Datenbank-Hosting (Server-Region Frankfurt/Deutschland), siehe Ziffer 6 b.</li>
+            <li><strong>Conexa Digital</strong> (Inhaber Eugen Neifer) — technischer Dienstleister für den Betrieb der Buchungs-Technik sowie die Weiterleitung Ihrer Anfrage an unsere Rezeption; betrieben auf Server-Infrastruktur der <strong>Hetzner Online GmbH</strong> (Standort Deutschland) als Sub-Auftragsverarbeiter. Über Annahme oder Ablehnung Ihrer Anfrage entscheidet ausschließlich ein Mensch.</li>
+            <li><strong>Resend</strong> (Resend Inc., USA; Versand über EU-Region) — Versand der Bestätigungs-E-Mail an Sie. Übermittelt werden Ihre E-Mail-Adresse und die Eckdaten Ihrer Anfrage. USA-Transfer gestützt auf EU-Standard­vertrags­klauseln.</li>
+          </ul>
+          <p className="mt-3">Mit allen genannten Dienstleistern bestehen Auftragsverarbeitungsverträge nach Art. 28 DSGVO. Eine Weitergabe an sonstige Dritte erfolgt nicht.</p>
 
           <h3 className="font-semibold mt-4 mb-1">Anfrage per E-Mail, Telefon oder Fax</h3>
           <p>
@@ -328,14 +263,6 @@ const Datenschutz = () => {
             zügiger Bearbeitung). Daten werden nicht ohne Ihre Einwilligung weitergegeben.
           </p>
 
-          <h3 className="font-semibold mt-4 mb-1">Kundenkonto (optional)</h3>
-          <p>
-            Sie können freiwillig ein Kundenkonto anlegen, um Buchungs-Anfragen schneller zu
-            stellen und Ihre Aufenthalts-Historie einzusehen. Dabei verarbeiten wir Ihre
-            E-Mail-Adresse und ein verschlüsselt gespeichertes Passwort. Rechtsgrundlage:
-            Art. 6 Abs. 1 lit. a DSGVO (Einwilligung); Sie können Ihr Konto jederzeit löschen,
-            indem Sie sich an uns wenden oder die Selbstlöschung im Dashboard nutzen.
-          </p>
         </section>
 
         <section>
@@ -352,9 +279,9 @@ const Datenschutz = () => {
         <section>
           <h2 className="font-display text-xl md:text-2xl mb-3">9. Keine automatisierte Entscheidungsfindung</h2>
           <p>
-            Eine automatisierte Entscheidungsfindung im Sinne von Art. 22 DSGVO (z.B. Profiling
-            mit rechtlicher Wirkung) findet nicht statt. Sie werden ausschließlich durch
-            menschliche Sachbearbeitung betreut.
+            Eine ausschließlich automatisierte Entscheidung im Sinne von Art. 22 DSGVO (Entscheidung
+            ohne menschliches Zutun mit rechtlicher Wirkung Ihnen gegenüber) findet nicht statt. Sie
+            werden ausschließlich durch menschliche Sachbearbeitung betreut.
           </p>
         </section>
 

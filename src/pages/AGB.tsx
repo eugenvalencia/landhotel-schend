@@ -84,11 +84,11 @@ const AGB = () => {
             sofern erhoben — vom Gast zusätzlich zu entrichten.
           </p>
           <p className="mt-3">
-            (4) <strong>Zahlung erfolgt bei Anreise / Abreise vor Ort</strong> (Bar, EC-Karte,
-            Kreditkarte). Wir berechnen keine Online-Anzahlungen über die Website. Das Hotel ist
-            berechtigt, bei Vertragsabschluss oder danach eine angemessene Vorauszahlung oder
-            Sicherheitsleistung in Form einer Kreditkartengarantie zu verlangen, insbesondere bei
-            Buchungen ohne persönliche Vor-Bekanntschaft.
+            (4) <strong>Die Zahlung erfolgt vor Ort bei An- oder Abreise</strong> (bar, EC- oder
+            Kreditkarte). Über die Website werden keine Online-Zahlungen, Anzahlungen oder
+            Kreditkartendaten erhoben. Bei Gruppen- oder Sonderbuchungen kann das Hotel vor Anreise
+            eine angemessene schriftliche Reservierungsbestätigung oder Anzahlung vereinbaren; dies
+            wird dem Gast vorab gesondert mitgeteilt.
           </p>
           <p className="mt-3">
             (5) Rechnungen des Hotels sind sofort nach Erhalt ohne Abzug zur Zahlung fällig.
@@ -177,9 +177,11 @@ const AGB = () => {
         <section>
           <h2 className="font-display text-xl md:text-2xl mb-3">§ 8 Hausordnung</h2>
           <p>
-            Mit der Buchung erkennt der Gast die jeweils aktuelle Hausordnung des Hotels an.
-            Diese liegt im Hotel aus und kann auf Wunsch eingesehen werden. Insbesondere gilt:
-            Nachtruhe ab 22:00 Uhr, in allen Innenbereichen besteht Rauchverbot.
+            Im Hotel gelten insbesondere folgende Regeln: Nachtruhe ab 22:00 Uhr; in allen
+            Innenbereichen besteht Rauchverbot. Eine ausführliche Hausordnung mit weiteren Hinweisen
+            (z.&nbsp;B. zu Frühstücks- und Check-out-Zeiten) liegt im Hotel aus und kann an der
+            Rezeption eingesehen werden. Änderungen der Hausordnung gelten nur, soweit sie für den
+            Gast zumutbar und mit seinen berechtigten Interessen vereinbar sind.
           </p>
         </section>
 

@@ -29,6 +29,12 @@ const Barrierefreiheit = () => {
           <p className="mt-3">
             Diese Erklärung gilt für die Website unter <strong>www.landhaus-schend.de</strong>.
           </p>
+          <p className="mt-3">
+            Diese Erklärung geben wir freiwillig ab. Als familiengeführter Kleinbetrieb sind wir nach
+            Einschätzung der gesetzlichen Schwellenwerte (§ 3 Abs. 3 BFSG) von der gesetzlichen
+            Verpflichtung zur Barrierefreiheit unserer Website voraussichtlich ausgenommen; gleichwohl
+            ist es uns ein Anliegen, möglichst vielen Gästen den Zugang zu erleichtern.
+          </p>
         </section>
 
         <section>
@@ -116,8 +122,8 @@ const Barrierefreiheit = () => {
             </li>
           </ul>
           <p className="mt-3">
-            Wir bemühen uns, Ihre Rückmeldung innerhalb von <strong>10 Werktagen</strong> zu
-            beantworten und Barrieren zeitnah zu beheben.
+            Wir bemühen uns, Ihre Rückmeldung <strong>so schnell wie möglich, in der Regel innerhalb
+            von zwei Wochen</strong>, zu beantworten und Barrieren zeitnah zu beheben.
           </p>
         </section>
 

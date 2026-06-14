@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import CookieBanner from "./components/CookieBanner";
 import StickyMobileCTA from "./components/StickyMobileCTA";
 import A11yPanel from "./components/A11yPanel";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -77,7 +76,6 @@ const App = () => {
         </ErrorBoundary>
         <StickyMobileCTA />
         <A11yPanel />
-        <CookieBanner />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

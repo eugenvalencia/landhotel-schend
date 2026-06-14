@@ -18,7 +18,7 @@ const Impressum = () => {
 
       <div className="space-y-8 text-foreground/90 leading-relaxed">
         <section>
-          <h2 className="font-display text-xl md:text-2xl mb-3">Angaben gemäß § 5 TMG</h2>
+          <h2 className="font-display text-xl md:text-2xl mb-3">Angaben gemäß § 5 DDG</h2>
           <p>
             Eugen Beimler<br />
             Landhotel Schend<br />
@@ -72,8 +72,8 @@ const Impressum = () => {
         <section>
           <h2 className="font-display text-xl md:text-2xl mb-3">Haftung für Inhalte</h2>
           <p>
-            Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach
-            den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter
+            Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach
+            den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter
             jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen
             oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
             Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den
