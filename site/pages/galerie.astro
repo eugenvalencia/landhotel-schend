@@ -2,6 +2,8 @@
 // Galerie — eigene Seite (wie Original-Menü). Alle Bilder self-hosted aus
 // /public/fotos. Masonry-Layout via CSS-Columns, beschreibende Alt-Texte (a11y/SEO).
 import Layout from "../layouts/Layout.astro";
+import dimsJson from "../lib/foto-dims.json";
+const dims = dimsJson as Record<string, [number, number]>;
 
 const FOTOS = [
   { src: "/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg", alt: "Hotelfront des Landhotel Schend mit roten Rosen im Sommer" },
@@ -46,7 +48,7 @@ const FOTOS = [
     <div class="gap-3 [column-count:2] lg:[column-count:3]">
       {FOTOS.map((f, i) => (
         <div class="mb-3 break-inside-avoid overflow-hidden rounded-md shadow-card" data-reveal style={`--reveal-delay:${(i % 4) * 0.06}s`}>
-          <img src={f.src} alt={f.alt} data-lightbox="galerie" class="w-full h-auto block transition-transform duration-700 hover:scale-105" loading="lazy" decoding="async" />
+          <img src={f.src} alt={f.alt} width={dims[f.src]?.[0]} height={dims[f.src]?.[1]} data-lightbox="galerie" class="w-full h-auto block transition-transform duration-700 hover:scale-105" loading="lazy" decoding="async" />
         </div>
       ))}
     </div>

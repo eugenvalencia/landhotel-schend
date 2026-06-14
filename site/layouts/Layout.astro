@@ -442,12 +442,14 @@ const robots = noindex
       //    Bei reduzierter Bewegung (Komfort-Tool / prefers-reduced-motion) bleibt es nativ.
       const motionOff =
         reduce || document.documentElement.classList.contains("a11y-reduced-motion");
+      // Lenis (weiches Scrollen) nur auf Desktop — mobil natives Scrollen (leichter, kein Lib-Overhead).
+      const bigScreen = window.matchMedia("(min-width: 768px)").matches;
       const emit = (y: number) => {
         ((window as any).__scrollSubs || []).forEach((cb: (n: number) => void) => {
           try { cb(y); } catch {}
         });
       };
-      if (!motionOff) {
+      if (!motionOff && bigScreen) {
         const lenis = new Lenis({ lerp: 0.09, smoothWheel: true, anchors: true });
         (window as any).__lenis = lenis;
         lenis.on("scroll", (e: any) => emit(e.scroll));

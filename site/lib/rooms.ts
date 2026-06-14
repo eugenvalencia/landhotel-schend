@@ -97,7 +97,7 @@ export const ROOM_TYPES: RoomType[] = [
     priceNote: "Zur Einzelnutzung ab 80 € pro Nacht",
     maxPersons: 2,
     bed: "Doppelbett",
-    hint: "Komfortabel, mit Balkon — auch zur Einzelnutzung",
+    hint: "Komfortabel — auch zur Einzelnutzung",
     description:
       "Fühlen Sie sich wie zuhause in unseren komfortablen Doppelzimmern — modern eingerichtet, überwiegend mit Balkon oder Terrasse und Blick in die wunderbare Vulkaneifel-Landschaft. Bei Bedarf kann das Zimmer auch zur Einzelnutzung gebucht werden (ab 80 € pro Nacht). Alle Zimmer sind Nichtraucherzimmer.",
     amenities: [...ROOM_AMENITIES, "Überwiegend Balkon oder Terrasse"],

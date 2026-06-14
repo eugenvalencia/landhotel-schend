@@ -10,6 +10,15 @@ export function getStaticPaths() {
 
 const { room } = Astro.props;
 const schema = roomSchema(room);
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Startseite", item: "https://landhaus-schend.de/" },
+    { "@type": "ListItem", position: 2, name: "Zimmer & Preise", item: "https://landhaus-schend.de/zimmer" },
+    { "@type": "ListItem", position: 3, name: room.type, item: `https://landhaus-schend.de/zimmer/${room.slug}` },
+  ],
+};
 ---
 
 <Layout
@@ -19,6 +28,7 @@ const schema = roomSchema(room);
   ogImage={room.gallery[0]}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(schema)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
 
   <!-- Hero -->
   <section class="relative">

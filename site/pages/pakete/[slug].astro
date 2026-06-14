@@ -8,6 +8,15 @@ export function getStaticPaths() {
 }
 
 const { paket } = Astro.props;
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Startseite", item: "https://landhaus-schend.de/" },
+    { "@type": "ListItem", position: 2, name: "Pauschalen", item: "https://landhaus-schend.de/pakete" },
+    { "@type": "ListItem", position: 3, name: paket.title.replace(/"/g, ""), item: `https://landhaus-schend.de/pakete/${paket.slug}` },
+  ],
+};
 ---
 
 <Layout
@@ -16,6 +25,8 @@ const { paket } = Astro.props;
   canonicalPath={`/pakete/${paket.slug}`}
   ogImage={paket.cover}
 >
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+
   <!-- Hero -->
   <section class="relative">
     <img src={paket.cover} alt={paket.title} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
