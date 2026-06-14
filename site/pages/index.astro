@@ -4,6 +4,7 @@
 // → Bewertungen → FAQ → Standort/Karte. Inhalte real, Effekte als Progressive
 // Enhancement, mobil-first. FAQPage-/Hotel-Detailschema liegen auf den Unterseiten.
 import Layout from "../layouts/Layout.astro";
+import Pic from "../components/Pic.astro";
 import LocationSection from "../components/LocationSection.astro";
 import { ROOM_TYPES } from "../lib/rooms";
 import { PAKETE } from "../lib/pakete";
@@ -21,7 +22,7 @@ const USPS = [
   { label: "Motorrad-Stellplätze im Hof", icon: "bike" },
   { label: "Halbpension auf Wunsch", icon: "chef" },
   { label: "Hauseigenes Restaurant", icon: "utensils" },
-  { label: "21 Zimmer mit Balkon/Terrasse", icon: "bed" },
+  { label: "21 Komfortzimmer", icon: "bed" },
   { label: "Kostenloses WLAN", icon: "wifi" },
   { label: "Großes Frühstücksbuffet", icon: "coffee" },
   { label: "Booking.com 8,7 · Tripadvisor Nr. 1", icon: "trophy" },
@@ -153,7 +154,7 @@ const uspIcon: Record<string, string> = {
 
 <Layout
   title="3-Sterne-Hotel & Kurzurlaub in der Vulkaneifel"
-  description="Familiengeführtes 3-Sterne-Hotel in Immerath, Vulkaneifel — 21 Zimmer, Eifeler Landküche, Halbpension. Ideal für Wandern & Kurzurlaub in der Eifel. Provisionsfrei direkt buchen."
+  description="Familiengeführtes 3-Sterne-Hotel in Immerath, Vulkaneifel — 21 Zimmer, Eifeler Landküche, Halbpension. Ideal zum Wandern. Provisionsfrei direkt buchen."
   canonicalPath="/"
   ogType="hotel"
 >
@@ -168,11 +169,10 @@ const uspIcon: Record<string, string> = {
         data-hero-video
         class="absolute inset-0 w-full h-full object-cover"
         poster={HERO_POSTER}
-        autoplay
         muted
         loop
         playsinline
-        preload="metadata"
+        preload="none"
         aria-hidden="true"
       >
         <source src={HERO_VIDEO} type="video/mp4" />
@@ -186,7 +186,7 @@ const uspIcon: Record<string, string> = {
     <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
       <div class="flex items-center gap-4 mb-10 md:mb-14">
         <span class="block h-px w-12 md:w-20 bg-white/65"></span>
-        <span class="text-[11px] md:text-xs font-medium tracking-[0.24em] uppercase text-white/90" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">Anno 1856 <a href="/login" aria-label="·" style="color:inherit;text-decoration:none;cursor:text">·</a> Vulkaneifel</span>
+        <span class="text-[11px] md:text-xs font-medium tracking-[0.24em] uppercase text-white/90" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">Anno 1856 <a href="/login" aria-hidden="true" tabindex="-1" style="color:inherit;text-decoration:none;cursor:text">·</a> Vulkaneifel</span>
         <span class="block h-px w-12 md:w-20 bg-white/65"></span>
       </div>
       <h1 class="headline-reveal font-display text-balance text-white text-[2.5rem] sm:text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] mb-7 md:mb-9 max-w-4xl" style="text-shadow:0 2px 14px rgba(0,0,0,0.55)">
@@ -200,9 +200,9 @@ const uspIcon: Record<string, string> = {
         <span class="text-white/40" aria-hidden="true">·</span>
         <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="8.7" data-count-decimals="1" data-count-mount="1" data-count-delay="600" data-count-dur="1400">8,7</span> / 10 Booking</span>
         <span class="text-white/40" aria-hidden="true">·</span>
-        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="165" data-count-mount="1" data-count-delay="800" data-count-dur="1600">165</span> Jahre Familie</span>
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="165" data-count-mount="1" data-count-delay="800" data-count-dur="1600">165</span> Jahre Tradition</span>
         <span class="text-white/40 hidden sm:inline" aria-hidden="true">·</span>
-        <span class="hidden sm:inline text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="21" data-count-mount="1" data-count-delay="1000" data-count-dur="1200">21</span> Zimmer mit Balkon</span>
+        <span class="hidden sm:inline text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="21" data-count-mount="1" data-count-delay="1000" data-count-dur="1200">21</span> Komfortzimmer</span>
       </div>
       <div class="flex flex-col items-center gap-5">
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
@@ -247,7 +247,7 @@ const uspIcon: Record<string, string> = {
       <div class="text-center mb-14 md:mb-20" data-reveal>
         <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">Zu Gast im Landhotel Schend</h2>
         <p class="text-muted-foreground mt-5 max-w-prose mx-auto leading-relaxed text-pretty">
-          Komfortable Doppelzimmer (auch zur Einzelnutzung) und großzügige Familienzimmer — alle mit Balkon oder Terrasse und Blick in die Vulkaneifel. Frühstücksbuffet inklusive.
+          Komfortable Doppelzimmer (auch zur Einzelnutzung) und großzügige Familienzimmer mit Blick in die Vulkaneifel. Frühstücksbuffet inklusive.
         </p>
       </div>
       <div class="grid sm:grid-cols-2 gap-10 max-w-4xl mx-auto">
@@ -257,7 +257,7 @@ const uspIcon: Record<string, string> = {
           return (
             <a href={`/zimmer/${r.slug}`} class="group block" data-reveal style={`--reveal-delay:${idx * 0.08}s`}>
               <div class="spotlight tilt-card card-reveal aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
-                <img src={cardPhoto} alt={r.type} class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" loading="lazy" decoding="async" />
+                <Pic src={cardPhoto} alt={r.type} class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" loading="lazy" decoding="async" />
                 <div class="card-caption">
                   <p class="text-[10px] tracking-[0.2em] uppercase text-white/80 mb-1">Zimmer ansehen</p>
                   <p class="font-display text-white text-lg leading-snug">{r.hint}</p>
@@ -295,7 +295,7 @@ const uspIcon: Record<string, string> = {
     <div class="grid lg:grid-cols-12 items-stretch">
       <div class="lg:col-span-7 lg:order-last">
         <div class="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[640px] overflow-hidden shadow-card">
-          <img src={SCHEND_RESTAURANT} alt="Landhaus Restaurant & Terrasse" class="w-full h-full object-cover" loading="lazy" decoding="async" />
+          <Pic src={SCHEND_RESTAURANT} alt="Landhaus Restaurant & Terrasse" class="w-full h-full object-cover" loading="lazy" decoding="async" />
         </div>
       </div>
       <div class="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>
@@ -325,7 +325,7 @@ const uspIcon: Record<string, string> = {
       <div class="flex w-max animate-marquee">
         {/* 2 Kopien genügen für nahtlosen -50%-Loop (vorher 4 = doppelte img/Requests) */}
         {Array.from({ length: 2 }).flatMap(() => FOOD_PHOTOS.map((src) => (
-          <img src={src} alt="Gericht aus dem Landhaus Restaurant" loading="lazy" decoding="async" class="h-44 md:h-56 w-auto object-cover rounded-md shadow-card mr-4" />
+          <Pic src={src} alt="" aria-hidden="true" loading="lazy" decoding="async" class="h-44 md:h-56 w-auto object-cover rounded-md shadow-card mr-4" />
         )))}
       </div>
     </div>
@@ -343,7 +343,7 @@ const uspIcon: Record<string, string> = {
     <div class="grid lg:grid-cols-12 items-stretch">
       <div class="lg:col-span-7">
         <div class="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[560px] overflow-hidden shadow-card">
-          <img src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg" alt="Festlich gedeckter Festsaal mit Sektempfang im Landhotel Schend" loading="lazy" decoding="async" class="w-full h-full object-cover" />
+          <Pic src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg" alt="Festlich gedeckter Festsaal mit Sektempfang im Landhotel Schend" loading="lazy" decoding="async" class="w-full h-full object-cover" />
         </div>
       </div>
       <div class="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>
@@ -364,7 +364,7 @@ const uspIcon: Record<string, string> = {
         {PAKETE.map((p, i) => (
           <a href={`/pakete/${p.slug}`} class="group block" data-reveal style={`--reveal-delay:${(i % 3) * 0.08}s`}>
             <div class="spotlight tilt-card relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
-              <img src={p.cover} alt={p.title} loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" />
+              <Pic src={p.cover} alt={p.title} loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" />
               {p.price && (
                 <div class="absolute top-3 right-3 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-sm shadow-md border border-foreground/10">
                   <span class="text-[10px] font-medium tracking-[0.15em] uppercase text-foreground/60">Paket</span>
@@ -391,7 +391,7 @@ const uspIcon: Record<string, string> = {
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mb-16 md:mb-20" data-reveal>
         {REGION_MOSAIC.map((m) => (
-          <img src={m.src} alt={m.alt} loading="lazy" decoding="async" class:list={["w-full h-48 md:h-64 object-cover rounded-md shadow-card", m.cls]} />
+          <Pic src={m.src} alt={m.alt} loading="lazy" decoding="async" class:list={["w-full h-48 md:h-64 object-cover rounded-md shadow-card", m.cls]} />
         ))}
       </div>
       <div class="max-w-prose mx-auto space-y-12" data-reveal>
@@ -421,7 +421,7 @@ const uspIcon: Record<string, string> = {
     <div class="grid lg:grid-cols-12 items-stretch">
       <div class="lg:col-span-6">
         <div class="aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden shadow-elevated">
-          <img src="/fotos/landhotel-schend-zeichnung-innenhof-historisch.jpg" alt="Bleistift-Zeichnung des Landhotel Schend in Immerath mit Innenhof und Eingang" class="w-full h-full object-cover object-center contrast-110" loading="lazy" decoding="async" />
+          <Pic src="/fotos/landhotel-schend-zeichnung-innenhof-historisch.jpg" alt="Bleistift-Zeichnung des Landhotel Schend in Immerath mit Innenhof und Eingang" class="w-full h-full object-cover object-center contrast-110" loading="lazy" decoding="async" />
         </div>
       </div>
       <div class="lg:col-span-6 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-10 text-balance leading-[1.05]">Familienhotel seit 1856</h2>
@@ -478,7 +478,7 @@ const uspIcon: Record<string, string> = {
         {PLATFORMS.map((p, i) => (
           <a href={p.href} target="_blank" rel="noopener noreferrer" aria-label={`Bewertungen von ${p.name} ansehen (öffnet in neuem Tab)`} class="group text-center p-6 rounded-md border border-border bg-card shadow-card flex flex-col items-center transition-all hover:border-secondary hover:-translate-y-0.5" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
             {p.logo
-              ? <img src={p.logo} alt="" aria-hidden="true" width="36" height="36" class="h-9 w-9 mb-3 object-contain" />
+              ? <Pic src={p.logo} alt="" aria-hidden="true" width="36" height="36" class="h-9 w-9 mb-3 object-contain" />
               : <span aria-hidden="true" class="grid place-items-center h-9 w-9 rounded-md text-white font-bold text-xs mb-3 shadow-sm" style={`background:${p.brand}`}>{p.mark}</span>}
             <p class="text-sm font-semibold text-foreground">{p.name}</p>
             {p.score
@@ -589,9 +589,9 @@ const uspIcon: Record<string, string> = {
     const heroVideo = document.querySelector<HTMLVideoElement>("[data-hero-video]");
     const motionOff = window.matchMedia("(prefers-reduced-motion: reduce)").matches
       || document.documentElement.classList.contains("a11y-reduced-motion");
-    if (heroVideo && motionOff) {
-      // Markup hat autoplay -> bei reduzierter Bewegung aktiv stoppen, Poster bleibt.
-      heroVideo.removeAttribute("autoplay");
+    // Mobil (< 768px) das 2,4-MB-Hero-Video NICHT laden/abspielen — Poster bleibt LCP.
+    const noHeroVideo = motionOff || !window.matchMedia("(min-width: 768px)").matches;
+    if (heroVideo && noHeroVideo) {
       heroVideo.pause();
     } else if (heroVideo) {
       let inView = true;

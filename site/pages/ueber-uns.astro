@@ -3,6 +3,7 @@
 // src/components/AboutSection.tsx. Timeline statisch sichtbar gerendert
 // (kein JS-abhängiges Reveal → Content steht ohne JS im HTML).
 import Layout from "../layouts/Layout.astro";
+import Pic from "../components/Pic.astro";
 import { ORIGIN } from "../lib/site";
 
 const TIMELINE = [
@@ -20,7 +21,7 @@ const TIMELINE = [
 const VALUES = [
   { num: "01", title: "Herzlichkeit", text: "Persönlicher Service mit familiärer Atmosphäre — wir kennen unsere Gäste mit Namen." },
   { num: "02", title: "Qualität", text: "Regionale Eifeler Küche und liebevoll gestaltete Zimmer mit Charakter." },
-  { num: "03", title: "Tradition", text: "Über 165 Jahre Gastfreundschaft in Familienhand, generationsübergreifend gepflegt." },
+  { num: "03", title: "Tradition", text: "Über 165 Jahre Gastfreundschaft an diesem Ort — bis heute mit Herz familiär geführt." },
 ];
 
 const aboutSchema = {
@@ -45,7 +46,7 @@ const aboutSchema = {
   <section class="grid lg:grid-cols-12 items-stretch">
     <div class="lg:col-span-6">
       <div class="aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden shadow-elevated">
-        <img
+        <Pic
           src="/fotos/landhotel-schend-zeichnung-innenhof-historisch.jpg"
           alt="Bleistift-Zeichnung des Landhotel Schend in Immerath mit Innenhof und Eingang"
           class="w-full h-full object-cover object-center contrast-110"
@@ -71,19 +72,24 @@ const aboutSchema = {
           Eheleute Änni und Leo Schneiders die elterliche Dorfgaststätte sowie
           den kleinbäuerlichen Selbstversorgungsbetrieb.
           <span class="font-display text-primary">1970</span> erweiterten sie
-          den Betrieb um drei Gästezimmer mit fließendem Warm- und Kaltwasser.
+          den Betrieb um drei Gästezimmer mit fließendem Warm- und Kaltwasser und
+          modernisierten die Dorfgaststätte.
         </p>
         <p>
           Seit <span class="font-display text-primary">1976</span> arbeiteten
           Tochter Roswitha und Ehemann Reinhold im Betrieb mit, den die beiden
-          <span class="font-display text-primary">1993</span> übernahmen. Nach
-          dem Tod der Eltern entschlossen sie sich für umfangreiche Umbaumaßnahmen:
-          Das alte Ökonomiegebäude wurde abgerissen und ein neues Gästehaus mit 22
-          Betten errichtet.
+          <span class="font-display text-primary">1993</span> übernahmen. Nach dem
+          Tod der Eltern stand das Ehepaar Schend vor der Wahl, den Betrieb
+          aufzugeben oder zu investieren — sie entschlossen sich dafür und begannen
+          <span class="font-display text-primary">1995</span> mit umfangreichen
+          Umbaumaßnahmen: Das alte Ökonomiegebäude wurde abgerissen und ein neues
+          Gästehaus mit 22 Betten sowie einem Speiseraum errichtet.
         </p>
         <p>
           Zwei Jahre später, <span class="font-display text-primary">1997</span>,
-          eröffneten sie das neue Gebäude unter dem Namen „Landhaus Schend". Seit
+          eröffneten sie das neue Gebäude unter dem Namen „Landhaus Schend". In den
+          folgenden Jahren wuchs die Bettenzahl auf 44; ein Lift, ein moderner
+          Speisesaal und ein gemütliches Kaminzimmer kamen hinzu. Seit
           <span class="font-display text-primary">1999</span> ist das Landhaus
           Schend mit 3 Sternen der Deutschen Hotelklassifizierung ausgezeichnet.
         </p>
@@ -96,7 +102,7 @@ const aboutSchema = {
   <section class="container mx-auto px-4 py-16 md:py-20 border-t border-border/40">
     <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-10 md:gap-14 items-center">
       <div class="aspect-[4/3] overflow-hidden rounded-md shadow-card">
-        <img
+        <Pic
           src="/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg"
           alt="Landhotel Schend in Immerath mit Rosen vor der Fassade"
           loading="lazy"

@@ -115,7 +115,6 @@ const robots = noindex
 
     {/* Self-hosted Fonts (DSGVO: kein Google-CDN). woff2 + fonts.css in /public/fonts. */}
     <link rel="preload" href="/fonts/inter-UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/cormorantgaramond-co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/fonts/fonts.css" />
 
     <meta property="og:type" content={ogType} />
@@ -187,7 +186,7 @@ const robots = noindex
         animation: splash-mark-in .9s cubic-bezier(.22,1,.36,1) .1s forwards;
       }
       .splash-word {
-        font-family: "Cormorant Garamond", Georgia, serif;
+        font-family: Georgia, "Times New Roman", serif;
         font-size: clamp(1.45rem, 6vw, 2.5rem); font-weight: 500;
         text-transform: uppercase; color: hsl(38 48% 70%);
         white-space: nowrap; letter-spacing: .5em;
@@ -442,12 +441,14 @@ const robots = noindex
       //    Bei reduzierter Bewegung (Komfort-Tool / prefers-reduced-motion) bleibt es nativ.
       const motionOff =
         reduce || document.documentElement.classList.contains("a11y-reduced-motion");
+      // Lenis (weiches Scrollen) nur auf Desktop — mobil natives Scrollen (leichter, kein Lib-Overhead).
+      const bigScreen = window.matchMedia("(min-width: 768px)").matches;
       const emit = (y: number) => {
         ((window as any).__scrollSubs || []).forEach((cb: (n: number) => void) => {
           try { cb(y); } catch {}
         });
       };
-      if (!motionOff) {
+      if (!motionOff && bigScreen) {
         const lenis = new Lenis({ lerp: 0.09, smoothWheel: true, anchors: true });
         (window as any).__lenis = lenis;
         lenis.on("scroll", (e: any) => emit(e.scroll));

@@ -1,6 +1,7 @@
 ---
 // Pakete-Übersicht — eigene URL /pakete (DR-029). Daten statisch aus lib/pakete.
 import Layout from "../../layouts/Layout.astro";
+import Pic from "../../components/Pic.astro";
 import { PAKETE } from "../../lib/pakete";
 ---
 
@@ -25,7 +26,7 @@ import { PAKETE } from "../../lib/pakete";
       {PAKETE.map((p, i) => (
         <a href={`/pakete/${p.slug}`} class="spotlight group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${(i % 3) * 0.08}s`}>
           <div class="aspect-[4/3] overflow-hidden">
-            <img src={p.cover} alt={p.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
+            <Pic src={p.cover} alt={p.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
           </div>
           <div class="flex flex-col flex-1 p-6">
             <h2 class="font-display text-2xl leading-snug group-hover:text-secondary transition-colors text-balance">{p.title}</h2>
