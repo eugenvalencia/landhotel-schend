@@ -12,6 +12,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "optimize:images": "node scripts/optimize-images.mjs",
+    "images:webp": "node scripts/gen-webp-dims.mjs",
     "dev:site": "astro dev",
     "build:site": "astro build",
     "build:demo": "astro build && vite build --mode saas --base=/_saas/ --outDir dist-astro/_saas --emptyOutDir && node scripts/fix-saas-base.mjs",
