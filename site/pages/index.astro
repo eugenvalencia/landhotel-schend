@@ -367,7 +367,7 @@ const uspIcon: Record<string, string> = {
             <div class="spotlight tilt-card relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
               <Pic src={p.cover} alt={p.title} loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" />
               {p.price && (
-                <div class="absolute top-3 right-3 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-sm shadow-md border border-foreground/10">
+                <div class="absolute top-3 right-3 px-3 py-1.5 bg-background/95 backdrop-blur-sm rounded-sm shadow-md border border-foreground/10">
                   <span class="text-[10px] font-medium tracking-[0.15em] uppercase text-foreground/60">Paket</span>
                   <p class="font-display text-secondary text-base leading-tight">{p.price.replace(/^ab\s+/i, "")}</p>
                 </div>
