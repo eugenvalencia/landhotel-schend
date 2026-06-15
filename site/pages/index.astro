@@ -15,7 +15,7 @@ import { SCHEND_RESTAURANT, galleryForRoomType } from "../lib/photos";
 // rechts) — nach dem Paid-Upgrade gegen die saubere, höher aufgelöste Version
 // tauschen (gleicher Pfad, nur Datei ersetzen). TODO: Upgrade-Swap.
 const HERO_VIDEO = "/hero/schend-hero.mp4";
-const HERO_POSTER = "/hero/schend-hero-poster.jpg";
+const HERO_POSTER = "/hero/schend-hero-poster.webp";
 
 const USPS = [
   { label: "Kostenlose Parkplätze im Hof", icon: "park" },
@@ -161,7 +161,7 @@ const uspIcon: Record<string, string> = {
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(hotelGraph)} />
   <!-- LCP: Hero-Poster früh entdecken + priorisieren (steckt sonst nur im video[poster]) -->
-  <link rel="preload" as="image" href={HERO_POSTER} fetchpriority="high" slot="head" />
+  <link rel="preload" as="image" href={HERO_POSTER} type="image/webp" fetchpriority="high" slot="head" />
 
   <!-- HERO -->
   <section id="top" class="relative h-[100vh] min-h-[640px] max-h-[1100px] overflow-hidden">

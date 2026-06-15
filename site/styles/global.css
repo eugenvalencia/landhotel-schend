@@ -550,7 +550,10 @@
      Funktioniert auf dunklem Footer-Background; ersetzt simplen Color-Switch. */
   .footer-link {
     position: relative;
-    display: inline-block;
+    /* Komfort-Tap-Target (BFSG/60+): mind. 44px hoch, Text vertikal zentriert. */
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
   }
   .footer-link::after {
     content: "";
