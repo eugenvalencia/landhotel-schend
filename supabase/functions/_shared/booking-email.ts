@@ -28,7 +28,7 @@ export interface BookingEmailInput {
 
 const HOTEL = {
   name: "Landhaus Schend",
-  street: "Auf der Heide 1",
+  street: "Hauptstraße 9",
   city: "54552 Immerath / Vulkaneifel",
   phone: "+49 6573 306",
   email: "info@landhaus-schend.de",
