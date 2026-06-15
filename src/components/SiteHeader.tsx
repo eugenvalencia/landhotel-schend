@@ -170,7 +170,7 @@ export default function SiteHeader() {
               "text-[10px] xl:text-[11px] tracking-[0.18em] uppercase text-muted-foreground leading-tight truncate transition-all duration-500",
               "hidden xl:block",
             )}>
-              Hotel · Restaurant
+              Hotel - Restaurant
             </p>
           </div>
         </Link>

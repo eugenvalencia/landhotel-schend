@@ -25,7 +25,7 @@ export default function SiteFooter() {
             </p>
           </div>
           <p className="text-[12px] md:text-sm tracking-[0.22em] uppercase text-secondary mt-2">
-            Hotel · Restaurant
+            Hotel - Restaurant
           </p>
           <p className="text-[11px] tracking-[0.22em] uppercase text-[hsl(38_30%_92%)]/55 mt-3">
             Anno 1856 · Vulkaneifel

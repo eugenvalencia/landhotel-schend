@@ -5,7 +5,7 @@
 export const ORIGIN = "https://landhaus-schend.de";
 export const SITE_NAME = "Landhaus Schend";
 // Sichtbarer Marken-Descriptor (Wortmarke-Subline, wie Logo „HOTEL | RESTAURANT").
-export const SITE_DESCRIPTOR = "Hotel · Restaurant";
+export const SITE_DESCRIPTOR = "Hotel - Restaurant";
 // Offizieller Name (mit Inhaber Beimler geklärt 15.06.) — Schema/legalName/Impressum.
 export const LEGAL_NAME = "Landhaus Schend, Hotel - Restaurant";
 

@@ -46,6 +46,7 @@ const DOPPELZIMMER_KOMFORT_FOTOS = [
   "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
   "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
   "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-bad-mit-walk-in-dusche-und-led-rundspiegel-landhaus-schend-vulkaneifel.jpg",
 ];
 
 export const SCHEND_ROOM_GALLERY: Record<string, string[]> = {
@@ -82,6 +83,7 @@ export const SCHEND_RESTAURANT_GALLERY = [
   "/fotos/restaurant-panorama-2-landhotel-schend.jpg",
   "/fotos/restaurant-panorama-3-landhotel-schend.jpg",
   "/fotos/restaurant-panorama-4-landhotel-schend.jpg",
+  "/fotos/eifeler-spezialitaet-gebratene-kloesse-in-rahmsauce-landhaus-schend.jpg",
 ];
 
 export const SCHEND_RESTAURANT = SCHEND_RESTAURANT_GALLERY[0];
