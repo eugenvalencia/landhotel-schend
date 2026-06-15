@@ -192,7 +192,7 @@
   h1,
   h2,
   h3 {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
     font-weight: 500;
     font-feature-settings: "liga", "dlig";
     letter-spacing: -0.012em;
@@ -238,11 +238,11 @@
 
   /* Editorial typography utilities */
   .font-display {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
     font-weight: 500;
   }
   .font-display-italic {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
     font-style: italic;
     font-weight: 400;
   }
@@ -254,7 +254,7 @@
   /* Editorial drop-cap — for the first paragraph of a long passage.
      Smaller on mobile so it doesn't dominate narrow columns. */
   .drop-cap::first-letter {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
     font-weight: 500;
     font-size: 3.4em;
     line-height: 0.82;
