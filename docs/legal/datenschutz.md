@@ -11,7 +11,7 @@ Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren 
 Verantwortlich für die Datenverarbeitung auf dieser Website ist (Art. 4 Nr. 7 DSGVO):
 
 Eugen Beimler
-Landhotel Schend
+Landhaus Schend
 Hauptstraße 9
 54552 Immerath
 Telefon: +49 6573 306

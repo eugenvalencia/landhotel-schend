@@ -1,12 +1,16 @@
-// Zentrale, reale Stammdaten des Landhotel Schend (NAP + Nav).
+// Zentrale, reale Stammdaten des Landhaus Schend (NAP + Nav).
 // Single Source für Header/Footer/Layout — 1:1 aus der bestehenden App
 // (index.html JSON-LD + SiteFooter/SiteHeader), damit nichts driftet.
 
 export const ORIGIN = "https://landhaus-schend.de";
-export const SITE_NAME = "Landhotel Schend";
+export const SITE_NAME = "Landhaus Schend";
+// Sichtbarer Marken-Descriptor (Wortmarke-Subline, wie Logo „HOTEL | RESTAURANT").
+export const SITE_DESCRIPTOR = "Hotel · Restaurant";
+// Offizieller Name (mit Inhaber Beimler geklärt 15.06.) — Schema/legalName/Impressum.
+export const LEGAL_NAME = "Landhaus Schend, Hotel - Restaurant";
 
 export const HOTEL = {
-  name: "Landhotel Schend",
+  name: "Landhaus Schend",
   phoneLabel: "+49 6573 306",
   phoneHref: "tel:+4965731306",
   fax: "+49 6573 99815",

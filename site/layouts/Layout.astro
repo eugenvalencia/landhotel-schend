@@ -2,7 +2,7 @@
 // Basis-Layout für alle öffentlichen Astro-Seiten.
 // Erzeugt den kompletten SEO-Head STATISCH (kein JS nötig) — spiegelt den
 // Vertrag aus src/hooks/useSEO.ts + index.html der Vite-App:
-//   fullTitle = "<title> | Landhotel Schend"
+//   fullTitle = "<title> | Landhaus Schend"
 //   description → meta + og:description + twitter:description
 //   canonical = ORIGIN + canonicalPath, og:url = canonical
 //   robots je nach noindex
@@ -53,7 +53,7 @@ const robots = noindex
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>{fullTitle}</title>
     {description && <meta name="description" content={description} />}
-    <meta name="author" content="Landhotel Schend" />
+    <meta name="author" content="Landhaus Schend" />
     <meta name="robots" content={robots} />
 
     <!-- Default = dunkel; JS hält theme-color beim Umschalten synchron (SiteHeader). -->
@@ -118,7 +118,7 @@ const robots = noindex
     <link rel="stylesheet" href="/fonts/fonts.css" />
 
     <meta property="og:type" content={ogType} />
-    <meta property="og:site_name" content="Landhotel Schend" />
+    <meta property="og:site_name" content="Landhaus Schend" />
     <meta property="og:locale" content="de_DE" />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={fullTitle} />
@@ -126,7 +126,7 @@ const robots = noindex
     <meta property="og:image" content={ogImageAbs} />
     <meta property="og:image:width" content="1920" />
     <meta property="og:image:height" content="1080" />
-    <meta property="og:image:alt" content="Landhotel Schend in Immerath, Vulkaneifel" />
+    <meta property="og:image:alt" content="Landhaus Schend in Immerath, Vulkaneifel" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
@@ -219,7 +219,7 @@ const robots = noindex
         <svg class="splash-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       </span>
       <span class="splash-mark" aria-hidden="true"></span>
-      <span class="splash-word">Landhotel Schend</span>
+      <span class="splash-word">Landhaus Schend</span>
       <div class="splash-bar" aria-hidden="true"><span class="splash-fill"></span></div>
       <span class="splash-pct" aria-hidden="true">0&thinsp;%</span>
     </div>

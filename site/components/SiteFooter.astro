@@ -1,7 +1,7 @@
 ---
 // Öffentlicher Site-Footer (Astro, SSG). 1:1-Port aus src/components/SiteFooter.tsx.
 // Immer dunkles Slate, unabhängig vom Theme — starker editorialer Seitenfuß.
-import { HOTEL } from "../lib/site";
+import { HOTEL, SITE_DESCRIPTOR } from "../lib/site";
 
 const year = new Date().getFullYear(); // build-time, landet statisch im HTML
 ---
@@ -11,9 +11,10 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
     <!-- Brand -->
     <div class="md:col-span-5">
       <div class="flex items-center gap-3">
-        <span role="img" aria-label="Landhotel Schend Logo" class="schend-mark shrink-0 h-10 md:h-12 text-[hsl(38_30%_92%)]"></span>
-        <p class="font-display text-3xl md:text-4xl leading-tight tracking-tight">Landhotel Schend</p>
+        <span role="img" aria-label="Landhaus Schend Logo" class="schend-mark shrink-0 h-10 md:h-12 text-[hsl(38_30%_92%)]"></span>
+        <p class="font-display text-3xl md:text-4xl leading-tight tracking-tight">Landhaus Schend</p>
       </div>
+      <p class="text-[12px] md:text-sm tracking-[0.22em] uppercase text-secondary mt-2">{SITE_DESCRIPTOR}</p>
       <p class="text-[11px] tracking-[0.22em] uppercase text-[hsl(38_30%_92%)]/55 mt-3">
         Anno 1856 · Vulkaneifel
       </p>
@@ -75,7 +76,7 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
   <div class="border-t border-[hsl(38_30%_92%)]/12">
     <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-[hsl(38_30%_92%)]/65">
       <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5 text-center sm:text-left">
-        <p>© {year} Landhotel Schend · www.landhaus-schend.de</p>
+        <p>© {year} Landhaus Schend · www.landhaus-schend.de</p>
         <span class="hidden sm:inline text-[hsl(38_30%_92%)]/25">·</span>
         <p class="text-[11px] tracking-wide text-[hsl(38_30%_92%)]/55">
           Powered by{" "}

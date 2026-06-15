@@ -18,7 +18,7 @@ const resources = {
       },
       hero: {
         eyebrow: "Kurzurlaub & Wanderhotel in der Vulkaneifel",
-        title: "Willkommen im Landhotel Schend",
+        title: "Willkommen im Landhaus Schend",
         text:
           "Ihr ★★★ Superior Hotel in Immerath — Eifelsteig, Maare-Mosel-Radweg und Nürburgring direkt vor der Tür. 21 Zimmer mit Balkon, hauseigene Eifeler Landküche, Halbpension auf Wunsch und kostenlose Parkplätze. Ideal für Ihren Kurzurlaub — direkt buchen, provisionsfrei.",
         bookDirect: "Jetzt direkt buchen",
@@ -36,7 +36,7 @@ const resources = {
       },
       rooms: {
         eyebrow: "Unsere Zimmer",
-        title: "Zu Gast im Landhotel Schend",
+        title: "Zu Gast im Landhaus Schend",
         intro:
           "21 individuell gestaltete Zimmer — alle mit Balkon oder Terrasse und Blick in die Vulkaneifel.",
         from: "ab",
@@ -215,7 +215,7 @@ const resources = {
       },
       hero: {
         eyebrow: "Short break & hiking hotel in the Volcanic Eifel",
-        title: "Welcome to Landhotel Schend",
+        title: "Welcome to Landhaus Schend",
         text:
           "Your ★★★ Superior hotel in Immerath — Eifelsteig premium trail, Maare-Mosel cycle path and Nürburgring right at your door. 21 rooms with balcony, on-site Eifel regional cuisine, half-board on request and free parking. The ideal short break — book direct, commission-free.",
         bookDirect: "Book directly now",
@@ -233,7 +233,7 @@ const resources = {
       },
       rooms: {
         eyebrow: "Our rooms",
-        title: "A guest at Landhotel Schend",
+        title: "A guest at Landhaus Schend",
         intro:
           "21 individually designed rooms — all with balcony or terrace and views of the Volcanic Eifel.",
         from: "from",
@@ -411,7 +411,7 @@ const resources = {
       },
       hero: {
         eyebrow: "Court séjour & hôtel de randonnée dans l'Eifel volcanique",
-        title: "Bienvenue au Landhotel Schend",
+        title: "Bienvenue au Landhaus Schend",
         text:
           "Votre hôtel ★★★ Superior à Immerath — sentier Eifelsteig, piste Maare-Mosel et Nürburgring à votre porte. 21 chambres avec balcon, cuisine maison de l'Eifel, demi-pension sur demande et parking gratuit. L'escapade idéale — réservez en direct, sans commission.",
         bookDirect: "Réserver en direct",
@@ -429,7 +429,7 @@ const resources = {
       },
       rooms: {
         eyebrow: "Nos chambres",
-        title: "Séjourner au Landhotel Schend",
+        title: "Séjourner au Landhaus Schend",
         intro:
           "21 chambres individuelles — toutes avec balcon ou terrasse et vue sur l'Eifel volcanique.",
         from: "à partir de",
@@ -609,7 +609,7 @@ const resources = {
       },
       hero: {
         eyebrow: "Korte vakantie & wandelhotel in de Vulkaneifel",
-        title: "Welkom in Landhotel Schend",
+        title: "Welkom in Landhaus Schend",
         text:
           "Uw ★★★ Superior Hotel in Immerath — Eifelsteig, Maare-Mosel-fietsroute en Nürburgring vlak voor de deur. 21 kamers met balkon, eigen Eifeler streekkeuken, halfpension op aanvraag en gratis parkeerplaatsen. Ideaal voor uw korte vakantie — direct aanvragen, zonder commissie.",
         bookDirect: "Direct aanvragen",
@@ -627,7 +627,7 @@ const resources = {
       },
       rooms: {
         eyebrow: "Onze kamers",
-        title: "Te gast in Landhotel Schend",
+        title: "Te gast in Landhaus Schend",
         intro:
           "21 individueel ingerichte kamers — allemaal met balkon of terras en uitzicht op de Vulkaneifel.",
         from: "vanaf",

@@ -8,7 +8,7 @@ type SEOOptions = {
   noindex?: boolean;
 };
 
-const SITE_NAME = "Landhotel Schend";
+const SITE_NAME = "Landhaus Schend";
 const ORIGIN = "https://landhaus-schend.de";
 
 function setMeta(name: string, content: string, attr: "name" | "property" = "name") {

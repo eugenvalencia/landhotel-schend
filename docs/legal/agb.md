@@ -1,4 +1,4 @@
-# Allgemeine Geschäftsbedingungen — Landhotel Schend
+# Allgemeine Geschäftsbedingungen — Landhaus Schend
 
 ## § 1 Geltungsbereich
 
@@ -12,7 +12,7 @@
 
 (1) Der Vertrag kommt durch die Annahme der Buchungs-Anfrage des Gastes durch das Hotel zustande. Die Annahme bedarf der Bestätigung in Textform (E-Mail) oder mündlich. Es steht dem Hotel frei, die Buchung schriftlich (E-Mail) zu bestätigen.
 
-(2) Vertragspartner sind das Hotel (Landhotel Schend, Inhaber Eugen Beimler) und der Gast. Hat ein Dritter für den Gast bestellt, haftet er dem Hotel gegenüber zusammen mit dem Gast als Gesamtschuldner für alle Verpflichtungen aus dem Beherbergungsvertrag.
+(2) Vertragspartner sind das Hotel (Landhaus Schend, Inhaber Eugen Beimler) und der Gast. Hat ein Dritter für den Gast bestellt, haftet er dem Hotel gegenüber zusammen mit dem Gast als Gesamtschuldner für alle Verpflichtungen aus dem Beherbergungsvertrag.
 
 (3) Das Hotel haftet für seine Verpflichtungen aus dem Vertrag in allen Fällen, in denen ihm, seinen gesetzlichen Vertretern oder Erfüllungsgehilfen Vorsatz oder grobe Fahrlässigkeit zur Last fällt sowie bei Verletzung wesentlicher Vertragspflichten (Kardinalpflichten). Im Übrigen ist die Haftung des Hotels — gleich aus welchem Rechtsgrund — auf den vertragstypischen, vorhersehbaren Schaden begrenzt.
 

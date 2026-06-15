@@ -106,7 +106,7 @@ export default function Booking() {
   useSEO({
     title: "Direkt buchen — provisionsfrei",
     description:
-      "Buchen Sie direkt im Landhotel Schend in Immerath / Vulkaneifel. Bester Preis garantiert, keine OTA-Provision. Unverbindlich anfragen — das Hotel bestätigt Ihre Buchung in Kürze.",
+      "Buchen Sie direkt im Landhaus Schend in Immerath / Vulkaneifel. Bester Preis garantiert, keine OTA-Provision. Unverbindlich anfragen — das Hotel bestätigt Ihre Buchung in Kürze.",
     canonical: "/booking",
   });
 
@@ -552,10 +552,10 @@ export default function Booking() {
           <Link to="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity shrink-0">
             <span
               role="img"
-              aria-label="Landhotel Schend Logo"
+              aria-label="Landhaus Schend Logo"
               className="schend-mark shrink-0 h-6 text-[hsl(38_30%_92%)]"
             />
-            <span className="font-display text-base md:text-lg whitespace-nowrap">Landhotel Schend</span>
+            <span className="font-display text-base md:text-lg whitespace-nowrap">Landhaus Schend</span>
           </Link>
 
           {/* Titel mittig — erst ab lg sichtbar, darunter erscheint er unter der Top-Bar */}

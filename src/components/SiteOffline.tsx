@@ -36,7 +36,7 @@ export default function SiteOffline({ variant = "error", title, message }: Props
   return (
     <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-4 py-16 overflow-hidden">
       <div className="w-full max-w-2xl text-center relative">
-        <p className="eyebrow mb-5 text-secondary">Landhotel Schend</p>
+        <p className="eyebrow mb-5 text-secondary">Landhaus Schend</p>
         <h1 className="font-display text-4xl md:text-6xl leading-[1.05] text-primary mb-5 text-balance">
           {title ?? defaults.title}
         </h1>

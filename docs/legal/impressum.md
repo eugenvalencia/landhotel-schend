@@ -3,7 +3,7 @@
 ## Angaben gemäß § 5 DDG
 
 Eugen Beimler
-Landhotel Schend
+Landhaus Schend
 Hauptstraße 9
 54552 Immerath
 Deutschland

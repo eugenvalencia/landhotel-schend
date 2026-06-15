@@ -133,7 +133,7 @@ const reviewsJsonLd = {
   "@context": "https://schema.org",
   "@type": "Hotel",
   "@id": "https://landhaus-schend.de/#hotel",
-  name: "Landhotel Schend",
+  name: "Landhaus Schend",
   review: REVIEWS.map((r) => ({
     "@type": "Review",
     reviewRating: { "@type": "Rating", ratingValue: r.stars, bestRating: 5 },
@@ -176,7 +176,7 @@ export default function ReviewsSection() {
             Was unsere Gäste sagen
           </h2>
           <p className="text-muted-foreground mt-5 leading-relaxed">
-            Landhotel Schend — bewertet auf allen großen Plattformen
+            Landhaus Schend — bewertet auf allen großen Plattformen
           </p>
           <div className="mt-7 inline-flex flex-wrap items-center justify-center gap-3 px-4 py-2 rounded-full bg-secondary/10 border border-secondary/25">
             <div className="flex gap-0.5">

@@ -3,7 +3,7 @@
 // Google-Maps mit DSGVO-2-Klick (Karte lädt erst nach Zustimmung → ohne
 // Consent keine Besucher-IP an Google). Route-Buttons + Adresse/Kontakt/
 // Entfernungen + Anreise (Auto/Bahn/Flug).
-const ADDRESS = "Landhotel Schend, Hauptstraße 9, 54552 Immerath, Deutschland";
+const ADDRESS = "Landhaus Schend, Hauptstraße 9, 54552 Immerath, Deutschland";
 const LAT = 50.1303;
 const LNG = 6.9594;
 const ENC = encodeURIComponent(ADDRESS);
@@ -31,7 +31,7 @@ const DIST_BX = [
     <div class="text-center mb-14 max-w-3xl mx-auto" data-reveal>
       <p class="eyebrow">Anreise</p>
       <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-5 text-balance leading-[1.05]">So finden Sie zu uns</h2>
-      <p class="text-muted-foreground leading-relaxed">Landhotel Schend · Hauptstraße 9 · 54552 Immerath · Vulkaneifel</p>
+      <p class="text-muted-foreground leading-relaxed">Landhaus Schend · Hauptstraße 9 · 54552 Immerath · Vulkaneifel</p>
     </div>
 
     <!-- Karte (DSGVO-2-Klick) -->
@@ -71,7 +71,7 @@ const DIST_BX = [
     <div class="grid md:grid-cols-3 gap-px bg-border/50 mb-3 border border-border/50 rounded-md overflow-hidden shadow-card" data-reveal>
       <div class="bg-background p-8 md:p-10">
         <p class="eyebrow mb-5">Adresse</p>
-        <address class="not-italic text-foreground/85 leading-relaxed">Landhotel Schend<br />Hauptstraße 9<br />54552 Immerath<br />Vulkaneifel · Deutschland</address>
+        <address class="not-italic text-foreground/85 leading-relaxed">Landhaus Schend<br />Hauptstraße 9<br />54552 Immerath<br />Vulkaneifel · Deutschland</address>
         <div class="hairline-strong opacity-50 my-5"></div>
         <p class="text-xs text-muted-foreground leading-relaxed">
           <span class="block"><span class="text-foreground/85 font-medium">Höhe</span> · 400 m ü. NHN</span>
@@ -145,7 +145,7 @@ const DIST_BX = [
     if (!ph) return;
     const f = document.createElement("iframe");
     f.src = src;
-    f.title = "Landhotel Schend, Hauptstraße 9, 54552 Immerath – auf Google Maps";
+    f.title = "Landhaus Schend, Hauptstraße 9, 54552 Immerath – auf Google Maps";
     f.className = "w-full h-[360px] md:h-[480px] block";
     f.style.border = "0";
     f.loading = "lazy";

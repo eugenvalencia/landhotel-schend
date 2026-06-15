@@ -23,7 +23,7 @@ const CALLS: Call[] = [
     note: "Doppelzimmer Komfort, 17.–19.06., Frau Schmitt-Lehmann",
     outcomeDetail: "Buchung LSC26-1071 angelegt, Bestaetigung versandt",
     transcript: [
-      { who: "Agent", text: "Guten Abend, Landhotel Schend, Conexa-Service. Wie kann ich helfen?" },
+      { who: "Agent", text: "Guten Abend, Landhaus Schend, Conexa-Service. Wie kann ich helfen?" },
       { who: "Gast",  text: "Ja, ich wollte fragen ob bei Ihnen noch was frei ist Mitte Juni, fuer zwei Naechte." },
       { who: "Agent", text: "Sehr gerne. Vom 17. bis 19. Juni — wir haben da noch Doppelzimmer Komfort frei, fuer 105 € die Nacht." },
       { who: "Gast",  text: "Das passt. Auf den Namen Schmitt-Lehmann, Julia. Telefon hatten Sie ja." },
@@ -37,7 +37,7 @@ const CALLS: Call[] = [
     note: "Hund erlaubt? — bestaetigt, Brockenhinweis gegeben",
     outcomeDetail: "Information gegeben, Gast bucht spaeter online",
     transcript: [
-      { who: "Agent", text: "Landhotel Schend, guten Abend." },
+      { who: "Agent", text: "Landhaus Schend, guten Abend." },
       { who: "Gast",  text: "Hallo, kurze Frage: Hunde erlaubt bei Ihnen?" },
       { who: "Agent", text: "Ja, kleine bis mittlere Hunde sehr gerne, 15 € pro Nacht. Brocken sind im Aussenbereich erlaubt, im Restaurant nicht." },
       { who: "Gast",  text: "Super, dann buche ich. Danke!" },
@@ -48,7 +48,7 @@ const CALLS: Call[] = [
     note: "Einzelzimmer 24.07., Geschaeftsreisender, Rechnung an Firma",
     outcomeDetail: "Buchung LSC26-1072 angelegt, Firmen-Rechnungs-Vermerk gesetzt",
     transcript: [
-      { who: "Agent", text: "Landhotel Schend." },
+      { who: "Agent", text: "Landhaus Schend." },
       { who: "Gast",  text: "Ich brauche ein Einzelzimmer am 24.07. fuer eine Nacht, geschaeftlich." },
       { who: "Agent", text: "24. auf 25.07., ein Einzelzimmer ist verfuegbar — 65 €." },
       { who: "Gast",  text: "Rechnung bitte an die Firma, Krause GmbH, Adresse ist hinterlegt." },
@@ -59,7 +59,7 @@ const CALLS: Call[] = [
     id: 4, time: "Heute 19:50", duration: "0:42", from: "+49 174 880…", outcome: "Verweis",
     note: "Hochzeitsfeier — an Inh. weitergeleitet (Eugen, SMS gesendet)",
     transcript: [
-      { who: "Agent", text: "Landhotel Schend, guten Abend." },
+      { who: "Agent", text: "Landhaus Schend, guten Abend." },
       { who: "Gast",  text: "Wir suchen eine Location fuer 65 Personen, Hochzeit September." },
       { who: "Agent", text: "Bei Eventgroessen wie dieser meldet sich der Inhaber persoenlich bei Ihnen — ich gebe Ihre Nummer weiter. Geht das in Ordnung?" },
       { who: "Gast",  text: "Ja sehr gerne." },
@@ -71,7 +71,7 @@ const CALLS: Call[] = [
     note: "Doppelzimmer Standard, Spontan fuer morgen",
     outcomeDetail: "Buchung LSC26-1054 angelegt, Anreise heute",
     transcript: [
-      { who: "Agent", text: "Landhotel Schend." },
+      { who: "Agent", text: "Landhaus Schend." },
       { who: "Gast",  text: "Spontan-Anfrage: morgen Anreise, zwei Naechte, brauche ein Doppelzimmer." },
       { who: "Agent", text: "Wir haben noch ein Doppelzimmer Standard frei, 95 € die Nacht." },
       { who: "Gast",  text: "Ich nehme es." },

@@ -1,7 +1,7 @@
 {
-  "name": "Landhotel Schend",
+  "name": "Landhaus Schend",
   "short_name": "Schend",
-  "description": "Landhotel Schend – Direktbuchung in der Vulkaneifel",
+  "description": "Landhaus Schend – Direktbuchung in der Vulkaneifel",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

@@ -38,7 +38,7 @@ export default function InvoiceDialog({ open, onOpenChange, booking, room }: Pro
             <div className="flex items-center gap-3">
               <span
                 role="img"
-                aria-label="Landhotel Schend Logo"
+                aria-label="Landhaus Schend Logo"
                 className="schend-mark shrink-0 h-12 text-primary print:text-black"
               />
               <div>
@@ -113,7 +113,7 @@ export default function InvoiceDialog({ open, onOpenChange, booking, room }: Pro
             <div className="font-semibold text-foreground">Zahlungsinformationen</div>
             <div>IBAN: DE89 3704 0044 0532 0130 00 · BIC: COBADEFFXXX</div>
             <div>Steuernummer: 41/641/12345 · USt-IdNr.: DE123456789</div>
-            <div className="pt-2">Vielen Dank für Ihren Aufenthalt im Landhotel Schend!</div>
+            <div className="pt-2">Vielen Dank für Ihren Aufenthalt im Landhaus Schend!</div>
           </div>
         </div>
 

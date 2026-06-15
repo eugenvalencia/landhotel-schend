@@ -1,8 +1,8 @@
-# Rechts-Vollprüfung Website Landhotel Schend
+# Rechts-Vollprüfung Website Landhaus Schend
 
 **Prüfer:** Walter (Legal/Compliance, Conexa Digital) — KI-Jurist, Fokus deutsches Recht
 **Datum:** 2026-06-14
-**Mandant:** Eugen Beimler (Inhaber Landhotel Schend), via Eugen Neifer (Conexa Digital)
+**Mandant:** Eugen Beimler (Inhaber Landhaus Schend), via Eugen Neifer (Conexa Digital)
 **Auftrag:** Vollprüfung „von A bis Z" mit dem Ziel: keine Abmahn-Angriffsfläche.
 **Live-Domain:** landhaus-schend.de · Vorschau: schend.conexadigital.eu
 
@@ -57,7 +57,7 @@ Die Seite ist **technisch datenschutzfreundlich gebaut** (kein Google-Analytics,
 
 ### IST-Zustand
 - Z. 13: `<h2>Angaben gemäß § 5 TMG</h2>`
-- Z. 15-20: Eugen Beimler, Landhotel Schend, Hauptstraße 9, 54552 Immerath, Deutschland
+- Z. 15-20: Eugen Beimler, Landhaus Schend, Hauptstraße 9, 54552 Immerath, Deutschland
 - Z. 26-28: Tel `+49 6573 306`, Fax `+49 6573 99815`, E-Mail `info@landhaus-schend.de`
 - Z. 35-36: USt-ID `DE322739324`
 - Z. 42: Aufsichtsbehörde „Verbandsgemeindeverwaltung Daun"

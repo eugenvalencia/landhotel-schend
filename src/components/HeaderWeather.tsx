@@ -1,7 +1,7 @@
 import { WeatherIcon, weatherMood } from "./WeatherIcons";
 import { useWeather } from "@/hooks/useWeather";
 
-// Landhotel Schend, Immerath — identische Koordinaten wie WeatherCard, damit
+// Landhaus Schend, Immerath — identische Koordinaten wie WeatherCard, damit
 // sich beide denselben React-Query-Cache-Eintrag teilen (1 Request statt 2).
 const HOTEL_LAT = 50.1303;
 const HOTEL_LON = 6.9594;

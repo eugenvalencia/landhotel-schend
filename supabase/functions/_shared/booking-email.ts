@@ -27,7 +27,7 @@ export interface BookingEmailInput {
 }
 
 const HOTEL = {
-  name: "Landhotel Schend",
+  name: "Landhaus Schend",
   street: "Auf der Heide 1",
   city: "54552 Immerath / Vulkaneifel",
   phone: "+49 6573 306",
@@ -61,12 +61,12 @@ const TXT = {
   de: {
     subject: (bn: string, kind: EmailKind) =>
       kind === "confirmation"
-        ? `Buchungsbestätigung ${bn} — Landhotel Schend`
-        : `Anfrage eingegangen ${bn} — Landhotel Schend`,
+        ? `Buchungsbestätigung ${bn} — Landhaus Schend`
+        : `Anfrage eingegangen ${bn} — Landhaus Schend`,
     hi: (n: string) => `Liebe(r) ${n},`,
     intro: {
-      request: "vielen Dank für Ihre Anfrage im Landhotel Schend. Wir prüfen die Verfügbarkeit und bestätigen Ihnen Ihre Buchung in Kürze — in der Regel binnen weniger Stunden.",
-      confirmation: "wir freuen uns, Ihnen Ihre Buchung im Landhotel Schend verbindlich zu bestätigen. Ihr Zimmer ist nun fest für Sie reserviert — wir freuen uns auf Ihren Besuch.",
+      request: "vielen Dank für Ihre Anfrage im Landhaus Schend. Wir prüfen die Verfügbarkeit und bestätigen Ihnen Ihre Buchung in Kürze — in der Regel binnen weniger Stunden.",
+      confirmation: "wir freuen uns, Ihnen Ihre Buchung im Landhaus Schend verbindlich zu bestätigen. Ihr Zimmer ist nun fest für Sie reserviert — wir freuen uns auf Ihren Besuch.",
     },
     summary: { request: "Ihre Anfrage im Überblick", confirmation: "Ihre Buchung im Überblick" },
     bookingNo: "Buchungsnummer",
@@ -84,17 +84,17 @@ const TXT = {
     },
     season: "Bei Fragen zu Anreise und Öffnungszeiten erreichen Sie uns jederzeit telefonisch oder per E-Mail.",
     bye: "Herzliche Grüße aus der Vulkaneifel",
-    fam: "Ihr Team vom Landhotel Schend",
+    fam: "Ihr Team vom Landhaus Schend",
   },
   en: {
     subject: (bn: string, kind: EmailKind) =>
       kind === "confirmation"
-        ? `Booking confirmation ${bn} — Landhotel Schend`
-        : `Request received ${bn} — Landhotel Schend`,
+        ? `Booking confirmation ${bn} — Landhaus Schend`
+        : `Request received ${bn} — Landhaus Schend`,
     hi: (n: string) => `Dear ${n},`,
     intro: {
-      request: "thank you for your enquiry at Landhotel Schend. We are checking availability and will confirm your booking shortly — usually within a few hours.",
-      confirmation: "we are delighted to confirm your booking at Landhotel Schend. Your room is now firmly reserved for you — we look forward to welcoming you.",
+      request: "thank you for your enquiry at Landhaus Schend. We are checking availability and will confirm your booking shortly — usually within a few hours.",
+      confirmation: "we are delighted to confirm your booking at Landhaus Schend. Your room is now firmly reserved for you — we look forward to welcoming you.",
     },
     summary: { request: "Your request summary", confirmation: "Your booking summary" },
     bookingNo: "Booking number",
@@ -112,17 +112,17 @@ const TXT = {
     },
     season: "For any questions about your arrival or our opening hours, you can reach us any time by phone or email.",
     bye: "Warm regards from the Volcanic Eifel",
-    fam: "Your team at Landhotel Schend",
+    fam: "Your team at Landhaus Schend",
   },
   fr: {
     subject: (bn: string, kind: EmailKind) =>
       kind === "confirmation"
-        ? `Confirmation de réservation ${bn} — Landhotel Schend`
-        : `Demande reçue ${bn} — Landhotel Schend`,
+        ? `Confirmation de réservation ${bn} — Landhaus Schend`
+        : `Demande reçue ${bn} — Landhaus Schend`,
     hi: (n: string) => `Cher / Chère ${n},`,
     intro: {
-      request: "merci pour votre demande au Landhotel Schend. Nous vérifions les disponibilités et confirmerons votre réservation sous peu — en général sous quelques heures.",
-      confirmation: "nous avons le plaisir de confirmer votre réservation au Landhotel Schend. Votre chambre est désormais fermement réservée — nous nous réjouissons de votre visite.",
+      request: "merci pour votre demande au Landhaus Schend. Nous vérifions les disponibilités et confirmerons votre réservation sous peu — en général sous quelques heures.",
+      confirmation: "nous avons le plaisir de confirmer votre réservation au Landhaus Schend. Votre chambre est désormais fermement réservée — nous nous réjouissons de votre visite.",
     },
     summary: { request: "Récapitulatif de votre demande", confirmation: "Récapitulatif de votre réservation" },
     bookingNo: "Numéro de réservation",
@@ -140,17 +140,17 @@ const TXT = {
     },
     season: "Pour toute question sur votre arrivée ou nos horaires, contactez-nous à tout moment par téléphone ou e-mail.",
     bye: "Cordiales salutations de l'Eifel volcanique",
-    fam: "Votre équipe du Landhotel Schend",
+    fam: "Votre équipe du Landhaus Schend",
   },
   nl: {
     subject: (bn: string, kind: EmailKind) =>
       kind === "confirmation"
-        ? `Boekingsbevestiging ${bn} — Landhotel Schend`
-        : `Aanvraag ontvangen ${bn} — Landhotel Schend`,
+        ? `Boekingsbevestiging ${bn} — Landhaus Schend`
+        : `Aanvraag ontvangen ${bn} — Landhaus Schend`,
     hi: (n: string) => `Beste ${n},`,
     intro: {
-      request: "hartelijk dank voor uw aanvraag bij Landhotel Schend. We controleren de beschikbaarheid en bevestigen uw boeking binnenkort — meestal binnen enkele uren.",
-      confirmation: "het verheugt ons uw boeking bij Landhotel Schend te bevestigen. Uw kamer is nu definitief voor u gereserveerd — we kijken uit naar uw bezoek.",
+      request: "hartelijk dank voor uw aanvraag bij Landhaus Schend. We controleren de beschikbaarheid en bevestigen uw boeking binnenkort — meestal binnen enkele uren.",
+      confirmation: "het verheugt ons uw boeking bij Landhaus Schend te bevestigen. Uw kamer is nu definitief voor u gereserveerd — we kijken uit naar uw bezoek.",
     },
     summary: { request: "Overzicht van uw aanvraag", confirmation: "Overzicht van uw boeking" },
     bookingNo: "Boekingsnummer",
@@ -168,7 +168,7 @@ const TXT = {
     },
     season: "Voor vragen over uw aankomst of onze openingstijden kunt u ons altijd telefonisch of per e-mail bereiken.",
     bye: "Hartelijke groet uit de Vulkaan-Eifel",
-    fam: "Uw team van Landhotel Schend",
+    fam: "Uw team van Landhaus Schend",
   },
 } as const;
 

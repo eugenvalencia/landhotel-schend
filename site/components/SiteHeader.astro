@@ -2,7 +2,7 @@
 // Öffentlicher Site-Header (Astro, SSG). Reale Themen-URLs statt SPA-Anker.
 // Interaktivität (Mobile-Menü auf/zu, Glas-Effekt beim Scrollen) als kleine
 // Vanilla-JS-Island unten — keine React-Hydration nötig.
-import { NAV, HOTEL } from "../lib/site";
+import { NAV, HOTEL, SITE_DESCRIPTOR } from "../lib/site";
 
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
@@ -15,18 +15,18 @@ const isActive = (href: string) =>
 >
   <div class="container mx-auto px-4 flex items-center justify-between gap-4 h-16 md:h-20">
     <!-- Brand -->
-    <a href="/" class="group flex items-center gap-3 min-w-0" aria-label="Landhotel Schend — Startseite">
+    <a href="/" class="group flex items-center gap-3 min-w-0" aria-label="Landhaus Schend — Startseite">
       <span
         role="img"
-        aria-label="Landhotel Schend Logo"
+        aria-label="Landhaus Schend Logo"
         class="schend-mark shrink-0 text-foreground h-9 md:h-10 transition-transform duration-500 group-hover:scale-105"
       ></span>
       <span class="min-w-0">
         <span class="block font-display text-primary text-base md:text-lg lg:text-xl leading-tight truncate tracking-tight">
-          Landhotel Schend
+          Landhaus Schend
         </span>
         <span class="hidden lg:block text-[11px] tracking-[0.18em] uppercase text-muted-foreground leading-tight whitespace-nowrap">
-          Immerath · Vulkaneifel
+          {SITE_DESCRIPTOR}
         </span>
       </span>
     </a>

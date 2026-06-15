@@ -5,7 +5,7 @@ import { useSEO } from "@/hooks/useSEO";
 const Barrierefreiheit = () => {
   useSEO({
     title: "Erklärung zur Barrierefreiheit",
-    description: "Erklärung zur Barrierefreiheit nach BFSG / BFSGV § 14 für das Landhotel Schend.",
+    description: "Erklärung zur Barrierefreiheit nach BFSG / BFSGV § 14 für das Landhaus Schend.",
     canonical: "/barrierefreiheit",
     noindex: false,
   });
@@ -22,7 +22,7 @@ const Barrierefreiheit = () => {
 
         <section>
           <p>
-            Das Landhotel Schend ist bemüht, seine Website im Einklang mit dem
+            Das Landhaus Schend ist bemüht, seine Website im Einklang mit dem
             Barrierefreiheitsstärkungsgesetz (BFSG) sowie der Barrierefreie-Informationstechnik-Verordnung
             (BFSGV) für alle Gäste barrierefrei zugänglich zu machen.
           </p>
@@ -118,7 +118,7 @@ const Barrierefreiheit = () => {
             </li>
             <li>
               <strong>Post:</strong>{" "}
-              Landhotel Schend, Hauptstraße 9, 54552 Immerath
+              Landhaus Schend, Hauptstraße 9, 54552 Immerath
             </li>
           </ul>
           <p className="mt-3">

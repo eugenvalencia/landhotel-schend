@@ -5,7 +5,7 @@ import { useSEO } from "@/hooks/useSEO";
 const Impressum = () => {
   useSEO({
     title: "Impressum",
-    description: "Impressum des Landhotel Schend, Hauptstraße 9, 54552 Immerath. Inhaber Eugen Beimler, USt-ID DE322739324.",
+    description: "Impressum des Landhaus Schend, Hauptstraße 9, 54552 Immerath. Inhaber Eugen Beimler, USt-ID DE322739324.",
     canonical: "/impressum",
     noindex: true,
   });
@@ -21,7 +21,7 @@ const Impressum = () => {
           <h2 className="font-display text-xl md:text-2xl mb-3">Angaben gemäß § 5 DDG</h2>
           <p>
             Eugen Beimler<br />
-            Landhotel Schend<br />
+            Landhaus Schend<br />
             Hauptstraße 9<br />
             54552 Immerath<br />
             Deutschland

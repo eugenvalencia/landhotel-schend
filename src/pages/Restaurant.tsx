@@ -22,7 +22,7 @@ const restaurantJsonLd = {
   "@type": "Restaurant",
   "@id": "https://landhaus-schend.de/restaurant#restaurant",
   name: "Landhaus Restaurant & Terrasse",
-  alternateName: "Restaurant Landhotel Schend",
+  alternateName: "Restaurant Landhaus Schend",
   url: "https://landhaus-schend.de/restaurant",
   description:
     "Hauseigenes Eifeler Restaurant des Landhotels Schend in Immerath/Vulkaneifel. Regional-typische Küche, auch für Tagesgäste offen. Halbpension, Festtafel für Hochzeiten und Familienfeiern bis 70 Personen.",
@@ -54,7 +54,7 @@ const restaurantJsonLd = {
 
 export default function Restaurant() {
   useSEO({
-    title: "Landhaus Restaurant — Eifeler Küche im Landhotel Schend Immerath",
+    title: "Landhaus Restaurant — Eifeler Küche im Landhaus Schend Immerath",
     description:
       "Hauseigenes Eifeler Restaurant in Immerath/Vulkaneifel. Auch für Tagesgäste offen — Halbpension, Festtafel für Hochzeiten und Feiern bis 70 Personen. Tisch reservieren: +49 6573 306.",
     canonical: "/restaurant",
@@ -70,7 +70,7 @@ export default function Restaurant() {
         <section className="relative h-[60vh] min-h-[420px] max-h-[680px] overflow-hidden">
           <HotelImage
             src={SCHEND_RESTAURANT}
-            alt="Landhaus Restaurant & Terrasse im Landhotel Schend"
+            alt="Landhaus Restaurant & Terrasse im Landhaus Schend"
             loading="eager"
             decoding="sync"
             className="absolute inset-0 w-full h-full object-cover ken-burns-in"
@@ -310,7 +310,7 @@ export default function Restaurant() {
             <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[480px] overflow-hidden">
               <img
                 src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg"
-                alt="Festlich gedeckter Saal im Landhotel Schend"
+                alt="Festlich gedeckter Saal im Landhaus Schend"
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover"

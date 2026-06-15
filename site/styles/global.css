@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ===========================================================================
-   Landhotel Schend — Editorial Design System
+   Landhaus Schend — Editorial Design System
    1:1-Port aus ../../src/index.css (Vite-App). Beide Schichten teilen sich
    exakt dieselben Tokens + Utilities, damit die Astro-SSG-Seiten identisch
    aussehen wie die bisherige React-App.

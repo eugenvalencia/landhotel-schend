@@ -156,7 +156,7 @@ export default function SiteHeader() {
               Subtle hover-scale für Lebendigkeit. */}
           <span
             role="img"
-            aria-label="Landhotel Schend Logo"
+            aria-label="Landhaus Schend Logo"
             className={cn(
               "schend-mark shrink-0 text-foreground transition-all duration-500 group-hover:scale-105",
               scrolled ? "h-8 md:h-9" : "h-9 md:h-10 lg:h-11",
@@ -164,13 +164,13 @@ export default function SiteHeader() {
           />
           <div className="min-w-0">
             <p className="font-display text-primary text-base md:text-lg lg:text-xl leading-tight truncate tracking-tight">
-              Landhotel Schend
+              Landhaus Schend
             </p>
             <p className={cn(
               "text-[10px] xl:text-[11px] tracking-[0.18em] uppercase text-muted-foreground leading-tight truncate transition-all duration-500",
               "hidden xl:block",
             )}>
-              {t("nav.subtitle")}
+              Hotel · Restaurant
             </p>
           </div>
         </Link>

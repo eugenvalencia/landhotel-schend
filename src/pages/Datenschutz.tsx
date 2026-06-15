@@ -5,7 +5,7 @@ import { useSEO } from "@/hooks/useSEO";
 const Datenschutz = () => {
   useSEO({
     title: "Datenschutz",
-    description: "Datenschutzerklärung gemäß DSGVO für das Landhotel Schend, Hauptstraße 9, 54552 Immerath.",
+    description: "Datenschutzerklärung gemäß DSGVO für das Landhaus Schend, Hauptstraße 9, 54552 Immerath.",
     canonical: "/datenschutz",
     noindex: true,
   });
@@ -37,7 +37,7 @@ const Datenschutz = () => {
           </p>
           <p className="mt-3">
             Eugen Beimler<br />
-            Landhotel Schend<br />
+            Landhaus Schend<br />
             Hauptstraße 9<br />
             54552 Immerath<br />
             Telefon: <a href="tel:+4965731306" className="text-secondary hover:underline">+49 6573 306</a><br />

@@ -78,7 +78,7 @@ const PLATFORMS = [
 ];
 
 const FAQ_HOME = [
-  { q: "Wo liegt das Landhotel Schend genau?", a: "In der Hauptstraße 9, 54552 Immerath, mitten in der Vulkaneifel. Köln ca. 90 Min, Frankfurt ca. 120 Min, Nürburgring ca. 45 Min." },
+  { q: "Wo liegt das Landhaus Schend genau?", a: "In der Hauptstraße 9, 54552 Immerath, mitten in der Vulkaneifel. Köln ca. 90 Min, Frankfurt ca. 120 Min, Nürburgring ca. 45 Min." },
   { q: "Was kostet eine Übernachtung?", a: "Doppelzimmer ab 57 € pro Person/Nacht inkl. Frühstücksbuffet. Zur Einzelnutzung ab 80 €. Familienzimmer ab 170 €. Halbpension auf Wunsch +23 € pro Person/Tag." },
   { q: "Gibt es einen Stellplatz für Motorräder?", a: "Eine abschließbare Motorradgarage haben wir nicht — aber kostenlose Parkplätze und genügend Motorrad-Stellplätze direkt im Hof. Beliebt bei Fahrern rund um den Nürburgring." },
   { q: "Bieten Sie Halbpension an?", a: "Halbpension ist auf Wunsch buchbar (+23 € pro Person/Tag) — täglich frische Eifeler Landküche. Das große Frühstücksbuffet ist immer inklusive." },
@@ -92,7 +92,7 @@ const hotelGraph = {
     {
       "@type": "Hotel",
       "@id": "https://landhaus-schend.de/#hotel",
-      name: "Landhotel Schend",
+      name: "Landhaus Schend",
       alternateName: "Landhaus Schend",
       description:
         "Familiengeführtes 3-Sterne-Superior Landhotel in Immerath / Vulkaneifel mit 21 komfortablen Zimmern, hauseigenem Eifeler Restaurant und Halbpension auf Wunsch.",
@@ -130,13 +130,13 @@ const hotelGraph = {
     },
     {
       "@type": "Organization", "@id": "https://landhaus-schend.de/#organization",
-      name: "Landhotel Schend", alternateName: "Landhaus Schend", url: "https://landhaus-schend.de/",
+      name: "Landhaus Schend", alternateName: "Landhaus Schend", url: "https://landhaus-schend.de/",
       logo: "https://landhaus-schend.de/schend-logo-black.svg",
       founder: { "@type": "Person", name: "Familie Schend" }, foundingDate: "1856",
       contactPoint: { "@type": "ContactPoint", telephone: "+49-6573-306", contactType: "Reservierung", areaServed: "DE", availableLanguage: ["German"] },
       sameAs: ["https://www.facebook.com/Landhotel.Schend/", "https://www.booking.com/hotel/de/landhaus-schend.html", "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html"],
     },
-    { "@type": "WebSite", "@id": "https://landhaus-schend.de/#website", url: "https://landhaus-schend.de/", name: "Landhotel Schend", publisher: { "@id": "https://landhaus-schend.de/#organization" }, inLanguage: ["de-DE"] },
+    { "@type": "WebSite", "@id": "https://landhaus-schend.de/#website", url: "https://landhaus-schend.de/", name: "Landhaus Schend", publisher: { "@id": "https://landhaus-schend.de/#organization" }, inLanguage: ["de-DE"] },
   ],
 };
 
@@ -190,7 +190,7 @@ const uspIcon: Record<string, string> = {
         <span class="block h-px w-12 md:w-20 bg-white/65"></span>
       </div>
       <h1 class="headline-reveal font-display text-balance text-white text-[2.5rem] sm:text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] mb-7 md:mb-9 max-w-4xl" style="text-shadow:0 2px 14px rgba(0,0,0,0.55)">
-        Willkommen im Landhotel Schend
+        Willkommen im Landhaus Schend
       </h1>
       <p class="font-display-italic text-balance text-white/95 text-base sm:text-lg md:text-2xl max-w-2xl leading-snug mb-8 sm:mb-9 md:mb-11" style="text-shadow:0 1px 8px rgba(0,0,0,0.55)">
         Ihr ★★★ Superior Hotel für den Kurzurlaub in der Vulkaneifel — Eifelsteig, Maare-Mosel-Radweg und Nürburgring direkt vor der Tür. Eifeler Landküche, Halbpension auf Wunsch, kostenlose Parkplätze.
@@ -245,7 +245,7 @@ const uspIcon: Record<string, string> = {
   <section id="rooms" class="bg-gradient-to-b from-background via-muted/20 to-background">
     <div class="container mx-auto px-4 py-20 md:py-28">
       <div class="text-center mb-14 md:mb-20" data-reveal>
-        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">Zu Gast im Landhotel Schend</h2>
+        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">Zu Gast im Landhaus Schend</h2>
         <p class="text-muted-foreground mt-5 max-w-prose mx-auto leading-relaxed text-pretty">
           Komfortable Doppelzimmer (auch zur Einzelnutzung) und großzügige Familienzimmer mit Blick in die Vulkaneifel. Frühstücksbuffet inklusive.
         </p>
@@ -343,7 +343,7 @@ const uspIcon: Record<string, string> = {
     <div class="grid lg:grid-cols-12 items-stretch">
       <div class="lg:col-span-7">
         <div class="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[560px] overflow-hidden shadow-card">
-          <Pic src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg" alt="Festlich gedeckter Festsaal mit Sektempfang im Landhotel Schend" loading="lazy" decoding="async" class="w-full h-full object-cover" />
+          <Pic src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg" alt="Festlich gedeckter Festsaal mit Sektempfang im Landhaus Schend" loading="lazy" decoding="async" class="w-full h-full object-cover" />
         </div>
       </div>
       <div class="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>
@@ -423,7 +423,7 @@ const uspIcon: Record<string, string> = {
     <div class="grid lg:grid-cols-12 items-stretch">
       <div class="lg:col-span-6">
         <div class="aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden shadow-elevated">
-          <Pic src="/fotos/landhotel-schend-zeichnung-innenhof-historisch.jpg" alt="Bleistift-Zeichnung des Landhotel Schend in Immerath mit Innenhof und Eingang" class="w-full h-full object-cover object-center contrast-110" loading="lazy" decoding="async" />
+          <Pic src="/fotos/landhotel-schend-zeichnung-innenhof-historisch.jpg" alt="Bleistift-Zeichnung des Landhaus Schend in Immerath mit Innenhof und Eingang" class="w-full h-full object-cover object-center contrast-110" loading="lazy" decoding="async" />
         </div>
       </div>
       <div class="lg:col-span-6 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-10 text-balance leading-[1.05]">Familienhotel seit 1856</h2>

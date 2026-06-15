@@ -54,21 +54,21 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
             <div className="flex items-center gap-3">
               <img
                 src="/schend-logo-black.svg"
-                alt="Landhotel Schend Logo"
+                alt="Landhaus Schend Logo"
                 className="h-14 w-auto dark:hidden"
               />
               <img
                 src="/schend-logo-white.svg"
-                alt="Landhotel Schend Logo"
+                alt="Landhaus Schend Logo"
                 className="hidden h-14 w-auto dark:block"
               />
               <div className="flex flex-col leading-tight">
-                <span className="font-display text-base text-primary">Landhotel Schend</span>
+                <span className="font-display text-base text-primary">Landhaus Schend</span>
                 <span className="text-xs text-muted-foreground">Vulkaneifel · seit 1856</span>
               </div>
             </div>
             <p className="mt-3 text-sm font-semibold text-foreground">
-              Betreff: Anfrage eingegangen {displayBookingNumber} — Landhotel Schend
+              Betreff: Anfrage eingegangen {displayBookingNumber} — Landhaus Schend
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
               Von: info@landhaus-schend.de · An: {booking.guestEmail}
@@ -102,7 +102,7 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
               <div className="aspect-[16/9]">
                 <HotelImage
                   src={booking.roomPhoto}
-                  alt={`${booking.roomType} im Landhotel Schend`}
+                  alt={`${booking.roomType} im Landhaus Schend`}
                   className="h-full w-full object-cover"
                 />
               </div>
@@ -163,7 +163,7 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
             <div className="rounded-md border bg-card p-4">
               <h3 className="mb-3 text-base font-semibold text-foreground">Hotelkontakt</h3>
               <div className="space-y-1.5 text-sm">
-                <p className="font-semibold text-foreground">Landhotel Schend</p>
+                <p className="font-semibold text-foreground">Landhaus Schend</p>
                 <p className="flex items-center gap-2 text-muted-foreground">
                   <MapPin className="h-3.5 w-3.5" />
                   Hauptstraße 9, 54552 Immerath
@@ -191,15 +191,15 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
             <div className="flex items-center gap-3">
               <img
                 src="/schend-logo-black.svg"
-                alt="Landhotel Schend Logo"
+                alt="Landhaus Schend Logo"
                 className="h-12 w-auto dark:hidden"
               />
               <img
                 src="/schend-logo-white.svg"
-                alt="Landhotel Schend Logo"
+                alt="Landhaus Schend Logo"
                 className="hidden h-12 w-auto dark:block"
               />
-              <span className="font-display text-base text-primary">Landhotel Schend</span>
+              <span className="font-display text-base text-primary">Landhaus Schend</span>
             </div>
             <p className="mt-2 text-xs text-muted-foreground">
               Ihr Familienhotel in der Vulkaneifel · www.landhaus-schend.de
@@ -220,12 +220,12 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
           </div>
         </div>
         <div className="rounded-2xl rounded-tl-sm bg-success/10 border border-success/20 p-3 text-sm">
-          <p className="font-semibold mb-1">Landhotel Schend</p>
+          <p className="font-semibold mb-1">Landhaus Schend</p>
           <p>
             Hallo {booking.guestName.split(" ")[0]}, Ihre Anfrage <span className="font-mono font-semibold">{displayBookingNumber}</span> ist eingegangen.
             Wir bestätigen Ihre Buchung in Kürze. Geplanter Check-in: {formatDate(booking.checkIn)} ab 15:00 Uhr. Wir freuen uns auf Sie.
           </p>
-          <p className="text-xs text-muted-foreground mt-2">— Landhotel Schend, Vulkaneifel</p>
+          <p className="text-xs text-muted-foreground mt-2">— Landhaus Schend, Vulkaneifel</p>
         </div>
       </div>
 

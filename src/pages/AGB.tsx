@@ -5,7 +5,7 @@ import { useSEO } from "@/hooks/useSEO";
 const AGB = () => {
   useSEO({
     title: "AGB",
-    description: "Allgemeine Geschäftsbedingungen für Beherbergungsverträge mit dem Landhotel Schend, Immerath.",
+    description: "Allgemeine Geschäftsbedingungen für Beherbergungsverträge mit dem Landhaus Schend, Immerath.",
     canonical: "/agb",
     noindex: true,
   });
@@ -46,7 +46,7 @@ const AGB = () => {
             mündlich. Es steht dem Hotel frei, die Buchung schriftlich (E-Mail) zu bestätigen.
           </p>
           <p className="mt-3">
-            (2) Vertragspartner sind das Hotel (Landhotel Schend, Inhaber Eugen Beimler) und der
+            (2) Vertragspartner sind das Hotel (Landhaus Schend, Inhaber Eugen Beimler) und der
             Gast. Hat ein Dritter für den Gast bestellt, haftet er dem Hotel gegenüber zusammen
             mit dem Gast als Gesamtschuldner für alle Verpflichtungen aus dem Beherbergungsvertrag.
           </p>

@@ -158,7 +158,7 @@ const Index = () => {
             Parallax-Wrapper (heroBgRef) + Overlays bleiben davon unberuehrt. */}
         <HotelImage
           src="/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg"
-          alt="Vorderansicht des Landhotel Schend mit Rosenbeet in der Vulkaneifel"
+          alt="Vorderansicht des Landhaus Schend mit Rosenbeet in der Vulkaneifel"
           loading="eager"
           decoding="sync"
           className="hero-ken-burns absolute inset-0 w-full h-full object-cover"
@@ -548,7 +548,7 @@ const Index = () => {
             <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[560px] overflow-hidden shadow-card">
               <img
                 src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg"
-                alt="Festlich gedeckter Saal im Landhotel Schend"
+                alt="Festlich gedeckter Saal im Landhaus Schend"
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover"
@@ -629,7 +629,7 @@ const Index = () => {
             <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[460px] overflow-hidden shadow-card">
               <HotelImage
                 src="/fotos/sauna-und-ruhebereich-mit-whirlpool-landhotel-schend-vulkaneifel.jpg"
-                alt="Sauna- und Ruhebereich mit Whirlpool im Landhotel Schend"
+                alt="Sauna- und Ruhebereich mit Whirlpool im Landhaus Schend"
                 loading="lazy"
                 className="w-full h-full object-cover"
               />

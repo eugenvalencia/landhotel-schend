@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-const HOTEL_ADDRESS = "Landhotel Schend, Hauptstraße 9, 54552 Immerath, Deutschland";
+const HOTEL_ADDRESS = "Landhaus Schend, Hauptstraße 9, 54552 Immerath, Deutschland";
 const HOTEL_LAT = 50.1303;
 const HOTEL_LNG = 6.9594;
 
@@ -53,7 +53,7 @@ export default function LocationSection() {
             So finden Sie zu uns
           </h2>
           <p className="text-muted-foreground leading-relaxed">
-            Landhotel Schend · Hauptstraße 9 · 54552 Immerath · Vulkaneifel
+            Landhaus Schend · Hauptstraße 9 · 54552 Immerath · Vulkaneifel
           </p>
         </div>
 
@@ -64,7 +64,7 @@ export default function LocationSection() {
           {mapConsent ? (
             <iframe
               src={MAP_SRC}
-              title="Landhotel Schend, Hauptstraße 9, 54552 Immerath – auf Google Maps"
+              title="Landhaus Schend, Hauptstraße 9, 54552 Immerath – auf Google Maps"
               className="w-full h-[360px] md:h-[480px] block"
               style={{ border: 0 }}
               allowFullScreen
@@ -144,7 +144,7 @@ export default function LocationSection() {
               <p className="eyebrow">Adresse</p>
             </div>
             <address className="not-italic text-foreground/85 leading-relaxed">
-              Landhotel Schend
+              Landhaus Schend
               <br />
               Hauptstraße 9
               <br />

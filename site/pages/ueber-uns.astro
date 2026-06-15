@@ -27,17 +27,17 @@ const VALUES = [
 const aboutSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
-  name: "Über uns — Landhotel Schend",
+  name: "Über uns — Landhaus Schend",
   url: `${ORIGIN}/ueber-uns`,
   description:
-    "Die Geschichte des Landhotel Schend in Immerath: seit 1856 als Gasthaus, heute ★★★ Superior Familienhotel — seit 2019 von Familie Beimler geführt.",
-  about: { "@type": "Organization", name: "Landhotel Schend", foundingDate: "1856" },
+    "Die Geschichte des Landhaus Schend in Immerath: seit 1856 als Gasthaus, heute ★★★ Superior Familienhotel — seit 2019 von Familie Beimler geführt.",
+  about: { "@type": "Organization", name: "Landhaus Schend", foundingDate: "1856" },
 };
 ---
 
 <Layout
   title="Über uns — Familienhotel seit 1856 in Immerath"
-  description="Die Geschichte des Landhotel Schend: 1856 als Gasthaus & Poststelle erbaut, heute ★★★ Superior Familienhotel in der Vulkaneifel — seit 2019 von Familie Beimler geführt."
+  description="Die Geschichte des Landhaus Schend: 1856 als Gasthaus & Poststelle erbaut, heute ★★★ Superior Familienhotel in der Vulkaneifel — seit 2019 von Familie Beimler geführt."
   canonicalPath="/ueber-uns"
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(aboutSchema)} />
@@ -48,7 +48,7 @@ const aboutSchema = {
       <div class="aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden shadow-elevated">
         <Pic
           src="/fotos/landhotel-schend-zeichnung-innenhof-historisch.jpg"
-          alt="Bleistift-Zeichnung des Landhotel Schend in Immerath mit Innenhof und Eingang"
+          alt="Bleistift-Zeichnung des Landhaus Schend in Immerath mit Innenhof und Eingang"
           class="w-full h-full object-cover object-center contrast-110"
           fetchpriority="high"
           decoding="async"
@@ -104,7 +104,7 @@ const aboutSchema = {
       <div class="aspect-[4/3] overflow-hidden rounded-md shadow-card">
         <Pic
           src="/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg"
-          alt="Landhotel Schend in Immerath mit Rosen vor der Fassade"
+          alt="Landhaus Schend in Immerath mit Rosen vor der Fassade"
           loading="lazy"
           decoding="async"
           class="w-full h-full object-cover"

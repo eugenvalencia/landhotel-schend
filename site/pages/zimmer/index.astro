@@ -9,7 +9,7 @@ import { ROOM_TYPES, ROOM_INTRO, ROOM_RATES, ROOM_AUSSTATTUNG, HAUS_SONSTIGES, E
 
 <Layout
   title="Zimmer & Preise in der Vulkaneifel"
-  description="Doppelzimmer (ab 57 €/P., auch Einzelnutzung) & Familienzimmer im Landhotel Schend, Immerath — Frühstück inklusive, ruhige Lage in der Vulkaneifel. Provisionsfrei buchen."
+  description="Doppelzimmer (ab 57 €/P., auch Einzelnutzung) & Familienzimmer im Landhaus Schend, Immerath — Frühstück inklusive, ruhige Lage in der Vulkaneifel. Provisionsfrei buchen."
   canonicalPath="/zimmer"
 >
   <!-- Intro -->
@@ -99,7 +99,7 @@ import { ROOM_TYPES, ROOM_INTRO, ROOM_RATES, ROOM_AUSSTATTUNG, HAUS_SONSTIGES, E
       {ROOM_TYPES.map((r, i) => (
         <a href={`/zimmer/${r.slug}`} class="spotlight group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
           <div class="aspect-[4/3] overflow-hidden">
-            <Pic src={r.gallery[0]} alt={`${r.type} im Landhotel Schend`} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
+            <Pic src={r.gallery[0]} alt={`${r.type} im Landhaus Schend`} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
           </div>
           <div class="p-6">
             <h3 class="font-display text-2xl group-hover:text-secondary transition-colors">{r.type}</h3>

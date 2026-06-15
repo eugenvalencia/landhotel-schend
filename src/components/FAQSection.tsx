@@ -8,8 +8,8 @@ type FAQ = { q: string; a: string };
 
 const FAQS_DE: FAQ[] = [
   {
-    q: "Wo liegt das Landhotel Schend genau?",
-    a: "Das Landhotel Schend liegt in der Hauptstraße 9, 54552 Immerath, mitten in der Vulkaneifel — eingebettet in die Kratermulde eines erloschenen Vulkans. Köln erreichen Sie in ca. 90 Minuten, Frankfurt in ca. 120 Minuten, den Nürburgring in ca. 45 Minuten.",
+    q: "Wo liegt das Landhaus Schend genau?",
+    a: "Das Landhaus Schend liegt in der Hauptstraße 9, 54552 Immerath, mitten in der Vulkaneifel — eingebettet in die Kratermulde eines erloschenen Vulkans. Köln erreichen Sie in ca. 90 Minuten, Frankfurt in ca. 120 Minuten, den Nürburgring in ca. 45 Minuten.",
   },
   {
     q: "Wie viele Zimmer hat das Hotel und wie sind sie ausgestattet?",

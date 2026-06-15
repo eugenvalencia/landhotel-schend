@@ -1,6 +1,6 @@
-# Erklärung zur Barrierefreiheit — Landhotel Schend
+# Erklärung zur Barrierefreiheit — Landhaus Schend
 
-Das Landhotel Schend ist bemüht, seine Website im Einklang mit dem Barrierefreiheitsstärkungsgesetz (BFSG) sowie der Barrierefreie-Informationstechnik-Verordnung (BFSGV) für alle Gäste barrierefrei zugänglich zu machen.
+Das Landhaus Schend ist bemüht, seine Website im Einklang mit dem Barrierefreiheitsstärkungsgesetz (BFSG) sowie der Barrierefreie-Informationstechnik-Verordnung (BFSGV) für alle Gäste barrierefrei zugänglich zu machen.
 
 Diese Erklärung gilt für die Website unter **landhaus-schend.de**.
 
@@ -32,7 +32,7 @@ Sie sind auf nicht barrierefreie Inhalte gestoßen oder haben Verbesserungsvorsc
 
 - **E-Mail:** info@landhaus-schend.de (Betreff: „Barrierefreiheit")
 - **Telefon:** +49 6573 306
-- **Post:** Landhotel Schend, Hauptstraße 9, 54552 Immerath
+- **Post:** Landhaus Schend, Hauptstraße 9, 54552 Immerath
 
 Wir bemühen uns, Ihre Rückmeldung innerhalb von **10 Werktagen** zu beantworten und Barrieren zeitnah zu beheben.
 

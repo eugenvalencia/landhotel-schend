@@ -72,7 +72,7 @@ const PaketDetail = () => {
     name: title,
     description: intro,
     image: paket.cover,
-    brand: { "@type": "Organization", name: "Landhotel Schend" },
+    brand: { "@type": "Organization", name: "Landhaus Schend" },
     offers: paket.price
       ? {
           "@type": "Offer",

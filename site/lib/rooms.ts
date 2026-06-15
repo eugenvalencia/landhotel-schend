@@ -125,7 +125,7 @@ export function roomSchema(r: RoomType) {
   return {
     "@context": "https://schema.org",
     "@type": "HotelRoom",
-    name: `${r.type} — Landhotel Schend`,
+    name: `${r.type} — Landhaus Schend`,
     description: r.description,
     url: `https://landhaus-schend.de/zimmer/${r.slug}`,
     image: r.gallery.map((g) => `https://landhaus-schend.de${g}`),

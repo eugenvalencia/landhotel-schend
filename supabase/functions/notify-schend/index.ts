@@ -103,7 +103,7 @@ ${rows.map(([k, v]) => `<tr><td style="color:#666">${esc(k)}</td><td><strong>${e
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${RESEND_API_KEY}` },
       body: JSON.stringify({
-        from: `Landhotel Schend Buchung <${RESEND_FROM_EMAIL}>`,
+        from: `Landhaus Schend Buchung <${RESEND_FROM_EMAIL}>`,
         to: [OWNER_NOTIFY_EMAIL],
         reply_to: args.guestEmail,
         subject: `Neue Buchungsanfrage #${args.bookingNumber} — ${args.guestName}`,

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, MapPin, Wind, Droplets, Thermometer, Sunrise, Sunset, Compass, Navigation, Mountain, Footprints, Bike, Coffee, Waves, Castle, Flower2, Cloud } from "lucide-react";
 import { useWeather } from "@/hooks/useWeather";
 
-// Landhotel Schend, Immerath — Default-Position
+// Landhaus Schend, Immerath — Default-Position
 const HOTEL_LAT = 50.1303;
 const HOTEL_LON = 6.9594;
 const HOTEL_LABEL = "Immerath · Hotel";

@@ -68,15 +68,15 @@ export default function Login() {
           <Link to="/" className="inline-flex items-center justify-center gap-3 text-primary mb-4 hover:opacity-80 transition-opacity">
             <img
               src="/schend-logo-black.svg"
-              alt="Landhotel Schend Logo"
+              alt="Landhaus Schend Logo"
               className="h-16 w-auto dark:hidden"
             />
             <img
               src="/schend-logo-white.svg"
-              alt="Landhotel Schend Logo"
+              alt="Landhaus Schend Logo"
               className="hidden h-16 w-auto dark:block"
             />
-            <span className="font-display text-2xl">Landhotel Schend</span>
+            <span className="font-display text-2xl">Landhaus Schend</span>
           </Link>
           <p className="text-[11px] font-medium tracking-[0.22em] uppercase text-secondary mb-2">
             Hotelier-Bereich
