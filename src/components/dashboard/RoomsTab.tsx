@@ -16,6 +16,7 @@ import { notifyBooking } from "@/lib/notify-booking";
 import { toast } from "sonner";
 import { BedDouble, Edit, Upload, X, Plus, Trash2, Lock, Unlock, CalendarDays, Loader2, Phone, FileText, LayoutGrid, List, Mail } from "lucide-react";
 import BookingDetailDialog from "./BookingDetailDialog";
+import ReceptionBookingWizard from "./ReceptionBookingWizard";
 
 const ALL_AMENITIES = ["WLAN", "TV", "Bad", "Balkon", "Minibar", "Wohnbereich", "Haustier"];
 
@@ -54,6 +55,8 @@ export default function RoomsTab() {
   const [quickRoom, setQuickRoom] = useState<any | null>(null);
   const [quickForm, setQuickForm] = useState({ guest_name: "", guest_phone: "", guest_email: "", check_in: "", check_out: "", persons: 2, notes: "", extras: [] as string[] });
   const [quickSaving, setQuickSaving] = useState(false);
+  // Geführte „Neue Buchung" (Datum → Personen → Typ → freies Zimmer → Gastdaten).
+  const [wizardOpen, setWizardOpen] = useState(false);
 
   const openEdit = (r: any) => {
     setEditing({ ...r, amenities: toArr(r.amenities), photos: toArr(r.photos) });
@@ -277,7 +280,10 @@ export default function RoomsTab() {
               <List className="h-4 w-4" />
             </button>
           </div>
-          <Button size="sm" onClick={openNew}>
+          <Button size="sm" onClick={() => setWizardOpen(true)}>
+            <CalendarDays className="h-4 w-4" /> Neue Buchung
+          </Button>
+          <Button size="sm" variant="outline" onClick={openNew}>
             <Plus className="h-4 w-4" /> Neues Zimmer
           </Button>
         </div>
@@ -582,6 +588,16 @@ export default function RoomsTab() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Geführte Neue Buchung: Datum → Personen → Typ → freies Zimmer → Gastdaten */}
+      <ReceptionBookingWizard
+        open={wizardOpen}
+        onOpenChange={setWizardOpen}
+        rooms={rooms}
+        bookings={bookings}
+        extras={extrasList}
+        onBooked={load}
+      />
 
       {/* Belegt -> Buchungs-Detail (dieselbe Ansicht wie im Übersichts-Panel) */}
       <BookingDetailDialog
