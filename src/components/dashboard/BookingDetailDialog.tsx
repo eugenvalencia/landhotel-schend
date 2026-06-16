@@ -9,7 +9,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Check, X, Loader2, Mail, Phone, BedDouble, CalendarDays, Tag, StickyNote } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader,
+  AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction,
+} from "@/components/ui/alert-dialog";
+import { Check, X, Loader2, Mail, Phone, BedDouble, CalendarDays, Tag, StickyNote, Ban } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { notifyBooking } from "@/lib/notify-booking";
 import { toast } from "sonner";
@@ -51,6 +56,8 @@ export default function BookingDetailDialog({
   const [b, setB] = useState<FullBooking | null>(null);
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [cancelReason, setCancelReason] = useState("");
+  const [cancelling, setCancelling] = useState(false);
 
   useEffect(() => {
     if (!open || !bookingId) return;
@@ -88,6 +95,34 @@ export default function BookingDetailDialog({
     toast.success(status === "bestaetigt" ? "Anfrage bestätigt" : "Anfrage abgelehnt");
     // Verbindliche Bestätigungs-Mail an den Gast — nur beim Bestätigen, best-effort.
     if (status === "bestaetigt") notifyBooking(b.id, "confirmation");
+    notifyRequestsChanged();
+    onChanged?.();
+    onOpenChange(false);
+  };
+
+  // Hotel-Storno (Karin): eine bestätigte Buchung bei Bedarf stornieren — kostenfrei,
+  // Termin wird sofort frei. Schutz gegen Versehen via AlertDialog-Bestätigung.
+  const doCancel = async () => {
+    if (!b) return;
+    setCancelling(true);
+    const { data, error } = await supabase.rpc("hotel_cancel_booking", {
+      p_booking_id: b.id,
+      p_reason: cancelReason.trim() || null,
+    });
+    setCancelling(false);
+    if (error) {
+      toast.error("Stornierung fehlgeschlagen: " + error.message);
+      return;
+    }
+    const result = (data as { result?: string } | null)?.result;
+    if (result === "already_cancelled") {
+      toast.message("Diese Buchung war bereits storniert.");
+    } else {
+      // Gast über die Stornierung informieren (best-effort, nur wenn E-Mail hinterlegt).
+      if (b.guest_email) notifyBooking(b.id, "cancellation");
+      toast.success("Buchung storniert — der Termin ist wieder frei.");
+    }
+    setCancelReason("");
     notifyRequestsChanged();
     onChanged?.();
     onOpenChange(false);
@@ -207,6 +242,47 @@ export default function BookingDetailDialog({
             <Button disabled={busy} onClick={() => act("bestaetigt")}>
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} Bestätigen
             </Button>
+          </DialogFooter>
+        )}
+
+        {/* Bestätigte Buchung: stornierbar (kostenfrei) — mit Schutz gegen Versehen */}
+        {b && b.request_status === "bestaetigt" && b.payment_status !== "cancelled" && (
+          <DialogFooter>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline" className="text-destructive hover:text-destructive border-destructive/40">
+                  <Ban className="h-4 w-4" /> Buchung stornieren
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Buchung wirklich stornieren?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Die Buchung {b.booking_number} von {b.guest_name} wird storniert und der
+                    Zeitraum sofort wieder freigegeben. Die Stornierung ist kostenfrei.
+                    {b.guest_email ? " Der Gast erhält automatisch eine Stornobestätigung per E-Mail." : ""}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <div className="text-sm">
+                  <label className="text-muted-foreground text-xs">Grund (optional, intern)</label>
+                  <Textarea
+                    rows={2} maxLength={500} value={cancelReason}
+                    onChange={(e) => setCancelReason(e.target.value)}
+                    placeholder="z. B. Gast hat telefonisch abgesagt" className="mt-1"
+                  />
+                </div>
+                <AlertDialogFooter>
+                  <AlertDialogCancel disabled={cancelling}>Zurück</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={(e) => { e.preventDefault(); doCancel(); }}
+                    disabled={cancelling}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    {cancelling ? <Loader2 className="h-4 w-4 animate-spin" /> : <Ban className="h-4 w-4" />} Ja, stornieren
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </DialogFooter>
         )}
       </DialogContent>

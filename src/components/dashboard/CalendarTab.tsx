@@ -95,7 +95,8 @@ const initialQuick = {
 export default function CalendarTab() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const [view, setView] = useState<ViewMode>("month");
+  // Beim Öffnen immer Wochenansicht zuerst (Eugen 16.06.) — Monat/Jahr per Umschalter.
+  const [view, setView] = useState<ViewMode>("week");
   const [anchor, setAnchor] = useState<Date>(startOfDay(new Date()));
   const [internOpen, setInternOpen] = useState(false);
   const [internForm, setInternForm] = useState({ room_id: "", guest_name: "", check_in: "", check_out: "", notes: "" });

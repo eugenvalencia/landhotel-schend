@@ -32,18 +32,11 @@
 
 ## § 4 Rücktritt des Gastes (Stornierung)
 
-(1) Eine Stornierung der Buchung durch den Gast bedarf der schriftlichen Zustimmung des Hotels. Erfolgt diese nicht, so ist der vereinbarte Preis aus dem Vertrag auch dann zu zahlen, wenn der Gast vertragliche Leistungen nicht in Anspruch nimmt.
+(1) Der Gast kann seine Buchung jederzeit kostenfrei stornieren. Es fallen keine Stornogebühren an — unabhängig davon, wie kurzfristig vor der Anreise storniert wird.
 
-(2) Sofern zwischen Hotel und Gast ein Termin zum kostenfreien Rücktritt vom Vertrag schriftlich vereinbart wurde, kann der Gast bis dahin vom Vertrag zurücktreten, ohne Zahlungs- oder Schadensersatzansprüche des Hotels auszulösen.
+(2) Die Stornierung kann bequem online über den persönlichen Stornierungslink in der Buchungs- bzw. Bestätigungs-E-Mail oder telefonisch beim Hotel erfolgen. Mit der Stornierung wird der gebuchte Zeitraum sofort wieder freigegeben; der Gast erhält eine Stornierungsbestätigung per E-Mail.
 
-(3) Sofern eine Möglichkeit zum kostenfreien Rücktritt nicht vereinbart oder bereits abgelaufen ist, behält sich das Hotel folgende Stornopauschalen vor:
-
-- bis 14 Tage vor Anreise: kostenfreie Stornierung
-- 13 bis 7 Tage vor Anreise: 50 % des vereinbarten Zimmerpreises
-- 6 bis 1 Tag vor Anreise: 80 % des vereinbarten Zimmerpreises
-- am Anreisetag oder bei Nichtanreise (No-Show): 90 % des vereinbarten Zimmerpreises
-
-(4) Dem Gast steht der Nachweis frei, dass dem Hotel kein oder ein wesentlich geringerer Schaden entstanden ist. Das Hotel ist verpflichtet, sich um anderweitige Vermietung der nicht in Anspruch genommenen Zimmer zu bemühen, um Ausfälle zu vermeiden.
+(3) Das Hotel bittet darum, eine nicht mehr benötigte Buchung möglichst frühzeitig zu stornieren, damit das Zimmer anderen Gästen zur Verfügung steht. Auch bei kurzfristiger Stornierung oder Nichtanreise (No-Show) entstehen dem Gast keine Kosten.
 
 ## § 5 Rücktritt des Hotels
 

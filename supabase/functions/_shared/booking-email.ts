@@ -179,10 +179,10 @@ const TXT = {
 
 // Storno-Link-Beschriftung (Button in Anfrage-/Bestätigungsmail).
 const CANCEL_CTA: Record<SupportedLang, { label: string; note: string; textLabel: string }> = {
-  de: { label: "Buchung stornieren", note: "Stornierung jederzeit über diesen Link — kostenfrei bis 14 Tage vor Anreise (gem. AGB § 4).", textLabel: "Buchung stornieren" },
-  en: { label: "Cancel booking", note: "Cancel any time via this link — free of charge up to 14 days before arrival (per T&Cs § 4).", textLabel: "Cancel booking" },
-  fr: { label: "Annuler la réservation", note: "Annulation à tout moment via ce lien — gratuite jusqu'à 14 jours avant l'arrivée (CGV § 4).", textLabel: "Annuler la réservation" },
-  nl: { label: "Boeking annuleren", note: "Annuleer op elk moment via deze link — kosteloos tot 14 dagen voor aankomst (AV § 4).", textLabel: "Boeking annuleren" },
+  de: { label: "Buchung stornieren", note: "Stornierung jederzeit kostenfrei über diesen Link — ganz ohne Stornogebühren (gem. AGB § 4).", textLabel: "Buchung stornieren" },
+  en: { label: "Cancel booking", note: "Cancel any time via this link — always free of charge, no cancellation fees (per T&Cs § 4).", textLabel: "Cancel booking" },
+  fr: { label: "Annuler la réservation", note: "Annulation à tout moment via ce lien — toujours gratuite, sans frais d'annulation (CGV § 4).", textLabel: "Annuler la réservation" },
+  nl: { label: "Boeking annuleren", note: "Annuleer op elk moment via deze link — altijd kosteloos, zonder annuleringskosten (AV § 4).", textLabel: "Boeking annuleren" },
 };
 
 export const renderBookingEmail = (input: BookingEmailInput) => {

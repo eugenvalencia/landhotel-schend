@@ -1,7 +1,8 @@
 // Self-Service-Storno-Seite. Aufruf über den Link in der Bestätigungsmail:
 //   /storno?b=<booking_id>&t=<notify_token>
 // Der Token autorisiert den Zugriff (IDOR-Schutz, serverseitig in den RPCs geprüft).
-// Gestuftes Modell (AGB § 4): kostenfrei sofort / gebührenpflichtige Anfrage / blockiert.
+// Schend storniert IMMER kostenlos & sofort — daher nur zwei Zustände:
+// stornierbar (kostenfrei) ODER bereits storniert.
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -14,7 +15,7 @@ import { CheckCircle2, AlertTriangle, Phone, Loader2 } from "lucide-react";
 const HOTEL_PHONE = "+49 6573 306";
 const HOTEL_TEL = "tel:+4965731306";
 
-type Mode = "immediate" | "request" | "blocked" | "already_cancelled" | "request_pending";
+type Mode = "immediate" | "already_cancelled";
 
 interface Preview {
   booking_number: string;
@@ -33,6 +34,7 @@ const Shell = ({ children }: { children: React.ReactNode }) => (
   <div className="min-h-screen bg-background flex flex-col items-center px-4 py-12 md:py-20">
     <div className="w-full max-w-xl">
       <div className="text-center mb-8">
+        <img src="/schend-mark.png" alt="Landhaus Schend" className="h-12 md:h-14 w-auto mx-auto mb-4" />
         <p className="eyebrow !text-secondary">★★★ Superior</p>
         <h1 className="font-display text-3xl md:text-4xl mt-2">Landhaus Schend</h1>
         <p className="text-sm text-muted-foreground mt-1">Stornierung</p>
@@ -64,7 +66,7 @@ export default function Storno() {
   const [loadError, setLoadError] = useState(false);
   const [reason, setReason] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [done, setDone] = useState<null | "cancelled" | "requested">(null);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -88,14 +90,14 @@ export default function Storno() {
       });
       if (error || !data) throw error ?? new Error("no data");
       const result = (data as unknown as { result: string }).result;
-      if (result === "cancelled" || result === "requested") {
+      if (result === "cancelled") {
         // Storno-Bestätigungsmail best-effort auslösen (Token autorisiert genau diese Mail).
-        notifyBooking(b, result === "cancelled" ? "cancellation" : "cancellation_request", t);
-        setDone(result);
+        notifyBooking(b, "cancellation", t);
+        setDone(true);
       } else {
-        // already_cancelled / request_pending / blocked → Zustand übernehmen
-        setPreview((prev) => (prev ? { ...prev, mode: result as Mode } : prev));
-        toast.message(result === "already_cancelled" ? "Diese Buchung ist bereits storniert." : "Der Status hat sich geändert.");
+        // already_cancelled → Zustand übernehmen
+        setPreview((prev) => (prev ? { ...prev, mode: "already_cancelled" } : prev));
+        toast.message("Diese Buchung ist bereits storniert.");
       }
     } catch {
       toast.error("Stornierung konnte nicht verarbeitet werden. Bitte rufen Sie uns an: " + HOTEL_PHONE);
@@ -127,13 +129,9 @@ export default function Storno() {
       <Shell>
         <div className="text-center">
           <CheckCircle2 className="h-12 w-12 text-success mx-auto mb-4" strokeWidth={1.5} />
-          <h2 className="font-display text-2xl md:text-3xl mb-3">
-            {done === "cancelled" ? "Buchung storniert" : "Stornierung beantragt"}
-          </h2>
+          <h2 className="font-display text-2xl md:text-3xl mb-3">Buchung storniert</h2>
           <p className="text-muted-foreground leading-relaxed">
-            {done === "cancelled"
-              ? "Ihre Buchung wurde storniert — es entstehen Ihnen keine Kosten. Eine Bestätigung senden wir an Ihre E-Mail."
-              : `Ihre Stornierungsanfrage ist eingegangen. Gemäß AGB § 4 fällt eine Pauschale von ${preview.fee_pct} % an — das Hotel bestätigt Ihnen die Stornierung und die genaue Höhe in Kürze.`}
+            Ihre Buchung wurde storniert — es entstehen Ihnen keine Kosten. Eine Bestätigung senden wir an Ihre E-Mail.
           </p>
           <SummaryRows p={preview} />
           <Button asChild className="mt-7"><Link to="/">Zur Startseite</Link></Button>
@@ -142,31 +140,22 @@ export default function Storno() {
     );
   }
 
-  // Blockiert / bereits storniert / Anfrage liegt vor
-  if (preview.mode === "blocked" || preview.mode === "already_cancelled" || preview.mode === "request_pending") {
-    const msg =
-      preview.mode === "already_cancelled" ? "Diese Buchung ist bereits storniert."
-      : preview.mode === "request_pending" ? "Ihre Stornierungsanfrage liegt dem Hotel bereits vor und wird bearbeitet."
-      : preview.reason === "rejected" ? "Diese Anfrage wurde nicht bestätigt. Bitte kontaktieren Sie uns."
-      : "Eine Online-Stornierung ist für diesen Termin nicht mehr möglich. Bitte rufen Sie uns an — wir finden eine Lösung.";
+  // Bereits storniert
+  if (preview.mode === "already_cancelled") {
     return (
       <Shell>
         <div className="text-center">
-          <AlertTriangle className="h-10 w-10 text-secondary mx-auto mb-3" strokeWidth={1.5} />
-          <h2 className="font-display text-2xl mb-2">Stornierung</h2>
-          <p className="text-muted-foreground leading-relaxed">{msg}</p>
+          <CheckCircle2 className="h-10 w-10 text-muted-foreground mx-auto mb-3" strokeWidth={1.5} />
+          <h2 className="font-display text-2xl mb-2">Bereits storniert</h2>
+          <p className="text-muted-foreground leading-relaxed">Diese Buchung ist bereits storniert. Es entstehen Ihnen keine Kosten.</p>
           <SummaryRows p={preview} />
-          {preview.mode === "blocked" && preview.reason !== "rejected" && (
-            <Button asChild variant="outline" className="mt-6"><a href={HOTEL_TEL}><Phone className="h-4 w-4" /> {HOTEL_PHONE}</a></Button>
-          )}
           <div className="mt-6"><Button asChild variant="ghost" size="sm"><Link to="/">Zur Startseite</Link></Button></div>
         </div>
       </Shell>
     );
   }
 
-  // immediate (kostenfrei) oder request (gebührenpflichtige Anfrage)
-  const isFee = preview.mode === "request";
+  // Stornierbar — immer kostenfrei und sofort
   return (
     <Shell>
       <h2 className="font-display text-2xl md:text-3xl text-center">Buchung stornieren?</h2>
@@ -176,16 +165,8 @@ export default function Storno() {
 
       <SummaryRows p={preview} />
 
-      <div className={`mt-5 rounded-md p-4 text-sm leading-relaxed ${isFee ? "bg-secondary/10 border border-secondary/30" : "bg-success/10 border border-success/20"}`}>
-        {isFee ? (
-          <>
-            <strong>Stornopauschale {preview.fee_pct} %.</strong> Für diesen Zeitraum fällt gemäß unseren AGB (§ 4) eine
-            Pauschale von {preview.fee_pct} % des Zimmerpreises an. Mit dem Klick beantragen Sie die Stornierung — das Hotel
-            bestätigt sie Ihnen und nennt die genaue Höhe.
-          </>
-        ) : (
-          <><strong>Kostenfreie Stornierung.</strong> Für diese Buchung fallen keine Kosten an. Der Termin wird sofort wieder freigegeben.</>
-        )}
+      <div className="mt-5 rounded-md p-4 text-sm leading-relaxed bg-success/10 border border-success/20">
+        <strong>Kostenfreie Stornierung.</strong> Bei uns ist die Stornierung jederzeit kostenlos — es fallen keine Kosten an. Der Termin wird sofort wieder freigegeben.
       </div>
 
       <label className="block mt-5 text-sm">
@@ -201,8 +182,8 @@ export default function Storno() {
       </label>
 
       <div className="mt-6 flex flex-col sm:flex-row gap-3">
-        <Button onClick={handleCancel} disabled={submitting} className="flex-1" variant={isFee ? "secondary" : "default"}>
-          {submitting ? <><Loader2 className="h-4 w-4 animate-spin" /> Wird verarbeitet…</> : isFee ? "Stornierung beantragen" : "Jetzt kostenfrei stornieren"}
+        <Button onClick={handleCancel} disabled={submitting} className="flex-1">
+          {submitting ? <><Loader2 className="h-4 w-4 animate-spin" /> Wird verarbeitet…</> : "Jetzt kostenfrei stornieren"}
         </Button>
         <Button asChild variant="outline" className="flex-1"><Link to="/">Abbrechen</Link></Button>
       </div>
