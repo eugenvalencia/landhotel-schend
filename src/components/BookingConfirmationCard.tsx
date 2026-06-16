@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { CheckCircle2, Printer, MapPin, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { HotelImage } from "@/components/HotelImage";
 import {
   BookingConfirmationData,
   toDisplayBookingNumber,
@@ -55,12 +54,12 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
               <img
                 src="/schend-logo-black.svg"
                 alt="Landhaus Schend Logo"
-                className="h-14 w-auto dark:hidden"
+                className="h-20 w-auto dark:hidden"
               />
               <img
                 src="/schend-logo-white.svg"
                 alt="Landhaus Schend Logo"
-                className="hidden h-14 w-auto dark:block"
+                className="hidden h-20 w-auto dark:block"
               />
               <div className="flex flex-col leading-tight">
                 <span className="font-display text-base text-primary">Landhaus Schend</span>
@@ -95,16 +94,6 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
                 <EmailRow label="Zimmertyp" value={booking.roomType} />
                 <EmailRow label="Zimmernr." value={String(booking.roomNumber)} />
                 <EmailRow label="Personen" value={String(booking.persons)} />
-              </div>
-            </div>
-
-            <div className="overflow-hidden rounded-md border">
-              <div className="aspect-[16/9]">
-                <HotelImage
-                  src={booking.roomPhoto}
-                  alt={`${booking.roomType} im Landhaus Schend`}
-                  className="h-full w-full object-cover"
-                />
               </div>
             </div>
 
@@ -192,12 +181,12 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
               <img
                 src="/schend-logo-black.svg"
                 alt="Landhaus Schend Logo"
-                className="h-12 w-auto dark:hidden"
+                className="h-16 w-auto dark:hidden"
               />
               <img
                 src="/schend-logo-white.svg"
                 alt="Landhaus Schend Logo"
-                className="hidden h-12 w-auto dark:block"
+                className="hidden h-16 w-auto dark:block"
               />
               <span className="font-display text-base text-primary">Landhaus Schend</span>
             </div>
