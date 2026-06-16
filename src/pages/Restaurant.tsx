@@ -309,7 +309,7 @@ export default function Restaurant() {
           <div className="lg:col-span-6">
             <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[480px] overflow-hidden">
               <img
-                src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg"
+                src="/fotos/festsaal-mit-sektempfang-landhaus-schend-vulkaneifel.jpg"
                 alt="Festlich gedeckter Saal im Landhaus Schend"
                 loading="lazy"
                 decoding="async"

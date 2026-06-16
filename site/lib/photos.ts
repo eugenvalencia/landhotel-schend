@@ -3,49 +3,49 @@
 // (nur Strings) → von Astro-Seiten direkt nutzbar.
 
 export const SCHEND_HEROES = [
-  "/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/hotelfront-mit-blumenbeet-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/hotelfront-im-sommer-mit-blumenkaesten-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/hotelfront-mit-lichterketten-blaue-stunde-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/hotelfassade-mit-terrasse-und-hortensien-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/gartenseite-mit-terrasse-landhotel-schend.jpg",
-  "/fotos/hotelansicht-mit-terrasse-landhotel-schend.jpg",
+  "/fotos/hotelfront-mit-rosen-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/hotelfront-mit-blumenbeet-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/hotelfront-im-sommer-mit-blumenkaesten-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/hotelfront-mit-lichterketten-blaue-stunde-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/hotelfassade-mit-terrasse-und-hortensien-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/gartenseite-mit-terrasse-landhaus-schend.jpg",
+  "/fotos/hotelansicht-mit-terrasse-landhaus-schend.jpg",
 ];
 
 const FAMILIENZIMMER_FOTOS = [
-  "/fotos/familienzimmer-doppelbett-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/familienzimmer-mit-nebenraum-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/familienzimmer-mit-kinderbetten-und-bad-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/familienzimmer-schlafbereich-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/familienzimmer-wohnbereich-mit-tv-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/familienzimmer-doppelbett-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/familienzimmer-mit-nebenraum-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/familienzimmer-mit-kinderbetten-und-bad-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/familienzimmer-schlafbereich-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/familienzimmer-wohnbereich-mit-tv-landhaus-schend-vulkaneifel.jpg",
 ];
 
 // Doppelzimmer-Galerie. Reihenfolge: neue Profi-Fotos (Schend 11.06.2026) zuerst —
 // helles Komfort-Zimmer → Landhaus-Klassiker → Eingang → modernes Bad —, danach die
 // bisherigen echten Aufnahmen.
 const DOPPELZIMMER_FOTOS = [
-  "/fotos/doppelzimmer-komfort-mit-sofa-und-holzlamellenwand-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-komfort-mit-doppelbett-und-holzboden-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-mit-doppelbett-und-kleiderschrank-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-eingang-mit-ebenerdiger-dusche-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-bad-mit-walk-in-dusche-und-rundspiegel-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-bad-mit-dusche-waschbecken-und-wc-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-mit-balkon-gelb-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-renoviert-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-modern-mit-holzboden-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-mit-sofa-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-bad-mit-ebenerdiger-dusche-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-komfort-mit-sofa-und-holzlamellenwand-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-komfort-mit-doppelbett-und-holzboden-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-doppelbett-und-kleiderschrank-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-eingang-mit-ebenerdiger-dusche-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-bad-mit-walk-in-dusche-und-rundspiegel-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-bad-mit-dusche-waschbecken-und-wc-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-balkon-gelb-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-renoviert-mit-holzboden-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-modern-mit-holzboden-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-sitzecke-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-sofa-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-bad-mit-ebenerdiger-dusche-landhaus-schend-vulkaneifel.jpg",
 ];
 
 // Komfort-Variante — die beiden modernen Profi-Zimmer + Bad zuerst.
 const DOPPELZIMMER_KOMFORT_FOTOS = [
-  "/fotos/doppelzimmer-komfort-mit-sofa-und-holzlamellenwand-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-komfort-mit-doppelbett-und-holzboden-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-bad-mit-walk-in-dusche-und-rundspiegel-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/doppelzimmer-mit-holzbett-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-komfort-mit-sofa-und-holzlamellenwand-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-komfort-mit-doppelbett-und-holzboden-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-bad-mit-walk-in-dusche-und-rundspiegel-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/komfortzimmer-mit-balkon-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-comfort-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/doppelzimmer-mit-holzbett-landhaus-schend-vulkaneifel.jpg",
   "/fotos/doppelzimmer-bad-mit-walk-in-dusche-und-led-rundspiegel-landhaus-schend-vulkaneifel.jpg",
 ];
 
@@ -58,17 +58,17 @@ export const SCHEND_ROOM_GALLERY: Record<string, string[]> = {
   "Familie": FAMILIENZIMMER_FOTOS,
   "Familienzimmer": FAMILIENZIMMER_FOTOS,
   "Junior Suite": [
-    "/fotos/suite-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/suite-mit-sitzecke-landhaus-schend-vulkaneifel.jpg",
+    "/fotos/komfortzimmer-mit-balkon-landhaus-schend-vulkaneifel.jpg",
   ],
   "Suite": [
-    "/fotos/suite-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/suite-mit-sitzecke-landhaus-schend-vulkaneifel.jpg",
+    "/fotos/komfortzimmer-mit-balkon-landhaus-schend-vulkaneifel.jpg",
   ],
   "Eifel-Suite": [
-    "/fotos/suite-mit-sitzecke-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/komfortzimmer-mit-balkon-landhotel-schend-vulkaneifel.jpg",
-    "/fotos/doppelzimmer-comfort-landhotel-schend-vulkaneifel.jpg",
+    "/fotos/suite-mit-sitzecke-landhaus-schend-vulkaneifel.jpg",
+    "/fotos/komfortzimmer-mit-balkon-landhaus-schend-vulkaneifel.jpg",
+    "/fotos/doppelzimmer-comfort-landhaus-schend-vulkaneifel.jpg",
   ],
 };
 
@@ -78,38 +78,38 @@ export const SCHEND_ROOM_PHOTO: Record<string, string> = Object.fromEntries(
 
 export const SCHEND_RESTAURANT_GALLERY = [
   // Neue helle Speisesaal-Aufnahme (Schend 14.06.2026) als Leitbild zuerst.
-  "/fotos/restaurant-speisesaal-mit-buffet-landhotel-schend.jpg",
-  "/fotos/restaurant-panorama-1-landhotel-schend.jpg",
-  "/fotos/restaurant-panorama-2-landhotel-schend.jpg",
-  "/fotos/restaurant-panorama-3-landhotel-schend.jpg",
-  "/fotos/restaurant-panorama-4-landhotel-schend.jpg",
+  "/fotos/restaurant-speisesaal-mit-buffet-landhaus-schend.jpg",
+  "/fotos/restaurant-panorama-1-landhaus-schend.jpg",
+  "/fotos/restaurant-panorama-2-landhaus-schend.jpg",
+  "/fotos/restaurant-panorama-3-landhaus-schend.jpg",
+  "/fotos/restaurant-panorama-4-landhaus-schend.jpg",
   "/fotos/eifeler-spezialitaet-gebratene-kloesse-in-rahmsauce-landhaus-schend.jpg",
 ];
 
 export const SCHEND_RESTAURANT = SCHEND_RESTAURANT_GALLERY[0];
 
 export const SCHEND_HAUS_GALLERY = [
-  "/fotos/hotelfassade-mit-garten-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/hotelgarten-mit-brunnen-landhotel-schend.jpg",
-  "/fotos/eingang-mit-torbogen-und-hortensien-landhotel-schend.jpg",
-  "/fotos/innenhof-mit-balkonen-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/sonnenterrasse-mit-hortensien-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/hoteleingang-mit-schneebaum-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/hotelfassade-mit-garten-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/hotelgarten-mit-brunnen-landhaus-schend.jpg",
+  "/fotos/eingang-mit-torbogen-und-hortensien-landhaus-schend.jpg",
+  "/fotos/innenhof-mit-balkonen-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/sonnenterrasse-mit-hortensien-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/hoteleingang-mit-schneebaum-landhaus-schend-vulkaneifel.jpg",
 ];
 
 export const SCHEND_GALLERY = [
-  "/fotos/hotelgarten-mit-brunnen-landhotel-schend.jpg",
-  "/fotos/hotelfront-mit-blumenbeet-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/eingang-mit-torbogen-und-hortensien-landhotel-schend.jpg",
-  "/fotos/innenhof-mit-balkonen-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/landhaus-schend-schriftzug-fassade-landhotel-schend.jpg",
-  "/fotos/winterlicher-innenhof-landhotel-schend.jpg",
-  "/fotos/gartenseite-mit-terrasse-landhotel-schend.jpg",
-  "/fotos/weihnachtsstimmung-im-schnee-landhotel-schend.jpg",
-  "/fotos/fassade-mit-hotelschild-landhotel-schend.jpg",
-  "/fotos/dorfansicht-immerath-landhotel-schend.jpg",
-  "/fotos/radfahrer-am-radweg-landhotel-schend-vulkaneifel.jpg",
-  "/fotos/wanderer-am-eifelmaar-landhotel-schend-vulkaneifel.jpg",
+  "/fotos/hotelgarten-mit-brunnen-landhaus-schend.jpg",
+  "/fotos/hotelfront-mit-blumenbeet-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/eingang-mit-torbogen-und-hortensien-landhaus-schend.jpg",
+  "/fotos/innenhof-mit-balkonen-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/landhaus-schend-schriftzug-fassade-landhaus-schend.jpg",
+  "/fotos/winterlicher-innenhof-landhaus-schend.jpg",
+  "/fotos/gartenseite-mit-terrasse-landhaus-schend.jpg",
+  "/fotos/weihnachtsstimmung-im-schnee-landhaus-schend.jpg",
+  "/fotos/fassade-mit-hotelschild-landhaus-schend.jpg",
+  "/fotos/dorfansicht-immerath-landhaus-schend.jpg",
+  "/fotos/radfahrer-am-radweg-landhaus-schend-vulkaneifel.jpg",
+  "/fotos/wanderer-am-eifelmaar-landhaus-schend-vulkaneifel.jpg",
 ];
 
 export const galleryForRoomType = (type: string): string[] =>

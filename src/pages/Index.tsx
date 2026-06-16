@@ -37,17 +37,17 @@ import { PAKETE } from "@/lib/pakete";
 // im Production-Build und liefern 404 → leere Kästchen).
 const FOOD_PHOTOS = [
   food0,
-  "/fotos/haehnchen-mit-wedges-landhotel-schend.jpg",
+  "/fotos/haehnchen-mit-wedges-landhaus-schend.jpg",
   food1,
-  "/fotos/schnitzelteller-mit-pommes-landhotel-schend.jpg",
+  "/fotos/schnitzelteller-mit-pommes-landhaus-schend.jpg",
   food2,
-  "/fotos/rouladen-mit-rotkohl-und-kroketten-landhotel-schend.jpg",
+  "/fotos/rouladen-mit-rotkohl-und-kroketten-landhaus-schend.jpg",
   food3,
-  "/fotos/schlemmerplatte-landhotel-schend.jpg",
-  "/fotos/salat-buffet-mit-tomatenherz-landhotel-schend.jpg",
-  "/fotos/warmes-buffet-mit-chafing-dishes-landhotel-schend.jpg",
-  "/fotos/schnitzel-mit-salat-landhotel-schend.jpg",
-  "/fotos/tagesgericht-mit-salat-landhotel-schend.jpg",
+  "/fotos/schlemmerplatte-landhaus-schend.jpg",
+  "/fotos/salat-buffet-mit-tomatenherz-landhaus-schend.jpg",
+  "/fotos/warmes-buffet-mit-chafing-dishes-landhaus-schend.jpg",
+  "/fotos/schnitzel-mit-salat-landhaus-schend.jpg",
+  "/fotos/tagesgericht-mit-salat-landhaus-schend.jpg",
 ];
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -157,7 +157,7 @@ const Index = () => {
             volle Bildschaerfe, 0 KB Extra, keine Flimmer-/Gummi-Artefakte.
             Parallax-Wrapper (heroBgRef) + Overlays bleiben davon unberuehrt. */}
         <HotelImage
-          src="/fotos/hotelfront-mit-rosen-landhotel-schend-vulkaneifel.jpg"
+          src="/fotos/hotelfront-mit-rosen-landhaus-schend-vulkaneifel.jpg"
           alt="Vorderansicht des Landhaus Schend mit Rosenbeet in der Vulkaneifel"
           loading="eager"
           decoding="sync"
@@ -547,7 +547,7 @@ const Index = () => {
           <div className="lg:col-span-7">
             <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[560px] overflow-hidden shadow-card">
               <img
-                src="/fotos/festsaal-mit-sektempfang-landhotel-schend-vulkaneifel.jpg"
+                src="/fotos/festsaal-mit-sektempfang-landhaus-schend-vulkaneifel.jpg"
                 alt="Festlich gedeckter Saal im Landhaus Schend"
                 loading="lazy"
                 decoding="async"
@@ -628,7 +628,7 @@ const Index = () => {
           <div className="lg:col-span-6 lg:order-last">
             <div className="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[460px] overflow-hidden shadow-card">
               <HotelImage
-                src="/fotos/sauna-und-ruhebereich-mit-whirlpool-landhotel-schend-vulkaneifel.jpg"
+                src="/fotos/sauna-und-ruhebereich-mit-whirlpool-landhaus-schend-vulkaneifel.jpg"
                 alt="Sauna- und Ruhebereich mit Whirlpool im Landhaus Schend"
                 loading="lazy"
                 className="w-full h-full object-cover"

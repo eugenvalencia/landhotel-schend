@@ -40,7 +40,7 @@ export default function AboutSection() {
         <div className="lg:col-span-6">
           <div className="aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden shadow-elevated">
             <HotelImage
-              src="/fotos/landhotel-schend-zeichnung-innenhof-historisch.jpg"
+              src="/fotos/landhaus-schend-zeichnung-innenhof-historisch.jpg"
               alt="Bleistift-Zeichnung des Landhaus Schend in Immerath mit Innenhof und Eingang"
               className="w-full h-full object-cover object-center contrast-110"
             />

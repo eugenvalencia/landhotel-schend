@@ -60,7 +60,7 @@ export const PAKETE: Paket[] = [
     slug: "erholung-entschleunigung",
     title: "Tage der Erholung und Entschleunigung",
     cover: "/pakete/eifel-3.jpg",
-    gallery: ["/pakete/eifel-3.jpg", "/pakete/eifel-4.jpg", "/fotos/sonnenterrasse-mit-hortensien-landhotel-schend-vulkaneifel.jpg"],
+    gallery: ["/pakete/eifel-3.jpg", "/pakete/eifel-4.jpg", "/fotos/sonnenterrasse-mit-hortensien-landhaus-schend-vulkaneifel.jpg"],
     intro:
       "Sie wollen einfach mal abschalten und es sich rundum gut gehen lassen? Dann sind unsere drei Tage der Erholung das Richtige für Sie. Entschleunigen Sie bei wohltuenden Anwendungen und speziellen Massagen.",
     highlights: [
@@ -79,7 +79,7 @@ export const PAKETE: Paket[] = [
     slug: "eifelgold-weissdornhecken",
     title: '„Eifelgold" und Weißdornhecken',
     cover: "/pakete/paket-b-0.jpg",
-    gallery: ["/pakete/paket-b-0.jpg", "/pakete/eifel-1.jpg", "/fotos/wanderer-am-eifelmaar-landhotel-schend-vulkaneifel.jpg"],
+    gallery: ["/pakete/paket-b-0.jpg", "/pakete/eifel-1.jpg", "/fotos/wanderer-am-eifelmaar-landhaus-schend-vulkaneifel.jpg"],
     intro:
       "Lassen Sie sich vom faszinierenden Naturschauspiel der Eifel im Mai und Juni begeistern.",
     highlights: [
@@ -119,7 +119,7 @@ export const PAKETE: Paket[] = [
     slug: "zimmer-ohne-paket",
     title: "Zimmer ohne Paket buchen",
     cover: "/pakete/paket-b-2.jpg",
-    gallery: ["/pakete/paket-b-2.jpg", "/fotos/doppelzimmer-komfort-mit-doppelbett-und-holzboden-landhotel-schend-vulkaneifel.jpg", "/pakete/eifel-5.jpg"],
+    gallery: ["/pakete/paket-b-2.jpg", "/fotos/doppelzimmer-komfort-mit-doppelbett-und-holzboden-landhaus-schend-vulkaneifel.jpg", "/pakete/eifel-5.jpg"],
     intro:
       "Sie möchten flexibel bleiben? Buchen Sie eines unserer Zimmer ohne Paket — ganz nach Ihren Wünschen.",
     highlights: [
