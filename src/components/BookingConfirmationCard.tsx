@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CheckCircle2, MessageCircle, Printer, MapPin, Phone, Mail } from "lucide-react";
+import { CheckCircle2, Printer, MapPin, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HotelImage } from "@/components/HotelImage";
 import {
@@ -40,7 +40,7 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
         </h2>
         <p className="text-foreground/85 max-w-prose mx-auto leading-relaxed">
           Wir haben Ihre Anfrage erhalten und prüfen die Verfügbarkeit. Eine
-          Eingangsbestätigung wurde versendet an{" "}
+          Eingangsbestätigung senden wir an{" "}
           <span className="text-primary font-medium">{booking.guestEmail}</span>. Die
           verbindliche Bestätigung folgt in Kürze.
         </p>
@@ -205,27 +205,6 @@ export default function BookingConfirmationCard({ booking, showActions = true }:
               Ihr Familienhotel in der Vulkaneifel · www.landhaus-schend.de
             </p>
           </div>
-        </div>
-      </div>
-
-      {/* WhatsApp simulation */}
-      <div className="rounded-lg border bg-card p-4 sm:p-5 shadow-card">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="h-8 w-8 rounded-full bg-success/10 flex items-center justify-center">
-            <MessageCircle className="h-4 w-4 text-success" />
-          </div>
-          <div className="flex-1">
-            <div className="text-sm font-semibold">WhatsApp-Eingangsbestätigung ✓</div>
-            <div className="text-xs text-muted-foreground">An {booking.guestPhone || "+49 …"} · vor wenigen Sekunden</div>
-          </div>
-        </div>
-        <div className="rounded-2xl rounded-tl-sm bg-success/10 border border-success/20 p-3 text-sm">
-          <p className="font-semibold mb-1">Landhaus Schend</p>
-          <p>
-            Hallo {booking.guestName.split(" ")[0]}, Ihre Anfrage <span className="font-mono font-semibold">{displayBookingNumber}</span> ist eingegangen.
-            Wir bestätigen Ihre Buchung in Kürze. Geplanter Check-in: {formatDate(booking.checkIn)} ab 15:00 Uhr. Wir freuen uns auf Sie.
-          </p>
-          <p className="text-xs text-muted-foreground mt-2">— Landhaus Schend, Vulkaneifel</p>
         </div>
       </div>
 

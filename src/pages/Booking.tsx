@@ -480,9 +480,11 @@ export default function Booking() {
       if (error || !data) {
         await minDelay(startedAt);
         console.error("[booking] create_booking failed:", error);
-        const msg =
-          error?.message?.includes("Room not available")
-            ? "Zimmer in diesem Zeitraum leider nicht mehr verfügbar."
+        const em = error?.message ?? "";
+        const msg = em.includes("Room not available")
+          ? "Zimmer in diesem Zeitraum leider nicht mehr verfügbar."
+          : em.includes("rate_limit")
+            ? "Es liegen bereits mehrere Anfragen von Ihnen vor. Bitte warten Sie kurz oder rufen Sie uns an: +49 6573 306"
             : "Buchung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut oder rufen Sie uns an: +49 6573 306";
         toast.error(msg);
         setSubmitting(false);
@@ -497,10 +499,12 @@ export default function Booking() {
         nights: number;
         room_total: number;
         extras_total: number;
+        notify_token: string;
       };
 
       // Eingangsbestätigung an den Gast (Resend via notify-schend) — best-effort.
-      notifyBooking(result.booking_id, "request");
+      // Der notify_token autorisiert genau diese eine Mail (IDOR-Schutz).
+      notifyBooking(result.booking_id, "request", result.notify_token);
 
       const confirmationExtras = (result.extras ?? []).map((extra) => ({
         id: extra.id,

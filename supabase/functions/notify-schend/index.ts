@@ -32,17 +32,41 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
 // CORS: Diese Function wird seit dem Umstieg auf Client-Trigger (DB-Trigger in
 // Migration 20260604180000 entfernt) vom Browser aufgerufen — sowohl von der
-// öffentlichen Gast-Buchung als auch vom Rezeptions-Board. Ohne diese Header
-// blockt der Browser den Aufruf per CORS-Preflight und es geht KEINE Gast-Mail raus.
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
-const jsonHeaders = { ...corsHeaders, "Content-Type": "application/json" };
+// öffentlichen Gast-Buchung als auch vom Rezeptions-Board. Statt offenem "*"
+// reflektieren wir nur bekannte Origins (Live-Domain, Vorschau, Cloudflare-Preview,
+// lokales Dev) — Defense-in-Depth zusätzlich zum notify_token unten.
+const ALLOWED_ORIGINS = [
+  "https://landhaus-schend.de",
+  "https://www.landhaus-schend.de",
+  "https://schend.conexadigital.eu",
+];
+function corsHeadersFor(req: Request): Record<string, string> {
+  const origin = req.headers.get("Origin") ?? "";
+  const allow =
+    ALLOWED_ORIGINS.includes(origin) ||
+    /^https:\/\/[a-z0-9-]+\.landhotel-schend\.pages\.dev$/.test(origin) ||
+    /^http:\/\/localhost(:\d+)?$/.test(origin);
+  return {
+    "Access-Control-Allow-Origin": allow ? origin : ALLOWED_ORIGINS[0],
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Vary": "Origin",
+  };
+}
+
+// Konstantzeit-Vergleich für den notify_token (kein early-return-Timing-Leak).
+function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length || a.length === 0) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
 
 interface BookingPayload {
   booking_id: string;
+  // Pro-Buchung-Geheimnis (von create_booking an den Gast zurückgegeben bzw. vom
+  // eingeloggten Hotel per RLS gelesen). Pflicht — ohne korrekten Token kein Versand.
+  token?: string;
   // 'request' (default) = Eingangsbestätigung beim Insert
   // 'confirmation' = verbindliche Bestätigung, wenn das Hotel die Anfrage bestätigt
   kind?: EmailKind;
@@ -152,6 +176,9 @@ async function sendGuestConfirmation(args: {
 }
 
 Deno.serve(async (req) => {
+  const corsHeaders = corsHeadersFor(req);
+  const jsonHeaders = { ...corsHeaders, "Content-Type": "application/json" };
+
   // CORS-Preflight (Browser schickt OPTIONS vor dem POST)
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -171,13 +198,13 @@ Deno.serve(async (req) => {
   }
   const kind: EmailKind = body.kind === "confirmation" ? "confirmation" : "request";
 
-  // Booking laden inkl. Room + Extras + preferred_language
+  // Booking laden inkl. Room + Extras + preferred_language + notify_token
   const { data: booking, error } = await supabase
     .from("bookings")
     .select(`
       id, booking_number, guest_name, guest_email, guest_phone,
       check_in, check_out, total_price, extras, notes, payment_status, created_at,
-      preferred_language, notifications,
+      preferred_language, notifications, notify_token,
       rooms ( name, room_type, bed_description )
     `)
     .eq("id", body.booking_id)
@@ -185,6 +212,20 @@ Deno.serve(async (req) => {
 
   if (error || !booking) {
     return new Response(`Booking not found: ${error?.message ?? "?"}`, { status: 404, headers: corsHeaders });
+  }
+
+  // ----- IDOR-Schutz -----
+  // Nur senden, wenn der pro-Buchung-Token passt. Ohne diesen Nachweis darf niemand
+  // fremde Gast-Mails oder verbindliche Bestätigungen auslösen — selbst wenn er eine
+  // booking_id kennt. Die Antwort ist absichtlich generisch (kein PII-Leak, kein
+  // Hinweis ob die Buchung existiert).
+  const providedToken = typeof body.token === "string" ? body.token : "";
+  const expectedToken = (booking as { notify_token?: string }).notify_token ?? "";
+  if (!timingSafeEqual(providedToken, expectedToken)) {
+    return new Response(
+      JSON.stringify({ ok: false, error: "forbidden" }),
+      { status: 403, headers: jsonHeaders },
+    );
   }
 
   // Idempotenz: dieselbe Mail-Art nicht im Sekundentakt doppelt senden
