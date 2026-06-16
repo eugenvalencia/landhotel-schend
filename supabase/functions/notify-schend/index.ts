@@ -324,6 +324,7 @@ Deno.serve(async (req) => {
         checkIn: booking.check_in,
         checkOut: booking.check_out,
         feePct,
+        logoUrl: `${SITE_URL}/schend-mark.png`,
       })
     : renderBookingEmail({
         language: booking.preferred_language,
@@ -339,6 +340,7 @@ Deno.serve(async (req) => {
         totalPrice: Number(booking.total_price ?? 0),
         notes: booking.notes ?? "",
         cancelUrl, // Storno-Button nur in Anfrage-/Bestätigungsmail
+        logoUrl: `${SITE_URL}/schend-mark.png`,
       });
 
   const mailTag = kind === "confirmation" ? "booking-confirmation"

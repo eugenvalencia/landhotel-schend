@@ -27,6 +27,8 @@ export interface BookingEmailInput {
   // Optionaler Self-Service-Storno-Link (mit notify_token). Nur in Anfrage-/
   // Bestätigungsmails einblenden — rendert einen "Buchung stornieren"-Button.
   cancelUrl?: string;
+  // Absolute URL zum Marken-Icon (PNG, Outlook-tauglich) für den Mail-Kopf.
+  logoUrl?: string;
 }
 
 const HOTEL = {
@@ -225,6 +227,7 @@ export const renderBookingEmail = (input: BookingEmailInput) => {
         <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e6e0d5;">
           <tr>
             <td style="padding:36px 40px 18px;border-bottom:1px solid #e6e0d5;text-align:center;">
+              ${input.logoUrl ? `<img src="${input.logoUrl}" alt="${HOTEL.name}" width="108" height="46" style="display:block;margin:0 auto 14px;height:46px;width:108px;" />` : ""}
               <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;letter-spacing:0.22em;color:#b8985a;text-transform:uppercase;margin-bottom:6px;">★★★ Superior</div>
               <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:26px;color:#2a2a2a;letter-spacing:0.02em;">${HOTEL.name}</h1>
               <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:#7a7a7a;margin-top:4px;">${HOTEL.city}</div>
@@ -333,6 +336,7 @@ export interface CancellationEmailInput {
   checkIn: string;
   checkOut: string;
   feePct: number;
+  logoUrl?: string;
 }
 
 const CXTXT = {
@@ -403,6 +407,7 @@ export const renderCancellationEmail = (input: CancellationEmailInput) => {
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1ea;padding:32px 0;"><tr><td align="center">
     <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e6e0d5;">
       <tr><td style="padding:36px 40px 18px;border-bottom:1px solid #e6e0d5;text-align:center;">
+        ${input.logoUrl ? `<img src="${input.logoUrl}" alt="${HOTEL.name}" width="108" height="46" style="display:block;margin:0 auto 14px;height:46px;width:108px;" />` : ""}
         <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;letter-spacing:0.22em;color:#b8985a;text-transform:uppercase;margin-bottom:6px;">★★★ Superior</div>
         <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:26px;color:#2a2a2a;letter-spacing:0.02em;">${HOTEL.name}</h1>
         <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:#7a7a7a;margin-top:4px;">${HOTEL.city}</div>
