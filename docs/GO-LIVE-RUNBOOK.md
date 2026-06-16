@@ -79,22 +79,26 @@ Aus dem Security-Advisor, kein Blocker, aber vor Live sauber:
 
 Volltext im Walter-Review (Session 16.06.). Verdichtet:
 
-🔴 **BFSG-Status — der einzige echte materielle Punkt.**
-Die Barrierefreiheitserklärung stützt sich auf die Kleinstunternehmer-Ausnahme
-(§ 3 Abs. 3 BFSG). Die gilt für Dienstleister, ABER nur bei **< 10 Beschäftigten UND
-≤ 2 Mio € Umsatz**. Eine Hotel-Site mit Online-Buchung fällt unter das BFSG.
-**→ Eugen muss Beimler nach Kopfzahl (inkl. Teilzeit/Saison anteilig) + Jahresumsatz fragen.**
-- Sicher drunter → Erklärung bleibt (Wording-Fix: § 16-BGG-Schlichtungsblock raus, der gilt
-  nur für öffentliche Stellen; rein freiwillige Erklärung abgeben).
-- Drüber/grenzwertig → Buchungstool muss WCAG 2.1 AA geprüft werden (Tastatur, Kontraste,
-  Formular-Labels, Fehlermeldungen) und der Text auf echte Konformität umgestellt.
+✅ **BFSG-Status — GEKLÄRT (16.06.).** Schend hat 4–5 Beschäftigte und liegt klar unter
+2 Mio € Umsatz → die Kleinstunternehmer-Ausnahme (§ 3 Abs. 3 BFSG) greift sicher. Die
+Barrierefreiheitserklärung („voraussichtlich ausgenommen") ist korrekt. **Kein WCAG-AA-Zwang.**
+🟡 Rest-Wording-Fix (Walter): § 16-BGG-Schlichtungs-/Durchsetzungsblock raus (gilt nur für
+öffentliche Stellen) → rein freiwillige Erklärung.
+
+🟠 **AGB § 4(1) für Self-Storno umschreiben (Walter).** Aktuell: „Stornierung bedarf der
+schriftlichen Zustimmung des Hotels." Da die AGB selbst erstellt sind und jederzeit änderbar:
+§ 4(1) so fassen, dass das Hotel der **Online-Stornierung im kostenfreien Fenster** (bis 14
+Tage vor Anreise) vorab zustimmt; in der Gebühren-Frist bleibt es bei der Storno-Anfrage mit
+Hotelbestätigung. Muss konsistent mit der gebauten Storno-Funktion sein.
 
 🟠 **Resend EU-Region real bestätigen.** Die Datenschutzerklärung behauptet EU-Region +
 SCC. Muss technisch stimmen (Resend-Dashboard → EU Data Residency) + AVV mit Resend in der
 Akte. „Behauptung = Realität" (Eugen-Direktive).
 
-🟠 **AVV-Kette muss existieren.** DSE nennt AVVs mit Conexa, Supabase, Resend, IONOS, Hetzner.
-Diese Verträge müssen real vorliegen, bevor live geschaltet wird (Doku-Pflicht, Art. 28 DSGVO).
+🔴 **AVV-Verträge existieren NOCH NICHT — nachholen (Eugen bestätigt 16.06.).** Die DSE
+nennt AVVs mit Conexa↔Schend + Sub-AV Supabase, Resend, IONOS, Hetzner. Diese Verträge sind
+real noch nicht abgeschlossen. **Vor Go-Live nachholen** (Doku-Pflicht Art. 28 DSGVO) — sonst
+ist die DSE-Behauptung falsch. Walter: Conexa↔Schend-AVV aufsetzen + Sub-AV-Kette dokumentieren.
 
 🟡 **Google-Fonts-Live-Check.** Vor Cutover 1× die deployte Seite im Netzwerk-Tab prüfen:
 KEIN Request an `fonts.googleapis.com`/`fonts.gstatic.com` (größtes Abmahn-Massenrisiko).

@@ -14,7 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 //     wird hier explizit übergeben (anon kann ihn NICHT aus der DB lesen).
 //   - Hotel-Pfad ("confirmation"): kein Token übergeben → wir lesen ihn per RLS aus
 //     der eigenen Buchung (eingeloggter Tenant-Admin darf das).
-export type BookingEmailKind = "request" | "confirmation";
+export type BookingEmailKind = "request" | "confirmation" | "cancellation" | "cancellation_request";
 
 export function notifyBooking(bookingId: string, kind: BookingEmailKind, token?: string): void {
   void (async () => {

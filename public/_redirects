@@ -3,3 +3,4 @@
 /operator     /_saas/  200
 /booking*     /_saas/  200
 /confirmation/*  /_saas/  200
+/storno       /_saas/  200

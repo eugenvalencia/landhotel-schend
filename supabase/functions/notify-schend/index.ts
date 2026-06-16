@@ -20,7 +20,7 @@
 //   SUPABASE_SERVICE_ROLE_KEY = (auto)
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { renderBookingEmail, type EmailKind } from "../_shared/booking-email.ts";
+import { renderBookingEmail, renderCancellationEmail } from "../_shared/booking-email.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 const RESEND_FROM_EMAIL = Deno.env.get("RESEND_FROM_EMAIL") ?? "buchung@landhaus-schend.de";
@@ -62,14 +62,20 @@ function timingSafeEqual(a: string, b: string): boolean {
   return diff === 0;
 }
 
+// Öffentliche Basis-URL für den Storno-Link in den Mails (z. B. https://landhaus-schend.de).
+const SITE_URL = Deno.env.get("PUBLIC_SITE_URL") ?? "https://landhaus-schend.de";
+
+// notify-schend kennt vier Mail-Arten. Die Storno-Arten nutzen ein eigenes Template.
+type NotifyKind = "request" | "confirmation" | "cancellation" | "cancellation_request";
+interface RenderedEmail { subject: string; html: string; text: string; language: string; fromName: string; replyTo: string; }
+
 interface BookingPayload {
   booking_id: string;
   // Pro-Buchung-Geheimnis (von create_booking an den Gast zurückgegeben bzw. vom
   // eingeloggten Hotel per RLS gelesen). Pflicht — ohne korrekten Token kein Versand.
   token?: string;
-  // 'request' (default) = Eingangsbestätigung beim Insert
-  // 'confirmation' = verbindliche Bestätigung, wenn das Hotel die Anfrage bestätigt
-  kind?: EmailKind;
+  // request | confirmation | cancellation | cancellation_request
+  kind?: NotifyKind;
 }
 
 interface BranchResult {
@@ -142,10 +148,64 @@ ${rows.map(([k, v]) => `<tr><td style="color:#666">${esc(k)}</td><td><strong>${e
   }
 }
 
+// Inhaber-Alert bei einer Gast-Stornierung bzw. gebührenpflichtigen Storno-Anfrage.
+async function notifyOwnerCancellation(args: {
+  bookingNumber: string;
+  guestName: string;
+  guestEmail: string;
+  guestPhone: string | null;
+  roomName: string;
+  checkIn: string;
+  checkOut: string;
+  requested: boolean;
+  feePct: number;
+}): Promise<BranchResult> {
+  if (!RESEND_API_KEY) return { ok: false, status: 0, detail: "RESEND_API_KEY not configured" };
+  const esc = (s: string) =>
+    s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string);
+  const titel = args.requested
+    ? `Storno-ANFRAGE #${esc(args.bookingNumber)} (${args.feePct} % Pauschale) — im Board bestätigen`
+    : `Stornierung #${esc(args.bookingNumber)} durch Gast`;
+  const rows: Array<[string, string]> = [
+    ["Buchungsnummer", args.bookingNumber],
+    ["Gast", args.guestName],
+    ["E-Mail", args.guestEmail],
+    ["Telefon", args.guestPhone || "—"],
+    ["Zimmer", args.roomName],
+    ["Anreise", args.checkIn],
+    ["Abreise", args.checkOut],
+    ...(args.requested ? [["Stornopauschale", `${args.feePct} %`] as [string, string]] : []),
+  ];
+  const html = `<h2 style="font-family:Arial,sans-serif">${esc(titel)}</h2>
+<table cellpadding="6" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px">
+${rows.map(([k, v]) => `<tr><td style="color:#666">${esc(k)}</td><td><strong>${esc(v)}</strong></td></tr>`).join("\n")}
+</table>
+<p style="font-family:Arial,sans-serif;font-size:13px;color:${args.requested ? "#a33" : "#666"}">${args.requested ? "Bitte im Rezeptions-Board bestätigen oder ablehnen." : "Der Termin ist wieder frei."}</p>`;
+  const text = `${titel}\n\n` + rows.map(([k, v]) => `${k}: ${v}`).join("\n");
+  try {
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${RESEND_API_KEY}` },
+      body: JSON.stringify({
+        from: `Landhaus Schend Buchung <${RESEND_FROM_EMAIL}>`,
+        to: [OWNER_NOTIFY_EMAIL],
+        reply_to: args.guestEmail,
+        subject: titel,
+        html,
+        text,
+        tags: [{ name: "type", value: args.requested ? "owner-storno-request" : "owner-storno" }],
+      }),
+    });
+    return { ok: r.status >= 200 && r.status < 300, status: r.status, detail: await r.text().catch(() => "") };
+  } catch (e) {
+    return { ok: false, status: -1, detail: String(e) };
+  }
+}
+
 async function sendGuestConfirmation(args: {
   guestEmail: string;
-  payload: ReturnType<typeof renderBookingEmail>;
-  kind: EmailKind;
+  payload: RenderedEmail;
+  mailTag: string;
 }): Promise<BranchResult> {
   if (!RESEND_API_KEY) return { ok: false, status: 0, detail: "RESEND_API_KEY not configured" };
   try {
@@ -164,7 +224,7 @@ async function sendGuestConfirmation(args: {
         text: args.payload.text,
         headers: { "Content-Language": args.payload.language },
         tags: [
-          { name: "type", value: args.kind === "confirmation" ? "booking-confirmation" : "booking-request" },
+          { name: "type", value: args.mailTag },
           { name: "lang", value: args.payload.language },
         ],
       }),
@@ -196,7 +256,9 @@ Deno.serve(async (req) => {
   if (!body.booking_id) {
     return new Response("booking_id required", { status: 400, headers: corsHeaders });
   }
-  const kind: EmailKind = body.kind === "confirmation" ? "confirmation" : "request";
+  const allowedKinds = ["request", "confirmation", "cancellation", "cancellation_request"];
+  const kind: NotifyKind = allowedKinds.includes(body.kind ?? "") ? (body.kind as NotifyKind) : "request";
+  const isCancellation = kind === "cancellation" || kind === "cancellation_request";
 
   // Booking laden inkl. Room + Extras + preferred_language + notify_token
   const { data: booking, error } = await supabase
@@ -204,7 +266,7 @@ Deno.serve(async (req) => {
     .select(`
       id, booking_number, guest_name, guest_email, guest_phone,
       check_in, check_out, total_price, extras, notes, payment_status, created_at,
-      preferred_language, notifications, notify_token,
+      preferred_language, notifications, notify_token, cancellation_fee_pct,
       rooms ( name, room_type, bed_description )
     `)
     .eq("id", body.booking_id)
@@ -248,26 +310,45 @@ Deno.serve(async (req) => {
   const room = booking.rooms as { name?: string; room_type?: string; bed_description?: string } | null;
   const extras = (booking.extras ?? []) as Array<{ name: string; price: number; per_night: boolean }>;
 
-  // Gast-Email Payload rendern
-  const emailPayload = renderBookingEmail({
-    language: booking.preferred_language,
-    kind,
-    bookingNumber: booking.booking_number,
-    guestName: booking.guest_name,
-    roomName: room?.name ?? "Zimmer",
-    roomType: room?.room_type ?? null,
-    checkIn: booking.check_in,
-    checkOut: booking.check_out,
-    nights,
-    extras,
-    totalPrice: Number(booking.total_price ?? 0),
-    notes: booking.notes ?? "",
-  });
+  // Gast-Email Payload rendern — Buchung/Bestätigung ODER Storno (separates Template).
+  const cancelUrl = `${SITE_URL}/storno?b=${booking.id}&t=${encodeURIComponent(expectedToken)}`;
+  const feePct = Number((booking as { cancellation_fee_pct?: number }).cancellation_fee_pct ?? 0);
 
-  // Parallel: Inhaber-Alert + Gast-Email. Beide Pfade sind voneinander unabhängig.
-  // Der Inhaber-Alert geht nur bei einer NEUEN Anfrage raus; beim Bestätigen geht
-  // ausschließlich die verbindliche Gast-Mail raus. KEINE KI im Spiel.
-  const [ownerResult, mailResult] = await Promise.all([
+  const emailPayload: RenderedEmail = isCancellation
+    ? renderCancellationEmail({
+        language: booking.preferred_language,
+        kind: kind === "cancellation" ? "cancelled" : "requested",
+        bookingNumber: booking.booking_number,
+        guestName: booking.guest_name,
+        roomName: room?.name ?? "Zimmer",
+        checkIn: booking.check_in,
+        checkOut: booking.check_out,
+        feePct,
+      })
+    : renderBookingEmail({
+        language: booking.preferred_language,
+        kind: kind === "confirmation" ? "confirmation" : "request",
+        bookingNumber: booking.booking_number,
+        guestName: booking.guest_name,
+        roomName: room?.name ?? "Zimmer",
+        roomType: room?.room_type ?? null,
+        checkIn: booking.check_in,
+        checkOut: booking.check_out,
+        nights,
+        extras,
+        totalPrice: Number(booking.total_price ?? 0),
+        notes: booking.notes ?? "",
+        cancelUrl, // Storno-Button nur in Anfrage-/Bestätigungsmail
+      });
+
+  const mailTag = kind === "confirmation" ? "booking-confirmation"
+    : kind === "cancellation" ? "booking-cancellation"
+    : kind === "cancellation_request" ? "booking-cancellation-request"
+    : "booking-request";
+
+  // Inhaber-Alert: bei NEUER Anfrage (request) oder Storno/Storno-Anfrage. Bei der
+  // verbindlichen Bestätigung (confirmation) kein Alert — die löst das Hotel selbst aus.
+  const ownerAlert: Promise<BranchResult> =
     kind === "request"
       ? notifyOwner({
           bookingNumber: booking.booking_number,
@@ -283,8 +364,23 @@ Deno.serve(async (req) => {
           notes: booking.notes ?? "",
           language: booking.preferred_language,
         })
-      : Promise.resolve<BranchResult>({ ok: true, status: 0, detail: "owner alert skipped (confirmation)" }),
-    sendGuestConfirmation({ guestEmail: booking.guest_email, payload: emailPayload, kind }),
+      : isCancellation
+        ? notifyOwnerCancellation({
+            bookingNumber: booking.booking_number,
+            guestName: booking.guest_name,
+            guestEmail: booking.guest_email,
+            guestPhone: booking.guest_phone,
+            roomName: room?.name ?? "Zimmer",
+            checkIn: booking.check_in,
+            checkOut: booking.check_out,
+            requested: kind === "cancellation_request",
+            feePct,
+          })
+        : Promise.resolve<BranchResult>({ ok: true, status: 0, detail: "owner alert skipped (confirmation)" });
+
+  const [ownerResult, mailResult] = await Promise.all([
+    ownerAlert,
+    sendGuestConfirmation({ guestEmail: booking.guest_email, payload: emailPayload, mailTag }),
   ]);
 
   // Versand-Zeitstempel für die Idempotenz festhalten — nur wenn die Mail

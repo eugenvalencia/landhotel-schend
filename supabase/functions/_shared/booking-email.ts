@@ -24,6 +24,9 @@ export interface BookingEmailInput {
   extras: Array<{ name: string; price: number; per_night: boolean }>;
   totalPrice: number;
   notes: string;
+  // Optionaler Self-Service-Storno-Link (mit notify_token). Nur in Anfrage-/
+  // Bestätigungsmails einblenden — rendert einen "Buchung stornieren"-Button.
+  cancelUrl?: string;
 }
 
 const HOTEL = {
@@ -172,6 +175,14 @@ const TXT = {
   },
 } as const;
 
+// Storno-Link-Beschriftung (Button in Anfrage-/Bestätigungsmail).
+const CANCEL_CTA: Record<SupportedLang, { label: string; note: string; textLabel: string }> = {
+  de: { label: "Buchung stornieren", note: "Stornierung jederzeit über diesen Link — kostenfrei bis 14 Tage vor Anreise (gem. AGB § 4).", textLabel: "Buchung stornieren" },
+  en: { label: "Cancel booking", note: "Cancel any time via this link — free of charge up to 14 days before arrival (per T&Cs § 4).", textLabel: "Cancel booking" },
+  fr: { label: "Annuler la réservation", note: "Annulation à tout moment via ce lien — gratuite jusqu'à 14 jours avant l'arrivée (CGV § 4).", textLabel: "Annuler la réservation" },
+  nl: { label: "Boeking annuleren", note: "Annuleer op elk moment via deze link — kosteloos tot 14 dagen voor aankomst (AV § 4).", textLabel: "Boeking annuleren" },
+};
+
 export const renderBookingEmail = (input: BookingEmailInput) => {
   const lang = pickLang(input.language);
   const kind: EmailKind = input.kind ?? "request";
@@ -244,6 +255,10 @@ export const renderBookingEmail = (input: BookingEmailInput) => {
 
               <p style="margin:32px 0 0;padding:16px;background:#f6f3ee;font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.6;color:#5a5a5a;">${t.auto[kind]}</p>
               <p style="margin:14px 0 0;font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:#7a7a7a;font-style:italic;">${t.season}</p>
+              ${input.cancelUrl ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:26px 0 0;">
+                <a href="${escapeHtml(input.cancelUrl)}" style="display:inline-block;padding:11px 24px;border:1px solid #b8985a;color:#8a6d2f;text-decoration:none;font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;letter-spacing:0.06em;border-radius:2px;">${CANCEL_CTA[lang].label}</a>
+                <div style="margin-top:9px;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;color:#9a9a9a;line-height:1.5;">${CANCEL_CTA[lang].note}</div>
+              </td></tr></table>` : ""}
             </td>
           </tr>
           <tr>
@@ -283,6 +298,7 @@ export const renderBookingEmail = (input: BookingEmailInput) => {
     "",
     t.season,
     "",
+    input.cancelUrl ? `${CANCEL_CTA[lang].textLabel}: ${input.cancelUrl}\n` : "",
     t.bye,
     t.fam,
     "",
@@ -301,4 +317,131 @@ export const renderBookingEmail = (input: BookingEmailInput) => {
     fromName: HOTEL.name,
     replyTo: HOTEL.email,
   };
+};
+
+// ---------- Storno-Bestätigungsmail (separates, schlankes Template) ----------
+// cancelled = sofort storniert (kostenfrei). requested = gebührenpflichtige
+// Storno-Anfrage, die das Hotel noch bestätigt (mit Pauschale gem. AGB § 4).
+export type CancellationKind = "cancelled" | "requested";
+
+export interface CancellationEmailInput {
+  language: string | null | undefined;
+  kind: CancellationKind;
+  bookingNumber: string;
+  guestName: string;
+  roomName: string;
+  checkIn: string;
+  checkOut: string;
+  feePct: number;
+}
+
+const CXTXT = {
+  de: {
+    subject: (bn: string, k: CancellationKind) => k === "cancelled" ? `Stornierung bestätigt ${bn} — Landhaus Schend` : `Stornierungsanfrage eingegangen ${bn} — Landhaus Schend`,
+    hi: (n: string) => `Liebe(r) ${n},`,
+    body: {
+      cancelled: "Ihre Buchung wurde storniert. Der Termin ist wieder freigegeben und es entstehen Ihnen keine Kosten. Schade, dass es diesmal nicht geklappt hat — wir freuen uns, Sie ein andermal im Landhaus Schend begrüßen zu dürfen.",
+      requested: "wir haben Ihre Stornierungsanfrage erhalten und bearbeiten sie umgehend.",
+    },
+    feeNote: (p: number) => `Gemäß unseren AGB (§ 4) fällt für diesen Zeitraum eine Stornopauschale von ${p} % des Zimmerpreises an. Das Hotel bestätigt Ihnen die Stornierung und die genaue Höhe in Kürze.`,
+    summary: { cancelled: "Stornierte Buchung", requested: "Betroffene Buchung" },
+    bookingNo: "Buchungsnummer", room: "Zimmer", checkIn: "Check-in", checkOut: "Check-out",
+    bye: "Herzliche Grüße aus der Vulkaneifel", fam: "Ihr Team vom Landhaus Schend",
+  },
+  en: {
+    subject: (bn: string, k: CancellationKind) => k === "cancelled" ? `Cancellation confirmed ${bn} — Landhaus Schend` : `Cancellation request received ${bn} — Landhaus Schend`,
+    hi: (n: string) => `Dear ${n},`,
+    body: {
+      cancelled: "your booking has been cancelled. The dates are released again and there is no charge. We are sorry it did not work out this time — we would be delighted to welcome you to Landhaus Schend another time.",
+      requested: "we have received your cancellation request and are processing it promptly.",
+    },
+    feeNote: (p: number) => `In accordance with our terms (§ 4), a cancellation fee of ${p} % of the room price applies for this period. The hotel will confirm the cancellation and the exact amount shortly.`,
+    summary: { cancelled: "Cancelled booking", requested: "Booking concerned" },
+    bookingNo: "Booking number", room: "Room", checkIn: "Check-in", checkOut: "Check-out",
+    bye: "Warm regards from the Volcanic Eifel", fam: "Your team at Landhaus Schend",
+  },
+  fr: {
+    subject: (bn: string, k: CancellationKind) => k === "cancelled" ? `Annulation confirmée ${bn} — Landhaus Schend` : `Demande d'annulation reçue ${bn} — Landhaus Schend`,
+    hi: (n: string) => `Cher / Chère ${n},`,
+    body: {
+      cancelled: "votre réservation a été annulée. Les dates sont à nouveau disponibles et aucun frais ne vous est facturé. Nous regrettons que cela n'ait pas fonctionné cette fois — nous serions ravis de vous accueillir une autre fois au Landhaus Schend.",
+      requested: "nous avons bien reçu votre demande d'annulation et la traitons sans délai.",
+    },
+    feeNote: (p: number) => `Conformément à nos CGV (§ 4), des frais d'annulation de ${p} % du prix de la chambre s'appliquent pour cette période. L'hôtel vous confirmera l'annulation et le montant exact sous peu.`,
+    summary: { cancelled: "Réservation annulée", requested: "Réservation concernée" },
+    bookingNo: "Numéro de réservation", room: "Chambre", checkIn: "Arrivée", checkOut: "Départ",
+    bye: "Cordiales salutations de l'Eifel volcanique", fam: "Votre équipe du Landhaus Schend",
+  },
+  nl: {
+    subject: (bn: string, k: CancellationKind) => k === "cancelled" ? `Annulering bevestigd ${bn} — Landhaus Schend` : `Annuleringsverzoek ontvangen ${bn} — Landhaus Schend`,
+    hi: (n: string) => `Beste ${n},`,
+    body: {
+      cancelled: "uw boeking is geannuleerd. De data zijn weer beschikbaar en er worden geen kosten in rekening gebracht. Jammer dat het deze keer niet is gelukt — we verwelkomen u graag een andere keer in Landhaus Schend.",
+      requested: "we hebben uw annuleringsverzoek ontvangen en behandelen het direct.",
+    },
+    feeNote: (p: number) => `Conform onze voorwaarden (§ 4) geldt voor deze periode een annuleringskost van ${p} % van de kamerprijs. Het hotel bevestigt u de annulering en het exacte bedrag binnenkort.`,
+    summary: { cancelled: "Geannuleerde boeking", requested: "Betrokken boeking" },
+    bookingNo: "Boekingsnummer", room: "Kamer", checkIn: "Check-in", checkOut: "Check-out",
+    bye: "Hartelijke groet uit de Vulkaan-Eifel", fam: "Uw team van Landhaus Schend",
+  },
+} as const;
+
+export const renderCancellationEmail = (input: CancellationEmailInput) => {
+  const lang = pickLang(input.language);
+  const t = CXTXT[lang];
+  const subjectLine = t.subject(input.bookingNumber, input.kind);
+  const ci = fmtDate(input.checkIn, lang);
+  const co = fmtDate(input.checkOut, lang);
+  const feeBlock = input.kind === "requested" && input.feePct > 0
+    ? `<p style="margin:18px 0 0;padding:14px 16px;background:#f6f3ee;border-left:3px solid #b8985a;color:#3a3a3a;font-size:14px;line-height:1.55;">${t.feeNote(input.feePct)}</p>`
+    : "";
+
+  const html = `<!doctype html>
+<html lang="${lang}">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${escapeHtml(subjectLine)}</title></head>
+<body style="margin:0;padding:0;background:#f4f1ea;font-family:Georgia,'Times New Roman',serif;color:#2a2a2a;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1ea;padding:32px 0;"><tr><td align="center">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e6e0d5;">
+      <tr><td style="padding:36px 40px 18px;border-bottom:1px solid #e6e0d5;text-align:center;">
+        <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;letter-spacing:0.22em;color:#b8985a;text-transform:uppercase;margin-bottom:6px;">★★★ Superior</div>
+        <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:26px;color:#2a2a2a;letter-spacing:0.02em;">${HOTEL.name}</h1>
+        <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:#7a7a7a;margin-top:4px;">${HOTEL.city}</div>
+      </td></tr>
+      <tr><td style="padding:32px 40px 8px;">
+        <p style="margin:0 0 12px;font-size:16px;line-height:1.6;">${escapeHtml(t.hi(input.guestName))}</p>
+        <p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#3a3a3a;">${t.body[input.kind]}</p>
+        ${feeBlock}
+        <h2 style="margin:24px 0 14px;font-family:Georgia,'Times New Roman',serif;font-size:18px;color:#2a2a2a;border-bottom:1px solid #e6e0d5;padding-bottom:8px;">${t.summary[input.kind]}</h2>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:14px;line-height:1.7;">
+          <tr><td style="color:#7a7a7a;width:160px;">${t.bookingNo}</td><td style="font-weight:600;color:#2a2a2a;letter-spacing:0.04em;">${escapeHtml(input.bookingNumber)}</td></tr>
+          <tr><td style="color:#7a7a7a;">${t.room}</td><td style="color:#2a2a2a;">${escapeHtml(input.roomName)}</td></tr>
+          <tr><td style="color:#7a7a7a;">${t.checkIn}</td><td style="color:#2a2a2a;">${escapeHtml(ci)}</td></tr>
+          <tr><td style="color:#7a7a7a;">${t.checkOut}</td><td style="color:#2a2a2a;">${escapeHtml(co)}</td></tr>
+        </table>
+      </td></tr>
+      <tr><td style="padding:24px 40px 32px;border-top:1px solid #e6e0d5;font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.7;color:#5a5a5a;">
+        <p style="margin:0 0 6px;">${t.bye}</p>
+        <p style="margin:0 0 18px;color:#2a2a2a;">${t.fam}</p>
+        <div style="border-top:1px solid #e6e0d5;padding-top:14px;font-size:12px;color:#7a7a7a;">
+          <strong style="color:#2a2a2a;">${HOTEL.name}</strong><br>${HOTEL.street} · ${HOTEL.city}<br>
+          Tel <a href="tel:${HOTEL.phone.replace(/\s/g, "")}" style="color:#5a5a5a;text-decoration:none;">${HOTEL.phone}</a> · <a href="mailto:${HOTEL.email}" style="color:#5a5a5a;text-decoration:none;">${HOTEL.email}</a>
+        </div>
+      </td></tr>
+    </table>
+  </td></tr></table>
+</body></html>`;
+
+  const text = [
+    t.hi(input.guestName), "", t.body[input.kind], "",
+    input.kind === "requested" && input.feePct > 0 ? t.feeNote(input.feePct) + "\n" : "",
+    `=== ${t.summary[input.kind]} ===`,
+    `${t.bookingNo}: ${input.bookingNumber}`,
+    `${t.room}: ${input.roomName}`,
+    `${t.checkIn}: ${ci}`,
+    `${t.checkOut}: ${co}`,
+    "", t.bye, t.fam, "",
+    `${HOTEL.name}`, `${HOTEL.street} · ${HOTEL.city}`, `Tel ${HOTEL.phone} · ${HOTEL.email}`,
+  ].filter((line) => line !== undefined && line !== null).join("\n");
+
+  return { subject: subjectLine, html, text, language: lang, fromName: HOTEL.name, replyTo: HOTEL.email };
 };

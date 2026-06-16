@@ -19,6 +19,7 @@ const Booking = lazy(() => import("./pages/Booking"));
 const RoomDetail = lazy(() => import("./pages/RoomDetail"));
 const PaketDetail = lazy(() => import("./pages/PaketDetail"));
 const Confirmation = lazy(() => import("./pages/Confirmation"));
+const Storno = lazy(() => import("./pages/Storno"));
 const Login = lazy(() => import("./pages/Login"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const DashboardOverview = lazy(() => import("./pages/Dashboard").then((m) => ({ default: m.DashboardOverview })));
@@ -59,6 +60,7 @@ const App = () => {
             <Route path="/booking" element={<Booking />} />
             <Route path="/booking-confirmation" element={<Confirmation />} />
             <Route path="/confirmation/:bookingNumber" element={<Confirmation />} />
+            <Route path="/storno" element={<Storno />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />}>
               <Route index element={<DashboardOverview />} />
