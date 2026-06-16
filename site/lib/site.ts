@@ -9,6 +9,15 @@ export const SITE_DESCRIPTOR = "Hotel - Restaurant";
 // Offizieller Name (mit Inhaber Beimler geklärt 15.06.) — Schema/legalName/Impressum.
 export const LEGAL_NAME = "Landhaus Schend, Hotel - Restaurant";
 
+// Social-Media-Profile (Footer-Icons). EINE Stelle zum Pflegen.
+// Facebook = aktueller echter Handle — Karin benennt die Seite später auf
+// „Landhaus Schend" um, dann hier die neue URL eintragen.
+// Instagram = Platzhalter, bis der echte Handle feststeht.
+export const SOCIAL = {
+  facebook: "https://www.facebook.com/Landhotel.Schend/",
+  instagram: "https://www.instagram.com/",
+} as const;
+
 export const HOTEL = {
   name: "Landhaus Schend",
   phoneLabel: "+49 6573 306",

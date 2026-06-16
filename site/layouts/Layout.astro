@@ -149,7 +149,9 @@ const robots = noindex
           // (Inhalt ist identisch, der Splash ist nur ein optischer Vorhang).
           var ua = navigator.userAgent || "";
           var isBot = /bot|crawl|spider|slurp|lighthouse|pagespeed|headless|gtmetrix|pingdom|mediapartners|facebookexternalhit|embedly|whatsapp|telegram|preview/i.test(ua);
-          if (isBot || sessionStorage.getItem("schend_splash_done"))
+          // Eugen-Wunsch 16.06.: Splash bei JEDEM Laden/Reload zeigen (nicht nur 1×/Session).
+          // Nur Bots/Lab-Tools überspringen ihn weiterhin -> kein LCP-Verlust.
+          if (isBot)
             document.documentElement.classList.add("splash-skip");
         } catch (e) {}
       })();
@@ -227,7 +229,6 @@ const robots = noindex
       (function () {
         var el = document.getElementById("splash");
         if (!el || getComputedStyle(el).display === "none") return; // übersprungen
-        try { sessionStorage.setItem("schend_splash_done", "1"); } catch (e) {}
         var pct = el.querySelector(".splash-pct");
         var fill = el.querySelector(".splash-fill");
         var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
