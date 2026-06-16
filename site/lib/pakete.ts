@@ -51,7 +51,7 @@ export const PAKETE: Paket[] = [
       "Rücken- oder Fußmassage auf Wunsch (zzgl. 25 € pro Person)",
     ],
     details:
-      "Insgesamt 55 Kilometer lang, lässt sich der Radweg gut in Etappen erkunden — dank Steigungen von maximal 3 % auch für Familien, die unterwegs in Radler-Busse einsteigen können. Bei technischen Problemen hilft der Reparaturservice unseres Landhotels.",
+      "Insgesamt 55 Kilometer lang, lässt sich der Radweg gut in Etappen erkunden — dank Steigungen von maximal 3 % auch für Familien, die unterwegs in Radler-Busse einsteigen können. Bei technischen Problemen hilft der Reparaturservice unseres Landhauses.",
     price: "ab 349 € p. P.",
     priceSingle: "Einzelnutzung ab 409 €",
     priceNote: "Familienzimmer auf Anfrage",
