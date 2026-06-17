@@ -15,7 +15,7 @@ function getInitial(): Theme {
   } catch {
     /* localStorage disabled */
   }
-  return "dark"; // Default = dunkel (überall); Hell/System nur per Wahl
+  return "light"; // Default = HELL (überall, Desktop+Mobil); Dunkel/System nur per Wahl
 }
 
 function applyTheme(theme: Theme) {

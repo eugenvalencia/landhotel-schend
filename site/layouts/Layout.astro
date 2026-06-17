@@ -56,8 +56,8 @@ const robots = noindex
     <meta name="author" content="Landhaus Schend" />
     <meta name="robots" content={robots} />
 
-    <!-- Default = dunkel; JS hält theme-color beim Umschalten synchron (SiteHeader). -->
-    <meta name="theme-color" content="#13161c" />
+    <!-- Default = hell; JS hält theme-color beim Umschalten synchron (SiteHeader). -->
+    <meta name="theme-color" content="#f8f1e3" />
     <meta name="color-scheme" content="dark light" />
     <meta name="geo.region" content="DE-RP" />
     <meta name="geo.placename" content="Immerath, Vulkaneifel" />
@@ -86,11 +86,11 @@ const robots = noindex
           try { cb(window.scrollY || 0); } catch (e) {}
         };
         try {
-          // Default = DUNKEL (überall). Nur eine ausdrückliche Hell-Wahl
-          // ("light") hellt auf — sonst immer dark, unabhängig vom OS.
+          // Default = HELL (überall, Desktop+Mobil). Nur eine ausdrückliche
+          // Dunkel-Wahl ("dark") verdunkelt — sonst immer hell, unabhängig vom OS.
           var t = localStorage.getItem("theme");
-          if (t === "light") document.documentElement.classList.add("light");
-          else if (t !== "system") document.documentElement.classList.add("dark");
+          if (t === "dark") document.documentElement.classList.add("dark");
+          else if (t !== "system") document.documentElement.classList.add("light");
         } catch (e) {}
         // Barrierefreiheits-Komfort (Schriftgröße/Kontrast/Bewegung) früh anwenden,
         // damit kein Umspringen beim Laden sichtbar ist. Key: schend_a11y_v1.

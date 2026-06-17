@@ -5,9 +5,13 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Fotos in /fotos/ — lang cachen, aber nicht immutable (kein Hash im Namen)
+# Fotos in /fotos/ — fester Dateiname OHNE Hash, Inhalt kann sich ändern (Foto-Tausch).
+# Früher 30 Tage hart → ein ersetztes Foto blieb tagelang alt. Jetzt: kurzes Frische-Fenster
+# (5 min) + stale-while-revalidate: schnell aus dem Cache, im Hintergrund auf neue Version
+# geprüft, beim nächsten Aufruf von selbst ersetzt. Gute Balance ohne Pro-Bild-Overhead.
+# (100 % stale-frei für immer = Hash im Dateinamen — größerer Umbau, auf Wunsch separat.)
 /fotos/*
-  Cache-Control: public, max-age=2592000
+  Cache-Control: public, max-age=300, stale-while-revalidate=2592000
 
 # Logo / Favicons / Manifest — wöchentlich neu prüfen
 /icon-*
@@ -17,10 +21,14 @@
 /manifest.webmanifest
   Cache-Control: public, max-age=604800
 
-# HTML & alles andere — kurz cachen (Edge: 5 min, Browser: must-revalidate)
-# Damit Deploys schnell sichtbar werden, ohne dass jeder Request zum Origin geht
+# HTML & alles andere — IMMER gegenprüfen (max-age=0, must-revalidate).
+# Cloudflare liefert das HTML ohnehin als DYNAMIC (kein Edge-Cache) → jeder Request
+# bekommt den aktuellen Deploy. max-age=300 ließ aber den BROWSER die Seite 5 min
+# vorhalten → Gast sah nach einem Deploy bis zu 5 min die alte Seite (alter Titel,
+# alte Copy, altes Bild), F5 brachte die neue. Mit max-age=0 prüft der Browser bei
+# JEDEM Aufruf nach (winziges 304 bei unverändertem HTML) → nie wieder Alt/Neu-Sprung.
 /*
-  Cache-Control: public, max-age=300, must-revalidate
+  Cache-Control: public, max-age=0, must-revalidate
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin

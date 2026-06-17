@@ -37,7 +37,7 @@ const FAQS_DE: FAQ[] = [
   },
   {
     q: "Ist Frühstück inklusive und wie sieht es aus?",
-    a: "Ja, ein großes Frühstücksbuffet ist in allen Übernachtungspreisen inklusive. Es gibt frische, regionale Produkte aus der Eifel — herzhaft und süß — täglich von 8:00 bis 10:00 Uhr.",
+    a: "Ja, ein großes Frühstücksbuffet ist in allen Übernachtungspreisen inklusive — frische, regionale Produkte aus der Eifel, herzhaft und süß, täglich von 8:00 bis 10:00 Uhr. Wer ohne Frühstück anreisen möchte, erhält 8 € pro Person und Nacht Nachlass — sagen Sie uns einfach Bescheid. Auch Gäste ohne Übernachtung sind herzlich zum Frühstück willkommen (15 € pro Person).",
   },
   {
     q: "Hat das Restaurant einen Ruhetag?",

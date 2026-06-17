@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import {
   CalendarIcon, ArrowLeft, CheckCircle2, CreditCard, Lock,
-  Landmark, ClipboardList, ChevronDown, Loader2, Star, AlertCircle, CheckCircle,
+  Landmark, ClipboardList, ChevronDown, Loader2, AlertCircle, CheckCircle,
 } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -75,13 +75,13 @@ const TYPE_BLURB: Record<string, string> = {
   Familienzimmer: "Zwei getrennte Bereiche, bis zu 4 Personen — ideal für Familien.",
 };
 
+// Buchbare Extras (Eugen 17.06.): nur noch Halbpension (auf Wunsch, 23 €) und
+// Haustier (15 €). Frühstück ist im Übernachtungspreis enthalten → KEIN Aufpreis;
+// Sonderfälle (ohne Frühstück −8 €, externes Frühstück 15 €) stehen als Hinweis,
+// nicht als buchbares Extra. Muss mit der extras-Tabelle (Migration) übereinstimmen.
 const FALLBACK_EXTRAS: Extra[] = [
-  { id: "2177e1d4-cb02-49d5-b1bb-ae995fd19d7a", name: "Frühstück", price: 12, per_night: true },
   { id: "595b0d19-c04d-4c13-a44b-53c478baa9b3", name: "Halbpension", price: 23, per_night: true },
-  { id: "04801a2c-88db-418a-ac8a-177bf145912b", name: "Fahrrad", price: 15, per_night: false },
-  { id: "3c738498-11a0-4b52-aa92-d7bfef4bdae1", name: "Late Check-out", price: 20, per_night: false },
-  { id: "1d6b93b1-78aa-4fa7-8bde-a24600290d29", name: "Früh Check-in", price: 20, per_night: false },
-  { id: "5744643a-c890-4195-bbe2-bd8100d64ed2", name: "Haustier", price: 10, per_night: true },
+  { id: "5744643a-c890-4195-bbe2-bd8100d64ed2", name: "Haustier", price: 15, per_night: true },
 ];
 
 const guestSchema = z.object({
@@ -125,7 +125,6 @@ export default function Booking() {
   const [persons, setPersons] = useState<number>(2);
   const [extrasOpen, setExtrasOpen] = useState(false);
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
-  const [selectedUpsells, setSelectedUpsells] = useState<string[]>([]);
   const [guest, setGuest] = useState({ name: "", email: "", phone: "" });
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -344,30 +343,6 @@ export default function Booking() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTypeKey, checkIn, checkOut, allBookings, rooms]);
 
-  // Wünsche auf Anfrage (keine berechneten Positionen — landen in den Notizen).
-  // Ehrlich: KEIN Suite-Upgrade (es gibt keine Suiten) und kein „Frühstück
-  // nachrüsten" (Frühstück ist immer inklusive). Jeder Punkt mit Detail-Text.
-  const UPSELLS = useMemo(() => [
-    {
-      id: "ups-familienzimmer",
-      name: "Familienzimmer statt Doppelzimmer",
-      desc: "Mehr Platz · auf Anfrage",
-      details: "Statt eines Doppelzimmers buchen Sie eines unserer zwei Familienzimmer mit separatem Schlaf- bzw. Nebenraum — mehr Raum für Familien oder einen entspannten Aufenthalt zu zweit. Nach Verfügbarkeit, Aufpreis auf Anfrage.",
-    },
-    {
-      id: "ups-romantik",
-      name: "Romantik zur Anreise",
-      desc: "Sekt & Blumen · auf Anfrage",
-      details: "Eine Flasche Eifeler Sekt und frische Blumen erwarten Sie zur Anreise auf dem Zimmer. Sagen Sie uns einfach Anlass und Wünsche — wir bereiten alles vor.",
-    },
-    {
-      id: "ups-late-checkout",
-      name: "Späte Abreise / früher Check-in",
-      desc: "auf Anfrage",
-      details: "Check-out ist regulär bis 11 Uhr. Wenn es die Belegung am Tag zulässt, bleiben Sie länger oder reisen früher an — fragen Sie uns gern, wir richten es nach Möglichkeit ein.",
-    },
-  ], []);
-
   const extrasTotal = useMemo(() => {
     return selectedExtras.reduce((sum, id) => {
       const e = extras.find((x) => x.id === id);
@@ -448,16 +423,7 @@ export default function Booking() {
         else resolve();
       });
 
-    // Gewünschte Upgrades (Upsells) in die Notizen schreiben — sie sind keine
-    // berechneten Extras, sollen dem Hotel aber sichtbar sein, damit es sie
-    // beim Bestätigen einpreisen kann.
-    const upsellWishes = selectedUpsells
-      .map((id) => UPSELLS.find((u) => u.id === id)?.name)
-      .filter(Boolean);
-    const combinedNotes = [
-      upsellWishes.length ? `Gewünschte Upgrades (auf Anfrage): ${upsellWishes.join(", ")}.` : "",
-      notes.trim(),
-    ].filter(Boolean).join("\n").trim() || null;
+    const combinedNotes = notes.trim() || null;
 
     try {
       const { data, error } = await supabase.rpc("create_booking", {
@@ -821,47 +787,16 @@ export default function Booking() {
                     </label>
                   );
                 })}
+                {/* Frühstück = inklusive. Sonderfälle (−8 € ohne / 15 € extern) ehrlich
+                    als Hinweis, nicht als (Negativ-)Buchungsposition. */}
+                <p className="text-xs text-muted-foreground leading-relaxed border-t pt-3 mt-1">
+                  <strong className="text-foreground">Frühstück ist im Übernachtungspreis enthalten.</strong>{" "}
+                  Sie reisen lieber ohne Frühstück an? Wir ziehen 8 € pro Person/Nacht ab — sagen Sie
+                  uns einfach unten im Feld „Anmerkungen" Bescheid. Gäste ohne Übernachtung sind zum
+                  Frühstück ebenfalls willkommen (15 € pro Person).
+                </p>
               </CardContent>
             )}
-          </Card>
-
-          {/* UPSELLS */}
-          <Card className="shadow-card border-secondary/30">
-            <CardHeader>
-              <CardTitle className="font-display text-xl md:text-2xl flex items-center gap-2">
-                <Star className="h-4 w-4 text-secondary" strokeWidth={1.5} /> Upgrades & Pakete
-              </CardTitle>
-              <p className="text-xs text-muted-foreground mt-1.5">Wünsche, die wir Ihnen gern bestätigen — tippen Sie auf „Das ist dabei" für Details.</p>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {UPSELLS.map((u) => {
-                const checked = selectedUpsells.includes(u.id);
-                return (
-                  <div key={u.id} className={cn("rounded-lg border p-3 transition-colors", checked && "bg-secondary/5 border-secondary")}>
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="min-w-0">
-                        <p className="font-medium text-sm">{u.name}</p>
-                        <p className="text-xs text-muted-foreground">{u.desc}</p>
-                      </div>
-                      <Button
-                        type="button"
-                        size="sm"
-                        variant={checked ? "default" : "outline"}
-                        onClick={() => setSelectedUpsells((prev) => checked ? prev.filter((x) => x !== u.id) : [...prev, u.id])}
-                      >
-                        {checked ? "✓ Vorgemerkt" : "Vormerken"}
-                      </Button>
-                    </div>
-                    <details className="group mt-2">
-                      <summary className="flex items-center gap-1 text-xs text-secondary cursor-pointer list-none select-none">
-                        <ChevronDown className="h-3 w-3 transition-transform group-open:rotate-180" /> Das ist dabei
-                      </summary>
-                      <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{u.details}</p>
-                    </details>
-                  </div>
-                );
-              })}
-            </CardContent>
           </Card>
 
           <Card className="shadow-card">
@@ -1053,16 +988,6 @@ export default function Booking() {
                         <div key={id} className="flex justify-between text-muted-foreground">
                           <span>{e.name}</span>
                           <span>{eur(lineTotal)}</span>
-                        </div>
-                      );
-                    })}
-                    {selectedUpsells.map((id) => {
-                      const u = UPSELLS.find((x) => x.id === id);
-                      if (!u) return null;
-                      return (
-                        <div key={id} className="flex justify-between text-secondary">
-                          <span>{u.name}</span>
-                          <span className="text-xs italic">auf Anfrage</span>
                         </div>
                       );
                     })}
