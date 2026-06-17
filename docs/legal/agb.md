@@ -74,4 +74,4 @@ Mit der Buchung erkennt der Gast die jeweils aktuelle Hausordnung des Hotels an.
 
 ---
 
-*Stand: Mai 2026*
+*Stand: Juni 2026*
