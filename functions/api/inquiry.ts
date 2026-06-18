@@ -110,9 +110,12 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
       body: JSON.stringify({ from, to: [to], reply_to: email, subject, html, text, tags: [{ name: "type", value: "inquiry" }] }),
     });
     if (r.status >= 200 && r.status < 300) return json({ ok: true });
+    // Detail NUR server-seitig (Cloudflare-Logs) — nie an den Client leaken.
     const detail = await r.text().catch(() => "");
-    return json({ ok: false, error: "send_failed", status: r.status, detail });
+    console.error("inquiry send_failed", r.status, detail);
+    return json({ ok: false, error: "send_failed", reason: r.status >= 500 ? "temporary" : "permanent" });
   } catch (e) {
-    return json({ ok: false, error: "send_exception", detail: String(e) });
+    console.error("inquiry send_exception", e);
+    return json({ ok: false, error: "send_exception" });
   }
 };
