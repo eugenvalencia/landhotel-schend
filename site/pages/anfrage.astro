@@ -267,6 +267,8 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
     outline: 2px solid hsl(var(--secondary));
     outline-offset: 2px;
   }
+  /* Pflicht-Checkbox (z.B. Datenschutz) rot, wenn ohne Haken abgesendet. */
+  .anf-check.anf-invalid { border-color: hsl(0 72% 51%); }
 
   /* Zimmer-Karte hebt sich hervor, sobald ihre Checkbox aktiv ist. */
   .anf-roomcard:hover { border-color: hsl(var(--secondary) / 0.5); }

@@ -72,7 +72,9 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
     .slice(0, 3)
     .map((r) => ({ kategorie: String(r.kategorie), anzahl: clampInt(r.anzahl, 1, 5) }));
 
-  if (!name || !emailOk || !phone || !checkin || !checkout || rooms.length === 0) {
+  // Datenschutz-Einwilligung ist PFLICHT (DSGVO) — ohne sie keine Verarbeitung/Versand,
+  // auch nicht bei direktem API-Aufruf (nicht nur clientseitig).
+  if (!name || !emailOk || !phone || !checkin || !checkout || rooms.length === 0 || body.datenschutz !== true) {
     return json({ ok: false, error: "validation" }, 422);
   }
 
