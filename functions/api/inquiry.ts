@@ -30,6 +30,14 @@ const esc = (s: string) =>
   String(s ?? "").replace(/[&<>"']/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string));
 
+// Eingaben kappen — Defense gegen aufgeblähte Payloads / Missbrauch.
+const clamp = (s: unknown, max: number) => String(s ?? "").trim().slice(0, max);
+const clampInt = (n: unknown, min: number, max: number) => {
+  const v = Math.trunc(Number(n));
+  return Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : min;
+};
+const ALLOWED_KATEGORIEN = new Set(["Doppelzimmer", "Doppelzimmer Einzelnutzung", "Familienzimmer"]);
+
 export const onRequestPost = async (context: { request: Request; env: Env }): Promise<Response> => {
   const { request, env } = context;
 
@@ -43,14 +51,25 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
   // Spam-Honeypot: ausgefüllt = Bot → "ok" vortäuschen, aber NICHT senden.
   if (body.company && String(body.company).trim() !== "") return json({ ok: true });
 
-  // Minimal-Validierung (das Formular validiert zusätzlich clientseitig).
-  const name = String(body.name ?? "").trim();
-  const email = String(body.email ?? "").trim();
-  const phone = String(body.phone ?? "").trim();
-  const checkin = String(body.checkin ?? "").trim();
-  const checkout = String(body.checkout ?? "").trim();
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const rooms = Array.isArray(body.rooms) ? body.rooms : [];
+  // Validierung + Längen-Limits (das Formular validiert zusätzlich clientseitig).
+  const name = clamp(body.name, 120);
+  const email = clamp(body.email, 254);
+  const phone = clamp(body.phone, 40);
+  const street = clamp(body.street, 160);
+  const city = clamp(body.city, 120);
+  const message = clamp(body.message, 2000);
+  const paket = clamp(body.paket, 120) || "Zimmer ohne Paket buchen";
+  const checkin = clamp(body.checkin, 10);
+  const checkout = clamp(body.checkout, 10);
+  const persons = clampInt(body.persons, 1, 20);
+  // E-Mail (auch reply_to): ≤254, genau ein @, keine Whitespaces/Zeilenumbrüche.
+  const emailOk = email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  // Zimmer: nur erlaubte Kategorien, max 3, Anzahl 1–5.
+  const rooms = (Array.isArray(body.rooms) ? body.rooms : [])
+    .filter((r) => r && ALLOWED_KATEGORIEN.has(String(r.kategorie)))
+    .slice(0, 3)
+    .map((r) => ({ kategorie: String(r.kategorie), anzahl: clampInt(r.anzahl, 1, 5) }));
+
   if (!name || !emailOk || !phone || !checkin || !checkout || rooms.length === 0) {
     return json({ ok: false, error: "validation" }, 422);
   }
@@ -66,7 +85,7 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
   const from = env.INQUIRY_FROM || "Landhaus Schend Anfrage <buchung@landhaus-schend.de>";
 
   const zimmerStr = rooms
-    .map((r) => `${r.kategorie ?? "?"}${r.anzahl && r.anzahl > 1 ? ` × ${r.anzahl}` : ""}`)
+    .map((r) => `${r.kategorie}${r.anzahl > 1 ? ` × ${r.anzahl}` : ""}`)
     .join(", ");
   const extras = [
     body.halbpension ? "Halbpension (zzgl. 23 €/P./Tag)" : null,
@@ -76,16 +95,16 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
 
   const rows: Array<[string, string]> = [
     ["Name", name],
-    ["Adresse", [body.street, body.city].filter(Boolean).join(", ") || "—"],
+    ["Adresse", [street, city].filter(Boolean).join(", ") || "—"],
     ["E-Mail", email],
     ["Telefon", phone],
-    ["Personen", String(body.persons ?? "—")],
-    ["Paket", String(body.paket ?? "Zimmer ohne Paket buchen")],
+    ["Personen", String(persons)],
+    ["Paket", paket],
     ["Zimmerwunsch", zimmerStr || "—"],
     ["Anreise", checkin],
     ["Abreise", checkout],
     ["Extras", extras.length ? extras.join(", ") : "—"],
-    ["Nachricht", String(body.message ?? "").trim() || "—"],
+    ["Nachricht", message || "—"],
     ["Datenschutz akzeptiert", body.datenschutz ? "Ja" : "—"],
   ];
 

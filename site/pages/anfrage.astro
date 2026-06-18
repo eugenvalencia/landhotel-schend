@@ -10,9 +10,9 @@ import { PAKETE } from "../lib/pakete";
 // Drei Kategorien — exakt wie auf der Original-Seite (DZ, DZ-Einzelnutzung,
 // Familienzimmer). Preise immer "ab" (unverbindlich).
 const KATEGORIEN = [
-  { key: "Doppelzimmer", label: "Doppelzimmer", ab: "ab 57 € p. P./Nacht" },
-  { key: "Doppelzimmer Einzelnutzung", label: "Doppelzimmer · Einzelnutzung", ab: "ab 80 € p. P./Nacht" },
-  { key: "Familienzimmer", label: "Familienzimmer", ab: "ab 170 € / Nacht" },
+  { key: "Doppelzimmer", label: "Doppelzimmer", sub: "", ab: "ab 57 € p. P./Nacht" },
+  { key: "Doppelzimmer Einzelnutzung", label: "Doppelzimmer", sub: "Einzelnutzung", ab: "ab 80 € p. P./Nacht" },
+  { key: "Familienzimmer", label: "Familienzimmer", sub: "", ab: "ab 170 € / Nacht" },
 ];
 
 // Paket-Dropdown: alle Pakete, Default = "Zimmer ohne Paket buchen".
@@ -107,12 +107,14 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
           <legend class="anf-legend">Gewünschte Zimmer <span class="text-muted-foreground font-normal normal-case tracking-normal">(Mehrfachauswahl möglich)</span></legend>
           <div class="mt-3 space-y-3">
             {KATEGORIEN.map((k) => (
-              <div class="flex items-center justify-between gap-4 rounded-md border border-border bg-card px-4 py-3">
-                <label class="flex items-center gap-3 cursor-pointer">
+              <div class="anf-roomcard flex items-center justify-between gap-4 rounded-lg border border-border bg-card px-4 py-3.5 transition-colors">
+                <label class="flex items-center gap-3 cursor-pointer min-w-0">
                   <input type="checkbox" name="kategorie" value={k.key} class="anf-check" data-cat={k.key} />
-                  <span>
-                    <span class="block font-medium">{k.label}</span>
-                    <span class="block text-xs text-secondary">{k.ab}</span>
+                  <span class="min-w-0">
+                    <span class="block font-medium leading-snug">
+                      {k.label}{k.sub && <span class="text-muted-foreground font-normal whitespace-nowrap"> · {k.sub}</span>}
+                    </span>
+                    <span class="block text-xs text-secondary mt-0.5">{k.ab}</span>
                   </span>
                 </label>
                 <label class="flex items-center gap-2 text-sm text-muted-foreground shrink-0">
@@ -195,9 +197,12 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
     margin-bottom: 0.4rem;
   }
   .anf-req { color: hsl(var(--secondary)); margin-left: 0.15rem; }
-  .anf-field input,
-  .anf-field select,
-  .anf-field textarea {
+  /* Nur DIREKTE Kinder stylen — sonst trifft die Unterstrich-Regel auch die
+     Checkboxen + Anzahl-Selects in den Zimmer-Karten (die im fieldset.anf-field
+     liegen) und macht sie 100% breit. */
+  .anf-field > input,
+  .anf-field > select,
+  .anf-field > textarea {
     width: 100%;
     background: transparent;
     border: 0;
@@ -208,20 +213,20 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
     border-radius: 0;
     transition: border-color 0.2s ease;
   }
-  .anf-field textarea {
+  .anf-field > textarea {
     border: 1px solid hsl(var(--border));
     border-radius: 0.375rem;
     padding: 0.7rem 0.8rem;
     resize: vertical;
   }
-  .anf-field input:focus,
-  .anf-field select:focus,
-  .anf-field textarea:focus {
+  .anf-field > input:focus,
+  .anf-field > select:focus,
+  .anf-field > textarea:focus {
     outline: none;
     border-color: hsl(var(--secondary));
   }
-  .anf-field input.anf-invalid,
-  .anf-field select.anf-invalid {
+  .anf-field > input.anf-invalid,
+  .anf-field > select.anf-invalid {
     border-color: hsl(0 72% 51%);
   }
   .anf-mini-select {
@@ -233,10 +238,45 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
     font-size: 0.85rem;
   }
   .anf-mini-select:disabled { opacity: 0.4; }
+
+  /* Custom-Checkbox — saubere, themensichere Box mit Häkchen (statt nativem
+     accent-color-Klotz, der je nach OS/Theme als dunkles Quadrat rendert). */
   .anf-check {
-    width: 1.15rem; height: 1.15rem;
-    accent-color: hsl(var(--secondary));
+    appearance: none; -webkit-appearance: none;
+    width: 1.25rem; height: 1.25rem;
     flex-shrink: 0;
+    margin: 0;
+    border: 1.5px solid hsl(var(--border));
+    border-radius: 0.35rem;
+    background: hsl(var(--background));
+    cursor: pointer;
+    display: inline-grid;
+    place-content: center;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .anf-check::before {
+    content: "";
+    width: 0.7rem; height: 0.7rem;
+    transform: scale(0);
+    transition: transform 0.15s ease;
+    background: hsl(var(--secondary-foreground));
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0, 43% 62%);
+  }
+  .anf-check:checked {
+    background: hsl(var(--secondary));
+    border-color: hsl(var(--secondary));
+  }
+  .anf-check:checked::before { transform: scale(1); }
+  .anf-check:focus-visible {
+    outline: 2px solid hsl(var(--secondary));
+    outline-offset: 2px;
+  }
+
+  /* Zimmer-Karte hebt sich hervor, sobald ihre Checkbox aktiv ist. */
+  .anf-roomcard:hover { border-color: hsl(var(--secondary) / 0.5); }
+  .anf-roomcard:has(input:checked) {
+    border-color: hsl(var(--secondary));
+    background: hsl(var(--secondary) / 0.06);
   }
   #anf-status.is-ok { background: hsl(140 45% 96%); color: hsl(140 50% 22%); border: 1px solid hsl(140 40% 80%); }
   #anf-status.is-err { background: hsl(0 70% 97%); color: hsl(0 60% 38%); border: 1px solid hsl(0 60% 85%); }
