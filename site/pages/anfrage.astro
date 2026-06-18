@@ -15,7 +15,7 @@ const KATEGORIEN = [
   { key: "Familienzimmer", label: "Familienzimmer", sub: "", ab: "ab 170 € / Nacht" },
 ];
 
-// Paket-Dropdown: alle Pakete, Default = "Zimmer ohne Paket buchen".
+// Paket-Dropdown: alle Pakete, Default = "Zimmer ohne Paket".
 const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
 ---
 
@@ -92,7 +92,7 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
             <label for="paket">Paket</label>
             <select id="paket" name="paket">
               {PAKET_OPTIONEN.map((p) => (
-                <option value={p.value} selected={p.value === "Zimmer ohne Paket buchen"}>{p.title}</option>
+                <option value={p.value} selected={p.value === "Zimmer ohne Paket"}>{p.title}</option>
               ))}
             </select>
           </div>

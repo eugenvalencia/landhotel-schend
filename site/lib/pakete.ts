@@ -117,11 +117,11 @@ export const PAKETE: Paket[] = [
   },
   {
     slug: "zimmer-ohne-paket",
-    title: "Zimmer ohne Paket buchen",
+    title: "Zimmer ohne Paket",
     cover: "/pakete/paket-b-2.jpg",
     gallery: ["/pakete/paket-b-2.jpg", "/fotos/doppelzimmer-komfort-mit-doppelbett-und-holzboden-landhaus-schend-vulkaneifel.jpg", "/pakete/eifel-5.jpg"],
     intro:
-      "Sie möchten flexibel bleiben? Buchen Sie eines unserer Zimmer ohne Paket — ganz nach Ihren Wünschen.",
+      "Sie möchten flexibel bleiben? Fragen Sie eines unserer Zimmer ohne Paket an — ganz nach Ihren Wünschen.",
     highlights: [
       "Doppelzimmer, Familienzimmer oder Einzelnutzung",
       "Großes Frühstücksbuffet inklusive",
