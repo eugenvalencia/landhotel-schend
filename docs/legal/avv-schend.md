@@ -7,10 +7,17 @@
 > **Vor Unterzeichnung zwingend zu erledigen (Walter / Eugen):**
 > 1. ⬜ Echte Anschriften beider Parteien einsetzen (Hotel + Conexa Digital).
 > 2. ⬜ Anwaltliche Prüfung (Vorlage orientiert sich an DSK-/GDD-Mustern, ersetzt keine Beratung).
-> 3. ⬜ Supabase-Region bestätigen (Frankfurt / eu-central-1) — für § 5 Drittland-Bewertung.
+> 3. ✅ Supabase-Region bestätigt: **eu-central-1 (Frankfurt, EU)** — am 18.06.2026 direkt am Projekt verifiziert (Projekt „Landhotel Schend", ACTIVE_HEALTHY). Kein Drittland-Transfer auf DB-Ebene.
 > 4. ⬜ Resend: EU-Region + DPF-/SCC-Grundlage bestätigen (Sender `buchung@landhaus-schend.de`).
-> 5. ⬜ Verweis-Anlage TOMs (`conexa-toms.md`) auf den Schend-Stack anpassen
->    (Schend läuft auf **Supabase + Cloudflare + Resend**, NICHT auf Hetzner — siehe Anlage-Hinweis unten).
+> 5. ✅ Verweis-Anlage TOMs auf den Schend-Stack zugeschnitten — Anlage 1 enthält die
+>    Schend-Maßgabe (**Supabase + Cloudflare + Resend**, Hetzner-Eigenhosting ausgeschlossen) + Schutzziele.
+>
+> **AVV-Quick-Check (Art. 28, 18.06.2026):** Alle 9 Pflichtinhalte geregelt, kein kritischer Fund.
+> Die zuvor unvollständigen Standardklauseln wurden ergänzt: Drittland-Weisungsbindung + Warnpflicht
+> bei rechtswidriger Weisung (§ 4(1)/(1a)), nachvertragliche Vertraulichkeit (§ 4(4)),
+> Weiterleitung direkter Betroffenenanfragen (§ 4(3)), 30-Tage-Frist + Kopien-Löschung (§ 4(6)),
+> Sub-AV-Flow-down + AV-Haftung (§ 5(4)), Dritt-Auditor-Option (§ 6), Schutzziele (Anlage 1).
+> **Verbleibend:** echte Anschriften (Pkt. 1), anwaltliche Prüfung (Pkt. 2), Resend-EU-Region/DPF bestätigen (Pkt. 4).
 >
 > **Bewusst NICHT enthalten** (weil im Schend-Buchungspfad nicht eingesetzt — Prinzip „AVV spiegelt die Realität"):
 > KI-/LLM-Verarbeitung (Anthropic/Claude/DeepSeek), n8n-Workflows, Partner-Empfehlungs-Tool,
@@ -79,15 +86,28 @@ KI-gestützte Auswertung von Gäste-Daten findet **nicht** statt.
 ## § 4 Pflichten des Auftragsverarbeiters
 
 (1) Der AV verarbeitet personenbezogene Daten **ausschließlich** nach dokumentierten Weisungen
-des Verantwortlichen im Rahmen dieses Vertrages.
+des Verantwortlichen im Rahmen dieses Vertrages; dies gilt auch für eine etwaige Übermittlung
+in ein Drittland oder an eine internationale Organisation. Ist der AV nach Unionsrecht oder dem
+Recht eines Mitgliedstaats zu einer Verarbeitung verpflichtet, teilt er dem Verantwortlichen
+diese rechtlichen Anforderungen vor der Verarbeitung mit, sofern das betreffende Recht eine
+solche Mitteilung nicht wegen eines wichtigen öffentlichen Interesses verbietet.
+
+(1a) Der AV informiert den Verantwortlichen **unverzüglich**, wenn er der Auffassung ist, dass
+eine Weisung gegen die DSGVO oder andere Datenschutzvorschriften der Union oder der
+Mitgliedstaaten verstößt.
 
 (2) Der AV gewährleistet **technische und organisatorische Maßnahmen (TOMs)** nach Art. 32 DSGVO —
 siehe Anlage 1.
 
-(3) Der AV unterstützt den Verantwortlichen bei der Erfüllung von Betroffenenrechten
-(Art. 12–23 DSGVO) und Meldepflichten (Art. 33/34 DSGVO).
+(3) Der AV unterstützt den Verantwortlichen — soweit nach Art der Verarbeitung möglich — mit
+geeigneten technischen und organisatorischen Maßnahmen bei der Erfüllung von Betroffenenrechten
+(Art. 12–23 DSGVO) und Meldepflichten (Art. 33/34 DSGVO). Wenden sich betroffene Personen
+unmittelbar an den AV, leitet er das Anliegen **unverzüglich** an den Verantwortlichen weiter
+und wird ohne dessen Weisung nicht selbst tätig.
 
-(4) Der AV verpflichtet alle mit den Daten befassten Personen zur Vertraulichkeit.
+(4) Der AV verpflichtet alle mit den Daten befassten Personen zur Vertraulichkeit oder stellt
+sicher, dass sie einer angemessenen gesetzlichen Verschwiegenheitspflicht unterliegen. Diese
+Verpflichtung besteht **auch nach Beendigung** dieses Vertrages fort.
 
 (5) Der AV unterstützt den Verantwortlichen bei Datenschutz-Folgenabschätzungen (Art. 35) und
 Konsultationen mit der Aufsichtsbehörde (Art. 36), soweit erforderlich.
@@ -96,7 +116,9 @@ Konsultationen mit der Aufsichtsbehörde (Art. 36), soweit erforderlich.
 Wahl des Verantwortlichen zurück, sofern keine gesetzliche Aufbewahrungspflicht (z. B.
 steuerliche Aufbewahrung der Buchungs-/Rechnungsdaten) entgegensteht. Stornierte Buchungen
 bleiben als Datensatz zu Steuer-/Nachweiszwecken erhalten (markiert als storniert), bis die
-gesetzliche Aufbewahrungsfrist abläuft.
+gesetzliche Aufbewahrungsfrist abläuft. Die Löschung oder Rückgabe erfolgt **innerhalb von
+30 Tagen** nach Beendigung der Verarbeitung; vorhandene Kopien werden gelöscht, soweit keine
+gesetzliche Aufbewahrungspflicht entgegensteht.
 
 ## § 5 Sub-Auftragsverarbeiter
 
@@ -105,7 +127,7 @@ Beauftragung folgender Sub-Auftragsverarbeiter (Stand bei Vertragsschluss):
 
 | Sub-AV | Zweck | Standort | DSGVO-Grundlage |
 |--------|-------|----------|-----------------|
-| Supabase Inc. | Datenbank, Authentifizierung, Edge Functions (Buchungs-Backend) | EU (Frankfurt, eu-central-1) — *zu bestätigen* | AVV (Art. 28) + EU-SCC |
+| Supabase Inc. | Datenbank, Authentifizierung, Edge Functions (Buchungs-Backend) | EU (Frankfurt, eu-central-1) — verifiziert 18.06.2026 | AVV (Art. 28) + EU-SCC |
 | Cloudflare, Inc. | Website-Hosting (Pages), CDN, DDoS-/WAF-Schutz | global (USA-Firma) | DPF-zertifiziert + EU-SCC |
 | Resend (Plus Five Five, Inc.) | Versand transaktionaler E-Mails (Buchung/Bestätigung/Storno) | EU-Region; Anbieter USA | DPF/EU-SCC — *zu bestätigen* |
 
@@ -119,13 +141,22 @@ Cloudflare und Resend) stützt sich der Datentransfer auf Art. 45 DSGVO (Angemes
 EU-US Data Privacy Framework, sofern der jeweilige Anbieter zertifiziert ist) und/oder
 Art. 46 Abs. 2 lit. c DSGVO (EU-Standarddatenschutzklauseln).
 
+(4) Der AV erlegt jedem Sub-Auftragsverarbeiter durch Vertrag **dieselben Datenschutzpflichten**
+auf, die in diesem Vertrag festgelegt sind (Art. 28 Abs. 4 DSGVO) — insbesondere hinreichende
+Garantien für geeignete technische und organisatorische Maßnahmen. Kommt ein Sub-AV seinen
+Datenschutzpflichten nicht nach, **haftet der AV** gegenüber dem Verantwortlichen für die
+Einhaltung der Pflichten dieses Sub-AV.
+
 ## § 6 Kontrollrechte des Verantwortlichen
 
 Der Verantwortliche hat das Recht, sich nach vorheriger Anmeldung von der Einhaltung der TOMs zu
 überzeugen — durch Vorlage einer aktuellen TOMs-Dokumentation, schriftliche Selbstauskunft des AV
 oder Inspektion vor Ort nach Terminvereinbarung (max. einmal pro Jahr, bei begründetem Anlass
 häufiger). Die Kosten für Vor-Ort-Inspektionen trägt der Verantwortliche, sofern keine
-wesentlichen Verstöße festgestellt werden.
+wesentlichen Verstöße festgestellt werden. Der Verantwortliche kann die Kontrolle auch durch
+einen zur Vertraulichkeit verpflichteten, von ihm mandatierten Dritten (Auditor) durchführen
+lassen. Alle im Rahmen der Kontrolle erlangten Informationen behandeln die Beteiligten
+vertraulich.
 
 ## § 7 Meldepflichten / Datenpannen
 
@@ -163,7 +194,10 @@ Hauptvertrages.
    TLS, DDoS/WAF) und **Resend** (E-Mail-Versand). Die in den Conexa-TOMs beschriebene
    Hetzner-Eigenhosting-Schicht kommt für Schend **nicht** zur Anwendung; die übrigen
    organisatorischen Maßnahmen (Least-Privilege, 2FA, Audit-Log, Backups, Mandanten-Trennung via
-   Row-Level-Security) gelten unverändert.
+   Row-Level-Security) gelten unverändert. Die Maßnahmen dienen den Schutzzielen
+   **Vertraulichkeit, Integrität, Verfügbarkeit und Belastbarkeit** der Systeme (Art. 32 Abs. 1
+   lit. b DSGVO) und sind unter Berücksichtigung des Risikos für die Rechte und Freiheiten der
+   betroffenen Gäste als angemessen bewertet (Art. 32 Abs. 1, 2 DSGVO).
 2. Beauftragte Module (Hauptvertrag): Website-Hosting, Buchungssystem, transaktionaler E-Mail-Versand.
 
 ---
