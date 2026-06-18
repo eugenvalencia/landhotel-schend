@@ -9,10 +9,12 @@ import HeaderWeather from "@/components/HeaderWeather";
 import HeaderMegaMenu from "@/components/HeaderMegaMenu";
 import { PAKETE } from "@/lib/pakete";
 
-// Das Hotel hat genau zwei Zimmer-Arten — KEINE Einzelzimmer, KEINE Suiten.
+// Mega-Menü zeigt auf die stabilen Typ-Seiten (/zimmer/<slug>/, Astro, prerendered),
+// NICHT auf einzelne Zimmer-UUIDs — die ändern sich in der DB → tote Links/404.
+// hard:true = echte Navigation (Astro-Seite, keine React-Route).
 const ROOMS_MEGA = [
-  { label: "Doppelzimmer", to: "/rooms/8e3d91a0-0711-4cdf-a580-c2debb684d0c", hint: "Komfortabel, mit Balkon — ab 57 € pro Person" },
-  { label: "Familienzimmer", to: "/rooms/2dffe866-7b1a-42d5-8ea9-29c9f2975994", hint: "Zwei getrennte Räume, bis 4 Personen — ab 170 €" },
+  { label: "Doppelzimmer", to: "/zimmer/doppelzimmer/", hint: "Komfortabel, mit Balkon — ab 57 € pro Person", hard: true },
+  { label: "Familienzimmer", to: "/zimmer/familienzimmer/", hint: "Zwei getrennte Räume, bis 4 Personen — ab 170 €", hard: true },
 ];
 
 const PAKETE_MEGA = PAKETE.slice(0, 5).map((p) => ({

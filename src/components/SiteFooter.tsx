@@ -51,10 +51,10 @@ export default function SiteFooter() {
 
           {/* Social */}
           <div className="mt-6 flex items-center gap-3">
-            <a href="https://www.facebook.com/Landhotel.Schend/" target="_blank" rel="noopener noreferrer" aria-label="Landhaus Schend auf Facebook" className="footer-link inline-flex h-10 w-10 items-center justify-center rounded-full border border-[hsl(38_30%_92%)]/20 hover:border-secondary hover:text-secondary transition-colors">
+            <a href="https://www.facebook.com/Landhotel.Schend/" target="_blank" rel="noopener noreferrer" aria-label="Landhaus Schend auf Facebook" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[hsl(38_30%_92%)]/20 hover:border-secondary hover:text-secondary transition-colors">
               <Facebook className="h-4 w-4" strokeWidth={1.6} />
             </a>
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Landhaus Schend auf Instagram" className="footer-link inline-flex h-10 w-10 items-center justify-center rounded-full border border-[hsl(38_30%_92%)]/20 hover:border-secondary hover:text-secondary transition-colors">
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Landhaus Schend auf Instagram" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[hsl(38_30%_92%)]/20 hover:border-secondary hover:text-secondary transition-colors">
               <Instagram className="h-4 w-4" strokeWidth={1.6} />
             </a>
           </div>

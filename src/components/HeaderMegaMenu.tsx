@@ -5,6 +5,9 @@ interface MegaItem {
   label: string;
   to: string;
   hint?: string;
+  // hard:true → echtes <a href> (Voll-Navigation), für Ziele außerhalb der
+  // React-Routen (z.B. Astro-Seiten wie /zimmer/<slug>/). Sonst react-router <Link>.
+  hard?: boolean;
 }
 
 interface MegaMenuProps {
@@ -83,12 +86,10 @@ export default function HeaderMegaMenu({
         >
           {/* Items column */}
           <ul className="flex-1 p-3">
-            {items.map((it) => (
-              <li key={it.to}>
-                <Link
-                  to={it.to}
-                  className="block px-3 py-2.5 rounded-md hover:bg-muted/50 transition-colors group"
-                >
+            {items.map((it) => {
+              const cls = "block px-3 py-2.5 rounded-md hover:bg-muted/50 transition-colors group";
+              const inner = (
+                <>
                   <p className="font-display text-sm text-primary group-hover:text-secondary transition-colors">
                     {it.label}
                   </p>
@@ -97,9 +98,18 @@ export default function HeaderMegaMenu({
                       {it.hint}
                     </p>
                   )}
-                </Link>
-              </li>
-            ))}
+                </>
+              );
+              return (
+                <li key={it.to}>
+                  {it.hard ? (
+                    <a href={it.to} className={cls}>{inner}</a>
+                  ) : (
+                    <Link to={it.to} className={cls}>{inner}</Link>
+                  )}
+                </li>
+              );
+            })}
           </ul>
 
           {/* Preview image */}
