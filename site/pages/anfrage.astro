@@ -86,11 +86,7 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
         <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
           <div class="anf-field">
             <label for="persons">Anzahl Personen<span class="anf-req">*</span></label>
-            <select id="persons" name="persons" required>
-              {[1,2,3,4,5,6,7,8].map((n) => (
-                <option value={n} selected={n === 2}>{n} {n === 1 ? "Person" : "Personen"}</option>
-              ))}
-            </select>
+            <input id="persons" name="persons" type="number" min="1" max="99" inputmode="numeric" value="2" required />
           </div>
           <div class="anf-field">
             <label for="paket">Paket</label>
@@ -107,26 +103,25 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
           <legend class="anf-legend">Gewünschte Zimmer <span class="text-muted-foreground font-normal normal-case tracking-normal">(Mehrfachauswahl möglich)</span></legend>
           <div class="mt-3 space-y-3">
             {KATEGORIEN.map((k) => (
-              <div class="anf-roomcard flex items-center justify-between gap-4 rounded-lg border border-border bg-card px-4 py-3.5 transition-colors">
-                <label class="flex items-center gap-3 cursor-pointer min-w-0">
-                  <input type="checkbox" name="kategorie" value={k.key} class="anf-check" data-cat={k.key} />
-                  <span class="min-w-0">
-                    <span class="block font-medium leading-snug">
-                      {k.label}{k.sub && <span class="text-muted-foreground font-normal whitespace-nowrap"> · {k.sub}</span>}
-                    </span>
-                    <span class="block text-xs text-secondary mt-0.5">{k.ab}</span>
+              <label class="anf-roomcard flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3.5 transition-colors cursor-pointer">
+                <input type="checkbox" name="kategorie" value={k.key} class="anf-check" />
+                <span class="min-w-0">
+                  <span class="block font-medium leading-snug">
+                    {k.label}{k.sub && <span class="text-muted-foreground font-normal whitespace-nowrap"> · {k.sub}</span>}
                   </span>
-                </label>
-                <label class="flex items-center gap-2 text-sm text-muted-foreground shrink-0">
-                  <span class="hidden sm:inline">Anzahl</span>
-                  <select name={`anzahl__${k.key}`} class="anf-mini-select" disabled data-anzahl={k.key}>
-                    {[1,2,3,4,5].map((n) => <option value={n}>{n}</option>)}
-                  </select>
-                </label>
-              </div>
+                  <span class="block text-xs text-secondary mt-0.5">{k.ab}</span>
+                </span>
+              </label>
             ))}
           </div>
-          <p class="mt-2 text-xs text-muted-foreground">Halbpension auf Wunsch: zzgl. 23 € pro Person/Tag — bitte unten ankreuzen.</p>
+          <div class="mt-4 flex items-center gap-3">
+            <label for="zimmer_anzahl" class="text-sm font-medium text-foreground/90">Anzahl Zimmer</label>
+            <select id="zimmer_anzahl" name="zimmer_anzahl" class="anf-count">
+              {[1,2,3,4,5,6,7,8,9].map((n) => <option value={String(n)}>{n} Zimmer</option>)}
+              <option value="mehr">mehr</option>
+            </select>
+          </div>
+          <p class="mt-3 text-xs text-muted-foreground">Halbpension auf Wunsch: zzgl. 23 € pro Person/Tag — bitte unten ankreuzen.</p>
         </fieldset>
 
         <!-- Zeitraum -->
@@ -229,15 +224,16 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
   .anf-field > select.anf-invalid {
     border-color: hsl(0 72% 51%);
   }
-  .anf-mini-select {
-    background: transparent;
+  .anf-count {
+    background: hsl(var(--background));
     border: 1px solid hsl(var(--border));
     border-radius: 0.375rem;
-    padding: 0.3rem 0.5rem;
+    padding: 0.45rem 0.7rem;
     color: hsl(var(--foreground));
-    font-size: 0.85rem;
+    font-size: 0.95rem;
+    cursor: pointer;
   }
-  .anf-mini-select:disabled { opacity: 0.4; }
+  .anf-count:focus { outline: none; border-color: hsl(var(--secondary)); }
 
   /* Custom-Checkbox — saubere, themensichere Box mit Häkchen (statt nativem
      accent-color-Klotz, der je nach OS/Theme als dunkles Quadrat rendert). */
@@ -302,14 +298,6 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
       }
     });
 
-    // Anzahl-Dropdown nur aktiv, wenn die Kategorie angehakt ist.
-    form.querySelectorAll<HTMLInputElement>("input[data-cat]").forEach((cb) => {
-      cb.addEventListener("change", () => {
-        const sel = form.querySelector<HTMLSelectElement>(`select[data-anzahl="${cb.dataset.cat}"]`);
-        if (sel) sel.disabled = !cb.checked;
-      });
-    });
-
     const setStatus = (msg: string, ok: boolean) => {
       statusEl.hidden = false;
       statusEl.textContent = msg;
@@ -323,17 +311,24 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
       const honey = (form.elements.namedItem("company") as HTMLInputElement)?.value;
       if (honey) return;
 
-      // Pflichtfelder + mind. eine Kategorie.
+      // Pflichtfelder + mind. eine Kategorie. Autofill-tolerant: vom Browser
+      // automatisch ausgefüllte Felder (:autofill) NICHT fälschlich als leer
+      // markieren — Brave/Chromium geben deren value je nach Zustand erst nach
+      // Interaktion frei; sonst wäre alles rot, obwohl sichtbar ausgefüllt.
       const kategorien = Array.from(form.querySelectorAll<HTMLInputElement>('input[name="kategorie"]:checked'));
       let firstInvalid: HTMLElement | null = null;
+      const autofilled = (el: HTMLInputElement) => {
+        try { return el.matches(":-webkit-autofill") || el.matches(":autofill"); } catch { return false; }
+      };
       form.querySelectorAll<HTMLInputElement>("[required]").forEach((el) => {
-        const bad = (el.type === "checkbox" && !el.checked) || (el.type !== "checkbox" && !el.value.trim());
+        const bad = el.type === "checkbox" ? !el.checked : (!el.value.trim() && !autofilled(el));
         el.classList.toggle("anf-invalid", bad);
         if (bad && !firstInvalid) firstInvalid = el;
       });
-      const email = (form.elements.namedItem("email") as HTMLInputElement)?.value.trim() || "";
-      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      if (!emailOk) { form.querySelector("#email")?.classList.add("anf-invalid"); firstInvalid ||= form.querySelector("#email"); }
+      const emailEl = form.querySelector<HTMLInputElement>("#email");
+      const email = emailEl?.value.trim() || "";
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || (!email && !!emailEl && autofilled(emailEl));
+      if (!emailOk) { emailEl?.classList.add("anf-invalid"); firstInvalid ||= emailEl; }
 
       if (firstInvalid) {
         setStatus("Bitte füllen Sie die markierten Pflichtfelder aus.", false);
@@ -346,10 +341,7 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
       }
 
       // Payload bauen.
-      const rooms = kategorien.map((cb) => {
-        const sel = form.querySelector<HTMLSelectElement>(`select[name="anzahl__${cb.value}"]`);
-        return { kategorie: cb.value, anzahl: sel ? Number(sel.value) : 1 };
-      });
+      const rooms = kategorien.map((cb) => ({ kategorie: cb.value }));
       const get = (n: string) => (form.elements.namedItem(n) as HTMLInputElement)?.value.trim() || "";
       const checked = (n: string) => (form.elements.namedItem(n) as HTMLInputElement)?.checked || false;
       const payload = {
@@ -358,6 +350,7 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
         persons: Number(get("persons")) || 1,
         paket: get("paket"),
         rooms,
+        zimmer: get("zimmer_anzahl"),
         checkin: get("checkin"), checkout: get("checkout"),
         message: get("message"),
         halbpension: checked("halbpension"),
@@ -382,6 +375,8 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
           form.querySelectorAll<HTMLSelectElement>("select[data-anzahl]").forEach((s) => (s.disabled = true));
           setStatus("Vielen Dank! Ihre Anfrage ist bei uns eingegangen — wir melden uns persönlich bei Ihnen zurück.", true);
           statusEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else if (data.error === "validation") {
+          setStatus("Bitte prüfen Sie Ihre Angaben — tippen Sie sie ggf. direkt ein. Automatisch ausgefüllte Felder (Browser) werden nicht immer übernommen.", false);
         } else {
           setStatus("Das hat leider nicht geklappt. Bitte rufen Sie uns an: +49 6573 306 — oder versuchen Sie es später erneut.", false);
         }

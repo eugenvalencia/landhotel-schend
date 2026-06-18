@@ -17,7 +17,7 @@ interface Env {
 interface Room { kategorie?: string; anzahl?: number }
 interface Payload {
   name?: string; street?: string; city?: string; email?: string; phone?: string;
-  persons?: number; paket?: string; rooms?: Room[];
+  persons?: number; paket?: string; rooms?: Room[]; zimmer?: string;
   checkin?: string; checkout?: string; message?: string;
   halbpension?: boolean; kinderbett?: boolean; hund?: boolean;
   datenschutz?: boolean; company?: string;
@@ -37,6 +37,7 @@ const clampInt = (n: unknown, min: number, max: number) => {
   return Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : min;
 };
 const ALLOWED_KATEGORIEN = new Set(["Doppelzimmer", "Doppelzimmer Einzelnutzung", "Familienzimmer"]);
+const ALLOWED_ZIMMER = new Set(["1", "2", "3", "4", "5", "6", "7", "8", "9", "mehr"]);
 
 export const onRequestPost = async (context: { request: Request; env: Env }): Promise<Response> => {
   const { request, env } = context;
@@ -61,7 +62,8 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
   const paket = clamp(body.paket, 120) || "Zimmer ohne Paket buchen";
   const checkin = clamp(body.checkin, 10);
   const checkout = clamp(body.checkout, 10);
-  const persons = clampInt(body.persons, 1, 20);
+  const persons = clampInt(body.persons, 1, 99);
+  const zimmer = ALLOWED_ZIMMER.has(String(body.zimmer)) ? String(body.zimmer) : "1";
   // E-Mail (auch reply_to): ≤254, genau ein @, keine Whitespaces/Zeilenumbrüche.
   const emailOk = email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   // Zimmer: nur erlaubte Kategorien, max 3, Anzahl 1–5.
@@ -101,6 +103,7 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
     ["Personen", String(persons)],
     ["Paket", paket],
     ["Zimmerwunsch", zimmerStr || "—"],
+    ["Anzahl Zimmer", zimmer === "mehr" ? "mehr (bitte klären)" : `${zimmer} Zimmer`],
     ["Anreise", checkin],
     ["Abreise", checkout],
     ["Extras", extras.length ? extras.join(", ") : "—"],
