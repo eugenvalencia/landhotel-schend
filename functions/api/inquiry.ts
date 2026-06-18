@@ -57,7 +57,9 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
 
   if (!env.RESEND_API_KEY) {
     // Ohne Key kann nicht gesendet werden — ehrlicher Fehler statt Schein-Erfolg.
-    return json({ ok: false, error: "mail_not_configured" }, 503);
+    // Status 200 mit ok:false: Cloudflare überdeckt 5xx-Antworten der Function mit
+    // einer eigenen Fehlerseite, dann käme die Ursache nie beim Client an.
+    return json({ ok: false, error: "mail_not_configured" });
   }
 
   const to = env.INQUIRY_TO || "e.neifer@outlook.de";
@@ -108,8 +110,9 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
       body: JSON.stringify({ from, to: [to], reply_to: email, subject, html, text, tags: [{ name: "type", value: "inquiry" }] }),
     });
     if (r.status >= 200 && r.status < 300) return json({ ok: true });
-    return json({ ok: false, error: "send_failed", status: r.status }, 502);
-  } catch {
-    return json({ ok: false, error: "send_exception" }, 502);
+    const detail = await r.text().catch(() => "");
+    return json({ ok: false, error: "send_failed", status: r.status, detail });
+  } catch (e) {
+    return json({ ok: false, error: "send_exception", detail: String(e) });
   }
 };

@@ -336,7 +336,8 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        if (res.ok) {
+        const data = await res.json().catch(() => ({ ok: false }));
+        if (data.ok) {
           form.reset();
           form.querySelectorAll<HTMLSelectElement>("select[data-anzahl]").forEach((s) => (s.disabled = true));
           setStatus("Vielen Dank! Ihre Anfrage ist bei uns eingegangen — wir melden uns persönlich bei Ihnen zurück.", true);
