@@ -1,0 +1,355 @@
+---
+// Unverbindliche Buchungs-ANFRAGE — bewusst schlank wie das Original von
+// Landhaus Schend: Gast schickt eine Anfrage, das Hotel prüft Verfügbarkeit
+// und antwortet. KEINE Live-Verfügbarkeit, KEINE verbindlichen Preise (nur
+// "ab"), KEINE Speicherung. Versand über die Cloudflare Pages Function
+// /api/inquiry → Resend. Ersetzt die alte React/Supabase-Buchungsstrecke.
+import Layout from "../layouts/Layout.astro";
+import { PAKETE } from "../lib/pakete";
+
+// Drei Kategorien — exakt wie auf der Original-Seite (DZ, DZ-Einzelnutzung,
+// Familienzimmer). Preise immer "ab" (unverbindlich).
+const KATEGORIEN = [
+  { key: "Doppelzimmer", label: "Doppelzimmer", ab: "ab 57 € p. P./Nacht" },
+  { key: "Doppelzimmer Einzelnutzung", label: "Doppelzimmer · Einzelnutzung", ab: "ab 80 € p. P./Nacht" },
+  { key: "Familienzimmer", label: "Familienzimmer", ab: "ab 170 € / Nacht" },
+];
+
+// Paket-Dropdown: alle Pakete, Default = "Zimmer ohne Paket buchen".
+const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
+---
+
+<Layout
+  title="Buchungsanfrage"
+  description="Unverbindliche Buchungsanfrage im Landhaus Schend, Immerath — Doppel- & Familienzimmer, Frühstück inklusive. Wir prüfen Ihren Wunschtermin und melden uns persönlich zurück."
+  canonicalPath="/anfrage"
+  noindex={true}
+>
+  <section class="container mx-auto px-4 pt-12 md:pt-16 pb-16 md:pb-24">
+    <div class="max-w-3xl mx-auto">
+      <!-- Kopf -->
+      <div class="text-center" data-reveal>
+        <p class="eyebrow">Unverbindliche Anfrage</p>
+        <h1 class="font-display text-4xl md:text-5xl mt-3 text-balance leading-[1.05]">Ihre Buchungsanfrage</h1>
+        <p class="mt-5 text-foreground/85 leading-relaxed text-pretty max-w-xl mx-auto">
+          Senden Sie uns Ihren Wunschtermin — wir prüfen die Verfügbarkeit und melden uns
+          persönlich bei Ihnen zurück. Alle Preise verstehen sich <span class="font-semibold">„ab"</span>
+          und inklusive Frühstück; den Endpreis nennen wir Ihnen in unserer Antwort.
+        </p>
+      </div>
+
+      <!-- Foto-Hinweis (gegen Reklamationen) -->
+      <div class="mt-8 flex items-start gap-3 rounded-md border border-border bg-muted/30 px-4 py-3.5 text-sm text-foreground/80" data-reveal>
+        <svg class="h-5 w-5 shrink-0 mt-0.5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <p>Die gezeigten Zimmerfotos sind <span class="font-medium">Beispielbilder</span>. Ausstattung und
+          Ansicht des tatsächlich zugewiesenen Zimmers können je nach Verfügbarkeit leicht abweichen.</p>
+      </div>
+
+      <!-- Formular -->
+      <form id="anfrage-form" class="mt-10 space-y-8" novalidate data-reveal>
+        <!-- Honeypot (Spam-Schutz, für Menschen unsichtbar) -->
+        <div aria-hidden="true" style="position:absolute;left:-9999px;height:0;overflow:hidden">
+          <label>Bitte leer lassen <input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <!-- Name -->
+        <div class="anf-field">
+          <label for="name">Vorname &amp; Nachname<span class="anf-req">*</span></label>
+          <input id="name" name="name" type="text" required autocomplete="name" maxlength="120" />
+        </div>
+
+        <!-- Adresse -->
+        <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
+          <div class="anf-field">
+            <label for="street">Straße mit Hausnummer<span class="anf-req">*</span></label>
+            <input id="street" name="street" type="text" required autocomplete="street-address" maxlength="160" />
+          </div>
+          <div class="anf-field">
+            <label for="city">Wohnort<span class="anf-req">*</span></label>
+            <input id="city" name="city" type="text" required autocomplete="address-level2" maxlength="120" />
+          </div>
+        </div>
+
+        <!-- Kontakt -->
+        <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
+          <div class="anf-field">
+            <label for="email">E-Mail<span class="anf-req">*</span></label>
+            <input id="email" name="email" type="email" required autocomplete="email" maxlength="255" />
+          </div>
+          <div class="anf-field">
+            <label for="phone">Telefon<span class="anf-req">*</span></label>
+            <input id="phone" name="phone" type="tel" required autocomplete="tel" maxlength="40" />
+          </div>
+        </div>
+
+        <!-- Personen + Paket -->
+        <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
+          <div class="anf-field">
+            <label for="persons">Anzahl Personen<span class="anf-req">*</span></label>
+            <select id="persons" name="persons" required>
+              {[1,2,3,4,5,6,7,8].map((n) => (
+                <option value={n} selected={n === 2}>{n} {n === 1 ? "Person" : "Personen"}</option>
+              ))}
+            </select>
+          </div>
+          <div class="anf-field">
+            <label for="paket">Paket</label>
+            <select id="paket" name="paket">
+              {PAKET_OPTIONEN.map((p) => (
+                <option value={p.value} selected={p.value === "Zimmer ohne Paket buchen"}>{p.title}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <!-- Zimmer-Kategorien -->
+        <fieldset class="anf-field">
+          <legend class="anf-legend">Gewünschte Zimmer <span class="text-muted-foreground font-normal normal-case tracking-normal">(Mehrfachauswahl möglich)</span></legend>
+          <div class="mt-3 space-y-3">
+            {KATEGORIEN.map((k) => (
+              <div class="flex items-center justify-between gap-4 rounded-md border border-border bg-card px-4 py-3">
+                <label class="flex items-center gap-3 cursor-pointer">
+                  <input type="checkbox" name="kategorie" value={k.key} class="anf-check" data-cat={k.key} />
+                  <span>
+                    <span class="block font-medium">{k.label}</span>
+                    <span class="block text-xs text-secondary">{k.ab}</span>
+                  </span>
+                </label>
+                <label class="flex items-center gap-2 text-sm text-muted-foreground shrink-0">
+                  <span class="hidden sm:inline">Anzahl</span>
+                  <select name={`anzahl__${k.key}`} class="anf-mini-select" disabled data-anzahl={k.key}>
+                    {[1,2,3,4,5].map((n) => <option value={n}>{n}</option>)}
+                  </select>
+                </label>
+              </div>
+            ))}
+          </div>
+          <p class="mt-2 text-xs text-muted-foreground">Halbpension auf Wunsch: zzgl. 23 € pro Person/Tag — bitte unten ankreuzen.</p>
+        </fieldset>
+
+        <!-- Zeitraum -->
+        <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
+          <div class="anf-field">
+            <label for="checkin">Anreisedatum<span class="anf-req">*</span></label>
+            <input id="checkin" name="checkin" type="date" required />
+          </div>
+          <div class="anf-field">
+            <label for="checkout">Abreisedatum<span class="anf-req">*</span></label>
+            <input id="checkout" name="checkout" type="date" required />
+          </div>
+        </div>
+
+        <!-- Nachricht -->
+        <div class="anf-field">
+          <label for="message">Nachricht</label>
+          <textarea id="message" name="message" rows="4" maxlength="2000" placeholder="Sonderwünsche, Fragen, gewünschte Zimmerlage …"></textarea>
+        </div>
+
+        <!-- Optionen -->
+        <div class="space-y-3">
+          <label class="flex items-center gap-3 cursor-pointer text-foreground/90">
+            <input type="checkbox" name="halbpension" class="anf-check" />
+            <span>Halbpension gewünscht <span class="text-muted-foreground text-sm">(zzgl. 23 € p. P./Tag)</span></span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer text-foreground/90">
+            <input type="checkbox" name="kinderbett" class="anf-check" />
+            <span>Zusätzliches Kinderbett</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer text-foreground/90">
+            <input type="checkbox" name="hund" class="anf-check" />
+            <span>Reise mit Hund <span class="text-muted-foreground text-sm">(15 € / Tag)</span></span>
+          </label>
+        </div>
+
+        <!-- Datenschutz -->
+        <label class="flex items-start gap-3 cursor-pointer text-foreground/90">
+          <input type="checkbox" name="datenschutz" class="anf-check mt-1" required />
+          <span><a href="/datenschutz" class="underline hover:text-secondary" target="_blank" rel="noopener">Datenschutz</a> gelesen und akzeptiert<span class="anf-req">*</span></span>
+        </label>
+
+        <!-- Senden -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
+          <p class="text-xs text-muted-foreground max-w-sm">
+            Unverbindliche Anfrage — es entstehen keine Kosten und es wird nichts gebucht.
+            Wir melden uns persönlich mit Verfügbarkeit und Endpreis.
+          </p>
+          <button type="submit" id="anf-submit"
+            class="inline-flex items-center justify-center px-7 py-3.5 rounded-sm bg-secondary text-secondary-foreground text-sm font-semibold tracking-[0.16em] uppercase hover:bg-secondary/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap">
+            Anfrage senden
+          </button>
+        </div>
+
+        <!-- Status -->
+        <div id="anf-status" role="status" aria-live="polite" hidden class="rounded-md px-4 py-4 text-sm"></div>
+      </form>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .anf-field { display: flex; flex-direction: column; }
+  .anf-field > label,
+  .anf-legend {
+    font-size: 0.875rem; font-weight: 600;
+    letter-spacing: 0.02em; color: hsl(var(--foreground) / 0.9);
+    margin-bottom: 0.4rem;
+  }
+  .anf-req { color: hsl(var(--secondary)); margin-left: 0.15rem; }
+  .anf-field input,
+  .anf-field select,
+  .anf-field textarea {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid hsl(var(--border));
+    padding: 0.55rem 0.1rem;
+    color: hsl(var(--foreground));
+    font-size: 1rem;
+    border-radius: 0;
+    transition: border-color 0.2s ease;
+  }
+  .anf-field textarea {
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.375rem;
+    padding: 0.7rem 0.8rem;
+    resize: vertical;
+  }
+  .anf-field input:focus,
+  .anf-field select:focus,
+  .anf-field textarea:focus {
+    outline: none;
+    border-color: hsl(var(--secondary));
+  }
+  .anf-field input.anf-invalid,
+  .anf-field select.anf-invalid {
+    border-color: hsl(0 72% 51%);
+  }
+  .anf-mini-select {
+    background: transparent;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.375rem;
+    padding: 0.3rem 0.5rem;
+    color: hsl(var(--foreground));
+    font-size: 0.85rem;
+  }
+  .anf-mini-select:disabled { opacity: 0.4; }
+  .anf-check {
+    width: 1.15rem; height: 1.15rem;
+    accent-color: hsl(var(--secondary));
+    flex-shrink: 0;
+  }
+  #anf-status.is-ok { background: hsl(140 45% 96%); color: hsl(140 50% 22%); border: 1px solid hsl(140 40% 80%); }
+  #anf-status.is-err { background: hsl(0 70% 97%); color: hsl(0 60% 38%); border: 1px solid hsl(0 60% 85%); }
+  :global(html.dark) #anf-status.is-ok { background: hsl(140 30% 14%); color: hsl(140 50% 80%); border-color: hsl(140 30% 28%); }
+  :global(html.dark) #anf-status.is-err { background: hsl(0 40% 16%); color: hsl(0 70% 82%); border-color: hsl(0 40% 30%); }
+</style>
+
+<script>
+  const form = document.getElementById("anfrage-form") as HTMLFormElement | null;
+  const statusEl = document.getElementById("anf-status") as HTMLElement | null;
+  const submitBtn = document.getElementById("anf-submit") as HTMLButtonElement | null;
+  if (form && statusEl && submitBtn) {
+    // Anreise frühestens heute; Abreise frühestens am Anreisetag.
+    const checkin = form.querySelector<HTMLInputElement>("#checkin");
+    const checkout = form.querySelector<HTMLInputElement>("#checkout");
+    const today = new Date().toISOString().split("T")[0];
+    if (checkin) checkin.min = today;
+    if (checkout) checkout.min = today;
+    checkin?.addEventListener("change", () => {
+      if (checkout && checkin.value) {
+        checkout.min = checkin.value;
+        if (checkout.value && checkout.value < checkin.value) checkout.value = checkin.value;
+      }
+    });
+
+    // Anzahl-Dropdown nur aktiv, wenn die Kategorie angehakt ist.
+    form.querySelectorAll<HTMLInputElement>("input[data-cat]").forEach((cb) => {
+      cb.addEventListener("change", () => {
+        const sel = form.querySelector<HTMLSelectElement>(`select[data-anzahl="${cb.dataset.cat}"]`);
+        if (sel) sel.disabled = !cb.checked;
+      });
+    });
+
+    const setStatus = (msg: string, ok: boolean) => {
+      statusEl.hidden = false;
+      statusEl.textContent = msg;
+      statusEl.className = "rounded-md px-4 py-4 text-sm " + (ok ? "is-ok" : "is-err");
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Spam-Honeypot: ausgefüllt = Bot → still abbrechen.
+      const honey = (form.elements.namedItem("company") as HTMLInputElement)?.value;
+      if (honey) return;
+
+      // Pflichtfelder + mind. eine Kategorie.
+      const kategorien = Array.from(form.querySelectorAll<HTMLInputElement>('input[name="kategorie"]:checked'));
+      let firstInvalid: HTMLElement | null = null;
+      form.querySelectorAll<HTMLInputElement>("[required]").forEach((el) => {
+        const bad = (el.type === "checkbox" && !el.checked) || (el.type !== "checkbox" && !el.value.trim());
+        el.classList.toggle("anf-invalid", bad);
+        if (bad && !firstInvalid) firstInvalid = el;
+      });
+      const email = (form.elements.namedItem("email") as HTMLInputElement)?.value.trim() || "";
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!emailOk) { form.querySelector("#email")?.classList.add("anf-invalid"); firstInvalid ||= form.querySelector("#email"); }
+
+      if (firstInvalid) {
+        setStatus("Bitte füllen Sie die markierten Pflichtfelder aus.", false);
+        (firstInvalid as HTMLElement).scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      if (kategorien.length === 0) {
+        setStatus("Bitte wählen Sie mindestens eine Zimmer-Kategorie aus.", false);
+        return;
+      }
+
+      // Payload bauen.
+      const rooms = kategorien.map((cb) => {
+        const sel = form.querySelector<HTMLSelectElement>(`select[name="anzahl__${cb.value}"]`);
+        return { kategorie: cb.value, anzahl: sel ? Number(sel.value) : 1 };
+      });
+      const get = (n: string) => (form.elements.namedItem(n) as HTMLInputElement)?.value.trim() || "";
+      const checked = (n: string) => (form.elements.namedItem(n) as HTMLInputElement)?.checked || false;
+      const payload = {
+        name: get("name"), street: get("street"), city: get("city"),
+        email, phone: get("phone"),
+        persons: Number(get("persons")) || 1,
+        paket: get("paket"),
+        rooms,
+        checkin: get("checkin"), checkout: get("checkout"),
+        message: get("message"),
+        halbpension: checked("halbpension"),
+        kinderbett: checked("kinderbett"),
+        hund: checked("hund"),
+        datenschutz: checked("datenschutz"),
+        company: honey, // Honeypot serverseitig nochmal geprüft
+      };
+
+      submitBtn.disabled = true;
+      const orig = submitBtn.textContent;
+      submitBtn.textContent = "Wird gesendet …";
+      try {
+        const res = await fetch("/api/inquiry", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (res.ok) {
+          form.reset();
+          form.querySelectorAll<HTMLSelectElement>("select[data-anzahl]").forEach((s) => (s.disabled = true));
+          setStatus("Vielen Dank! Ihre Anfrage ist bei uns eingegangen — wir melden uns persönlich bei Ihnen zurück.", true);
+          statusEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          setStatus("Das hat leider nicht geklappt. Bitte rufen Sie uns an: +49 6573 306 — oder versuchen Sie es später erneut.", false);
+        }
+      } catch {
+        setStatus("Verbindung fehlgeschlagen. Bitte rufen Sie uns an: +49 6573 306 — oder versuchen Sie es später erneut.", false);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = orig;
+      }
+    });
+  }
+</script>

@@ -1,6 +1,9 @@
-/login        /_saas/  200
-/dashboard*   /_saas/  200
-/operator     /_saas/  200
-/booking*     /_saas/  200
-/confirmation/*  /_saas/  200
-/storno       /_saas/  200
+# Buchung läuft jetzt über die Astro-Anfrageseite /anfrage (Mail via Pages
+# Function /api/inquiry → Resend). Die alte React/Supabase-SaaS-Strecke ist
+# abgelöst. /api/* bleibt unberührt (von der Pages Function bedient).
+/booking*         /anfrage/   301
+/confirmation/*   /anfrage/   301
+/storno           /           302
+/login            /           302
+/dashboard*       /           302
+/operator         /           302

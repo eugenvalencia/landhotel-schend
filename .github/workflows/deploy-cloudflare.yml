@@ -47,27 +47,11 @@ jobs:
         run: npm ci
 
       # Öffentliche Seite = Astro SSG (DR-029, srcDir ./site → dist-astro).
-      # Bringt auch public/_redirects = die SaaS-Weiche mit in den Output.
+      # Bringt public/_redirects + die Pages Function functions/api/inquiry mit.
+      # Die Buchungs-ANFRAGE läuft rein über Astro + Cloudflare (Mail via Resend) —
+      # KEINE React/Supabase-Strecke mehr (Supabase aus dem Gast-Pfad entfernt).
       - name: Astro build (öffentliche SSG-Seite)
         run: npm run build:site
-
-      # SaaS = React/Vite-App (src/): Login, Hotelier-Dashboard, Operator, Buchung.
-      # Braucht die Supabase-Keys zur Build-Zeit (VITE_*-Env).
-      - name: React/Vite build (SaaS)
-        env:
-          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-        run: npm run build
-
-      # SaaS-Weiche zusammenführen: React-Shell → /_saas/index.html, React-Assets →
-      # /assets (Astro liegt unter /_astro, keine Kollision). Das Routing der Pfade
-      # /login, /dashboard, /operator … auf die Shell macht public/_redirects.
-      - name: SaaS in Astro-Output einbetten
-        run: |
-          mkdir -p dist-astro/_saas
-          cp dist/index.html dist-astro/_saas/index.html
-          cp -r dist/assets dist-astro/assets
 
       - name: Deploy zu Cloudflare Pages
         uses: cloudflare/wrangler-action@v4

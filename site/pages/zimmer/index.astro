@@ -43,11 +43,15 @@ import { ROOM_TYPES, ROOM_INTRO, ROOM_RATES, ROOM_AUSSTATTUNG, HAUS_SONSTIGES, E
               </li>
             ))}
           </ul>
-          <a href="/booking" class="mt-6 inline-flex items-center justify-center px-5 py-3 rounded-sm bg-secondary text-secondary-foreground text-sm font-semibold tracking-[0.16em] uppercase hover:bg-secondary/90 transition-colors">Anfragen</a>
+          <a href="/anfrage" class="mt-6 inline-flex items-center justify-center px-5 py-3 rounded-sm bg-secondary text-secondary-foreground text-sm font-semibold tracking-[0.16em] uppercase hover:bg-secondary/90 transition-colors">Anfragen</a>
           <a href={r.href} class="mt-2 text-center text-xs text-muted-foreground hover:text-secondary transition-colors">Mehr zum Zimmer →</a>
         </div>
       ))}
     </div>
+    <p class="max-w-5xl mx-auto text-center text-xs text-muted-foreground mt-6">
+      Die gezeigten Zimmerfotos sind Beispielbilder — Ausstattung und Ansicht des tatsächlich
+      zugewiesenen Zimmers können je nach Verfügbarkeit leicht abweichen.
+    </p>
   </section>
 
   <!-- Ausstattung + Sonstiges -->
@@ -110,7 +114,7 @@ import { ROOM_TYPES, ROOM_INTRO, ROOM_RATES, ROOM_AUSSTATTUNG, HAUS_SONSTIGES, E
       ))}
     </div>
     <div class="text-center mt-10">
-      <a href="/booking" class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">Verfügbarkeit prüfen</a>
+      <a href="/anfrage" class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">Unverbindlich anfragen</a>
     </div>
   </section>
 </Layout>
