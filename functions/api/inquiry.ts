@@ -127,13 +127,58 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
     rows.map(([k, v]) => `${k}: ${v}`).join("\n") +
     `\n\nAntwort geht an die Gast-E-Mail.`;
 
+  // Eingangsbestätigung an den GAST (Schend-Stil) — eigene, gäste-freundliche Kopie.
+  const guestRows = rows.filter(([k]) => k !== "Datenschutz akzeptiert" && k !== "Name");
+  const guestSubject = "Ihre Anfrage beim Landhaus Schend – wir haben sie erhalten";
+  const guestHtml = `<div style="font-family:Georgia,'Times New Roman',serif;color:#2b2b2b;max-width:560px;line-height:1.6">
+  <h2 style="font-family:Georgia,serif;color:#9a7b3f;margin:0 0 2px">Landhaus Schend</h2>
+  <p style="color:#9a7b3f;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;margin:0 0 18px">Hotel · Restaurant · Vulkaneifel</p>
+  <p>Guten Tag ${esc(name)},</p>
+  <p>vielen Dank für Ihre Anfrage. Wir haben sie erhalten und melden uns persönlich bei Ihnen, sobald wir die Verfügbarkeit für Ihren Wunschzeitraum geprüft haben. Dies ist eine automatische Eingangsbestätigung – noch keine verbindliche Buchung.</p>
+  <p style="margin:18px 0 6px;font-weight:bold;color:#9a7b3f">Ihre Angaben im Überblick</p>
+  <table cellpadding="6" style="border-collapse:collapse;font-size:14px;width:100%;font-family:Arial,Helvetica,sans-serif">
+    ${guestRows.map(([k, v]) => `<tr><td style="color:#888;vertical-align:top;white-space:nowrap;padding-right:12px">${esc(k)}</td><td><strong>${esc(v)}</strong></td></tr>`).join("\n")}
+  </table>
+  <p style="margin-top:18px">Haben Sie Fragen oder möchten Sie etwas ergänzen? Antworten Sie einfach auf diese E-Mail oder rufen Sie uns an: <a href="tel:+4965731306" style="color:#9a7b3f">+49 6573 306</a>.</p>
+  <p style="margin-top:18px">Herzliche Grüße<br><strong>Ihr Team vom Landhaus Schend</strong></p>
+  <p style="color:#aaa;font-size:12px;margin-top:20px;border-top:1px solid #eee;padding-top:12px">
+    Landhaus Schend · Hotel - Restaurant · Hauptstraße 9 · 54552 Immerath · Vulkaneifel<br>
+    Tel. +49 6573 306 · info@landhaus-schend.de · landhaus-schend.de
+  </p>
+</div>`;
+  const guestText =
+    `Landhaus Schend – Eingangsbestätigung Ihrer Anfrage\n\n` +
+    `Guten Tag ${name},\n\n` +
+    `vielen Dank für Ihre Anfrage. Wir haben sie erhalten und melden uns persönlich, sobald wir die Verfügbarkeit geprüft haben. ` +
+    `Dies ist eine automatische Eingangsbestätigung – noch keine verbindliche Buchung.\n\n` +
+    `Ihre Angaben:\n` +
+    guestRows.map(([k, v]) => `${k}: ${v}`).join("\n") +
+    `\n\nHerzliche Grüße\nIhr Team vom Landhaus Schend\n` +
+    `Hauptstraße 9 · 54552 Immerath · Vulkaneifel · Tel. +49 6573 306`;
+
   try {
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${env.RESEND_API_KEY}` },
       body: JSON.stringify({ from, to: [to], reply_to: email, subject, html, text, tags: [{ name: "type", value: "inquiry" }] }),
     });
-    if (r.status >= 200 && r.status < 300) return json({ ok: true });
+    if (r.status >= 200 && r.status < 300) {
+      // Best-effort-Kopie an den Gast — darf die erfolgreiche Hotel-Mail NICHT kippen.
+      // Hinweis: liefert an beliebige Gäste erst, sobald die Absender-Domain bei Resend
+      // verifiziert ist. Mit dem Test-Absender onboarding@resend.dev geht die Kopie nur
+      // an die Resend-Konto-Adresse (nicht an fremde Gäste).
+      try {
+        const cr = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${env.RESEND_API_KEY}` },
+          body: JSON.stringify({ from, to: [email], reply_to: "info@landhaus-schend.de", subject: guestSubject, html: guestHtml, text: guestText, tags: [{ name: "type", value: "inquiry_copy" }] }),
+        });
+        if (cr.status < 200 || cr.status >= 300) console.error("inquiry guest_copy_failed", cr.status, await cr.text().catch(() => ""));
+      } catch (e) {
+        console.error("inquiry guest_copy_exception", e);
+      }
+      return json({ ok: true });
+    }
     // Detail NUR server-seitig (Cloudflare-Logs) — nie an den Client leaken.
     const detail = await r.text().catch(() => "");
     console.error("inquiry send_failed", r.status, detail);

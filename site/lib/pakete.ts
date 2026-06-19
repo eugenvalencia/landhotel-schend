@@ -59,8 +59,8 @@ export const PAKETE: Paket[] = [
   {
     slug: "erholung-entschleunigung",
     title: "Tage der Erholung und Entschleunigung",
-    cover: "/pakete/eifel-3.jpg",
-    gallery: ["/pakete/eifel-3.jpg", "/pakete/eifel-4.jpg", "/fotos/sonnenterrasse-mit-hortensien-landhaus-schend-vulkaneifel.jpg"],
+    cover: "/fotos/maar-blick-mit-kindern-landhaus-schend.jpg",
+    gallery: ["/fotos/maar-blick-mit-kindern-landhaus-schend.jpg", "/pakete/eifel-3.jpg", "/fotos/sonnenterrasse-mit-hortensien-landhaus-schend-vulkaneifel.jpg"],
     intro:
       "Sie wollen einfach mal abschalten und es sich rundum gut gehen lassen? Dann sind unsere drei Tage der Erholung das Richtige für Sie. Entschleunigen Sie bei wohltuenden Anwendungen und speziellen Massagen.",
     highlights: [
