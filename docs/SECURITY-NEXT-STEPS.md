@@ -18,12 +18,14 @@ Bereits umgesetzt (commit `97f7b6b`):
 
 ## OFFEN — braucht Eugen (Dashboard / Entscheidung)
 
-### 1. ⬜ Rate-Limiting am Anfrage-Endpunkt (HIGH)
-`/api/inquiry` ist öffentlich und hat **kein** Rate-Limit → ein Angreifer
-könnte das Postfach mit Anfragen fluten / Resend-Kontingent verbrauchen.
-Der Honeypot allein reicht nicht. **Fix (Cloudflare-Dashboard):**
-- **WAF → Rate limiting rules** → neue Regel: Pfad `/api/inquiry`, Methode POST,
-  z. B. **5 Anfragen / Minute / IP**, Aktion: Block (1 min).
+### 1. ✅ Rate-Limiting am Anfrage-Endpunkt (HIGH) — ERLEDIGT 19.06.2026
+Cloudflare-Durchsatzbegrenzungsregel **„Anfrage-Limit Schend"** live (Zone
+`conexadigital.eu`, Free-Plan): `URI-Pfad ist gleich /api/inquiry`, Zählung pro
+**IP**, Aktion **Blockieren**. Free-Plan kennt kein Hostname-Feld im Rate-Limit —
+nicht nötig, da `/api/inquiry` nur auf der Schend-Seite existiert.
+**Live verifiziert:** 20er-Beschuss (POST, ohne Mail-Auslösung) → erste Anfragen
+`422`, danach `429 Too Many Requests` (17/20 geblockt). Ein echter Gast (1 Anfrage)
+liegt weit unter dem Limit.
 - Optional zusätzlich **Cloudflare Turnstile** (kostenloses CAPTCHA) vor dem
   Absenden — Site-Key + Secret-Key in CF anlegen, Widget ins Formular, Secret in
   der Function prüfen. (Bei Bedarf baue ich das ein, sobald die Keys da sind.)
