@@ -110,12 +110,14 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
           </a>
         </p>
       </div>
+      {/* Rechtstexte existieren (bis Walter-geprüfte Übersetzungen) nur auf Deutsch —
+          daher IMMER auf die deutschen Pfade verlinken, auch von /en /fr /nl aus. */}
       <nav class="flex flex-wrap items-center justify-center md:justify-end gap-x-5" aria-label={t("footer_legal_aria", lang)}>
-        <a href={localizedPath("/impressum", lang)} class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_imprint", lang)}</a>
-        <a href={localizedPath("/datenschutz", lang)} class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_privacy", lang)}</a>
-        <a href={localizedPath("/agb", lang)} class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_terms", lang)}</a>
-        <a href={localizedPath("/barrierefreiheit", lang)} class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_a11y", lang)}</a>
-        <a href={localizedPath("/bildnachweis", lang)} class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_credits", lang)}</a>
+        <a href="/impressum" class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_imprint", lang)}</a>
+        <a href="/datenschutz" class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_privacy", lang)}</a>
+        <a href="/agb" class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_terms", lang)}</a>
+        <a href="/barrierefreiheit" class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_a11y", lang)}</a>
+        <a href="/bildnachweis" class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_credits", lang)}</a>
       </nav>
     </div>
   </div>

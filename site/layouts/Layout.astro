@@ -25,6 +25,9 @@ interface Props {
   ogType?: string;
   noindex?: boolean;
   lang?: Locale;
+  // false = Seite existiert nur auf Deutsch (Rechtstexte, 404): kein hreflang,
+  // Sprach-Umschalter führt auf die jeweilige Sprach-Startseite statt ins Leere.
+  localized?: boolean;
 }
 
 const {
@@ -35,6 +38,7 @@ const {
   ogType = "website",
   noindex = false,
   lang = "de",
+  localized = true,
 } = Astro.props;
 
 const fullTitle = title
@@ -48,7 +52,8 @@ const robots = noindex
   : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
 
 // Voll-reziproke hreflang-Alternates aus dem (sprach-neutralen) canonicalPath.
-const alternates = hreflangAlternates(ORIGIN, canonicalPath);
+// Nur für mehrsprachige Seiten — Deutsch-only-Seiten (Rechtstexte/404) bekommen keine.
+const alternates = localized ? hreflangAlternates(ORIGIN, canonicalPath) : [];
 ---
 
 <!doctype html>
@@ -279,7 +284,7 @@ const alternates = hreflangAlternates(ORIGIN, canonicalPath);
     <div id="reading-progress" aria-hidden="true" class="fixed top-0 inset-x-0 h-[2px] z-[60] pointer-events-none">
       <div class="reading-progress-fill h-full bg-secondary origin-left" style="transform:scaleX(0);transition:transform 80ms linear"></div>
     </div>
-    <SiteHeader lang={lang} />
+    <SiteHeader lang={lang} localized={localized} />
     <main id="main" class="flex-1">
       <slot />
     </main>

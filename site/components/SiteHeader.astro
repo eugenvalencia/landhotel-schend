@@ -16,8 +16,11 @@ import { t } from "../i18n/ui";
 
 interface Props {
   lang?: Locale;
+  // false = aktuelle Seite existiert nur auf Deutsch (Rechtstexte/404):
+  // Sprach-Umschalter führt dann auf die Sprach-Startseite (kein 404).
+  localized?: boolean;
 }
-const { lang = DEFAULT_LOCALE } = Astro.props;
+const { lang = DEFAULT_LOCALE, localized = true } = Astro.props;
 
 // Lokalisierte Hauptnavigation (Pfade DE-neutral, Label je Locale).
 const NAV_ITEMS = [
@@ -34,11 +37,12 @@ const base = basePath(Astro.url.pathname);
 const isActive = (href: string) =>
   href === "/" ? base === "/" : base.startsWith(href);
 
-// Sprach-Umschalter: gleiche Seite, andere Sprache.
+// Sprach-Umschalter: gleiche Seite, andere Sprache. Auf Deutsch-only-Seiten
+// (localized=false) führt der Wechsel stattdessen auf die Sprach-Startseite.
 const langLinks = LOCALES.map((loc) => ({
   loc,
   label: LOCALE_LABEL[loc],
-  href: localizedPath(base, loc),
+  href: localized ? localizedPath(base, loc) : localizedPath("/", loc),
   active: loc === lang,
 }));
 ---
