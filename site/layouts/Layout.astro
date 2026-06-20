@@ -135,24 +135,36 @@ const robots = noindex
 
     <slot name="head" />
 
-    <!-- Marken-Splash: dunkler Vorhang beim ersten Laden (deckt jeden FOUC/
+    <!-- Marken-Splash: dunkler Vorhang beim ersten Betreten der Seite (deckt FOUC/
          Flash zu), Schend-Marke + Wortmarke + 0→100 %-Zähler, dann Reveal.
-         1× pro Session — vor dem Paint entscheiden, damit bei Folge-Seiten
-         kein dunkler Deckel aufblitzt. ?splash erzwingt ihn (zum Testen). -->
+         Erscheint NUR beim ersten Reinkommen ODER beim Aktualisieren (Reload) —
+         bei interner Navigation zwischen Seiten übersprungen (Referrer = gleiche
+         Domain). Entscheidung vor dem Paint, damit kein dunkler Deckel aufblitzt.
+         ?splash erzwingt ihn (zum Testen). -->
     <script is:inline>
       (function () {
         try {
+          var d = document.documentElement;
           // ?splash erzwingt den Splash (zum Testen) und schlägt alles andere.
           if (/[?&#]splash\b/.test(location.href)) return;
           // Such-Crawler + Lab-Tools (Lighthouse/PageSpeed/Headless/Preview-Bots)
-          // bekommen KEINEN Splash -> kein LCP-Verlust, kein verdeckter Inhalt
-          // (Inhalt ist identisch, der Splash ist nur ein optischer Vorhang).
+          // bekommen KEINEN Splash -> kein LCP-Verlust, kein verdeckter Inhalt.
           var ua = navigator.userAgent || "";
           var isBot = /bot|crawl|spider|slurp|lighthouse|pagespeed|headless|gtmetrix|pingdom|mediapartners|facebookexternalhit|embedly|whatsapp|telegram|preview/i.test(ua);
-          // Eugen-Wunsch 16.06.: Splash bei JEDEM Laden/Reload zeigen (nicht nur 1×/Session).
-          // Nur Bots/Lab-Tools überspringen ihn weiterhin -> kein LCP-Verlust.
-          if (isBot)
-            document.documentElement.classList.add("splash-skip");
+          if (isBot) { d.classList.add("splash-skip"); return; }
+          // Eugen-Wunsch 20.06.: Splash NUR beim ersten Betreten der Seite ODER beim
+          // Aktualisieren (Reload) — NICHT bei interner Navigation (nervt sonst).
+          var navType = "";
+          try {
+            var navEntry = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+            navType = navEntry ? navEntry.type
+              : (performance.navigation && performance.navigation.type === 1 ? "reload" : "");
+          } catch (e) {}
+          var isReload = navType === "reload";
+          // Interne Navigation = von einer Seite derselben Domain gekommen.
+          var fromSameSite = false;
+          try { fromSameSite = !!document.referrer && new URL(document.referrer).host === location.host; } catch (e) {}
+          if (fromSameSite && !isReload) d.classList.add("splash-skip");
         } catch (e) {}
       })();
     </script>
