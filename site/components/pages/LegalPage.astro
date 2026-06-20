@@ -1,0 +1,43 @@
+---
+// Geteilte Hülle für ÜBERSETZTE Rechtstexte (EN/FR/NL). Die deutschen Rechtstexte
+// bleiben ihre eigenen Original-Dateien (unverändert, rechtlich maßgeblich). Diese
+// Komponente rendert die übersetzte Fassung mit einem Pflicht-Hinweis, dass die
+// deutsche Version verbindlich ist. bodyHtml = übersetzter Slot-Inhalt (set:html).
+import TextPage from "../../layouts/TextPage.astro";
+import { type Locale } from "../../i18n";
+
+interface Props {
+  lang: Locale;
+  canonicalPath: string; // lokalisiert, z.B. "/en/impressum"
+  deHref: string;        // deutscher (verbindlicher) Pfad, z.B. "/impressum"
+  title: string;
+  description: string;
+  heading: string;
+  bodyHtml: string;
+  noindex?: boolean;
+}
+const { lang, canonicalPath, deHref, title, description, heading, bodyHtml, noindex = true } = Astro.props;
+
+// Hinweis: maßgeblich ist die deutsche Fassung (Übersetzung = Lesehilfe).
+const NOTE: Record<Exclude<Locale, "de">, { text: string; linkText: string }> = {
+  en: { text: "This is a convenience translation. The legally binding version is the", linkText: "German original" },
+  fr: { text: "Ceci est une traduction de courtoisie. La version juridiquement contraignante est l’", linkText: "original allemand" },
+  nl: { text: "Dit is een vertaling voor het gemak. De juridisch bindende versie is het", linkText: "Duitse origineel" },
+};
+const note = NOTE[lang as Exclude<Locale, "de">];
+---
+
+<TextPage
+  title={title}
+  description={description}
+  canonicalPath={canonicalPath}
+  noindex={noindex}
+  heading={heading}
+>
+  {note && (
+    <div class="mb-8 rounded-md border border-border bg-muted/30 px-4 py-3 text-sm text-muted-foreground">
+      {note.text} <a href={deHref} class="text-secondary underline hover:no-underline">{note.linkText}</a>.
+    </div>
+  )}
+  <Fragment set:html={bodyHtml} />
+</TextPage>

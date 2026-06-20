@@ -1,8 +1,17 @@
 ---
-import TextPage from "../layouts/TextPage.astro";
+// Geteilte ÜBERSETZTE Bildnachweis-Seite (EN/FR/NL). Deutsche Original-Seite bleibt
+// separat (verbindlich). CC-Liste sprachneutral; Labels/Intro/Closing aus
+// site/i18n/content/legal/bildnachweis.ts. Pflicht-Hinweis: DE-Fassung maßgeblich.
+import TextPage from "../../layouts/TextPage.astro";
+import { localizedPath, type Locale } from "../../i18n";
+import { bildnachweisContent } from "../../i18n/content/legal/bildnachweis";
 
-// Landschaftsaufnahmen der Vulkaneifel-Maare: frei lizenziert von Wikimedia Commons
-// (CC BY-SA), für die Website zugeschnitten/skaliert. Urheber + Lizenz dokumentiert.
+interface Props {
+  lang: Exclude<Locale, "de">;
+}
+const { lang } = Astro.props;
+const c = bildnachweisContent[lang];
+
 const COMMONS = [
   { motiv: "Pulvermaar", autor: "Thomas Hummel", lizenz: "CC BY-SA 4.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/4.0", quelle: "https://commons.wikimedia.org/wiki/File:Pulvermaar_01.jpg" },
   { motiv: "Gemündener Maar (Blick vom Dronketurm)", autor: "Gerda Arendt", lizenz: "CC BY-SA 4.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/4.0", quelle: "https://commons.wikimedia.org/wiki/File:Gem%C3%BCndener_Maar_from_Dronketurm,_Daun.jpg" },
@@ -15,40 +24,40 @@ const COMMONS = [
   { motiv: "Wacholderheide in der Eifel", autor: "DKrieger", lizenz: "CC BY-SA 3.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/3.0", quelle: "https://commons.wikimedia.org/wiki/File:Wacholderheide_alendorf_eifel.JPG" },
   { motiv: "Herbstwald im Nebel", autor: "Artem Sapegin", lizenz: "CC0 (gemeinfrei)", lizenzUrl: "https://creativecommons.org/publicdomain/zero/1.0/", quelle: "https://commons.wikimedia.org/wiki/File:Early_morning_in_autumn_forest_(Unsplash).jpg" },
 ];
+
+const NOTE: Record<Exclude<Locale, "de">, { text: string; linkText: string }> = {
+  en: { text: "This is a convenience translation. The legally binding version is the", linkText: "German original" },
+  fr: { text: "Ceci est une traduction de courtoisie. La version juridiquement contraignante est l’", linkText: "original allemand" },
+  nl: { text: "Dit is een vertaling voor het gemak. De juridisch bindende versie is het", linkText: "Duitse origineel" },
+};
+const note = NOTE[lang];
 ---
 
 <TextPage
-  title="Bildnachweis"
-  description="Bildnachweis und Urheberangaben für die auf landhaus-schend.de verwendeten Fotos."
-  canonicalPath="/bildnachweis"
+  title={c.metaTitle}
+  description={c.metaDescription}
+  canonicalPath={localizedPath("/bildnachweis", lang)}
   noindex={true}
-  heading="Bildnachweis"
+  heading={c.heading}
 >
+  <div class="mb-8 rounded-md border border-border bg-muted/30 px-4 py-3 text-sm text-muted-foreground">
+    {note.text} <a href="/bildnachweis" class="text-secondary underline hover:no-underline">{note.linkText}</a>.
+  </div>
   <section>
-    <p>
-      Die Fotos von Haus, Garten, Zimmern, Restaurant, Festsaal, Speisen und der
-      Gastgeber-Familie sind eigene Aufnahmen von Familie Beimler (Landhaus Schend).
-    </p>
-    <p>
-      Für die Landschafts- und Naturaufnahmen der Region (Vulkaneifel-Maare sowie Wander-
-      und Radwege) verwenden wir frei lizenzierte Fotografien von Wikimedia Commons. Die
-      Bilder wurden für die Darstellung auf dieser Website zugeschnitten und in der Größe
-      angepasst. Urheber und Lizenz sind nachfolgend aufgeführt:
-    </p>
+    <p>{c.intro1}</p>
+    <p>{c.intro2}</p>
     <ul>
       {COMMONS.map((b) => (
         <li>
-          <strong>{b.motiv}</strong> — Foto: {b.autor}, Lizenz{" "}
+          <strong>{b.motiv}</strong> — {c.labelFoto} {b.autor}, {c.labelLizenz}{" "}
           <a href={b.lizenzUrl} target="_blank" rel="noopener noreferrer" class="underline hover:no-underline">{b.lizenz}</a>,
-          Quelle:{" "}
+          {c.labelQuelle}{" "}
           <a href={b.quelle} target="_blank" rel="noopener noreferrer" class="underline hover:no-underline">Wikimedia Commons</a>
         </li>
       ))}
     </ul>
     <p class="text-sm text-muted-foreground">
-      Sollten Sie der Ansicht sein, dass ein hier verwendetes Bild Ihre Rechte verletzt,
-      melden Sie sich bitte unter <a href="mailto:info@landhaus-schend.de" class="underline hover:no-underline">info@landhaus-schend.de</a>
-      — wir prüfen das umgehend.
+      {c.closingPre} <a href="mailto:info@landhaus-schend.de" class="underline hover:no-underline">info@landhaus-schend.de</a> {c.closingPost}
     </p>
   </section>
 </TextPage>

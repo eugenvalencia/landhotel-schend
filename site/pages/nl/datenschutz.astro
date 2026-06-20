@@ -1,0 +1,9 @@
+---
+import LegalPage from "../../components/pages/LegalPage.astro";
+import { datenschutz } from "../../i18n/content/legal/datenschutz";
+import { localizedPath } from "../../i18n";
+---
+
+<LegalPage lang="nl" canonicalPath={localizedPath("/datenschutz", "nl")} deHref="/datenschutz" noindex={true}
+  title={datenschutz.nl.metaTitle} description={datenschutz.nl.metaDescription}
+  heading={datenschutz.nl.heading} bodyHtml={datenschutz.nl.bodyHtml} />

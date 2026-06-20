@@ -1,0 +1,9 @@
+---
+import LegalPage from "../../components/pages/LegalPage.astro";
+import { impressum } from "../../i18n/content/legal/impressum";
+import { localizedPath } from "../../i18n";
+---
+
+<LegalPage lang="en" canonicalPath={localizedPath("/impressum", "en")} deHref="/impressum" noindex={true}
+  title={impressum.en.metaTitle} description={impressum.en.metaDescription}
+  heading={impressum.en.heading} bodyHtml={impressum.en.bodyHtml} />

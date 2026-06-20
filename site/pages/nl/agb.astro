@@ -1,0 +1,9 @@
+---
+import LegalPage from "../../components/pages/LegalPage.astro";
+import { agb } from "../../i18n/content/legal/agb";
+import { localizedPath } from "../../i18n";
+---
+
+<LegalPage lang="nl" canonicalPath={localizedPath("/agb", "nl")} deHref="/agb" noindex={true}
+  title={agb.nl.metaTitle} description={agb.nl.metaDescription}
+  heading={agb.nl.heading} bodyHtml={agb.nl.bodyHtml} />

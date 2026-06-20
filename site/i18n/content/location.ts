@@ -95,7 +95,7 @@ export const locationContent: Record<Locale, LocationContent> = {
     subline: "Landhaus Schend · Hauptstraße 9 · 54552 Immerath · Volcanic Eifel",
     mapTitle: "Map by Google Maps",
     mapConsentHtml:
-      'When the map loads, data — including your IP address — is transferred to Google, also to the USA. The interactive map is only loaded after your consent. More on this in our <a href="/datenschutz" class="text-secondary underline hover:no-underline">privacy policy</a>.',
+      'When the map loads, data — including your IP address — is transferred to Google, also to the USA. The interactive map is only loaded after your consent. More on this in our <a href="/en/datenschutz" class="text-secondary underline hover:no-underline">privacy policy</a>.',
     mapLoad: "Load map",
     googleMaps: "Google Maps",
     appleMaps: "Apple Maps",
@@ -149,7 +149,7 @@ export const locationContent: Record<Locale, LocationContent> = {
     subline: "Landhaus Schend · Hauptstraße 9 · 54552 Immerath · Eifel volcanique",
     mapTitle: "Carte par Google Maps",
     mapConsentHtml:
-      'Au chargement de la carte, des données — dont votre adresse IP — sont transférées à Google, également aux États-Unis. La carte interactive n\'est chargée qu\'après votre consentement. En savoir plus dans notre <a href="/datenschutz" class="text-secondary underline hover:no-underline">politique de confidentialité</a>.',
+      'Au chargement de la carte, des données — dont votre adresse IP — sont transférées à Google, également aux États-Unis. La carte interactive n\'est chargée qu\'après votre consentement. En savoir plus dans notre <a href="/fr/datenschutz" class="text-secondary underline hover:no-underline">politique de confidentialité</a>.',
     mapLoad: "Charger la carte",
     googleMaps: "Google Maps",
     appleMaps: "Apple Maps",
@@ -203,7 +203,7 @@ export const locationContent: Record<Locale, LocationContent> = {
     subline: "Landhaus Schend · Hauptstraße 9 · 54552 Immerath · Vulkaneifel",
     mapTitle: "Kaart van Google Maps",
     mapConsentHtml:
-      'Bij het laden van de kaart worden gegevens — o.&nbsp;a. uw IP-adres — naar Google verzonden, ook naar de VS. De interactieve kaart wordt pas na uw toestemming geladen. Meer hierover in onze <a href="/datenschutz" class="text-secondary underline hover:no-underline">privacyverklaring</a>.',
+      'Bij het laden van de kaart worden gegevens — o.&nbsp;a. uw IP-adres — naar Google verzonden, ook naar de VS. De interactieve kaart wordt pas na uw toestemming geladen. Meer hierover in onze <a href="/nl/datenschutz" class="text-secondary underline hover:no-underline">privacyverklaring</a>.',
     mapLoad: "Kaart laden",
     googleMaps: "Google Maps",
     appleMaps: "Apple Maps",

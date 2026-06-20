@@ -164,7 +164,7 @@ const c = anfrageContent[lang];
         <!-- Datenschutz -->
         <label class="flex items-start gap-3 cursor-pointer text-foreground/90">
           <input type="checkbox" name="datenschutz" class="anf-check mt-1" required />
-          <span><a href="/datenschutz" class="underline hover:text-secondary" target="_blank" rel="noopener">{c.dsLinkText}</a> {c.dsAfter}<span class="anf-req">*</span></span>
+          <span><a href={localizedPath("/datenschutz", lang)} class="underline hover:text-secondary" target="_blank" rel="noopener">{c.dsLinkText}</a> {c.dsAfter}<span class="anf-req">*</span></span>
         </label>
 
         <!-- Senden -->
