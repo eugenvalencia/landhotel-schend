@@ -66,8 +66,8 @@ const langLinks = LOCALES.map((loc) => ({
     </a>
 
     <div class="flex items-center gap-4 lg:gap-5">
-      <!-- Desktop-Nav -->
-      <nav class="hidden lg:flex items-center gap-0.5" aria-label={t("nav_main_aria", lang)}>
+      <!-- Desktop-Nav — erst ab xl (1280px), sonst kollidieren die 7 Punkte + Controls mit dem Logo -->
+      <nav class="hidden xl:flex items-center gap-0.5" aria-label={t("nav_main_aria", lang)}>
         {NAV_ITEMS.map((item) => (
           <a
             href={localizedPath(item.href, lang)}
@@ -121,10 +121,10 @@ const langLinks = LOCALES.map((loc) => ({
         </a>
       </nav>
 
-      <!-- Tablet: Telefon sichtbar -->
+      <!-- Tablet + kleines Desktop (md–xl): Telefon sichtbar -->
       <a
         href={HOTEL.phoneHref}
-        class="hidden md:inline-flex lg:hidden items-center gap-1.5 px-3 py-1.5 rounded-full border border-secondary/40 text-xs font-semibold text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all"
+        class="hidden md:inline-flex xl:hidden items-center gap-1.5 px-3 py-1.5 rounded-full border border-secondary/40 text-xs font-semibold text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all"
         aria-label={`${t("call_hotel_aria", lang)} ${HOTEL.phoneLabel}`}
       >
         <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
@@ -140,7 +140,7 @@ const langLinks = LOCALES.map((loc) => ({
         aria-label={t("menu_open", lang)}
         aria-expanded="false"
         aria-controls="mobile-menu"
-        class="lg:hidden p-3 -mr-2 text-primary rounded-md hover:bg-muted transition-colors"
+        class="xl:hidden p-3 -mr-2 text-primary rounded-md hover:bg-muted transition-colors"
       >
         <svg data-icon-open class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         <svg data-icon-close class="h-7 w-7 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -148,8 +148,8 @@ const langLinks = LOCALES.map((loc) => ({
     </div>
   </div>
 
-  <!-- Mobile-Menü -->
-  <div id="mobile-menu" hidden class="lg:hidden border-t bg-background animate-fade-up">
+  <!-- Mobile-Menü (bis xl) -->
+  <div id="mobile-menu" hidden class="xl:hidden border-t bg-background animate-fade-up">
     <div class="container mx-auto px-4 py-4 flex flex-col gap-1">
       <a
         href={HOTEL.phoneHref}
