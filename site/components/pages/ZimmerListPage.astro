@@ -1,0 +1,134 @@
+---
+// Geteilte „Zimmer & Preise"-Übersicht (alle Sprachen). Daten lokalisiert aus
+// site/i18n/content/zimmer.ts (Struktur/Preise aus lib/rooms.ts).
+import Layout from "../../layouts/Layout.astro";
+import Pic from "../Pic.astro";
+import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
+import {
+  introFor, ausstattungFor, sonstigesFor, extrasFor, ratesFor, roomTypesFor, zimmerChrome,
+} from "../../i18n/content/zimmer";
+
+interface Props {
+  lang?: Locale;
+}
+const { lang = DEFAULT_LOCALE } = Astro.props;
+const c = zimmerChrome[lang];
+const intro = introFor(lang);
+const rates = ratesFor(lang);
+const ausstattung = ausstattungFor(lang);
+const sonstiges = sonstigesFor(lang);
+const extras = extrasFor(lang);
+const roomTypes = roomTypesFor(lang);
+---
+
+<Layout
+  title={c.metaTitle}
+  description={c.metaDescription}
+  canonicalPath={localizedPath("/zimmer", lang)}
+  lang={lang}
+>
+  <!-- Intro -->
+  <section class="container mx-auto px-4 pt-12 md:pt-16 pb-10">
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="eyebrow">{c.eyebrow}</p>
+      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl mt-3 text-balance leading-[1.05]">{c.h1}</h1>
+    </div>
+    <div class="max-w-3xl mx-auto mt-8 space-y-4 text-foreground/85 leading-relaxed text-pretty">
+      {intro.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+
+  <!-- Preis-Karten -->
+  <section class="container mx-auto px-4 pb-8">
+    <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      {rates.map((r, i) => (
+        <div class="flex flex-col rounded-md border border-border bg-card text-card-foreground shadow-card p-7" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+          <h2 class="font-display text-2xl leading-tight">
+            {r.title}
+            {r.sub && <span class="block text-sm tracking-[0.18em] uppercase text-muted-foreground mt-1">{r.sub}</span>}
+          </h2>
+          <p class="text-sm text-muted-foreground mt-4">{c.inklFruehstueck}</p>
+          <p class="mt-1"><span class="font-display text-4xl text-secondary">{r.price}</span> <span class="text-sm text-muted-foreground">{r.unit}</span></p>
+          <p class="text-xs text-muted-foreground mt-3 uppercase tracking-wide">{r.halfboard}</p>
+          <ul class="mt-5 space-y-2 text-sm text-foreground/85 flex-1">
+            {r.features.map((f) => (
+              <li class="flex items-start gap-2">
+                <svg class="h-4 w-4 shrink-0 mt-0.5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                {f}
+              </li>
+            ))}
+          </ul>
+          <a href={localizedPath("/anfrage", lang)} class="mt-6 inline-flex items-center justify-center px-5 py-3 rounded-sm bg-secondary text-secondary-foreground text-sm font-semibold tracking-[0.16em] uppercase hover:bg-secondary/90 transition-colors">{c.anfragenCta}</a>
+          <a href={localizedPath(r.href, lang)} class="mt-2 text-center text-xs text-muted-foreground hover:text-secondary transition-colors">{c.mehrZumZimmer}</a>
+        </div>
+      ))}
+    </div>
+    <p class="max-w-5xl mx-auto text-center text-xs text-muted-foreground mt-6">
+      {c.beispielHinweis}
+    </p>
+  </section>
+
+  <!-- Ausstattung + Sonstiges -->
+  <section class="container mx-auto px-4 py-16 md:py-20">
+    <div class="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+      <div>
+        <h2 class="font-display text-2xl md:text-3xl mb-6">{c.ausstattungH2}</h2>
+        <ul class="space-y-3">
+          {ausstattung.map((a) => (
+            <li class="flex items-start gap-3 text-foreground/85">
+              <svg class="h-5 w-5 shrink-0 mt-0.5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              {a}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h2 class="font-display text-2xl md:text-3xl mb-6">{c.sonstigesH2}</h2>
+        <ul class="space-y-3">
+          {sonstiges.map((a) => (
+            <li class="flex items-start gap-3 text-foreground/85">
+              <svg class="h-5 w-5 shrink-0 mt-0.5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              {a}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Extras & Rabatte -->
+  <section class="bg-muted/20 border-y border-border/50">
+    <div class="container mx-auto px-4 py-14 max-w-4xl">
+      <h2 class="font-display text-2xl md:text-3xl mb-6">{c.extrasH2}</h2>
+      <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-3">
+        {extras.map((e) => (
+          <li class="flex items-start gap-3 text-foreground/85">
+            <span class="h-2 w-2 rounded-full bg-secondary shrink-0 mt-2"></span>
+            {e}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Zimmer-Detailkarten -->
+  <section class="container mx-auto px-4 py-16 md:py-20">
+    <div class="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+      {roomTypes.map((r, i) => (
+        <a href={localizedPath(`/zimmer/${r.slug}`, lang)} class="spotlight group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+          <div class="aspect-[4/3] overflow-hidden">
+            <Pic src={r.gallery[0]} alt={`${r.type} ${c.altSuffix}`} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
+          </div>
+          <div class="p-6">
+            <h3 class="font-display text-2xl group-hover:text-secondary transition-colors">{r.type}</h3>
+            <p class="text-sm text-muted-foreground mt-1">{r.hint}</p>
+            <p class="text-sm text-secondary font-medium mt-2">{r.priceLabel}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+    <div class="text-center mt-10">
+      <a href={localizedPath("/anfrage", lang)} class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">{c.unverbindlichAnfragen}</a>
+    </div>
+  </section>
+</Layout>

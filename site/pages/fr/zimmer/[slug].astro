@@ -1,0 +1,12 @@
+---
+// Détail de chambre français (/fr/zimmer/[slug]).
+import { ROOM_TYPES } from "../../../lib/rooms";
+import ZimmerDetailPage from "../../../components/pages/ZimmerDetailPage.astro";
+
+export function getStaticPaths() {
+  return ROOM_TYPES.map((r) => ({ params: { slug: r.slug } }));
+}
+const { slug } = Astro.params;
+---
+
+<ZimmerDetailPage lang="fr" slug={slug!} />
