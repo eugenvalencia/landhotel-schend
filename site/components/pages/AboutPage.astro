@@ -1,0 +1,138 @@
+---
+// Geteilte „Über uns"-Seite (alle Sprachen). Markup + Reveal-Animationen EINMAL;
+// Inhalt je Locale aus site/i18n/content/ueber-uns.ts. DE-Route rendert mit lang="de".
+import Layout from "../../layouts/Layout.astro";
+import Pic from "../Pic.astro";
+import { ORIGIN } from "../../lib/site";
+import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
+import { aboutContent } from "../../i18n/content/ueber-uns";
+
+interface Props {
+  lang?: Locale;
+}
+const { lang = DEFAULT_LOCALE } = Astro.props;
+const c = aboutContent[lang];
+
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: `${c.eyebrow} — Landhaus Schend`,
+  url: `${ORIGIN}${localizedPath("/ueber-uns", lang)}`,
+  description: c.schemaDescription,
+  about: { "@type": "Organization", name: "Landhaus Schend", foundingDate: "1856" },
+};
+---
+
+<Layout
+  title={c.metaTitle}
+  description={c.metaDescription}
+  canonicalPath={localizedPath("/ueber-uns", lang)}
+  lang={lang}
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(aboutSchema)} />
+
+  <!-- History — asymmetrischer Magazine-Spread -->
+  <section class="grid lg:grid-cols-12 items-stretch">
+    <div class="lg:col-span-6">
+      <div class="aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden shadow-elevated">
+        <Pic
+          src="/fotos/landhaus-schend-zeichnung-innenhof-historisch.jpg"
+          alt={c.altZeichnung}
+          class="w-full h-full object-cover object-center contrast-110"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+    </div>
+
+    <div class="lg:col-span-6 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>
+      <p class="eyebrow">{c.eyebrow}</p>
+      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-10 text-balance leading-[1.05]">
+        {c.h1}
+      </h1>
+
+      <div class="space-y-5 text-foreground/85 leading-relaxed max-w-prose">
+        {c.history.map((para, i) => (
+          <p class:list={[i === 0 && "drop-cap"]} set:html={para} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Gastgeber — Familie Beimler (seit 2019) -->
+  <section class="container mx-auto px-4 py-16 md:py-20 border-t border-border/40">
+    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-10 md:gap-14 items-center">
+      <div class="aspect-[4/3] overflow-hidden rounded-md shadow-card">
+        <Pic
+          src="/fotos/hotelfront-mit-rosen-landhaus-schend-vulkaneifel.jpg"
+          alt={c.altHotelfront}
+          loading="lazy"
+          decoding="async"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div data-reveal>
+        <p class="eyebrow">{c.gastgeberEyebrow}</p>
+        <h2 class="font-display text-3xl md:text-4xl mt-3 mb-5 leading-tight">{c.gastgeberH2}</h2>
+        <p class="text-foreground/85 leading-relaxed max-w-prose">{c.gastgeberText}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline — 1856 bis heute -->
+  <section class="tl-reveal container mx-auto px-4 py-16 md:py-24 border-t border-border/40">
+    <div class="text-center mb-12 md:mb-16">
+      <p class="eyebrow">{c.timelineEyebrow}</p>
+      <h2 class="font-display text-2xl md:text-3xl lg:text-4xl mt-4 text-balance" set:html={c.timelineH2} />
+    </div>
+
+    <!-- Desktop — horizontal -->
+    <div class="hidden md:block relative max-w-6xl mx-auto">
+      <div aria-hidden="true" class="tl-line absolute left-0 right-0 top-1.5 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent"></div>
+      <span aria-hidden="true" class="tl-glint"></span>
+      <ol class="relative grid grid-cols-9 gap-2">
+        {c.timeline.map((item, i) => (
+          <li class="tl-item flex flex-col items-center text-center" style={`--i:${i}`}>
+            <span aria-hidden="true" class="block h-3 w-3 rounded-full bg-secondary ring-4 ring-background relative z-10"></span>
+            <p class="font-display text-secondary text-xl lg:text-2xl mt-4 mb-2">{item.year}</p>
+            <p class="text-[10px] lg:text-[11px] text-muted-foreground leading-tight tracking-wide px-1">{item.event}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <!-- Mobile — vertikal -->
+    <div class="md:hidden max-w-md mx-auto">
+      <ol class="relative border-l-2 border-secondary/30 ml-3 space-y-6 pl-6">
+        {c.timeline.map((item, i) => (
+          <li class="tl-item relative" style={`--i:${i}`}>
+            <span aria-hidden="true" class="absolute -left-[1.85rem] top-1 h-3 w-3 rounded-full bg-secondary ring-4 ring-background"></span>
+            <p class="font-display text-secondary text-xl">{item.year}</p>
+            <p class="text-sm text-muted-foreground leading-relaxed">{item.event}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Philosophie -->
+  <section class="container mx-auto px-4 py-20 md:py-28">
+    <div class="text-center mb-14 md:mb-20 max-w-3xl mx-auto">
+      <p class="eyebrow">{c.philoEyebrow}</p>
+      <h2 class="font-display text-3xl md:text-4xl lg:text-5xl mt-4 mb-8 text-balance">{c.philoH2}</h2>
+      <p class="text-foreground/85 leading-relaxed text-base md:text-lg text-pretty">
+        {c.philoText}
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-px bg-border/50 max-w-5xl mx-auto border border-border/50 rounded-md overflow-hidden shadow-card">
+      {c.values.map((v, i) => (
+        <div class="bg-background px-8 py-12 text-center" data-reveal style={`--reveal-delay:${i * 0.1}s`}>
+          <p class="font-display text-secondary text-3xl mb-5">{v.num}</p>
+          <h3 class="font-display text-xl mb-3">{v.title}</h3>
+          <p class="text-sm text-muted-foreground leading-relaxed text-pretty">{v.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>
