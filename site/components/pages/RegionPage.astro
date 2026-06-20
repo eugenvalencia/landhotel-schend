@@ -1,0 +1,95 @@
+---
+// Geteilte „Urlaubsregion"-Seite (alle Sprachen). Markup + Reveal EINMAL;
+// Inhalt je Locale aus site/i18n/content/urlaubsregion.ts.
+import Layout from "../../layouts/Layout.astro";
+import Pic from "../Pic.astro";
+import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
+import { regionContent, REGION_ADDRESS } from "../../i18n/content/urlaubsregion";
+
+interface Props {
+  lang?: Locale;
+}
+const { lang = DEFAULT_LOCALE } = Astro.props;
+const c = regionContent[lang];
+---
+
+<Layout
+  title={c.metaTitle}
+  description={c.metaDescription}
+  canonicalPath={localizedPath("/urlaubsregion", lang)}
+  lang={lang}
+>
+  <!-- Hero -->
+  <section class="relative">
+    <Pic src="/pakete/eifel-2.jpg" alt={c.heroAlt} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
+    <div class="absolute inset-0 gradient-hero"></div>
+    <div class="relative container mx-auto px-4 py-24 md:py-32 max-w-3xl text-[hsl(38_30%_95%)]" style="text-shadow:0 1px 8px rgba(0,0,0,0.45)">
+      <p class="eyebrow !text-[hsl(38_48%_72%)]">{c.eyebrow}</p>
+      <h1 class="font-display text-4xl md:text-6xl mt-3 text-balance leading-[1.05]">{c.h1}</h1>
+      <p class="mt-6 text-lg leading-relaxed max-w-2xl text-[hsl(38_30%_95%)]/90 text-pretty">
+        {c.heroText}
+      </p>
+    </div>
+  </section>
+
+  <!-- Highlights -->
+  <section class="container mx-auto px-4 py-16 md:py-24">
+    <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      {c.highlights.map((h, i) => (
+        <article class="spotlight rounded-md overflow-hidden border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${(i % 2) * 0.1}s`}>
+          <div class="aspect-[16/10] overflow-hidden">
+            <Pic src={h.img} alt={h.title} class="w-full h-full object-cover" loading="lazy" decoding="async" />
+          </div>
+          <div class="p-6">
+            <h2 class="font-display text-2xl">{h.title}</h2>
+            <p class="text-sm text-muted-foreground mt-3 leading-relaxed text-pretty">{h.text}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Ausflüge + Distanzen -->
+  <section class="bg-muted/20 border-y border-border/50">
+    <div class="container mx-auto px-4 py-16 md:py-20">
+      <div class="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+        <div>
+          <h2 class="font-display text-2xl md:text-3xl mb-6">{c.ausfluegeH2}</h2>
+          <ul class="space-y-3">
+            {c.ausfluege.map((a) => (
+              <li class="flex items-start gap-3 text-foreground/85">
+                <svg class="h-5 w-5 shrink-0 mt-0.5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                {a}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2 class="font-display text-2xl md:text-3xl mb-6">{c.distanzenH2}</h2>
+          <ul class="space-y-3">
+            {c.distanzen.map((d) => (
+              <li class="flex items-center justify-between border-b border-border/60 pb-3">
+                <span class="font-medium">{d.ort}</span>
+                <span class="text-muted-foreground text-sm">{d.zeit}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="text-[11px] text-muted-foreground mt-3">{c.distanzNote}</p>
+          <p class="text-sm text-muted-foreground mt-3">{c.addressLabel}: {REGION_ADDRESS}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="container mx-auto px-4 py-16 md:py-20 text-center max-w-2xl">
+    <h2 class="font-display text-3xl md:text-4xl text-balance">{c.ctaH2}</h2>
+    <p class="text-muted-foreground mt-4 leading-relaxed text-pretty">
+      {c.ctaText}
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3 justify-center">
+      <a href={localizedPath("/zimmer", lang)} class="inline-flex items-center px-6 py-3 rounded-sm border border-border font-semibold tracking-wide hover:bg-muted transition-colors">{c.ctaZimmer}</a>
+      <a href={localizedPath("/anfrage", lang)} class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">{c.ctaAnfrage}</a>
+    </div>
+  </section>
+</Layout>
