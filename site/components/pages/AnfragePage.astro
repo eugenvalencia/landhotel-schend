@@ -1,0 +1,411 @@
+---
+// Geteilte Buchungs-ANFRAGE (alle Sprachen). Bewusst schlank: Gast schickt eine
+// Anfrage, das Hotel prüft Verfügbarkeit und antwortet. KEINE Live-Verfügbarkeit,
+// KEINE verbindlichen Preise (nur „ab"), KEINE Speicherung. Versand über die
+// Cloudflare Pages Function /api/inquiry → Resend. Texte je Locale aus
+// site/i18n/content/anfrage.ts; Kategorie-/Paket-WERTE bleiben deutsch (E-Mail-stabil).
+import Layout from "../../layouts/Layout.astro";
+import { PAKETE } from "../../lib/pakete";
+import { paketeText } from "../../i18n/content/pakete";
+import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
+import { anfrageContent, KATEGORIE_KEYS } from "../../i18n/content/anfrage";
+
+interface Props {
+  lang?: Locale;
+}
+const { lang = DEFAULT_LOCALE } = Astro.props;
+const c = anfrageContent[lang];
+---
+
+<Layout
+  title={c.metaTitle}
+  description={c.metaDescription}
+  canonicalPath={localizedPath("/anfrage", lang)}
+  lang={lang}
+  noindex={true}
+>
+  <section class="container mx-auto px-4 pt-12 md:pt-16 pb-16 md:pb-24">
+    <div class="max-w-3xl mx-auto">
+      <!-- Kopf -->
+      <div class="text-center" data-reveal>
+        <p class="eyebrow">{c.eyebrow}</p>
+        <h1 class="font-display text-4xl md:text-5xl mt-3 text-balance leading-[1.05]">{c.h1}</h1>
+        <p class="mt-5 text-foreground/85 leading-relaxed text-pretty max-w-xl mx-auto" set:html={c.introHtml} />
+      </div>
+
+      <!-- Foto-Hinweis (gegen Reklamationen) -->
+      <div class="mt-8 flex items-start gap-3 rounded-md border border-border bg-muted/30 px-4 py-3.5 text-sm text-foreground/80" data-reveal>
+        <svg class="h-5 w-5 shrink-0 mt-0.5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <p set:html={c.fotoHinweisHtml} />
+      </div>
+
+      <!-- Formular -->
+      <form
+        id="anfrage-form" class="mt-10 space-y-8" novalidate data-reveal
+        data-msg-sending={c.jsSending}
+        data-msg-required={c.jsRequiredFields}
+        data-msg-category={c.jsPickCategory}
+        data-msg-success={c.jsSuccess}
+        data-msg-validation={c.jsValidationServer}
+        data-msg-failed={c.jsFailed}
+        data-msg-conn={c.jsConnFailed}
+      >
+        <!-- Honeypot (Spam-Schutz, für Menschen unsichtbar) -->
+        <div aria-hidden="true" style="position:absolute;left:-9999px;height:0;overflow:hidden">
+          <label>{c.honeypotLabel} <input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <!-- Name -->
+        <div class="anf-field">
+          <label for="name">{c.nameLabel}<span class="anf-req">*</span></label>
+          <input id="name" name="name" type="text" required autocomplete="name" maxlength="120" />
+        </div>
+
+        <!-- Adresse -->
+        <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
+          <div class="anf-field">
+            <label for="street">{c.streetLabel}<span class="anf-req">*</span></label>
+            <input id="street" name="street" type="text" required autocomplete="street-address" maxlength="160" />
+          </div>
+          <div class="anf-field">
+            <label for="city">{c.cityLabel}<span class="anf-req">*</span></label>
+            <input id="city" name="city" type="text" required autocomplete="address-level2" maxlength="120" />
+          </div>
+        </div>
+
+        <!-- Kontakt -->
+        <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
+          <div class="anf-field">
+            <label for="email">{c.emailLabel}<span class="anf-req">*</span></label>
+            <input id="email" name="email" type="email" required autocomplete="email" maxlength="254" />
+          </div>
+          <div class="anf-field">
+            <label for="phone">{c.phoneLabel}<span class="anf-req">*</span></label>
+            <input id="phone" name="phone" type="tel" required autocomplete="tel" maxlength="40" />
+          </div>
+        </div>
+
+        <!-- Personen + Paket -->
+        <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
+          <div class="anf-field">
+            <label for="persons">{c.personsLabel}<span class="anf-req">*</span></label>
+            <input id="persons" name="persons" type="number" min="1" max="99" inputmode="numeric" value="2" required />
+          </div>
+          <div class="anf-field">
+            <label for="paket">{c.paketLabel}</label>
+            <select id="paket" name="paket">
+              {PAKETE.map((p) => (
+                <option value={p.title} selected={p.slug === "zimmer-ohne-paket"}>{paketeText[lang][p.slug].title}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <!-- Zimmer-Kategorien -->
+        <fieldset class="anf-field">
+          <legend class="anf-legend">{c.roomsLegend} <span class="text-muted-foreground font-normal normal-case tracking-normal">{c.roomsMulti}</span></legend>
+          <div class="mt-3 space-y-3">
+            {c.kategorien.map((k, idx) => (
+              <label class="anf-roomcard flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3.5 transition-colors cursor-pointer">
+                <input type="checkbox" name="kategorie" value={KATEGORIE_KEYS[idx]} class="anf-check" />
+                <span class="min-w-0">
+                  <span class="block font-medium leading-snug">
+                    {k.label}{k.sub && <span class="text-muted-foreground font-normal whitespace-nowrap"> · {k.sub}</span>}
+                  </span>
+                  <span class="block text-xs text-secondary mt-0.5">{k.ab}</span>
+                </span>
+              </label>
+            ))}
+          </div>
+          <div class="mt-4 flex items-center gap-3">
+            <label for="zimmer_anzahl" class="text-sm font-medium text-foreground/90">{c.zimmerAnzahlLabel}</label>
+            <select id="zimmer_anzahl" name="zimmer_anzahl" class="anf-count">
+              {[1,2,3,4,5,6,7,8,9].map((n) => <option value={String(n)}>{n} {c.zimmerUnit}</option>)}
+              <option value="mehr">{c.zimmerMehr}</option>
+            </select>
+          </div>
+          <p class="mt-3 text-xs text-muted-foreground">{c.halbpensionHint}</p>
+        </fieldset>
+
+        <!-- Zeitraum -->
+        <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
+          <div class="anf-field">
+            <label for="checkin">{c.checkinLabel}<span class="anf-req">*</span></label>
+            <input id="checkin" name="checkin" type="date" required />
+          </div>
+          <div class="anf-field">
+            <label for="checkout">{c.checkoutLabel}<span class="anf-req">*</span></label>
+            <input id="checkout" name="checkout" type="date" required />
+          </div>
+        </div>
+
+        <!-- Nachricht -->
+        <div class="anf-field">
+          <label for="message">{c.messageLabel}</label>
+          <textarea id="message" name="message" rows="4" maxlength="2000" placeholder={c.messagePlaceholder}></textarea>
+        </div>
+
+        <!-- Optionen -->
+        <div class="space-y-3">
+          <label class="flex items-center gap-3 cursor-pointer text-foreground/90">
+            <input type="checkbox" name="halbpension" class="anf-check" />
+            <span>{c.optHalbpension} <span class="text-muted-foreground text-sm">{c.optHalbpensionNote}</span></span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer text-foreground/90">
+            <input type="checkbox" name="kinderbett" class="anf-check" />
+            <span>{c.optKinderbett}</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer text-foreground/90">
+            <input type="checkbox" name="hund" class="anf-check" />
+            <span>{c.optHund} <span class="text-muted-foreground text-sm">{c.optHundNote}</span></span>
+          </label>
+        </div>
+
+        <!-- Datenschutz -->
+        <label class="flex items-start gap-3 cursor-pointer text-foreground/90">
+          <input type="checkbox" name="datenschutz" class="anf-check mt-1" required />
+          <span><a href="/datenschutz" class="underline hover:text-secondary" target="_blank" rel="noopener">{c.dsLinkText}</a> {c.dsAfter}<span class="anf-req">*</span></span>
+        </label>
+
+        <!-- Senden -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
+          <p class="text-xs text-muted-foreground max-w-sm">
+            {c.bottomNote}
+          </p>
+          <button type="submit" id="anf-submit"
+            class="inline-flex items-center justify-center px-7 py-3.5 rounded-sm bg-secondary text-secondary-foreground text-sm font-semibold tracking-[0.16em] uppercase hover:bg-secondary/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap">
+            {c.submitLabel}
+          </button>
+        </div>
+
+        <!-- Status -->
+        <div id="anf-status" role="status" aria-live="polite" hidden class="rounded-md px-4 py-4 text-sm"></div>
+      </form>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .anf-field { display: flex; flex-direction: column; }
+  .anf-field > label,
+  .anf-legend {
+    font-size: 0.875rem; font-weight: 600;
+    letter-spacing: 0.02em; color: hsl(var(--foreground) / 0.9);
+    margin-bottom: 0.4rem;
+  }
+  .anf-req { color: hsl(var(--secondary)); margin-left: 0.15rem; }
+  /* Nur DIREKTE Kinder stylen — sonst trifft die Unterstrich-Regel auch die
+     Checkboxen + Anzahl-Selects in den Zimmer-Karten (die im fieldset.anf-field
+     liegen) und macht sie 100% breit. */
+  .anf-field > input,
+  .anf-field > select,
+  .anf-field > textarea {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid hsl(var(--border));
+    padding: 0.55rem 0.1rem;
+    color: hsl(var(--foreground));
+    font-size: 1rem;
+    border-radius: 0;
+    transition: border-color 0.2s ease;
+  }
+  .anf-field > textarea {
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.375rem;
+    padding: 0.7rem 0.8rem;
+    resize: vertical;
+  }
+  .anf-field > input:focus,
+  .anf-field > select:focus,
+  .anf-field > textarea:focus {
+    outline: none;
+    border-color: hsl(var(--secondary));
+  }
+  .anf-field > input.anf-invalid,
+  .anf-field > select.anf-invalid {
+    border-color: hsl(0 72% 51%);
+  }
+  .anf-count {
+    background: hsl(var(--background));
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.375rem;
+    padding: 0.45rem 0.7rem;
+    color: hsl(var(--foreground));
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+  .anf-count:focus { outline: none; border-color: hsl(var(--secondary)); }
+
+  /* Custom-Checkbox — saubere, themensichere Box mit Häkchen (statt nativem
+     accent-color-Klotz, der je nach OS/Theme als dunkles Quadrat rendert). */
+  .anf-check {
+    appearance: none; -webkit-appearance: none;
+    width: 1.25rem; height: 1.25rem;
+    flex-shrink: 0;
+    margin: 0;
+    border: 1.5px solid hsl(var(--border));
+    border-radius: 0.35rem;
+    background: hsl(var(--background));
+    cursor: pointer;
+    display: inline-grid;
+    place-content: center;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .anf-check::before {
+    content: "";
+    width: 0.7rem; height: 0.7rem;
+    transform: scale(0);
+    transition: transform 0.15s ease;
+    background: hsl(var(--secondary-foreground));
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0, 43% 62%);
+  }
+  .anf-check:checked {
+    background: hsl(var(--secondary));
+    border-color: hsl(var(--secondary));
+  }
+  .anf-check:checked::before { transform: scale(1); }
+  .anf-check:focus-visible {
+    outline: 2px solid hsl(var(--secondary));
+    outline-offset: 2px;
+  }
+  /* Pflicht-Checkbox (z.B. Datenschutz) rot, wenn ohne Haken abgesendet. */
+  .anf-check.anf-invalid { border-color: hsl(0 72% 51%); }
+
+  /* Zimmer-Karte hebt sich hervor, sobald ihre Checkbox aktiv ist. */
+  .anf-roomcard:hover { border-color: hsl(var(--secondary) / 0.5); }
+  .anf-roomcard:has(input:checked) {
+    border-color: hsl(var(--secondary));
+    background: hsl(var(--secondary) / 0.06);
+  }
+  #anf-status.is-ok { background: hsl(140 45% 96%); color: hsl(140 50% 22%); border: 1px solid hsl(140 40% 80%); }
+  #anf-status.is-err { background: hsl(0 70% 97%); color: hsl(0 60% 38%); border: 1px solid hsl(0 60% 85%); }
+  :global(html.dark) #anf-status.is-ok { background: hsl(140 30% 14%); color: hsl(140 50% 80%); border-color: hsl(140 30% 28%); }
+  :global(html.dark) #anf-status.is-err { background: hsl(0 40% 16%); color: hsl(0 70% 82%); border-color: hsl(0 40% 30%); }
+</style>
+
+<script>
+  const form = document.getElementById("anfrage-form") as HTMLFormElement | null;
+  const statusEl = document.getElementById("anf-status") as HTMLElement | null;
+  const submitBtn = document.getElementById("anf-submit") as HTMLButtonElement | null;
+  if (form && statusEl && submitBtn) {
+    // Lokalisierte Meldungen aus data-*-Attributen (vom Server gesetzt).
+    const D = form.dataset;
+    const MSG = {
+      sending: D.msgSending ?? "…",
+      required: D.msgRequired ?? "Bitte Pflichtfelder ausfüllen.",
+      category: D.msgCategory ?? "Bitte eine Kategorie wählen.",
+      success: D.msgSuccess ?? "Danke!",
+      validation: D.msgValidation ?? "Bitte Angaben prüfen.",
+      failed: D.msgFailed ?? "Hat nicht geklappt.",
+      conn: D.msgConn ?? "Verbindung fehlgeschlagen.",
+    };
+
+    // Anreise frühestens heute; Abreise frühestens am Anreisetag.
+    const checkin = form.querySelector<HTMLInputElement>("#checkin");
+    const checkout = form.querySelector<HTMLInputElement>("#checkout");
+    const today = new Date().toISOString().split("T")[0];
+    if (checkin) checkin.min = today;
+    if (checkout) checkout.min = today;
+    checkin?.addEventListener("change", () => {
+      if (checkout && checkin.value) {
+        checkout.min = checkin.value;
+        if (checkout.value && checkout.value < checkin.value) checkout.value = checkin.value;
+      }
+    });
+
+    // Klick IRGENDWO ins Datumsfeld öffnet den Kalender (nicht nur das kleine Icon).
+    [checkin, checkout].forEach((el) => {
+      el?.addEventListener("click", () => { try { (el as any).showPicker?.(); } catch {} });
+    });
+
+    const setStatus = (msg: string, ok: boolean) => {
+      statusEl.hidden = false;
+      statusEl.textContent = msg;
+      statusEl.className = "rounded-md px-4 py-4 text-sm " + (ok ? "is-ok" : "is-err");
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Spam-Honeypot: ausgefüllt = Bot → still abbrechen.
+      const honey = (form.elements.namedItem("company") as HTMLInputElement)?.value;
+      if (honey) return;
+
+      // Pflichtfelder + mind. eine Kategorie. Autofill-tolerant: vom Browser
+      // automatisch ausgefüllte Felder (:autofill) NICHT fälschlich als leer
+      // markieren — Brave/Chromium geben deren value je nach Zustand erst nach
+      // Interaktion frei; sonst wäre alles rot, obwohl sichtbar ausgefüllt.
+      const kategorien = Array.from(form.querySelectorAll<HTMLInputElement>('input[name="kategorie"]:checked'));
+      let firstInvalid: HTMLElement | null = null;
+      const autofilled = (el: HTMLInputElement) => {
+        try { return el.matches(":-webkit-autofill") || el.matches(":autofill"); } catch { return false; }
+      };
+      form.querySelectorAll<HTMLInputElement>("[required]").forEach((el) => {
+        const bad = el.type === "checkbox" ? !el.checked : (!el.value.trim() && !autofilled(el));
+        el.classList.toggle("anf-invalid", bad);
+        if (bad && !firstInvalid) firstInvalid = el;
+      });
+      const emailEl = form.querySelector<HTMLInputElement>("#email");
+      const email = emailEl?.value.trim() || "";
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || (!email && !!emailEl && autofilled(emailEl));
+      if (!emailOk) { emailEl?.classList.add("anf-invalid"); firstInvalid ||= emailEl; }
+
+      if (firstInvalid) {
+        setStatus(MSG.required, false);
+        (firstInvalid as HTMLElement).scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      if (kategorien.length === 0) {
+        setStatus(MSG.category, false);
+        return;
+      }
+
+      // Payload bauen.
+      const rooms = kategorien.map((cb) => ({ kategorie: cb.value }));
+      const get = (n: string) => (form.elements.namedItem(n) as HTMLInputElement)?.value.trim() || "";
+      const checked = (n: string) => (form.elements.namedItem(n) as HTMLInputElement)?.checked || false;
+      const payload = {
+        name: get("name"), street: get("street"), city: get("city"),
+        email, phone: get("phone"),
+        persons: Number(get("persons")) || 1,
+        paket: get("paket"),
+        rooms,
+        zimmer: get("zimmer_anzahl"),
+        checkin: get("checkin"), checkout: get("checkout"),
+        message: get("message"),
+        halbpension: checked("halbpension"),
+        kinderbett: checked("kinderbett"),
+        hund: checked("hund"),
+        datenschutz: checked("datenschutz"),
+        company: honey, // Honeypot serverseitig nochmal geprüft
+      };
+
+      submitBtn.disabled = true;
+      const orig = submitBtn.textContent;
+      submitBtn.textContent = MSG.sending;
+      try {
+        const res = await fetch("/api/inquiry", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json().catch(() => ({ ok: false }));
+        if (data.ok) {
+          form.reset();
+          setStatus(MSG.success, true);
+          statusEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else if (data.error === "validation") {
+          setStatus(MSG.validation, false);
+        } else {
+          setStatus(MSG.failed, false);
+        }
+      } catch {
+        setStatus(MSG.conn, false);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = orig;
+      }
+    });
+  }
+</script>
