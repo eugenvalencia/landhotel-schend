@@ -1,0 +1,49 @@
+---
+import TextPage from "../layouts/TextPage.astro";
+
+// Landschaftsaufnahmen der Vulkaneifel-Maare: frei lizenziert von Wikimedia Commons
+// (CC BY-SA), für die Website zugeschnitten/skaliert. Urheber + Lizenz dokumentiert.
+const COMMONS = [
+  { motiv: "Pulvermaar", autor: "Thomas Hummel", lizenz: "CC BY-SA 4.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/4.0", quelle: "https://commons.wikimedia.org/wiki/File:Pulvermaar_01.jpg" },
+  { motiv: "Gemündener Maar (Blick vom Dronketurm)", autor: "Gerda Arendt", lizenz: "CC BY-SA 4.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/4.0", quelle: "https://commons.wikimedia.org/wiki/File:Gem%C3%BCndener_Maar_from_Dronketurm,_Daun.jpg" },
+  { motiv: "Schalkenmehrener Maar", autor: "Thomas Hummel", lizenz: "CC BY-SA 4.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/4.0", quelle: "https://commons.wikimedia.org/wiki/File:Schalkenmehrener_Maar_01.jpg" },
+  { motiv: "Weinfelder Maar (Totenmaar)", autor: "Dietrich Krieger", lizenz: "CC BY-SA 3.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/3.0", quelle: "https://commons.wikimedia.org/wiki/File:Totenmaar_weinfelder_maar_eifel.jpg" },
+  { motiv: "Holzmaar", autor: "Bhuaysan", lizenz: "CC BY-SA 3.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/3.0", quelle: "https://commons.wikimedia.org/wiki/File:Holzmaar_Eifel_Panorama.jpg" },
+];
+---
+
+<TextPage
+  title="Bildnachweis"
+  description="Bildnachweis und Urheberangaben für die auf landhaus-schend.de verwendeten Fotos."
+  canonicalPath="/bildnachweis"
+  noindex={true}
+  heading="Bildnachweis"
+>
+  <section>
+    <p>
+      Die Fotos von Haus, Garten, Zimmern, Restaurant, Festsaal und Speisen stammen vom
+      Landhaus Schend (Familie Beimler) bzw. wurden in dessen Auftrag erstellt.
+    </p>
+    <p>
+      Für die Landschaftsaufnahmen der Vulkaneifel-Maare verwenden wir frei lizenzierte
+      Fotografien von Wikimedia Commons. Die Bilder wurden für die Darstellung auf dieser
+      Website zugeschnitten und in der Größe angepasst. Urheber und Lizenz sind nachfolgend
+      aufgeführt:
+    </p>
+    <ul>
+      {COMMONS.map((b) => (
+        <li>
+          <strong>{b.motiv}</strong> — Foto: {b.autor}, Lizenz{" "}
+          <a href={b.lizenzUrl} target="_blank" rel="noopener noreferrer" class="underline hover:no-underline">{b.lizenz}</a>,
+          Quelle:{" "}
+          <a href={b.quelle} target="_blank" rel="noopener noreferrer" class="underline hover:no-underline">Wikimedia Commons</a>
+        </li>
+      ))}
+    </ul>
+    <p class="text-sm text-muted-foreground">
+      Sollten Sie der Ansicht sein, dass ein hier verwendetes Bild Ihre Rechte verletzt,
+      melden Sie sich bitte unter <a href="mailto:info@landhaus-schend.de" class="underline hover:no-underline">info@landhaus-schend.de</a>
+      — wir prüfen das umgehend.
+    </p>
+  </section>
+</TextPage>
