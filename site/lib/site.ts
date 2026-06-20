@@ -15,13 +15,13 @@ export const LEGAL_NAME = "Landhaus Schend, Hotel - Restaurant";
 // Instagram = Platzhalter, bis der echte Handle feststeht.
 export const SOCIAL = {
   facebook: "https://www.facebook.com/Landhotel.Schend/",
-  instagram: "https://www.instagram.com/",
+  instagram: "",
 } as const;
 
 export const HOTEL = {
   name: "Landhaus Schend",
   phoneLabel: "+49 6573 306",
-  phoneHref: "tel:+4965731306",
+  phoneHref: "tel:+496573306",
   fax: "+49 6573 99815",
   email: "info@landhaus-schend.de",
   street: "Hauptstraße 9",
