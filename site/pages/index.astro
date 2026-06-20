@@ -133,7 +133,7 @@ const hotelGraph = {
       "@type": "Organization", "@id": "https://landhaus-schend.de/#organization",
       name: "Landhaus Schend", alternateName: "Landhaus Schend", url: "https://landhaus-schend.de/",
       logo: "https://landhaus-schend.de/schend-logo-black.svg",
-      founder: { "@type": "Person", name: "Familie Schend" }, foundingDate: "1856",
+      foundingDate: "1856",
       contactPoint: { "@type": "ContactPoint", telephone: "+49-6573-306", contactType: "Reservierung", areaServed: "DE", availableLanguage: ["German"] },
       sameAs: ["https://www.facebook.com/Landhotel.Schend/", "https://www.booking.com/hotel/de/landhaus-schend.html", "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html"],
     },
@@ -201,7 +201,7 @@ const uspIcon: Record<string, string> = {
         <span class="text-white/40" aria-hidden="true">·</span>
         <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="8.7" data-count-decimals="1" data-count-mount="1" data-count-delay="600" data-count-dur="1400">8,7</span> / 10 Booking</span>
         <span class="text-white/40" aria-hidden="true">·</span>
-        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="165" data-count-mount="1" data-count-delay="800" data-count-dur="1600">165</span> Jahre Tradition</span>
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="170" data-count-mount="1" data-count-delay="800" data-count-dur="1600">170</span> Jahre Tradition</span>
         <span class="text-white/40 hidden sm:inline" aria-hidden="true">·</span>
         <span class="hidden sm:inline text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="21" data-count-mount="1" data-count-delay="1000" data-count-dur="1200">21</span> Komfortzimmer</span>
       </div>
@@ -253,12 +253,12 @@ const uspIcon: Record<string, string> = {
       </div>
       <div class="grid sm:grid-cols-2 gap-10 max-w-4xl mx-auto">
         {ROOM_TYPES.map((r, idx) => {
-          const gallery = galleryForRoomType(r.galleryKey ?? r.type);
+          const gallery = galleryForRoomType(r.type);
           const cardPhoto = gallery[idx % gallery.length] ?? gallery[0];
           return (
             <a href={`/zimmer/${r.slug}`} class="group block" data-reveal style={`--reveal-delay:${idx * 0.08}s`}>
               <div class="spotlight tilt-card card-reveal aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
-                <Pic src={cardPhoto} alt={r.type} class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" loading="lazy" decoding="async" />
+                <Pic src={cardPhoto} alt={`${r.type} im Landhaus Schend, Vulkaneifel`} class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" loading="lazy" decoding="async" />
                 <div class="card-caption">
                   <p class="text-[10px] tracking-[0.2em] uppercase text-white/80 mb-1">Zimmer ansehen</p>
                   <p class="font-display text-white text-lg leading-snug">{r.hint}</p>

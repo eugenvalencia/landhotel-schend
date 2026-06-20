@@ -2,17 +2,24 @@
 // <Pic> — Bild mit WebP-Quelle + JPG/PNG-Fallback (Progressive Enhancement).
 // Rendert <picture class="contents">, damit der Wrapper im Layout "verschwindet"
 // (display:contents) und das innere <img> sich exakt wie vorher verhält — alle
-// Klassen/Attribute (class, loading, width/height, fetchpriority, data-lightbox …)
-// werden 1:1 durchgereicht. WebP-Datei muss neben dem Original liegen (gen-Skript).
-const { src, ...rest } = Astro.props as { src: string; [key: string]: unknown };
+// Klassen/Attribute (class, loading, fetchpriority, data-lightbox …) werden 1:1
+// durchgereicht. WebP-Datei muss neben dem Original liegen (gen-Skript).
+// width/height: explizit übergebene Werte gewinnen; sonst intrinsische Maße aus
+// foto-dims.json (für /fotos/*) → reserviert Platz, vermeidet Layout-Shift (CLS).
+import dimsJson from "../lib/foto-dims.json";
+const dims = dimsJson as Record<string, [number, number]>;
+const { src, width, height, ...rest } = Astro.props as { src: string; width?: number | string; height?: number | string; [key: string]: unknown };
 const canWebp = typeof src === "string" && /\.(jpe?g|png)$/i.test(src);
 const webp = canWebp ? src.replace(/\.(jpe?g|png)$/i, ".webp") : src;
+const dim = typeof src === "string" ? dims[src] : undefined;
+const w = width ?? dim?.[0];
+const h = height ?? dim?.[1];
 ---
 {canWebp ? (
   <picture class="contents">
     <source srcset={webp} type="image/webp" />
-    <img src={src} {...rest} />
+    <img src={src} width={w} height={h} {...rest} />
   </picture>
 ) : (
-  <img src={src} {...rest} />
+  <img src={src} width={w} height={h} {...rest} />
 )}

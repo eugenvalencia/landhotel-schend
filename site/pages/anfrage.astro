@@ -74,7 +74,7 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
         <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
           <div class="anf-field">
             <label for="email">E-Mail<span class="anf-req">*</span></label>
-            <input id="email" name="email" type="email" required autocomplete="email" maxlength="255" />
+            <input id="email" name="email" type="email" required autocomplete="email" maxlength="254" />
           </div>
           <div class="anf-field">
             <label for="phone">Telefon<span class="anf-req">*</span></label>
@@ -379,7 +379,6 @@ const PAKET_OPTIONEN = PAKETE.map((p) => ({ value: p.title, title: p.title }));
         const data = await res.json().catch(() => ({ ok: false }));
         if (data.ok) {
           form.reset();
-          form.querySelectorAll<HTMLSelectElement>("select[data-anzahl]").forEach((s) => (s.disabled = true));
           setStatus("Vielen Dank! Ihre Anfrage ist bei uns eingegangen — wir melden uns persönlich bei Ihnen zurück.", true);
           statusEl.scrollIntoView({ behavior: "smooth", block: "center" });
         } else if (data.error === "validation") {

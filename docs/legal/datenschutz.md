@@ -64,9 +64,9 @@ Eine Übermittlung personenbezogener Daten an Dritte erfolgt nur, soweit dies zu
 
 Diese Website wird auf einer Infrastruktur betrieben, die unser Auftragsverarbeiter **Conexa Digital** (Inhaber Eugen Neifer) verwaltet. Die Auslieferung der Inhalte erfolgt zusätzlich über das Content Delivery Network von **Cloudflare Inc.** (101 Townsend St, San Francisco, CA 94107, USA). Cloudflare erhebt dabei verarbeitungstechnisch notwendige Server-Log-Daten (insb. IP-Adresse, Zeitstempel, Browsertyp). Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an sicherem und schnellem Webhosting). Drittlandtransfer USA: gestützt auf EU-Standarddatenschutzklauseln (Art. 46 Abs. 2 lit. c DSGVO). Cloudflare ist DPF-zertifiziert (Data Privacy Framework).
 
-### b) Backend / Buchungsanfragen — Supabase
+### b) Versand der Anfrage per E-Mail — Resend
 
-Ihre Buchungs-Anfrage wird in einer verschlüsselten Datenbank des Anbieters **Supabase Inc.** (970 Toa Payoh North, #07-04, Singapore 318992) gespeichert. Die Server-Region ist **Frankfurt/Deutschland (eu-central-1)**. Mit Supabase besteht ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO sowie EU-SCC für etwaigen Konzernzugriff aus den USA. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen, Vertragsanbahnung).
+Ihre Anfrage über das Formular wird **nicht in einer Datenbank gespeichert**, sondern ausschließlich per E-Mail an unsere Rezeption weitergeleitet. Den technischen Versand übernimmt **Resend** (Resend Inc., USA; Versand über EU-Region). Zusätzlich erhalten Sie eine automatische Eingangsbestätigung an Ihre eigene E-Mail-Adresse. Übermittelt werden die von Ihnen im Formular eingegebenen Anfrage-Daten. Mit Resend besteht ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO; der USA-Transfer ist auf EU-Standardvertragsklauseln gestützt. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen, Vertragsanbahnung).
 
 ### c) E-Mail-Versand & -Empfang — IONOS
 
@@ -85,7 +85,6 @@ Unsere Internetseiten verwenden so genannte „Cookies" und ähnliche Speicher-T
 
 - **Theme-Präferenz** (`theme`, localStorage) — speichert, ob Sie die Seite hell oder dunkel anzeigen. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG (technisch erforderlich für die von Ihnen gewählte Darstellung).
 - **Barrierefreiheits-Komfort** (`schend_a11y_v1`, localStorage) — speichert Ihre Einstellungen zu Schriftgröße, Kontrast und reduzierter Bewegung. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG.
-- **Start-Animation** (`schend_splash_done`, sessionStorage) — merkt sich für die Dauer Ihres Besuchs, dass die Begrüßungs-Animation bereits gezeigt wurde. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG.
 
 Wir nutzen **kein Tracking**, **keine Werbe-Cookies** und keine Drittanbieter-Analytics. Sie können Ihre Browser-Einstellungen so anpassen, dass Cookies / localStorage komplett blockiert werden — das kann jedoch die Funktion der Website einschränken (z.B. gehen Ihre Theme- und Komfort-Einstellungen verloren).
 
@@ -107,10 +106,12 @@ Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenomm
 Über das Buchungsformular erheben wir folgende Daten:
 
 - Name (Vor- und Nachname)
+- Anschrift (Straße, PLZ/Ort)
 - E-Mail-Adresse
-- Telefonnummer (optional)
+- Telefonnummer
 - Anreise- und Abreise-Datum
-- Zimmer-Typ und Anzahl Gäste
+- gewünschtes Zimmer / Paket und Anzahl Personen
+- Verpflegung & Extras (z. B. Halbpension, Kinderbett, Reise mit Hund)
 - etwaige Sonderwünsche (Freitext)
 
 **Zweck:** Bearbeitung Ihrer Anfrage, Vertragsanbahnung, Zimmer-Reservierung und Kommunikation rund um Ihren Aufenthalt.
@@ -121,9 +122,9 @@ Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenomm
 
 **Empfänger / Auftragsverarbeiter:**
 
-- **Supabase Inc.** — Datenbank-Hosting (Server-Region Frankfurt/Deutschland), siehe Ziffer 6 b.
-- **Conexa Digital** (Inhaber Eugen Neifer) — technischer Dienstleister für den Betrieb der Buchungs-Technik sowie die Weiterleitung Ihrer Anfrage an unsere Rezeption; betrieben auf Server-Infrastruktur der **Hetzner Online GmbH** (Standort Deutschland) als Sub-Auftragsverarbeiter. Über Annahme oder Ablehnung Ihrer Anfrage entscheidet ausschließlich ein Mensch.
-- **Resend** (Resend Inc., USA; Versand über EU-Region) — Versand der Bestätigungs-E-Mail an Sie. Übermittelt werden Ihre E-Mail-Adresse und die Eckdaten Ihrer Anfrage. USA-Transfer gestützt auf EU-Standardvertragsklauseln.
+- **Cloudflare, Inc.** — Hosting/Auslieferung der Website und Betrieb des Anfrage-Endpunkts (Server-Region EU), siehe Ziffer 6 a.
+- **Resend** (Resend Inc., USA; Versand über EU-Region) — technischer Versand Ihrer Anfrage per E-Mail an unsere Rezeption sowie einer automatischen Eingangsbestätigung an Ihre eigene E-Mail-Adresse. USA-Transfer gestützt auf EU-Standardvertragsklauseln.
+- **Conexa Digital** (Inhaber Eugen Neifer) — technischer Dienstleister für Betrieb und Wartung der Website. Über Annahme oder Ablehnung Ihrer Anfrage entscheidet ausschließlich ein Mensch.
 
 Mit allen genannten Dienstleistern bestehen Auftragsverarbeitungsverträge nach Art. 28 DSGVO. Eine Weitergabe an sonstige Dritte erfolgt nicht.
 
