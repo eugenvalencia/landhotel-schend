@@ -1,0 +1,578 @@
+---
+// Geteilte Startseite (alle Sprachen). Markup + Effekte EINMAL; Inhalt je Locale
+// aus site/i18n/content/home.ts, Zimmer-/Paket-Karten aus den lokalisierten
+// Datenschichten. DE rendert inhaltsgleich zur bisherigen index.astro.
+import Layout from "../../layouts/Layout.astro";
+import Pic from "../Pic.astro";
+import LocationSection from "../LocationSection.astro";
+import { ROOM_TYPES } from "../../lib/rooms";
+import { SCHEND_RESTAURANT, galleryForRoomType } from "../../lib/photos";
+import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
+import { homeContent } from "../../i18n/content/home";
+import { findRoomFor, zimmerChrome } from "../../i18n/content/zimmer";
+import { paketeFor } from "../../i18n/content/pakete";
+
+interface Props {
+  lang?: Locale;
+}
+const { lang = DEFAULT_LOCALE } = Astro.props;
+const c = homeContent[lang];
+const pakete = paketeFor(lang);
+const altSuffix = zimmerChrome[lang].altSuffix;
+
+const HERO_VIDEO = "/hero/schend-hero.mp4";
+const HERO_POSTER = "/hero/schend-hero-poster.webp";
+
+const FOOD_PHOTOS = [
+  "/marquee/food-0.jpg",
+  "/marquee/haehnchen-mit-wedges-landhaus-schend.jpg",
+  "/marquee/food-1.jpg",
+  "/marquee/schnitzelteller-mit-pommes-landhaus-schend.jpg",
+  "/marquee/food-2.jpg",
+  "/marquee/rouladen-mit-rotkohl-und-kroketten-landhaus-schend.jpg",
+  "/marquee/food-3.jpg",
+  "/marquee/schlemmerplatte-landhaus-schend.jpg",
+  "/marquee/salat-buffet-mit-tomatenherz-landhaus-schend.jpg",
+  "/marquee/warmes-buffet-mit-chafing-dishes-landhaus-schend.jpg",
+  "/marquee/schnitzel-mit-salat-landhaus-schend.jpg",
+  "/marquee/cordon-bleu-mit-pommes-landhaus-schend.jpg",
+];
+
+const REGION_SRC = ["/region/eifel-1.jpg", "/region/eifel-2.jpg", "/region/eifel-3.jpg", "/region/eifel-4.jpg", "/region/eifel-5.jpg"];
+const REGION_CLS = ["md:row-span-2 md:h-[33rem]", "md:col-span-2", "md:row-span-2 md:h-[33rem]", "", ""];
+
+const PLATFORMS = [
+  { name: "Booking.com", logo: "/reviews/booking.svg", score: "8,7 / 10", href: "https://www.booking.com/hotel/de/landhaus-schend.html" },
+  { name: "Tripadvisor", logo: "/reviews/tripadvisor.svg", score: "4,0 / 5", href: "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html" },
+  { name: "HRS", mark: "HRS", brand: "#1d4ed8", score: "9,0 / 10", href: "https://www.hrs.com/en/hotel/schend-landhaus/a-542374/" },
+  { name: "Google", logo: "/reviews/google.svg", score: "", href: "https://www.google.com/maps/search/?api=1&query=Landhaus+Schend+Immerath" },
+];
+
+const hotelGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Hotel",
+      "@id": "https://landhaus-schend.de/#hotel",
+      name: "Landhaus Schend",
+      alternateName: "Landhaus Schend Hotel - Restaurant",
+      legalName: "Landhaus Schend, Hotel - Restaurant",
+      description: c.schemaHotelDescription,
+      url: "https://landhaus-schend.de/",
+      telephone: "+49-6573-306",
+      faxNumber: "+49-6573-99815",
+      email: "info@landhaus-schend.de",
+      image: [
+        "https://landhaus-schend.de/fotos/hotelfront-mit-rosen-landhaus-schend-vulkaneifel.jpg",
+        "https://landhaus-schend.de/fotos/gartenseite-mit-terrasse-landhaus-schend.jpg",
+      ],
+      logo: "https://landhaus-schend.de/schend-logo-black.svg",
+      priceRange: "€€",
+      starRating: { "@type": "Rating", ratingValue: "3", additionalType: "Superior" },
+      address: { "@type": "PostalAddress", streetAddress: "Hauptstraße 9", addressLocality: "Immerath", addressRegion: "Rheinland-Pfalz", postalCode: "54552", addressCountry: "DE" },
+      geo: { "@type": "GeoCoordinates", latitude: 50.1303, longitude: 6.9594 },
+      hasMap: "https://www.google.com/maps?q=Landhaus+Schend+Immerath",
+      checkinTime: "15:00",
+      checkoutTime: "11:00",
+      numberOfRooms: 21,
+      smokingAllowed: false,
+      amenityFeature: [
+        { "@type": "LocationFeatureSpecification", name: "Halbpension auf Wunsch", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Eifeler Landküche", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Hauseigenes Restaurant", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Frühstücksbuffet", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Kostenloses WLAN", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Kostenloser Parkplatz", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Motorrad-Stellplätze", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Balkon oder Terrasse", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Massagen", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Familienzimmer", value: true },
+      ],
+      potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: "https://landhaus-schend.de/anfrage", actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] }, result: { "@type": "LodgingReservation", name: "Direktbuchung Zimmer" } },
+    },
+    {
+      "@type": "Organization", "@id": "https://landhaus-schend.de/#organization",
+      name: "Landhaus Schend", alternateName: "Landhaus Schend", url: "https://landhaus-schend.de/",
+      logo: "https://landhaus-schend.de/schend-logo-black.svg",
+      foundingDate: "1856",
+      contactPoint: { "@type": "ContactPoint", telephone: "+49-6573-306", contactType: "Reservierung", areaServed: "DE", availableLanguage: ["German"] },
+      sameAs: ["https://www.facebook.com/Landhotel.Schend/", "https://www.booking.com/hotel/de/landhaus-schend.html", "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html"],
+    },
+    { "@type": "WebSite", "@id": "https://landhaus-schend.de/#website", url: "https://landhaus-schend.de/", name: "Landhaus Schend", publisher: { "@id": "https://landhaus-schend.de/#organization" }, inLanguage: [c.schemaInLanguage] },
+  ],
+};
+
+const uspIcon: Record<string, string> = {
+  park: '<circle cx="12" cy="12" r="10"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/>',
+  bike: '<circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-3 11.5V14l-3-3 4-3 2 3h2"/>',
+  chef: '<path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"/><line x1="6" y1="17" x2="18" y2="17"/>',
+  utensils: '<path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>',
+  bed: '<path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>',
+  wifi: '<path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.82a15 15 0 0 1 20 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>',
+  coffee: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/>',
+  trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',
+};
+
+const USP_ICONS = ["park", "bike", "chef", "utensils", "bed", "wifi", "coffee", "trophy"];
+const stripPrefix = (s: string) => s.replace(/^(ab|from|vanaf)\s+/i, "").replace(/^à partir de\s+/i, "");
+const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
+---
+
+<Layout
+  title={c.metaTitle}
+  description={c.metaDescription}
+  canonicalPath={localizedPath("/", lang)}
+  lang={lang}
+  ogType="hotel"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(hotelGraph)} />
+  <link rel="preload" as="image" href={HERO_POSTER} type="image/webp" fetchpriority="high" slot="head" />
+
+  <!-- HERO -->
+  <section id="top" class="relative h-[100vh] min-h-[640px] max-h-[1100px] overflow-hidden">
+    <div data-hero-bg aria-hidden="true" class="absolute inset-0 will-change-transform" style="transform: scale(1.22)">
+      <video data-hero-video class="absolute inset-0 w-full h-full object-cover" poster={HERO_POSTER} muted loop playsinline preload="none" aria-hidden="true">
+        <source src={HERO_VIDEO} type="video/mp4" />
+      </video>
+    </div>
+    <div aria-hidden="true" class="absolute inset-0 bg-black/15"></div>
+    <div aria-hidden="true" class="absolute inset-0" style="background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.12) 55%, transparent 100%)"></div>
+    <div aria-hidden="true" class="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-black/55 via-black/20 to-transparent"></div>
+    <div aria-hidden="true" class="hero-grain absolute inset-0 z-[1] pointer-events-none"></div>
+
+    <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
+      <div class="flex items-center gap-4 mb-10 md:mb-14">
+        <span class="block h-px w-12 md:w-20 bg-white/65"></span>
+        <span class="text-[11px] md:text-xs font-medium tracking-[0.24em] uppercase text-white/90" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">{c.heroBadge}</span>
+        <span class="block h-px w-12 md:w-20 bg-white/65"></span>
+      </div>
+      <h1 class="headline-reveal font-display text-balance text-white text-[2.5rem] sm:text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] mb-7 md:mb-9 max-w-4xl" style="text-shadow:0 2px 14px rgba(0,0,0,0.55)">
+        {c.heroH1}
+      </h1>
+      <p class="font-display-italic text-balance text-white/95 text-base sm:text-lg md:text-2xl max-w-2xl leading-snug mb-8 sm:mb-9 md:mb-11" style="text-shadow:0 1px 8px rgba(0,0,0,0.55)">
+        {c.heroSubtitle}
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 mb-10 md:mb-12 text-white/80" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span class="text-secondary">★</span> {c.statTripadvisor}</span>
+        <span class="text-white/40" aria-hidden="true">·</span>
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="8.7" data-count-decimals="1" data-count-mount="1" data-count-delay="600" data-count-dur="1400">8,7</span> {c.statBooking}</span>
+        <span class="text-white/40" aria-hidden="true">·</span>
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="170" data-count-mount="1" data-count-delay="800" data-count-dur="1600">170</span> {c.statTradition}</span>
+        <span class="text-white/40 hidden sm:inline" aria-hidden="true">·</span>
+        <span class="hidden sm:inline text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="21" data-count-mount="1" data-count-delay="1000" data-count-dur="1200">21</span> {c.statRooms}</span>
+      </div>
+      <div class="flex flex-col items-center gap-5">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+          <a href={localizedPath("/anfrage", lang)} class="magnetic glow-border group inline-flex items-center justify-center gap-3 px-9 py-4 min-h-[56px] bg-white text-zinc-900 text-xs sm:text-sm font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300 shadow-sm">
+            <svg class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="m9 16 2 2 4-4"/></svg>
+            {c.ctaInquire}
+            <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </a>
+          <a href={localizedPath("/restaurant", lang)} class="magnetic group inline-flex items-center justify-center gap-3 px-9 py-4 min-h-[56px] border border-white/60 text-white text-xs sm:text-sm font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-white/10 hover:border-white transition-all duration-300" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">
+            <svg class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+            {c.ctaRestaurant}
+            <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </a>
+        </div>
+        <a href="tel:+496573306" class="text-white/85 text-sm tracking-wide hover:text-white transition-colors" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">{c.callPrefix} <span class="font-medium ml-1">+49 6573 306</span></a>
+      </div>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 text-white/55">
+      <span class="text-[10px] tracking-[0.3em] uppercase">{c.scrollLabel}</span>
+      <span class="relative block h-10 w-px overflow-hidden bg-white/20"><span aria-hidden="true" class="scroll-cue-travel absolute inset-x-0 top-0 block h-3 bg-white/85"></span></span>
+    </div>
+  </section>
+
+  <!-- USPs -->
+  <section aria-label={c.uspsAria} class="bg-background border-y border-border/70">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-border/50">
+        {c.usps.map((label, i) => (
+          <div class="group flex items-center gap-3 px-5 py-7 bg-background hover:bg-muted/40 transition-colors">
+            <svg class="h-5 w-5 text-secondary shrink-0 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={uspIcon[USP_ICONS[i]]} />
+            <span class="text-[13px] font-medium leading-snug">{label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ZIMMER -->
+  <section id="rooms" class="bg-gradient-to-b from-background via-muted/20 to-background">
+    <div class="container mx-auto px-4 py-20 md:py-28">
+      <div class="text-center mb-14 md:mb-20" data-reveal>
+        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">{c.roomsH2}</h2>
+        <p class="text-muted-foreground mt-5 max-w-prose mx-auto leading-relaxed text-pretty">
+          {c.roomsIntro}
+        </p>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-10 max-w-4xl mx-auto">
+        {ROOM_TYPES.map((base, idx) => {
+          const gallery = galleryForRoomType(base.type);
+          const cardPhoto = gallery[idx % gallery.length] ?? gallery[0];
+          const r = findRoomFor(base.slug, lang)!;
+          return (
+            <a href={localizedPath(`/zimmer/${base.slug}`, lang)} class="group block" data-reveal style={`--reveal-delay:${idx * 0.08}s`}>
+              <div class="spotlight tilt-card card-reveal aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
+                <Pic src={cardPhoto} alt={`${r.type} ${altSuffix}, Vulkaneifel`} class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" loading="lazy" decoding="async" />
+                <div class="card-caption">
+                  <p class="text-[10px] tracking-[0.2em] uppercase text-white/80 mb-1">{c.roomCardEyebrow}</p>
+                  <p class="font-display text-white text-lg leading-snug">{r.hint}</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4 mb-2">
+                <h3 class="font-display text-xl md:text-2xl group-hover:text-secondary transition-colors">{r.type}</h3>
+                <span class="text-xs font-medium tracking-[0.15em] uppercase text-secondary whitespace-nowrap">{r.priceLabel}</span>
+              </div>
+              <p class="text-sm text-muted-foreground leading-relaxed">{r.hint}</p>
+            </a>
+          );
+        })}
+      </div>
+      <div class="text-center mt-16">
+        <a href={localizedPath("/zimmer", lang)} class="inline-flex items-center gap-2 px-9 py-4 rounded-sm border border-primary/40 uppercase tracking-[0.2em] text-xs font-medium hover:border-secondary hover:text-secondary transition-colors">{c.allRoomsCta} <span>→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESTAURANT (voll) -->
+  <section id="restaurant" class="bg-gradient-to-b from-muted/40 via-muted/20 to-muted/40">
+    <div class="animate-pulse-banner border-y border-border/60">
+      <div class="container mx-auto px-4 py-4 md:py-5">
+        <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center">
+          <span class="inline-flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
+            <svg class="h-4 w-4 text-secondary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+            {c.banner}
+          </span>
+          <a href="tel:+496573306" class="inline-flex items-center gap-2 text-sm font-medium text-secondary hover:text-foreground transition-colors underline underline-offset-4 decoration-secondary/40">{c.bannerReserve}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-12 items-stretch">
+      <div class="lg:col-span-7 lg:order-last">
+        <div class="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[640px] overflow-hidden shadow-card">
+          <Pic src={SCHEND_RESTAURANT} alt={c.restImgAlt} class="w-full h-full object-cover" loading="lazy" decoding="async" />
+        </div>
+      </div>
+      <div class="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>
+        <span class="hairline block max-w-[3rem] mb-5"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">{c.restH2}</h2>
+        <div class="space-y-5 text-foreground/85 leading-relaxed max-w-prose">
+          <p class="drop-cap">{c.restPara1}</p>
+          <p>{c.restPara2}</p>
+        </div>
+        <div class="mt-12">
+          <div class="hairline mb-5"></div>
+          <p class="eyebrow mb-4">{c.hoursEyebrow}</p>
+          <div class="text-sm space-y-2">
+            <div class="grid grid-cols-[140px_1fr] gap-x-6"><span class="font-medium">{c.hoursThuSat}</span><span class="text-muted-foreground">{c.hoursThuSatTime}</span></div>
+            <div class="grid grid-cols-[140px_1fr] gap-x-6"><span class="font-medium">{c.hoursSun}</span><div class="text-muted-foreground"><p>{c.hoursSunT1}</p><p>{c.hoursSunT2}</p></div></div>
+            <div class="grid grid-cols-[140px_1fr] gap-x-6"><span class="font-medium">{c.hoursRuhetag}</span><span class="text-muted-foreground">{c.hoursRuhetagDays}</span></div>
+          </div>
+          <p class="text-xs text-muted-foreground mt-3">{c.hoursNote}</p>
+          <div class="mt-10 pt-6 border-t border-border/60">
+            <a href={localizedPath("/restaurant", lang)} class="group inline-flex items-center gap-2 text-xs font-medium tracking-[0.2em] uppercase text-secondary hover:text-foreground transition-colors">{c.fullRestLink} <span class="transition-transform duration-300 group-hover:translate-x-1">→</span></a>
+            <p class="text-xs text-muted-foreground mt-2">{c.fullRestSub}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overflow-hidden border-y border-border/60 py-6 bg-background">
+      <div class="flex w-max animate-marquee">
+        {Array.from({ length: 2 }).flatMap(() => FOOD_PHOTOS.map((src) => (
+          <Pic src={src} alt="" aria-hidden="true" loading="lazy" decoding="async" class="h-44 md:h-56 w-auto object-cover rounded-md shadow-card mr-4" />
+        )))}
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-14 md:py-20">
+      <div class="text-center mb-10 md:mb-12" data-reveal>        <h3 class="font-display text-2xl md:text-3xl mt-3 text-balance">{c.kitchenH3}</h3>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-px bg-border/50 max-w-3xl mx-auto" data-reveal>
+        <div class="bg-background p-6 md:p-8 flex flex-col"><p class="text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">{c.card1Eyebrow}</p><h4 class="font-display text-xl md:text-2xl mb-3 leading-tight">{c.card1H4}</h4><p class="text-sm text-muted-foreground leading-relaxed flex-1">{c.card1Text}</p><div class="hairline mt-6 mb-3"></div><p class="text-xs text-muted-foreground">{c.card1Note}</p></div>
+        <div class="bg-background p-6 md:p-8 flex flex-col"><p class="text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">{c.card2Eyebrow}</p><h4 class="font-display text-xl md:text-2xl mb-3 leading-tight">{c.card2H4}</h4><p class="text-sm text-muted-foreground leading-relaxed flex-1">{c.card2Text}</p><div class="hairline mt-6 mb-3"></div><p class="text-xs text-muted-foreground">{c.card2Note}</p></div>
+      </div>
+      <div class="text-center mt-10"><a href="tel:+496573306" class="inline-flex items-center gap-3 px-7 py-3.5 min-h-[52px] bg-primary text-primary-foreground rounded-sm text-xs sm:text-sm font-medium tracking-[0.2em] uppercase hover:bg-secondary hover:text-secondary-foreground transition-colors">{c.reserveCta}</a></div>
+    </div>
+
+    <div class="grid lg:grid-cols-12 items-stretch">
+      <div class="lg:col-span-7">
+        <div class="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[560px] overflow-hidden shadow-card">
+          <Pic src="/fotos/festsaal-50er-geburtstag-schwarz-gold-landhaus-schend-vulkaneifel.jpg" alt={c.feiernAlt} width={1600} height={1200} loading="lazy" decoding="async" class="w-full h-full object-cover" />
+        </div>
+      </div>
+      <div class="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>
+        <span class="hairline block max-w-[3rem] mb-5"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">{c.feiernH2}</h2>
+        <p class="text-foreground/85 leading-relaxed max-w-prose">{c.feiernText}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAKETE -->
+  <section id="pakete" class="bg-gradient-to-b from-muted/30 via-background to-muted/15">
+    <div class="container mx-auto px-4 py-20 md:py-28">
+      <div class="text-center mb-14 md:mb-20" data-reveal>
+        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">{c.paketeH2}</h2>
+        <p class="text-muted-foreground mt-5 max-w-prose mx-auto leading-relaxed text-pretty">{c.paketeIntro}</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        {pakete.map((p, i) => (
+          <a href={localizedPath(`/pakete/${p.slug}`, lang)} class="group block" data-reveal style={`--reveal-delay:${(i % 3) * 0.08}s`}>
+            <div class="spotlight tilt-card relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
+              <Pic src={p.cover} alt={p.title} loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" />
+              {p.price && (
+                <div class="absolute top-3 right-3 px-3 py-1.5 bg-background/95 backdrop-blur-sm rounded-sm shadow-md border border-foreground/10">
+                  <span class="text-[10px] font-medium tracking-[0.15em] uppercase text-foreground/60">{c.paketBadgeLabel}</span>
+                  <p class="font-display text-secondary text-base leading-tight">{stripPrefix(p.price)}</p>
+                </div>
+              )}
+            </div>
+            <h3 class="font-display text-xl md:text-2xl mb-2 group-hover:text-secondary transition-colors text-balance">{p.title}</h3>
+            {p.intro && <p class="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">{p.intro}</p>}
+            <span class="text-xs font-medium tracking-[0.2em] uppercase text-secondary inline-flex items-center gap-2 transition-all group-hover:gap-3">{c.mehrErfahren} <span>→</span></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- URLAUBSREGION -->
+  <section id="region" class="bg-background">
+    <div class="container mx-auto px-4 py-20 md:py-28">
+      <div class="text-center mb-14 md:mb-20 max-w-3xl mx-auto" data-reveal>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-6 text-balance leading-[1.05]">{c.regionH2}</h2>
+        <p class="text-foreground/85 text-base md:text-lg leading-relaxed text-pretty">{c.regionIntro}</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mb-16 md:mb-20" data-reveal>
+        {REGION_SRC.map((src, i) => (
+          <img src={src} alt={c.mosaicAlts[i]} loading="lazy" decoding="async" class:list={["w-full h-48 md:h-64 object-cover rounded-md shadow-card", REGION_CLS[i]]} />
+        ))}
+      </div>
+      <div class="max-w-prose mx-auto space-y-12" data-reveal>
+        <div>
+          <p class="eyebrow">{c.erdgeschichteEyebrow}</p>
+          <h3 class="font-display text-3xl md:text-4xl mt-3 mb-7 text-balance">{c.freizeitH3}</h3>
+          <div class="space-y-5 text-foreground/85 leading-relaxed">
+            <p class="drop-cap">{c.freizeitP1}</p>
+            <p>{c.freizeitP2}</p>
+          </div>
+        </div>
+        <div class="hairline"></div>
+        <div>
+          <h4 class="font-display text-2xl md:text-3xl mb-6 text-balance">{c.dreilaendH4}</h4>
+          <div class="space-y-5 text-foreground/85 leading-relaxed">
+            <p>{c.dreilaendP1}</p>
+            <p>{c.dreilaendP2}</p>
+          </div>
+          <div class="mt-8"><a href={localizedPath("/urlaubsregion", lang)} class="text-sm font-semibold text-secondary hover:text-foreground transition-colors">{c.mehrRegion}</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÜBER UNS -->
+  <section id="about" class="bg-gradient-to-b from-background via-muted/15 to-background">
+    <div class="grid lg:grid-cols-12 items-stretch">
+      <div class="lg:col-span-6">
+        <div class="aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden shadow-elevated">
+          <Pic src="/fotos/landhaus-schend-zeichnung-innenhof-historisch.jpg" alt={c.zeichnungAlt} class="w-full h-full object-cover object-center contrast-110" loading="lazy" decoding="async" />
+        </div>
+      </div>
+      <div class="lg:col-span-6 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-10 text-balance leading-[1.05]">{c.aboutH2}</h2>
+        <div class="space-y-5 text-foreground/85 leading-relaxed max-w-prose">
+          <p class="drop-cap">{c.aboutP1}</p>
+          <p set:html={c.aboutP2Html} />
+        </div>
+        <div class="mt-8"><a href={localizedPath("/ueber-uns", lang)} class="text-sm font-semibold text-secondary hover:text-foreground transition-colors">{c.ganzeGeschichte}</a></div>
+      </div>
+    </div>
+
+    <div class="tl-reveal container mx-auto px-4 py-16 md:py-24">
+      <div class="text-center mb-12 md:mb-16">
+        <p class="eyebrow">{c.timelineEyebrow}</p>
+        <h3 class="font-display text-2xl md:text-3xl lg:text-4xl mt-4 text-balance" set:html={c.timelineH3Html} />
+      </div>
+      <div class="hidden md:block relative max-w-6xl mx-auto">
+        <div aria-hidden="true" class="tl-line absolute left-0 right-0 top-1.5 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent"></div>
+        <span aria-hidden="true" class="tl-glint"></span>
+        <ol class="relative grid grid-cols-9 gap-2">
+          {c.timeline.map((item, i) => (
+            <li class="tl-item flex flex-col items-center text-center" style={`--i:${i}`}>
+              <span aria-hidden="true" class="block h-3 w-3 rounded-full bg-secondary ring-4 ring-background relative z-10"></span>
+              <p class="font-display text-secondary text-xl lg:text-2xl mt-4 mb-2">{item.year}</p>
+              <p class="text-[10px] lg:text-[11px] text-muted-foreground leading-tight tracking-wide px-1">{item.event}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div class="md:hidden max-w-md mx-auto">
+        <ol class="relative border-l-2 border-secondary/30 ml-3 space-y-6 pl-6">
+          <span aria-hidden="true" class="tl-glint-v"></span>
+          {c.timeline.map((item, i) => (
+            <li class="tl-item relative" style={`--i:${i}`}>
+              <span aria-hidden="true" class="absolute -left-[1.85rem] top-1 h-3 w-3 rounded-full bg-secondary ring-4 ring-background"></span>
+              <p class="font-display text-secondary text-xl">{item.year}</p>
+              <p class="text-sm text-muted-foreground leading-relaxed">{item.event}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEWERTUNGEN -->
+  <section id="reviews" class="bg-background border-y border-border/50">
+    <div class="container mx-auto px-4 py-20 md:py-28">
+      <div class="text-center max-w-2xl mx-auto mb-12" data-reveal>
+        <p class="eyebrow">{c.reviewsEyebrow}</p>
+        <h2 class="font-display text-4xl md:text-5xl mt-3 text-balance">{c.reviewsH2}</h2>
+        <p class="text-muted-foreground mt-4 leading-relaxed text-pretty">{c.reviewsIntro}</p>
+      </div>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+        {PLATFORMS.map((p, i) => (
+          <a href={p.href} target="_blank" rel="noopener noreferrer" aria-label={`${c.reviewAriaPre}${p.name}${c.reviewAriaPost}`} class="group text-center p-6 rounded-md border border-border bg-card shadow-card flex flex-col items-center transition-all hover:border-secondary hover:-translate-y-0.5" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+            {p.logo
+              ? <Pic src={p.logo} alt="" aria-hidden="true" width="36" height="36" class="h-9 w-9 mb-3 object-contain" />
+              : <span aria-hidden="true" class="grid place-items-center h-9 w-9 rounded-md text-white font-bold text-xs mb-3 shadow-sm" style={`background:${p.brand}`}>{p.mark}</span>}
+            <p class="text-sm font-semibold text-foreground">{p.name}</p>
+            {p.score
+              ? <p class="font-display text-3xl text-secondary mt-1 tabular-nums">{p.score}</p>
+              : <p class="font-display text-2xl text-secondary mt-2">{c.platformReviewsWord}</p>}
+            <p class="text-xs text-foreground/70 mt-1">{c.platformLines[i]}</p>
+            <span class="text-[11px] tracking-[0.12em] uppercase text-secondary mt-3 inline-flex items-center gap-1 group-hover:gap-1.5 transition-all">{c.ansehen} <span aria-hidden="true">→</span></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ (Auszug, alle auf /faq) -->
+  <section id="faq" class="bg-gradient-to-b from-muted/15 via-background to-muted/15">
+    <div class="container mx-auto px-4 py-20 md:py-28 max-w-3xl">
+      <div class="text-center mb-14" data-reveal>        <h2 class="font-display text-4xl md:text-5xl mt-4 text-balance">{c.faqH2}</h2>
+      </div>
+      <div class="border-t border-border/70">
+        {c.faqHome.map((f, i) => (
+          <details class="faq-item border-b border-border/70" open={i === 0}>
+            <summary class="flex items-start justify-between gap-5 py-6 cursor-pointer list-none group">
+              <span class="font-display text-lg md:text-xl leading-snug text-balance pt-0.5 group-hover:text-secondary transition-colors">{f.q}</span>
+              <svg class="faq-chevron shrink-0 mt-1.5 h-4 w-4 text-secondary transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <p class="pb-6 pr-8 text-foreground/85 leading-relaxed max-w-prose">{f.a}</p>
+          </details>
+        ))}
+      </div>
+      <div class="text-center mt-10"><a href={localizedPath("/faq", lang)} class="inline-flex items-center px-6 py-3 rounded-sm border border-border font-semibold tracking-wide hover:bg-muted transition-colors">{c.allFaqCta}</a></div>
+    </div>
+    <style>
+      .faq-item summary::-webkit-details-marker { display: none; }
+      .faq-item[open] .faq-chevron { transform: rotate(180deg); }
+    </style>
+  </section>
+
+  <!-- STANDORT / KARTE -->
+  <LocationSection lang={lang} />
+
+  <!-- Abschnitts-Navigation (Punkte rechts) -->
+  <nav id="section-dots" aria-label="Abschnitts-Navigation" data-visible="false" inert class="hidden lg:flex fixed lg:right-5 top-1/2 -translate-y-1/2 z-40 flex-col gap-1.5 lg:gap-3 opacity-0 pointer-events-none transition-opacity duration-500">
+    {dotIds.map((id, i) => (
+      <a href={`#${id}`} data-dot={id} aria-label={c.dotLabels[i]} class="dot-link group relative grid place-items-center w-8 h-8 lg:w-5 lg:h-5">
+        <span class="dot block rounded-full w-2 h-2 lg:w-1.5 lg:h-1.5 bg-secondary/70 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out group-hover:bg-secondary group-hover:scale-110"></span>
+        <span class="absolute right-full mr-3 px-2.5 py-1 rounded-sm bg-foreground/95 text-background text-[10px] uppercase tracking-[0.18em] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-300 pointer-events-none">{c.dotLabels[i]}</span>
+      </a>
+    ))}
+  </nav>
+  <style>
+    #section-dots[data-visible="true"] { opacity: 1; pointer-events: auto; }
+    #section-dots .dot-link[data-active="true"] .dot {
+      width: 0.75rem; height: 0.75rem;
+      background: hsl(var(--secondary));
+      box-shadow: 0 0 8px hsl(var(--secondary) / 0.4);
+    }
+  </style>
+  <script>
+    (function () {
+      const nav = document.getElementById("section-dots");
+      if (!nav) return;
+      const ids = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
+      const links = Array.from(nav.querySelectorAll<HTMLElement>("[data-dot]"));
+      const update = (y: number) => {
+        const anchorY = y + window.innerHeight * 0.4;
+        let bestId = "top";
+        let bestStart = -Infinity;
+        for (const id of ids) {
+          const el = document.getElementById(id);
+          if (!el) continue;
+          const rect = el.getBoundingClientRect();
+          const start = rect.top + y;
+          if (anchorY >= start && anchorY < start + rect.height && start > bestStart) {
+            bestStart = start;
+            bestId = id;
+          }
+        }
+        links.forEach((a) =>
+          a.setAttribute("data-active", a.getAttribute("data-dot") === bestId ? "true" : "false"),
+        );
+        const visible = y > window.innerHeight * 0.6;
+        nav.setAttribute("data-visible", visible ? "true" : "false");
+        (nav as HTMLElement & { inert: boolean }).inert = !visible;
+      };
+      if ((window as any).__onScroll) (window as any).__onScroll(update);
+      else {
+        update(window.scrollY);
+        window.addEventListener("scroll", () => update(window.scrollY), { passive: true });
+      }
+      window.addEventListener("resize", () => update((window as any).__lenis?.scroll ?? window.scrollY));
+    })();
+  </script>
+
+  <script>
+    const heroVideo = document.querySelector<HTMLVideoElement>("[data-hero-video]");
+    const motionOff = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      || document.documentElement.classList.contains("a11y-reduced-motion");
+    const noHeroVideo = motionOff || !window.matchMedia("(min-width: 768px)").matches;
+    if (heroVideo && noHeroVideo) {
+      heroVideo.pause();
+    } else if (heroVideo) {
+      let inView = true;
+      const tryPlay = () => {
+        if (inView && !document.hidden && heroVideo.paused) heroVideo.play().catch(() => {});
+      };
+      tryPlay();
+      heroVideo.addEventListener("loadedmetadata", tryPlay, { once: true });
+      heroVideo.addEventListener("loadeddata", tryPlay, { once: true });
+      heroVideo.addEventListener("canplay", tryPlay, { once: true });
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver((entries) => {
+          inView = entries[0].isIntersecting;
+          if (inView) tryPlay();
+          else heroVideo.pause();
+        }, { threshold: 0.1 }).observe(heroVideo);
+      }
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) tryPlay(); });
+      heroVideo.addEventListener("pause", () => {
+        if (inView && !document.hidden && !heroVideo.ended) setTimeout(tryPlay, 150);
+      });
+    }
+
+    const bg = document.querySelector<HTMLElement>("[data-hero-bg]");
+    if (bg && !motionOff) {
+      let raf = 0;
+      const applyParallax = (sy: number) => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          const h = bg.offsetHeight || 1;
+          const y = Math.min(sy * 0.3, h * 0.06);
+          bg.style.transform = `translate3d(0, ${y}px, 0) scale(1.22)`;
+        });
+      };
+      if ((window as any).__onScroll) {
+        (window as any).__onScroll(applyParallax);
+      } else {
+        applyParallax(window.scrollY);
+        window.addEventListener("scroll", () => applyParallax(window.scrollY), { passive: true });
+      }
+    }
+  </script>
+</Layout>
