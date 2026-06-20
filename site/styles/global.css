@@ -130,43 +130,10 @@
     --shadow-elevated: 0 2px 4px hsl(0 0% 0% / 0.40), 0 14px 32px -10px hsl(0 0% 0% / 0.60);
   }
 
-  /* Automatic dark mode based on OS preference.
-     Respects an explicit `.light` class on <html> as override. */
-  @media (prefers-color-scheme: dark) {
-    :root:not(.light) {
-      --background: 220 18% 9%;
-      --foreground: 38 30% 92%;
-      --card: 220 18% 12%;
-      --card-foreground: 38 30% 92%;
-      --popover: 220 18% 12%;
-      --popover-foreground: 38 30% 92%;
-      --primary: 38 35% 88%;
-      --primary-foreground: 220 18% 14%;
-      --secondary: 38 48% 52%;
-      --secondary-foreground: 220 18% 9%;
-      --muted: 220 18% 16%;
-      --muted-foreground: 38 12% 68%;
-      --accent: 220 18% 18%;
-      --accent-foreground: 38 30% 92%;
-      --destructive: 358 65% 55%;
-      --destructive-foreground: 38 30% 92%;
-      --success: 142 35% 52%;
-      --success-foreground: 220 18% 9%;
-      --warning: 30 75% 55%;
-      --warning-foreground: 220 18% 9%;
-      --border: 220 18% 22%;
-      --input: 220 18% 22%;
-      --ring: 38 48% 52%;
-      --gradient-hero: linear-gradient(
-        180deg,
-        hsl(220 18% 4% / 0.65) 0%,
-        hsl(220 18% 4% / 0.35) 45%,
-        hsl(220 18% 4% / 0.10) 100%
-      );
-      --shadow-card: 0 1px 2px hsl(0 0% 0% / 0.30), 0 4px 12px -4px hsl(0 0% 0% / 0.45);
-      --shadow-elevated: 0 2px 4px hsl(0 0% 0% / 0.40), 0 14px 32px -10px hsl(0 0% 0% / 0.60);
-    }
-  }
+  /* KEIN automatisches OS-Dark mehr (Eugen 20.06.): Default ist IMMER hell —
+     dunkel NUR per ausdrücklicher Wahl (html.dark, Theme-Schalter). Vorher
+     verdunkelte ein `prefers-color-scheme: dark`-Block Dunkelmodus-Handys nach
+     dem Splash. Dark-Variablen leben jetzt ausschließlich in `.dark` (oben). */
 }
 
 @layer base {
@@ -175,11 +142,14 @@
   }
 
   html {
-    color-scheme: light dark;
+    color-scheme: light; /* Default hell; nur html.dark schaltet auf dunkel um */
     font-feature-settings: "kern", "liga", "calt";
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  html.dark {
+    color-scheme: dark;
   }
 
   body {
