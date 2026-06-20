@@ -14,6 +14,8 @@ import A11yPanel from "../components/A11yPanel.astro";
 import StickyCTA from "../components/StickyCTA.astro";
 import Lightbox from "../components/Lightbox.astro";
 import { ORIGIN, SITE_NAME } from "../lib/site";
+import { hreflangAlternates, type Locale } from "../i18n";
+import { t } from "../i18n/ui";
 
 interface Props {
   title?: string;
@@ -22,7 +24,7 @@ interface Props {
   ogImage?: string;
   ogType?: string;
   noindex?: boolean;
-  lang?: string;
+  lang?: Locale;
 }
 
 const {
@@ -44,6 +46,9 @@ const ogImageAbs = ogImage.startsWith("http") ? ogImage : `${ORIGIN}${ogImage}`;
 const robots = noindex
   ? "noindex, nofollow"
   : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
+
+// Voll-reziproke hreflang-Alternates aus dem (sprach-neutralen) canonicalPath.
+const alternates = hreflangAlternates(ORIGIN, canonicalPath);
 ---
 
 <!doctype html>
@@ -65,9 +70,10 @@ const robots = noindex
     <meta name="ICBM" content="50.1303, 6.9594" />
 
     <link rel="canonical" href={canonical} />
-    {/* Voll-reziproke hreflang (en/fr/nl als echte Pfade) kommen in Stufe 3. */}
-    <link rel="alternate" hreflang="de" href={canonical} />
-    <link rel="alternate" hreflang="x-default" href={canonical} />
+    {/* Voll-reziproke hreflang (de/en/fr/nl als echte Pfade) + x-default. */}
+    {alternates.map((alt) => (
+      <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+    ))}
 
     {/* Theme vor Render anwenden — verhindert Flash beim Light/Dark-Wechsel. */}
     <script is:inline>
@@ -269,17 +275,17 @@ const robots = noindex
         requestAnimationFrame(step);
       })();
     </script>
-    <a href="#main" class="skip-link">Zum Inhalt springen</a>
+    <a href="#main" class="skip-link">{t("skip_to_content", lang)}</a>
     <div id="reading-progress" aria-hidden="true" class="fixed top-0 inset-x-0 h-[2px] z-[60] pointer-events-none">
       <div class="reading-progress-fill h-full bg-secondary origin-left" style="transform:scaleX(0);transition:transform 80ms linear"></div>
     </div>
-    <SiteHeader />
+    <SiteHeader lang={lang} />
     <main id="main" class="flex-1">
       <slot />
     </main>
-    <SiteFooter />
-    <StickyCTA />
-    <A11yPanel />
+    <SiteFooter lang={lang} />
+    <StickyCTA lang={lang} />
+    <A11yPanel lang={lang} />
     <Lightbox />
 
     <style is:global>

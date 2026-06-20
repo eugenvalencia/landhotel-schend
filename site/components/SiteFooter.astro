@@ -2,6 +2,13 @@
 // Öffentlicher Site-Footer (Astro, SSG). 1:1-Port aus src/components/SiteFooter.tsx.
 // Immer dunkles Slate, unabhängig vom Theme — starker editorialer Seitenfuß.
 import { HOTEL, SITE_DESCRIPTOR, SOCIAL } from "../lib/site";
+import { DEFAULT_LOCALE, localizedPath, type Locale } from "../i18n";
+import { t } from "../i18n/ui";
+
+interface Props {
+  lang?: Locale;
+}
+const { lang = DEFAULT_LOCALE } = Astro.props;
 
 const year = new Date().getFullYear(); // build-time, landet statisch im HTML
 ---
@@ -19,7 +26,7 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
         Anno 1856 · Vulkaneifel
       </p>
       <p class="text-sm text-[hsl(38_30%_92%)]/75 mt-6 leading-relaxed max-w-md">
-        Ihr Familienhotel in der Vulkaneifel — herzlich geführt von Familie Beimler, mit hauseigener Eifeler Landküche, ideal für Ihren Kurzurlaub.
+        {t("footer_tagline", lang)}
       </p>
 
       <!-- Trust-Strip — portal-getrennt (UWG: kein vermischter Skalen-Durchschnitt).
@@ -41,11 +48,11 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
 
       <!-- Social -->
       <div class="mt-6 flex items-center gap-3">
-        <a href={SOCIAL.facebook} target="_blank" rel="noopener noreferrer" aria-label="Landhaus Schend auf Facebook" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[hsl(38_30%_92%)]/20 hover:border-secondary hover:text-secondary transition-colors">
+        <a href={SOCIAL.facebook} target="_blank" rel="noopener noreferrer" aria-label={t("footer_fb_aria", lang)} class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[hsl(38_30%_92%)]/20 hover:border-secondary hover:text-secondary transition-colors">
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
         </a>
         {SOCIAL.instagram && (
-          <a href={SOCIAL.instagram} target="_blank" rel="noopener noreferrer" aria-label="Landhaus Schend auf Instagram" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[hsl(38_30%_92%)]/20 hover:border-secondary hover:text-secondary transition-colors">
+          <a href={SOCIAL.instagram} target="_blank" rel="noopener noreferrer" aria-label={t("footer_ig_aria", lang)} class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[hsl(38_30%_92%)]/20 hover:border-secondary hover:text-secondary transition-colors">
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
           </a>
         )}
@@ -54,19 +61,19 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
 
     <!-- Quick Links -->
     <div class="md:col-span-3">
-      <p class="text-[11px] font-medium tracking-[0.22em] uppercase text-secondary mb-5">Quick Links</p>
+      <p class="text-[11px] font-medium tracking-[0.22em] uppercase text-secondary mb-5">{t("footer_quicklinks", lang)}</p>
       <ul class="space-y-3 text-sm">
-        <li><a href="/" class="footer-link hover:text-secondary transition-colors">Startseite</a></li>
-        <li><a href="/anfrage" class="footer-link hover:text-secondary transition-colors">Zimmer anfragen</a></li>
-        <li><a href="/restaurant" class="footer-link hover:text-secondary transition-colors">Gastronomie</a></li>
-        <li><a href="/faq" class="footer-link hover:text-secondary transition-colors">Häufige Fragen</a></li>
-        <li><a href={HOTEL.phoneHref} class="footer-link hover:text-secondary transition-colors">Kontakt</a></li>
+        <li><a href={localizedPath("/", lang)} class="footer-link hover:text-secondary transition-colors">{t("nav_home", lang)}</a></li>
+        <li><a href={localizedPath("/anfrage", lang)} class="footer-link hover:text-secondary transition-colors">{t("footer_ql_inquire", lang)}</a></li>
+        <li><a href={localizedPath("/restaurant", lang)} class="footer-link hover:text-secondary transition-colors">{t("nav_dining", lang)}</a></li>
+        <li><a href={localizedPath("/faq", lang)} class="footer-link hover:text-secondary transition-colors">{t("footer_ql_faq", lang)}</a></li>
+        <li><a href={HOTEL.phoneHref} class="footer-link hover:text-secondary transition-colors">{t("footer_contact", lang)}</a></li>
       </ul>
     </div>
 
     <!-- Contact -->
     <div class="md:col-span-4">
-      <p class="text-[11px] font-medium tracking-[0.22em] uppercase text-secondary mb-5">Kontakt</p>
+      <p class="text-[11px] font-medium tracking-[0.22em] uppercase text-secondary mb-5">{t("footer_contact", lang)}</p>
       <ul class="space-y-3 text-sm">
         <li class="flex items-center gap-3">
           <svg class="h-3.5 w-3.5 shrink-0 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
@@ -103,12 +110,12 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
           </a>
         </p>
       </div>
-      <nav class="flex flex-wrap items-center justify-center md:justify-end gap-x-5" aria-label="Rechtliches">
-        <a href="/impressum" class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">Impressum</a>
-        <a href="/datenschutz" class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">Datenschutz</a>
-        <a href="/agb" class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">AGB</a>
-        <a href="/barrierefreiheit" class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">Barrierefreiheit</a>
-        <a href="/bildnachweis" class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">Bildnachweis</a>
+      <nav class="flex flex-wrap items-center justify-center md:justify-end gap-x-5" aria-label={t("footer_legal_aria", lang)}>
+        <a href={localizedPath("/impressum", lang)} class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_imprint", lang)}</a>
+        <a href={localizedPath("/datenschutz", lang)} class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_privacy", lang)}</a>
+        <a href={localizedPath("/agb", lang)} class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_terms", lang)}</a>
+        <a href={localizedPath("/barrierefreiheit", lang)} class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_a11y", lang)}</a>
+        <a href={localizedPath("/bildnachweis", lang)} class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_credits", lang)}</a>
       </nav>
     </div>
   </div>
