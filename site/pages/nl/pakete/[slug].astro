@@ -1,0 +1,12 @@
+---
+// Nederlands arrangement-detail (/nl/pakete/[slug]).
+import { PAKETE } from "../../../lib/pakete";
+import PaketeDetailPage from "../../../components/pages/PaketeDetailPage.astro";
+
+export function getStaticPaths() {
+  return PAKETE.map((p) => ({ params: { slug: p.slug } }));
+}
+const { slug } = Astro.params;
+---
+
+<PaketeDetailPage lang="nl" slug={slug!} />

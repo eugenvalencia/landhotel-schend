@@ -1,43 +1,6 @@
 ---
-// Pakete-Übersicht — eigene URL /pakete (DR-029). Daten statisch aus lib/pakete.
-import Layout from "../../layouts/Layout.astro";
-import Pic from "../../components/Pic.astro";
-import { PAKETE } from "../../lib/pakete";
+// Deutsche „Pakete"-Übersicht (Root). Markup + Inhalt: components/pages/PaketeListPage.astro.
+import PaketeListPage from "../../components/pages/PaketeListPage.astro";
 ---
 
-<Layout
-  title="Angebote & Pauschalen für die Eifel"
-  description="Wander-, Rad- und Genuss-Pauschalen im Landhaus Schend, Vulkaneifel — inkl. Frühstücksbuffet, Eifeler Abendmenü und Tourenempfehlungen. Provisionsfrei buchen."
-  canonicalPath="/pakete"
->
-  <section class="container mx-auto px-4 pt-12 md:pt-16 pb-20">
-    <div class="text-center max-w-2xl mx-auto mb-12 md:mb-16">
-      <p class="eyebrow">Angebote & Pauschalen</p>
-      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl mt-3 text-balance leading-[1.05]">
-        Pauschalen für Ihre Auszeit in der Eifel
-      </h1>
-      <p class="text-muted-foreground mt-5 leading-relaxed text-pretty">
-        Wandern, Radfahren oder einfach durchatmen — unsere Pauschalen verbinden Übernachtung,
-        Eifeler Landküche und persönliche Empfehlungen zu einem stimmigen Aufenthalt.
-      </p>
-    </div>
-
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-      {PAKETE.map((p, i) => (
-        <a href={`/pakete/${p.slug}`} class="spotlight group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${(i % 3) * 0.08}s`}>
-          <div class="aspect-[4/3] overflow-hidden">
-            <Pic src={p.cover} alt={p.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
-          </div>
-          <div class="flex flex-col flex-1 p-6">
-            <h2 class="font-display text-2xl leading-snug group-hover:text-secondary transition-colors text-balance">{p.title}</h2>
-            <p class="text-sm text-muted-foreground mt-3 leading-relaxed flex-1 text-pretty">{p.intro}</p>
-            <div class="mt-5 flex items-center justify-between">
-              {p.price ? <span class="font-display text-secondary text-lg">{p.price}</span> : <span></span>}
-              <span class="text-xs font-semibold tracking-wide uppercase text-primary group-hover:text-secondary transition-colors">Details →</span>
-            </div>
-          </div>
-        </a>
-      ))}
-    </div>
-  </section>
-</Layout>
+<PaketeListPage lang="de" />

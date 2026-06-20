@@ -1,0 +1,102 @@
+---
+// Geteilte „Paket-Detail"-Seite (alle Sprachen). Inhalt lokalisiert aus
+// site/i18n/content/pakete.ts. Route liefert lang + slug; Lookup hier.
+import Layout from "../../layouts/Layout.astro";
+import Pic from "../Pic.astro";
+import { ORIGIN } from "../../lib/site";
+import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
+import { findPaketFor, paketeChrome } from "../../i18n/content/pakete";
+
+interface Props {
+  lang?: Locale;
+  slug: string;
+}
+const { lang = DEFAULT_LOCALE, slug } = Astro.props;
+const c = paketeChrome[lang];
+const paket = findPaketFor(slug, lang)!;
+
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: c.breadcrumbHome, item: `${ORIGIN}${localizedPath("/", lang)}` },
+    { "@type": "ListItem", position: 2, name: c.breadcrumbList, item: `${ORIGIN}${localizedPath("/pakete", lang)}` },
+    { "@type": "ListItem", position: 3, name: paket.title.replace(/"/g, ""), item: `${ORIGIN}${localizedPath(`/pakete/${paket.slug}`, lang)}` },
+  ],
+};
+---
+
+<Layout
+  title={paket.title.replace(/"/g, "")}
+  description={paket.intro}
+  canonicalPath={localizedPath(`/pakete/${paket.slug}`, lang)}
+  ogImage={paket.cover}
+  lang={lang}
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+
+  <!-- Hero -->
+  <section class="relative">
+    <Pic src={paket.cover} alt={paket.title} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
+    <div class="absolute inset-0 gradient-hero"></div>
+    <div class="relative container mx-auto px-4 py-24 md:py-32 max-w-3xl text-[hsl(38_30%_95%)]" style="text-shadow:0 1px 8px rgba(0,0,0,0.45)">
+      <a href={localizedPath("/pakete", lang)} class="inline-flex items-center gap-1.5 text-sm text-[hsl(38_30%_95%)]/80 hover:text-[hsl(38_30%_95%)] transition-colors mb-5">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        {c.backToAll}
+      </a>
+      <p class="eyebrow !text-[hsl(38_48%_72%)]">{c.detailEyebrow}</p>
+      <h1 class="font-display text-4xl md:text-6xl mt-3 text-balance leading-[1.05]">{paket.title}</h1>
+      {paket.price && (
+        <div class="mt-5">
+          <p class="font-display text-2xl md:text-3xl text-[hsl(38_48%_78%)]">{paket.price}</p>
+          {(paket.priceSingle || paket.priceNote) && (
+            <p class="text-sm text-[hsl(38_30%_95%)]/80 mt-1">{[paket.priceSingle, paket.priceNote].filter(Boolean).join(" · ")}</p>
+          )}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-16 md:py-20 max-w-3xl">
+    <p class="text-xl leading-relaxed text-foreground/90 text-pretty">{paket.intro}</p>
+
+    <div class="hairline my-10"></div>
+
+    <h2 class="font-display text-2xl md:text-3xl mb-6">{c.includedH2}</h2>
+    <ul class="space-y-3">
+      {paket.highlights.map((h) => (
+        <li class="flex items-start gap-3">
+          <svg class="h-5 w-5 shrink-0 mt-0.5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          <span class="text-foreground/90 leading-relaxed">{h}</span>
+        </li>
+      ))}
+    </ul>
+
+    {paket.details && (
+      <>
+        <div class="hairline my-10"></div>
+        <p class="text-foreground/85 leading-relaxed text-pretty">{paket.details}</p>
+      </>
+    )}
+
+    <!-- Galerie -->
+    <div class="grid grid-cols-3 gap-3 mt-10">
+      {paket.gallery.map((src, i) => (
+        <div class="aspect-[4/3] overflow-hidden rounded-md" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+          <Pic src={src} alt={`${paket.title} — ${c.impressionLabel} ${i + 1}`} class="w-full h-full object-cover" loading="lazy" decoding="async" />
+        </div>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-12 flex flex-wrap gap-3">
+      <a href={localizedPath("/anfrage", lang)} class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">
+        {c.ctaInquire}
+      </a>
+      <a href="tel:+496573306" class="inline-flex items-center px-6 py-3 rounded-sm border border-border font-semibold tracking-wide hover:bg-muted transition-colors">
+        +49 6573 306
+      </a>
+    </div>
+    <p class="text-sm text-muted-foreground mt-4">{c.commissionNote}</p>
+  </section>
+</Layout>
