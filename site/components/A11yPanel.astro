@@ -3,6 +3,24 @@
 // Schwebender Knopf unten rechts (große Tap-Fläche, mobil-tauglich, ZoomIn-Lupe
 // NICHT Personen-Symbol). Steuert Schriftgröße / Kontrast / Bewegung über
 // HTML-Root-Klassen (CSS liegt in global.css), Persistenz: schend_a11y_v1.
+import { DEFAULT_LOCALE, type Locale } from "../i18n";
+
+interface Props {
+  lang?: Locale;
+}
+const { lang = DEFAULT_LOCALE } = Astro.props;
+
+const A11Y: Record<Locale, {
+  dialogAria: string; title: string; subtitle: string; fontLabel: string;
+  fontNormal: string; fontLarge: string; fontLarger: string; contrast: string;
+  motion: string; reset: string; btnAria: string;
+}> = {
+  de: { dialogAria: "Anzeige-Einstellungen", title: "Anzeige & Komfort", subtitle: "Für angenehmeres Lesen.", fontLabel: "Schriftgröße", fontNormal: "Normal", fontLarge: "Groß", fontLarger: "Größer", contrast: "Hoher Kontrast", motion: "Bewegung reduzieren", reset: "Zurücksetzen", btnAria: "Anzeige & Komfort — Schriftgröße und Kontrast einstellen" },
+  en: { dialogAria: "Display settings", title: "Display & comfort", subtitle: "For more comfortable reading.", fontLabel: "Font size", fontNormal: "Normal", fontLarge: "Large", fontLarger: "Larger", contrast: "High contrast", motion: "Reduce motion", reset: "Reset", btnAria: "Display & comfort — adjust font size and contrast" },
+  fr: { dialogAria: "Paramètres d'affichage", title: "Affichage & confort", subtitle: "Pour une lecture plus agréable.", fontLabel: "Taille de police", fontNormal: "Normale", fontLarge: "Grande", fontLarger: "Plus grande", contrast: "Contraste élevé", motion: "Réduire les animations", reset: "Réinitialiser", btnAria: "Affichage & confort — régler la taille de police et le contraste" },
+  nl: { dialogAria: "Weergave-instellingen", title: "Weergave & comfort", subtitle: "Voor aangenamer lezen.", fontLabel: "Lettergrootte", fontNormal: "Normaal", fontLarge: "Groot", fontLarger: "Groter", contrast: "Hoog contrast", motion: "Beweging verminderen", reset: "Resetten", btnAria: "Weergave & comfort — lettergrootte en contrast instellen" },
+};
+const c = A11Y[lang];
 ---
 
 <div id="a11y-tool" class="fixed z-[60] right-4 bottom-[calc(env(safe-area-inset-bottom)+6.25rem)] md:bottom-4 print:hidden">
@@ -11,37 +29,37 @@
     id="a11y-panel"
     hidden
     role="dialog"
-    aria-label="Anzeige-Einstellungen"
+    aria-label={c.dialogAria}
     class="absolute bottom-16 right-0 w-[min(20rem,calc(100vw-2rem))] rounded-xl border border-border bg-card text-card-foreground shadow-elevated p-5 animate-fade-up"
   >
-    <p class="font-display text-lg mb-1">Anzeige & Komfort</p>
-    <p class="text-xs text-muted-foreground mb-4">Für angenehmeres Lesen.</p>
+    <p class="font-display text-lg mb-1">{c.title}</p>
+    <p class="text-xs text-muted-foreground mb-4">{c.subtitle}</p>
 
-    <p class="text-sm font-semibold mb-2">Schriftgröße</p>
-    <div class="grid grid-cols-3 gap-2 mb-5" role="group" aria-label="Schriftgröße">
-      <button type="button" data-font="normal" class="a11y-opt h-12 rounded-md border border-border text-sm font-medium hover:border-secondary transition-colors" aria-pressed="true">Normal</button>
-      <button type="button" data-font="large" class="a11y-opt h-12 rounded-md border border-border text-base font-medium hover:border-secondary transition-colors" aria-pressed="false">Groß</button>
-      <button type="button" data-font="larger" class="a11y-opt h-12 rounded-md border border-border text-lg font-medium hover:border-secondary transition-colors" aria-pressed="false">Größer</button>
+    <p class="text-sm font-semibold mb-2">{c.fontLabel}</p>
+    <div class="grid grid-cols-3 gap-2 mb-5" role="group" aria-label={c.fontLabel}>
+      <button type="button" data-font="normal" class="a11y-opt h-12 rounded-md border border-border text-sm font-medium hover:border-secondary transition-colors" aria-pressed="true">{c.fontNormal}</button>
+      <button type="button" data-font="large" class="a11y-opt h-12 rounded-md border border-border text-base font-medium hover:border-secondary transition-colors" aria-pressed="false">{c.fontLarge}</button>
+      <button type="button" data-font="larger" class="a11y-opt h-12 rounded-md border border-border text-lg font-medium hover:border-secondary transition-colors" aria-pressed="false">{c.fontLarger}</button>
     </div>
 
     <button type="button" data-toggle="contrast" class="a11y-switch w-full h-12 mb-2 flex items-center justify-between px-4 rounded-md border border-border hover:border-secondary transition-colors" aria-pressed="false">
-      <span class="text-sm font-medium">Hoher Kontrast</span>
+      <span class="text-sm font-medium">{c.contrast}</span>
       <span class="a11y-dot h-5 w-9 rounded-full bg-muted relative transition-colors"><span class="absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-background shadow transition-transform"></span></span>
     </button>
 
     <button type="button" data-toggle="motion" class="a11y-switch w-full h-12 mb-4 flex items-center justify-between px-4 rounded-md border border-border hover:border-secondary transition-colors" aria-pressed="false">
-      <span class="text-sm font-medium">Bewegung reduzieren</span>
+      <span class="text-sm font-medium">{c.motion}</span>
       <span class="a11y-dot h-5 w-9 rounded-full bg-muted relative transition-colors"><span class="absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-background shadow transition-transform"></span></span>
     </button>
 
-    <button type="button" data-a11y-reset class="w-full h-10 rounded-md text-xs font-medium text-muted-foreground hover:text-secondary transition-colors">Zurücksetzen</button>
+    <button type="button" data-a11y-reset class="w-full h-10 rounded-md text-xs font-medium text-muted-foreground hover:text-secondary transition-colors">{c.reset}</button>
   </div>
 
   <!-- Knopf -->
   <button
     type="button"
     id="a11y-toggle"
-    aria-label="Anzeige & Komfort — Schriftgröße und Kontrast einstellen"
+    aria-label={c.btnAria}
     aria-expanded="false"
     aria-controls="a11y-panel"
     class="h-14 w-14 rounded-full bg-primary text-primary-foreground shadow-elevated flex items-center justify-center hover:bg-secondary hover:text-secondary-foreground transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
