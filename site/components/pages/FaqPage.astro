@@ -1,0 +1,68 @@
+---
+// Geteilte FAQ-Seite (alle Sprachen). Markup + Schema EINMAL; Inhalt je Locale aus
+// site/i18n/content/faq.ts. DE-Route rendert dies mit lang="de" → Ausgabe identisch.
+import Layout from "../../layouts/Layout.astro";
+import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
+import { faqMeta, faqItems } from "../../i18n/content/faq";
+
+interface Props {
+  lang?: Locale;
+}
+const { lang = DEFAULT_LOCALE } = Astro.props;
+
+const meta = faqMeta[lang];
+const faqs = faqItems[lang];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+---
+
+<Layout
+  title={meta.title}
+  description={meta.description}
+  canonicalPath={localizedPath("/faq", lang)}
+  lang={lang}
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+  <section class="bg-gradient-to-b from-muted/15 via-background to-muted/15">
+    <div class="container mx-auto px-4 py-16 md:py-24 max-w-3xl">
+      <div class="text-center mb-14 md:mb-20">
+        <p class="eyebrow">{meta.eyebrow}</p>
+        <h1 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance leading-[1.05]">
+          {meta.heading}
+        </h1>
+        <p class="text-muted-foreground mt-5 leading-relaxed text-pretty">
+          {meta.intro}
+        </p>
+      </div>
+
+      <div class="border-t border-border/70">
+        {faqs.map((f, i) => (
+          <details class="faq-item border-b border-border/70" open={i === 0}>
+            <summary class="flex items-start justify-between gap-5 py-6 md:py-7 cursor-pointer list-none group">
+              <span class="font-display text-lg md:text-xl leading-snug text-balance pt-0.5 group-hover:text-secondary transition-colors">
+                {f.q}
+              </span>
+              <svg class="faq-chevron shrink-0 mt-1.5 h-4 w-4 text-secondary transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <p class="pb-7 pr-8 md:pr-10 text-foreground/85 leading-relaxed max-w-prose">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* Nativer Marker weg (Dreieck), eigener Chevron rotiert beim Öffnen. */
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item[open] .faq-chevron { transform: rotate(180deg); }
+  </style>
+</Layout>
