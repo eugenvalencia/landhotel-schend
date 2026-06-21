@@ -12,23 +12,31 @@
 // zu vorher (kein Verweis auf evtl. fehlende Breiten-Dateien). Die Breiten-WebPs
 // folgen der Konvention `name-<w>.webp` (vom gen-Skript zu erzeugen).
 import dimsJson from "../lib/foto-dims.json";
+import respJson from "../lib/responsive-widths.json";
 const dims = dimsJson as Record<string, [number, number]>;
+const respMap = respJson as Record<string, number[]>;
 const { src, width, height, widths, sizes, ...rest } = Astro.props as { src: string; width?: number | string; height?: number | string; widths?: number[]; sizes?: string; [key: string]: unknown };
 const canWebp = typeof src === "string" && /\.(jpe?g|png)$/i.test(src);
 const webp = canWebp ? src.replace(/\.(jpe?g|png)$/i, ".webp") : src;
 const dim = typeof src === "string" ? dims[src] : undefined;
 const w = width ?? dim?.[0];
 const h = height ?? dim?.[1];
-// Responsives WebP-srcset nur wenn Breiten explizit angefordert wurden.
-const webpSrcset = canWebp && widths?.length
-  ? widths.map((bw) => `${src.replace(/\.(jpe?g|png)$/i, "")}-${bw}.webp ${bw}w`).join(", ")
+// Responsives WebP-srcset: explizite `widths` gewinnen, sonst die generierte
+// Breiten-Map (responsive-widths.json, vom gen-Skript befüllt). Galerie- und
+// kleine Bilder stehen nicht in der Map → unverändert eine einzelne WebP-Quelle.
+const effWidths = widths?.length ? widths : (typeof src === "string" ? respMap[src] : undefined);
+const webpSrcset = canWebp && effWidths?.length
+  ? effWidths.map((bw) => `${src.replace(/\.(jpe?g|png)$/i, "")}-${bw}.webp ${bw}w`).join(", ")
   : undefined;
+// Sinnvoller Default: Responsive-Bilder ohne explizites `sizes` füllen die
+// Viewport-Breite (Heroes). Split-Sektionen setzen `sizes` selbst.
+const effSizes = sizes ?? (webpSrcset ? "100vw" : undefined);
 ---
 {canWebp ? (
   <picture class="contents">
-    <source srcset={webpSrcset ?? webp} type="image/webp" sizes={sizes} />
-    <img src={src} width={w} height={h} sizes={sizes} {...rest} />
+    <source srcset={webpSrcset ?? webp} type="image/webp" sizes={effSizes} />
+    <img src={src} width={w} height={h} sizes={effSizes} {...rest} />
   </picture>
 ) : (
-  <img src={src} width={w} height={h} sizes={sizes} {...rest} />
+  <img src={src} width={w} height={h} sizes={effSizes} {...rest} />
 )}
