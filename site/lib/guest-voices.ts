@@ -1,6 +1,7 @@
 // Echte Gästestimmen — KEINE erfundenen Zitate.
 // Wörtlich übernommen aus den öffentlichen Bewertungsplattformen (Stand Juni 2026),
-// attribuiert wie dort angezeigt (Vorname/Anzeigename + Plattform + Jahr). Die volle,
+// attribuiert mit NUR Vornamen + Plattform + Jahr (Eugen-Direktive 21.06.,
+// Persönlichkeitsrecht). Die volle,
 // ungefilterte Bewertungsliste ist über die Plattform-Karten in derselben Sektion
 // einen Klick entfernt (Booking.com / Tripadvisor / HRS / Google) — also keine
 // irreführende Rosinen-Auswahl, sondern eine Auswahl mit Quelle.
@@ -28,9 +29,9 @@ export const GUEST_VOICES: GuestVoice[] = [
     year: "2025",
   },
   {
-    text: "Sehr freundliche Gastgeber. Saubere Unterkunft. Gutes Essen und ruhige Lage.",
-    name: "H. P. Klein",
+    text: "Sehr sauber und sehr freundlich, man fühlt sich sehr wohl.",
+    name: "Bärbel",
     source: "eifel.de",
-    year: "2022",
+    year: "2023",
   },
 ];

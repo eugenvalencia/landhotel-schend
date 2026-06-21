@@ -49,17 +49,26 @@ Gast-Versand stehen.
 
 ## 3. Offen — vor Go-Live menschlich zu klären
 
-- **Gästestimmen (neu 21.06.).** 3 echte, wörtliche Bewertungen (Booking.com/
-  eifel.de) sind jetzt sichtbar, attribuiert wie öffentlich angezeigt (Vorname +
-  Plattform + Jahr), mit Link zur vollen Liste → keine irreführende Auswahl.
-  **Persönlichkeitsrecht/Datenschutz:** öffentlich publizierte Reviews mit
-  Vornamen-Attribution sind branchenüblich und vertretbar; **Beimler sollte die
-  Verwendung kurz bestätigen** (ideal: kein voller Klarname → Anzeige „H. P. Klein"
-  ggf. auf Vorname kürzen). Quelle ist im Code dokumentiert
-  (`site/lib/guest-voices.ts`). **Bewusst NICHT** als Review-JSON-LD ausgezeichnet
-  (Google verbietet Fremdplattform-Reviews als eigene Rich-Snippets).
-- **Booking-Score 8,7.** Web-Stichprobe zeigte teils **8,6** (289 Bewertungen).
-  Differenz 0,1 — Scores driften. **Vor Go-Live den Live-Wert auf Booking.com
-  prüfen** und auf der Seite (Plattform-Karte + Hero-Zeile) angleichen.
+- **Gästestimmen (neu 21.06.).** 3 echte, wörtliche Bewertungen (Wolfgang/Marcel
+  via Booking.com, Bärbel via eifel.de) sind sichtbar, attribuiert mit **nur
+  Vornamen** + Plattform + Jahr (Eugen-Direktive 21.06.), mit Link zur vollen
+  Liste → keine irreführende Auswahl. **Persönlichkeitsrecht/Datenschutz:**
+  öffentlich publizierte Reviews mit reiner Vornamen-Attribution sind
+  branchenüblich und vertretbar. **Beimler sollte die Verwendung kurz bestätigen.**
+  Quelle im Code dokumentiert (`site/lib/guest-voices.ts`). **Bewusst NICHT** als
+  Review-JSON-LD ausgezeichnet (Google verbietet Fremdplattform-Reviews als eigene
+  Rich-Snippets).
+- **Booking-Score 8,7 — bestätigt.** Direkt auf Booking.coms eigener Reviews-Seite
+  geprüft (21.06.): **8,7/10**. Score auf der Seite ist korrekt; die frühere
+  „8,6"-Notiz stammte aus einer unzuverlässigen Such-Paraphrase und ist verworfen.
+  Offen nur die exakte **Bewertungs-Anzahl** (Quellen schwanken 147/252/289 — je
+  nach „mit Kommentar" vs. gesamt); Footer nennt „252 Bew.". **Beimler/Extranet
+  als einzig autoritative Quelle vor Go-Live gegenchecken.**
+- **Option Spitzenstellung (nicht umgesetzt).** Booking.com zeigt Schend als
+  **„#1 von 4 Hotels in Immerath"** (reales Vergleichsfeld, anders als Tripadvisors
+  #1 von 1). Ein vorsichtiger Claim „bestbewertetes Hotel in Immerath laut
+  Booking.com (Stand 06/2026)" wäre damit **deutlich besser haltbar** — aber nur
+  **mit datiertem Screenshot-Beleg** und auf Eugens Entscheidung. Aktuell bewusst
+  weggelassen (reine Score-Darstellung).
 - **DEHOGA-/Klassifizierungs-Aussagen** (3-Sterne-Superior etc.) wie gehabt nur
   mit gültigem Zertifikat — separat im 14.06.-Review behandelt.
