@@ -86,7 +86,7 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
   }
 
   const to = env.INQUIRY_TO || "e.neifer@outlook.de";
-  const from = env.INQUIRY_FROM || "Landhaus Schend Anfrage <buchung@landhaus-schend.de>";
+  const from = env.INQUIRY_FROM || "Landhaus Schend <info@landhaus-schend.de>";
 
   const zimmerStr = rooms
     .map((r) => `${r.kategorie}${r.anzahl > 1 ? ` × ${r.anzahl}` : ""}`)
