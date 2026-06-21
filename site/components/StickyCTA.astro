@@ -30,11 +30,12 @@ const hidden = ["/anfrage", "/dashboard", "/login"].some((p) => base.startsWith(
       </div>
     </div>
 
-    {/* Tablet — seitliche Pille rechts, etwas unter der Mitte.
-        NUR md (Tablet): auf Desktop (lg+) trägt der dauerhaft sichtbare Header-
-        „Anfragen"-Button bereits die CTA, und die seitliche Pille würde sonst
-        die Abschnitts-Punkte (#section-dots, lg:flex am rechten Rand) überlagern. */}
-    <div class="sticky-pill hidden md:block lg:hidden fixed right-6 z-40 transition-all duration-700 ease-out" style="top:58%">
+    {/* Seitliche „Anfragen"-Pille rechts — auf ALLEN Tablet-/Desktop-Breiten (md+).
+        Unter xl gibt es keinen Header-„Anfragen"-Button (Nav erst ab xl), dort ist
+        die Pille die einzige dauerhafte CTA. Ab lg sitzt sie UNTEN rechts statt auf
+        Mitte, damit sie die vertikal mittigen Abschnitts-Punkte (#section-dots,
+        lg:right-5) nicht überlagert. (top:58% via Klasse, damit lg:top-auto greift.) */}
+    <div class="sticky-pill hidden md:block fixed right-6 z-40 top-[58%] lg:top-auto lg:bottom-10 transition-all duration-700 ease-out">
       <a href={localizedPath("/anfrage", lang)} aria-label={t("sticky_inquire_free_aria", lang)} class="group relative flex flex-col items-center justify-center gap-1.5 px-4 py-5 min-w-[64px] bg-card/95 backdrop-blur-md border-2 border-foreground/15 rounded-md shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:border-secondary hover:shadow-[0_12px_28px_rgba(0,0,0,0.18)] hover:-translate-y-0.5 hover:rotate-[-2deg] transition-all duration-300">
         <span aria-hidden="true" class="absolute inset-1.5 border border-foreground/10 rounded-sm pointer-events-none transition-colors group-hover:border-secondary/30"></span>
         <svg class="h-5 w-5 text-foreground group-hover:text-secondary transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="m9 16 2 2 4-4"/></svg>
