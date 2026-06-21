@@ -3,6 +3,8 @@
 // site/i18n/content/zimmer.ts (Struktur/Preise aus lib/rooms.ts).
 import Layout from "../../layouts/Layout.astro";
 import Pic from "../Pic.astro";
+import { ORIGIN } from "../../lib/site";
+import { breadcrumbLd, homeCrumb, itemListLd } from "../../lib/schema";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
 import {
   introFor, ausstattungFor, sonstigesFor, extrasFor, ratesFor, roomTypesFor, zimmerChrome,
@@ -19,6 +21,23 @@ const ausstattung = ausstattungFor(lang);
 const sonstiges = sonstigesFor(lang);
 const extras = extrasFor(lang);
 const roomTypes = roomTypesFor(lang);
+
+const breadcrumb = breadcrumbLd(ORIGIN, lang, [homeCrumb(lang), { name: c.h1, path: "/zimmer" }]);
+// ItemList der Zimmertypen mit Offer (priceFrom je Sprache, "ab"-Preis als Offer).
+const roomList = itemListLd(roomTypes.map((r) => {
+  const url = `${ORIGIN}${localizedPath(`/zimmer/${r.slug}`, lang)}`;
+  return {
+    url,
+    name: r.type,
+    item: {
+      "@type": "HotelRoom",
+      name: r.type,
+      url,
+      occupancy: { "@type": "QuantitativeValue", maxValue: r.maxPersons, unitText: c.schemaPersonsUnit },
+      makesOffer: { "@type": "Offer", price: r.priceFrom, priceCurrency: "EUR", description: r.priceLabel, availability: "https://schema.org/InStock", url: `${ORIGIN}${localizedPath("/anfrage", lang)}`, seller: { "@id": "https://landhaus-schend.de/#hotel" } },
+    },
+  };
+}));
 ---
 
 <Layout
@@ -27,6 +46,8 @@ const roomTypes = roomTypesFor(lang);
   canonicalPath={localizedPath("/zimmer", lang)}
   lang={lang}
 >
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(roomList)} />
   <!-- Intro -->
   <section class="container mx-auto px-4 pt-12 md:pt-16 pb-10">
     <div class="max-w-3xl mx-auto text-center">

@@ -4,6 +4,7 @@
 import Layout from "../../layouts/Layout.astro";
 import Pic from "../Pic.astro";
 import { ORIGIN } from "../../lib/site";
+import { breadcrumbLd, homeCrumb } from "../../lib/schema";
 import { SCHEND_RESTAURANT } from "../../lib/photos";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
 import { restaurantContent } from "../../i18n/content/restaurant";
@@ -13,6 +14,19 @@ interface Props {
 }
 const { lang = DEFAULT_LOCALE } = Astro.props;
 const c = restaurantContent[lang];
+
+// Küchen-Tags je Sprache (einzige sprachabhängige Schema-Eigenschaft).
+const CUISINE: Record<Locale, string[]> = {
+  de: ["Eifeler Landküche", "Deutsch", "Regional"],
+  en: ["Eifel country cuisine", "German", "Regional"],
+  fr: ["Cuisine de l'Eifel", "Allemande", "Régionale"],
+  nl: ["Eifeler streekkeuken", "Duits", "Regionaal"],
+};
+// @id je Sprache eindeutig; DE bleibt byte-gleich zur Home-containsPlace-Referenz.
+const restId = lang === "de"
+  ? "https://landhaus-schend.de/restaurant#restaurant"
+  : `${ORIGIN}${localizedPath("/restaurant", lang)}#restaurant`;
+const breadcrumb = breadcrumbLd(ORIGIN, lang, [homeCrumb(lang), { name: "Restaurant", path: "/restaurant" }]);
 
 // Laufband — NUR Essen (keine Saal-/Panorama-Aufnahmen, Beimler-Wunsch 20.06.).
 const FOOD_PHOTOS = [
@@ -32,15 +46,17 @@ const FOOD_PHOTOS = [
 const restaurantSchema = {
   "@context": "https://schema.org",
   "@type": "Restaurant",
-  "@id": "https://landhaus-schend.de/restaurant#restaurant",
+  "@id": restId,
   name: "Landhaus Restaurant & Terrasse",
   alternateName: "Restaurant Landhaus Schend",
   url: `${ORIGIN}${localizedPath("/restaurant", lang)}`,
   description: c.schemaDescription,
   telephone: "+49-6573-306",
   email: "info@landhaus-schend.de",
-  servesCuisine: ["Eifeler Landküche", "Deutsch", "Regional"],
+  servesCuisine: CUISINE[lang],
   acceptsReservations: "True",
+  sameAs: ["https://www.facebook.com/Landhotel.Schend/", "https://www.booking.com/hotel/de/landhaus-schend.html", "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html"],
+  potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: `${ORIGIN}${localizedPath("/anfrage", lang)}`, actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] }, result: { "@type": "FoodEstablishmentReservation", name: "Tischreservierung" } },
   containedInPlace: { "@id": "https://landhaus-schend.de/#hotel" },
   priceRange: "€€",
   image: `https://landhaus-schend.de${SCHEND_RESTAURANT}`,
@@ -68,6 +84,7 @@ const restaurantSchema = {
   lang={lang}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(restaurantSchema)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
 
   <!-- HERO -->
   <section class="relative h-[60vh] min-h-[420px] max-h-[680px] overflow-hidden">

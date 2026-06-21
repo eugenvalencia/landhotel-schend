@@ -169,7 +169,7 @@ export const aboutContent: Record<Locale, AboutContent> = {
     h1: "Het verhaal van het Landhaus",
     history: [
       "Het oorspronkelijke pand werd in 1856 gebouwd en deed toen al dienst als gasthuis en tijdelijk ook als postkantoor voor het dorp.",
-      `In ${YEAR("1954")} namen het echtpaar Änni en Leo Schneiders de ouderlijke dorpsgaststätte en het kleine zelfvoorzienende boerenbedrijf over. In ${YEAR("1970")} breidden zij uit met drie gastenkamers met stromend warm en koud water en moderniseerden de gaststätte.`,
+      `In ${YEAR("1954")} namen het echtpaar Änni en Leo Schneiders de ouderlijke dorpsherberg en het kleine zelfvoorzienende boerenbedrijf over. In ${YEAR("1970")} breidden zij uit met drie gastenkamers met stromend warm en koud water en moderniseerden de herberg.`,
       `Vanaf ${YEAR("1976")} werkten dochter Roswitha en haar man Reinhold mee in het bedrijf, dat de twee in ${YEAR("1993")} overnamen. Na het overlijden van de ouders stond het echtpaar Schend voor de keuze het bedrijf op te geven of te investeren — ze kozen voor investeren en begonnen in ${YEAR("1995")} met een grote verbouwing: het oude bedrijfsgebouw werd gesloopt en een nieuw gastenhuis met 22 bedden en een eetzaal gebouwd.`,
       `Twee jaar later, in ${YEAR("1997")}, openden ze het nieuwe gebouw onder de naam „Landhaus Schend". In de jaren daarna groeide het aantal bedden naar 44; een lift, een moderne eetzaal en een gezellige haardkamer kwamen erbij. Sinds ${YEAR("1999")} draagt Landhaus Schend een 3-sterrenclassificatie van de Duitse hotelclassificatie.`,
     ],

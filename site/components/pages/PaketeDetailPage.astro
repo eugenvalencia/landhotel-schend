@@ -15,15 +15,29 @@ const { lang = DEFAULT_LOCALE, slug } = Astro.props;
 const c = paketeChrome[lang];
 const paket = findPaketFor(slug, lang)!;
 
+const stripQ = (s: string) => s.replace(/[„""]/g, "");
 const breadcrumb = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
     { "@type": "ListItem", position: 1, name: c.breadcrumbHome, item: `${ORIGIN}${localizedPath("/", lang)}` },
     { "@type": "ListItem", position: 2, name: c.breadcrumbList, item: `${ORIGIN}${localizedPath("/pakete", lang)}` },
-    { "@type": "ListItem", position: 3, name: paket.title.replace(/"/g, ""), item: `${ORIGIN}${localizedPath(`/pakete/${paket.slug}`, lang)}` },
+    { "@type": "ListItem", position: 3, name: stripQ(paket.title), item: `${ORIGIN}${localizedPath(`/pakete/${paket.slug}`, lang)}` },
   ],
 };
+// Product/Offer nur für bepreiste Pakete (lowPrice aus "ab …€"-Zahl) — Rich-Results.
+const lowPrice = (paket.price?.match(/(\d+)/) || [])[1];
+const productSchema = lowPrice
+  ? {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: stripQ(paket.title),
+      description: paket.intro,
+      image: `${ORIGIN}${paket.cover}`,
+      url: `${ORIGIN}${localizedPath(`/pakete/${paket.slug}`, lang)}`,
+      offers: { "@type": "Offer", price: Number(lowPrice), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: `${ORIGIN}${localizedPath("/anfrage", lang)}`, seller: { "@id": "https://landhaus-schend.de/#hotel" } },
+    }
+  : null;
 ---
 
 <Layout
@@ -34,6 +48,7 @@ const breadcrumb = {
   lang={lang}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  {productSchema && <script type="application/ld+json" slot="head" set:html={JSON.stringify(productSchema)} />}
 
   <!-- Hero -->
   <section class="relative">

@@ -3,6 +3,8 @@
 // Inhalt je Locale aus site/i18n/content/urlaubsregion.ts.
 import Layout from "../../layouts/Layout.astro";
 import Pic from "../Pic.astro";
+import { ORIGIN } from "../../lib/site";
+import { breadcrumbLd, homeCrumb } from "../../lib/schema";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
 import { regionContent, REGION_ADDRESS } from "../../i18n/content/urlaubsregion";
 
@@ -11,6 +13,24 @@ interface Props {
 }
 const { lang = DEFAULT_LOCALE } = Astro.props;
 const c = regionContent[lang];
+
+const breadcrumb = breadcrumbLd(ORIGIN, lang, [homeCrumb(lang), { name: c.h1, path: "/urlaubsregion" }]);
+// TouristDestination mit benannten Attraktionen (Eigennamen, sprach-neutral) —
+// GEO/AI-Zitierbarkeit „Hotel nahe Eifelsteig/Nürburgring/Maare".
+const regionSchema = {
+  "@context": "https://schema.org",
+  "@type": "TouristDestination",
+  name: c.h1,
+  description: c.metaDescription,
+  url: `${ORIGIN}${localizedPath("/urlaubsregion", lang)}`,
+  address: { "@type": "PostalAddress", streetAddress: "Hauptstraße 9", addressLocality: "Immerath", addressRegion: "Rheinland-Pfalz", postalCode: "54552", addressCountry: "DE" },
+  geo: { "@type": "GeoCoordinates", latitude: 50.1303, longitude: 6.9594 },
+  containedInPlace: { "@type": "Place", name: "Vulkaneifel" },
+  includesAttraction: [
+    "Immerather Maar", "Pulvermaar", "Gemündener Maar", "Weinfelder Maar", "Schalkenmehrener Maar",
+    "Eifelsteig", "Maare-Mosel-Radweg", "Nürburgring", "Vulkanhaus Strohn", "Maarmuseum Manderscheid",
+  ].map((n) => ({ "@type": "TouristAttraction", name: n })),
+};
 ---
 
 <Layout
@@ -19,6 +39,8 @@ const c = regionContent[lang];
   canonicalPath={localizedPath("/urlaubsregion", lang)}
   lang={lang}
 >
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(regionSchema)} />
   <!-- Hero -->
   <section class="relative">
     <Pic src="/pakete/eifel-2.jpg" alt={c.heroAlt} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />

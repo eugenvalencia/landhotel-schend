@@ -3,6 +3,8 @@
 // site/i18n/content/pakete.ts (Struktur aus lib/pakete.ts).
 import Layout from "../../layouts/Layout.astro";
 import Pic from "../Pic.astro";
+import { ORIGIN } from "../../lib/site";
+import { breadcrumbLd, homeCrumb, itemListLd } from "../../lib/schema";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
 import { paketeFor, paketeChrome } from "../../i18n/content/pakete";
 
@@ -12,6 +14,27 @@ interface Props {
 const { lang = DEFAULT_LOCALE } = Astro.props;
 const c = paketeChrome[lang];
 const pakete = paketeFor(lang);
+
+const stripQ = (s: string) => s.replace(/[„""]/g, "");
+const breadcrumb = breadcrumbLd(ORIGIN, lang, [homeCrumb(lang), { name: stripQ(c.listH1), path: "/pakete" }]);
+// ItemList der Pakete; bepreiste als Product mit Offer (lowPrice aus "ab …€"-Zahl).
+const paketeList = itemListLd(pakete.map((p) => {
+  const url = `${ORIGIN}${localizedPath(`/pakete/${p.slug}`, lang)}`;
+  const lowPrice = (p.price?.match(/(\d+)/) || [])[1];
+  return {
+    url,
+    name: stripQ(p.title),
+    item: {
+      "@type": "Product",
+      name: stripQ(p.title),
+      url,
+      ...(p.cover ? { image: `${ORIGIN}${p.cover}` } : {}),
+      ...(lowPrice
+        ? { offers: { "@type": "Offer", price: Number(lowPrice), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: `${ORIGIN}${localizedPath("/anfrage", lang)}`, seller: { "@id": "https://landhaus-schend.de/#hotel" } } }
+        : {}),
+    },
+  };
+}));
 ---
 
 <Layout
@@ -20,6 +43,8 @@ const pakete = paketeFor(lang);
   canonicalPath={localizedPath("/pakete", lang)}
   lang={lang}
 >
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(paketeList)} />
   <section class="container mx-auto px-4 pt-12 md:pt-16 pb-20">
     <div class="text-center max-w-2xl mx-auto mb-12 md:mb-16">
       <p class="eyebrow">{c.listEyebrow}</p>

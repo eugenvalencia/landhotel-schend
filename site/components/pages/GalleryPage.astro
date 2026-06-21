@@ -4,6 +4,8 @@
 import Layout from "../../layouts/Layout.astro";
 import Pic from "../Pic.astro";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
+import { ORIGIN } from "../../lib/site";
+import { breadcrumbLd, homeCrumb } from "../../lib/schema";
 import { galleryMeta, galleryPhotos } from "../../i18n/content/galerie";
 import dimsJson from "../../lib/foto-dims.json";
 const dims = dimsJson as Record<string, [number, number]>;
@@ -13,14 +15,32 @@ interface Props {
 }
 const { lang = DEFAULT_LOCALE } = Astro.props;
 const m = galleryMeta[lang];
+
+const breadcrumb = breadcrumbLd(ORIGIN, lang, [homeCrumb(lang), { name: m.h1, path: "/galerie" }]);
+// ImageGallery: 30 Fotos maschinenlesbar mit lokalisierten Captions (Google-Bilder/AI).
+const imageGallery = {
+  "@context": "https://schema.org",
+  "@type": "ImageGallery",
+  name: m.h1,
+  url: `${ORIGIN}${localizedPath("/galerie", lang)}`,
+  image: galleryPhotos.map((f) => ({
+    "@type": "ImageObject",
+    contentUrl: `${ORIGIN}${f.src}`,
+    name: f.alt[lang],
+    ...(dims[f.src] ? { width: dims[f.src][0], height: dims[f.src][1] } : {}),
+  })),
+};
 ---
 
 <Layout
   title={m.metaTitle}
   description={m.metaDescription}
   canonicalPath={localizedPath("/galerie", lang)}
+  ogImage={galleryPhotos[0]?.src}
   lang={lang}
 >
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(imageGallery)} />
   <section class="container mx-auto px-4 pt-12 md:pt-16 pb-10 text-center max-w-2xl mx-auto">
     <p class="eyebrow">{m.eyebrow}</p>
     <h1 class="font-display text-4xl md:text-5xl lg:text-6xl mt-3 text-balance leading-[1.05]">{m.h1}</h1>

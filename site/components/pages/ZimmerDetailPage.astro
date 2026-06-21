@@ -49,11 +49,17 @@ const breadcrumb = {
     { "@type": "ListItem", position: 3, name: room.type, item: `${ORIGIN}${localizedPath(`/zimmer/${room.slug}`, lang)}` },
   ],
 };
+
+// Meta-Description ≤160 Zeichen (eigener, zimmer-eindeutiger Auszug aus dem realen
+// Beschreibungstext) — der volle Fließtext bleibt im Body. Kein erfundener Text.
+const metaDesc = room.description.length > 160
+  ? room.description.slice(0, 157).replace(/\s+\S*$/, "") + "…"
+  : room.description;
 ---
 
 <Layout
   title={`${room.type} — ${c.detailTitleSuffix}`}
-  description={room.description}
+  description={metaDesc}
   canonicalPath={localizedPath(`/zimmer/${room.slug}`, lang)}
   ogImage={room.gallery[0]}
   lang={lang}
