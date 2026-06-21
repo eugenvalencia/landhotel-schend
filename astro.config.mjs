@@ -18,6 +18,10 @@ export default defineConfig({
   srcDir: "./site",
   outDir: "./dist-astro",
   publicDir: "./public",
+  // Eine kanonische URL-Form: immer mit Trailing-Slash (= was Cloudflare Pages aus
+  // ordner/index.html ausliefert). So treffen canonical + hreflang + interne Links die
+  // 200-URL direkt statt eines 308-Redirects. localizedPath() hängt den Slash passend an.
+  trailingSlash: "always",
   i18n: {
     defaultLocale: "de",
     locales: ["de", "en", "fr", "nl"],

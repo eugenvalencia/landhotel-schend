@@ -325,6 +325,15 @@ const c = anfrageContent[lang];
       statusEl.className = "rounded-md px-4 py-4 text-sm " + (ok ? "is-ok" : "is-err");
     };
 
+    // Markierung wieder entfernen, sobald der Gast ein beanstandetes Feld korrigiert.
+    form.addEventListener("input", (e) => {
+      const el = e.target as HTMLElement;
+      if (el && el.classList?.contains("anf-invalid")) {
+        el.classList.remove("anf-invalid");
+        el.removeAttribute("aria-invalid");
+      }
+    });
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -344,12 +353,15 @@ const c = anfrageContent[lang];
       form.querySelectorAll<HTMLInputElement>("[required]").forEach((el) => {
         const bad = el.type === "checkbox" ? !el.checked : (!el.value.trim() && !autofilled(el));
         el.classList.toggle("anf-invalid", bad);
+        // Programmatische Fehlerkennzeichnung (WCAG 3.3.1) — Screenreader meldet ungültige Felder.
+        if (bad) el.setAttribute("aria-invalid", "true"); else el.removeAttribute("aria-invalid");
         if (bad && !firstInvalid) firstInvalid = el;
       });
       const emailEl = form.querySelector<HTMLInputElement>("#email");
       const email = emailEl?.value.trim() || "";
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || (!email && !!emailEl && autofilled(emailEl));
-      if (!emailOk) { emailEl?.classList.add("anf-invalid"); firstInvalid ||= emailEl; }
+      if (!emailOk) { emailEl?.classList.add("anf-invalid"); emailEl?.setAttribute("aria-invalid", "true"); firstInvalid ||= emailEl; }
+      else emailEl?.removeAttribute("aria-invalid");
 
       if (firstInvalid) {
         setStatus(MSG.required, false);

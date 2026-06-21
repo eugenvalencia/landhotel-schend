@@ -41,14 +41,16 @@ function clean(path: string): string {
 /**
  * Pfad einer (sprach-neutralen, deutschen) Route in einer Ziel-Locale.
  * DE bleibt unpräfixiert; sonst wird "/<locale>" vorangestellt.
- *   localizedPath("/zimmer", "en") -> "/en/zimmer"
- *   localizedPath("/", "fr")       -> "/fr"
- *   localizedPath("/zimmer", "de") -> "/zimmer"
+ *   localizedPath("/zimmer", "en") -> "/en/zimmer/"
+ *   localizedPath("/", "fr")       -> "/fr/"
+ *   localizedPath("/zimmer", "de") -> "/zimmer/"
  */
 export function localizedPath(path: string, locale: Locale): string {
   const c = clean(path);
-  if (locale === DEFAULT_LOCALE) return c;
-  return c === "/" ? `/${locale}` : `/${locale}${c}`;
+  const p = locale === DEFAULT_LOCALE ? c : c === "/" ? `/${locale}` : `/${locale}${c}`;
+  // Trailing-Slash erzwingen (passt zu astro trailingSlash:'always'): Canonical, hreflang
+  // und interne Links treffen exakt die ausgelieferte 200-URL (/restaurant/) — kein 308.
+  return p === "/" ? "/" : `${p}/`;
 }
 
 /** Liest die aktive Locale aus einem Pfad ("/en/zimmer" -> "en"). */
