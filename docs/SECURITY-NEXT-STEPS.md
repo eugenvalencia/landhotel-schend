@@ -36,6 +36,18 @@ Resend-Konto die EU-Region nutzt.** Resend ist im Datenschutztext bereits als
 Auftragsverarbeiter geführt; AVV (`docs/legal/avv-schend.md`) listet Resend.
 Vor echtem Go-Live von Walter final prüfen lassen.
 
+**Konkret zu erledigen (Resend-Dashboard, beim Domain-Cutover Punkt 1 unten):**
+1. **Region prüfen** — beim Hinzufügen der echten Sende-Domain in Resend die
+   **Region `eu-west-1` (Irland)** wählen. Bestehende Domains zeigen die Region
+   in den Domain-Einstellungen; ist sie `us-east-1`, Domain in der EU-Region neu
+   anlegen (Region ist pro Domain fix, nicht nachträglich umstellbar).
+2. **DPA/AVV mit Resend** — Resends Standard-DPA gilt
+   (`resend.com/legal/dpa`); für die Akte Bestätigung/Signatur ablegen.
+   Unser AVV-Anhang (`docs/legal/avv-schend.md`) führt Resend bereits als
+   Sub-Auftragsverarbeiter — Eintrag gegen die reale Region abgleichen.
+3. **Belegen** — Screenshot „Region = EU" + DPA-Status zu den Go-Live-Akten.
+Walter-Memo dazu: `docs/legal/walter-review-2026-06-21.md`.
+
 ### 3. ⬜ Altes Supabase-Projekt (MEDIUM, Datenminimierung)
 Projekt `eyplzqxikdznjiemzyoz` ist weiter **ACTIVE** und enthält die alten
 `bookings`/`guests` (Gäste-PII). RLS schützt es, aber es wird vom neuen
