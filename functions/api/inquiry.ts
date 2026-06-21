@@ -139,9 +139,9 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
   <table cellpadding="6" style="border-collapse:collapse;font-size:14px;width:100%;font-family:Arial,Helvetica,sans-serif">
     ${guestRows.map(([k, v]) => `<tr><td style="color:#888;vertical-align:top;white-space:nowrap;padding-right:12px">${esc(k)}</td><td><strong>${esc(v)}</strong></td></tr>`).join("\n")}
   </table>
-  <p style="margin-top:18px">Haben Sie Fragen oder möchten Sie etwas ergänzen? Antworten Sie einfach auf diese E-Mail oder rufen Sie uns an: <a href="tel:+496573306" style="color:#9a7b3f">+49 6573 306</a>.</p>
+  <p style="margin-top:18px">Haben Sie Fragen oder möchten Sie etwas ergänzen? Antworten Sie einfach auf diese E-Mail oder rufen Sie uns an: <a href="tel:+496573306" style="font-family:Arial,Helvetica,sans-serif;color:#9a7b3f;text-decoration:none">+49 6573 306</a>.</p>
   <p style="margin-top:18px">Herzliche Grüße<br><strong>Ihr Team vom Landhaus Schend</strong></p>
-  <p style="color:#aaa;font-size:12px;margin-top:20px;border-top:1px solid #eee;padding-top:12px">
+  <p style="font-family:Arial,Helvetica,sans-serif;color:#aaa;font-size:12px;margin-top:20px;border-top:1px solid #eee;padding-top:12px">
     Landhaus Schend · Hotel - Restaurant · Hauptstraße 9 · 54552 Immerath · Vulkaneifel<br>
     Tel. +49 6573 306 · info@landhaus-schend.de · landhaus-schend.de
   </p>
