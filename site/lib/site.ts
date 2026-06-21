@@ -15,7 +15,7 @@ export const LEGAL_NAME = "Landhaus Schend, Hotel - Restaurant";
 // Instagram = Platzhalter, bis der echte Handle feststeht.
 export const SOCIAL = {
   facebook: "https://www.facebook.com/Landhotel.Schend/",
-  instagram: "",
+  instagram: "https://www.instagram.com/landhaus_schend/",
 } as const;
 
 export const HOTEL = {
