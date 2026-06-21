@@ -73,3 +73,16 @@ Beim Umzug auf die echte Domain:
    `buchung@landhaus-schend.de` (Standard im Code).
 3. `INQUIRY_TO` auf **Schends echte Adresse** setzen.
 4. Deploy → Anfragen gehen von der eigenen Domain ans Hotel.
+
+## ⚠️ GEO/KI-Crawler-Check beim Domain-Cutover (Pflicht!)
+Cloudflare blockt KI-Crawler **pro Zone** — der am 21.06. auf `conexadigital.eu`
+gesetzte Fix zieht NICHT auf `landhaus-schend.de` mit. Auf der Zone der echten
+Domain wiederholen:
+1. **AI Crawl Control → „Verwaltete robots.txt" AUS** (sonst injiziert CF
+   `Disallow: /` für GPTBot/ClaudeBot in die robots.txt).
+2. **AI Crawl Control → Sicherheit → alle Crawler „nicht blockieren"** (sonst 403
+   am Edge für ClaudeBot/PerplexityBot/ChatGPT-User).
+3. **Verifizieren:** `curl -A "ClaudeBot/1.0" https://landhaus-schend.de/` → 200;
+   `curl https://landhaus-schend.de/robots.txt` ohne CF-`Disallow` für AI-Bots.
+Ohne diesen Schritt ist die gesamte GEO-Arbeit auf der echten Domain wirkungslos.
+Hintergrund + Playbook: `conexa-os/docs/SEO-GEO-PLAYBOOK.md`.
