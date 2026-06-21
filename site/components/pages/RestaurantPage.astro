@@ -71,10 +71,11 @@ const restaurantSchema = {
 
   <!-- HERO -->
   <section class="relative h-[60vh] min-h-[420px] max-h-[680px] overflow-hidden">
-    <!-- Weiche Hintergrundebene — füllt die Ränder, damit das ganze Foto unbeschnitten passt -->
-    <Pic src="/fotos/gedeckter-tisch-mit-schnitzelteller-und-wein-landhaus-schend.jpg" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl hero-ken-burns" decoding="async" />
-    <!-- Vordergrund: ganzes Foto sichtbar (Flasche, Platte, Tisch komplett) -->
-    <Pic src="/fotos/gedeckter-tisch-mit-schnitzelteller-und-wein-landhaus-schend.jpg" alt={c.heroAlt} class="absolute inset-0 w-full h-full object-contain" fetchpriority="high" decoding="async" />
+    <!-- Vollflächiges Hero-Foto (object-cover wie der Startseiten-Hero), dezenter Ken-Burns-Zoom.
+         Früher: object-contain + verwischte Kopie desselben Bildes als Ränder-Füller — ergab eine
+         „Briefmarke im Rahmen" (Letterbox) UND lud dasselbe 377-KB-Foto doppelt als LCP. Jetzt
+         randvoll, ein einziges Bild. -->
+    <Pic src="/fotos/gedeckter-tisch-mit-schnitzelteller-und-wein-landhaus-schend.jpg" alt={c.heroAlt} class="absolute inset-0 w-full h-full object-cover object-center hero-ken-burns" fetchpriority="high" decoding="async" />
     <div aria-hidden="true" class="absolute inset-0 bg-black/30"></div>
     <div aria-hidden="true" class="absolute inset-x-0 bottom-0 h-60 bg-gradient-to-t from-black/55 via-black/15 to-transparent"></div>
     <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 text-white">

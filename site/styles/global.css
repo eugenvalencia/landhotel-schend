@@ -319,7 +319,7 @@
     to { transform: translateX(-50%); }
   }
   .animate-marquee {
-    animation: marquee-x 110s linear infinite;
+    animation: marquee-x 55s linear infinite;
   }
   .animate-marquee:hover {
     animation-play-state: paused;
@@ -327,16 +327,11 @@
   @media (prefers-reduced-motion: reduce) {
     .animate-marquee { animation: none; }
   }
-  /* Tagesgäste-Banner — sanftes Brass-Pulsieren zieht den Blick, ohne Text-Flackern */
-  @keyframes pulse-tagesgaeste {
-    0%, 100% { background-color: hsl(var(--secondary) / 0.08); }
-    50% { background-color: hsl(var(--secondary) / 0.22); }
-  }
+  /* Tagesgäste-Banner — ruhiger, fester Brass-Ton statt Dauer-Pulsen.
+     Endloses Pulsen hinter Lesetext wirkte werblich (Pop-up-Anmutung) und kämpfte mit
+     der ruhigen Cormorant-Editorial-Optik. Jetzt dezent-statisch = edel. */
   .animate-pulse-banner {
-    animation: pulse-tagesgaeste 2.6s ease-in-out infinite;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .animate-pulse-banner { animation: none; background-color: hsl(var(--secondary) / 0.15); }
+    background-color: hsl(var(--secondary) / 0.10);
   }
 
   @keyframes fade-up {
