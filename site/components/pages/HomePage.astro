@@ -7,6 +7,7 @@ import Pic from "../Pic.astro";
 import LocationSection from "../LocationSection.astro";
 import { ROOM_TYPES } from "../../lib/rooms";
 import { SCHEND_RESTAURANT, galleryForRoomType } from "../../lib/photos";
+import { GUEST_VOICES } from "../../lib/guest-voices";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
 import { t } from "../../i18n/ui";
 import { homeContent } from "../../i18n/content/home";
@@ -473,6 +474,20 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
         <p class="eyebrow">{c.reviewsEyebrow}</p>
         <h2 class="font-display text-4xl md:text-5xl mt-3 text-balance">{c.reviewsH2}</h2>
         <p class="text-muted-foreground mt-4 leading-relaxed text-pretty">{c.reviewsIntro}</p>
+      </div>
+      <!-- Echte Gästestimmen (verbatim, mit Quelle) — volle Liste über die Plattform-Karten darunter -->
+      <h3 class="text-center font-display text-2xl md:text-3xl mb-8 text-balance">{c.guestVoicesH3}</h3>
+      <div class="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto mb-14 md:mb-16">
+        {GUEST_VOICES.map((v, i) => (
+          <figure class="flex flex-col h-full p-6 rounded-md border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+            <span aria-hidden="true" class="font-display text-4xl leading-none text-secondary/50 mb-2">„</span>
+            <blockquote class="text-[15px] leading-relaxed text-foreground/90 flex-1">{v.text}</blockquote>
+            <figcaption class="mt-4 pt-4 border-t border-border/60 text-sm">
+              <span class="font-semibold text-foreground">{v.name}</span>
+              <span class="text-muted-foreground"> · {v.source} {v.year}</span>
+            </figcaption>
+          </figure>
+        ))}
       </div>
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
         {PLATFORMS.map((p, i) => (

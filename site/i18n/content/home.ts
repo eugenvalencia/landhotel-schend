@@ -96,6 +96,7 @@ export interface HomeContent {
   reviewsEyebrow: string;
   reviewsH2: string;
   reviewsIntro: string;
+  guestVoicesH3: string;
   platformLines: string[];
   platformReviewsWord: string;
   ansehen: string;
@@ -230,6 +231,7 @@ export const homeContent: Record<Locale, HomeContent> = {
     reviewsEyebrow: "Bewertungen",
     reviewsH2: "Das sagen Gäste auf den Plattformen",
     reviewsIntro: "Lesen Sie echte Bewertungen direkt bei Booking.com, Tripadvisor, HRS und Google.",
+    guestVoicesH3: "Stimmen unserer Gäste",
     platformLines: ["Sehr gut", "Nr. 1 in Immerath laut Tripadvisor", "Weiterempfehlung laut HRS", "Rezensionen auf Google lesen"],
     platformReviewsWord: "Rezensionen",
     ansehen: "Ansehen",
@@ -368,6 +370,7 @@ export const homeContent: Record<Locale, HomeContent> = {
     reviewsEyebrow: "Reviews",
     reviewsH2: "What guests say on the platforms",
     reviewsIntro: "Read real reviews directly on Booking.com, Tripadvisor, HRS and Google.",
+    guestVoicesH3: "In our guests’ words",
     platformLines: ["Very good", "No. 1 in Immerath on Tripadvisor", "Would recommend, per HRS", "Read reviews on Google"],
     platformReviewsWord: "Reviews",
     ansehen: "View",
@@ -506,6 +509,7 @@ export const homeContent: Record<Locale, HomeContent> = {
     reviewsEyebrow: "Avis",
     reviewsH2: "Ce que disent les clients sur les plateformes",
     reviewsIntro: "Lisez de vrais avis directement sur Booking.com, Tripadvisor, HRS et Google.",
+    guestVoicesH3: "La parole à nos hôtes",
     platformLines: ["Très bien", "n° 1 à Immerath sur Tripadvisor", "Recommandation selon HRS", "Lire les avis sur Google"],
     platformReviewsWord: "Avis",
     ansehen: "Voir",
@@ -644,6 +648,7 @@ export const homeContent: Record<Locale, HomeContent> = {
     reviewsEyebrow: "Beoordelingen",
     reviewsH2: "Wat gasten zeggen op de platforms",
     reviewsIntro: "Lees echte beoordelingen direct op Booking.com, Tripadvisor, HRS en Google.",
+    guestVoicesH3: "Onze gasten aan het woord",
     platformLines: ["Zeer goed", "nr. 1 in Immerath volgens Tripadvisor", "Aanbeveling volgens HRS", "Beoordelingen op Google lezen"],
     platformReviewsWord: "Beoordelingen",
     ansehen: "Bekijken",
