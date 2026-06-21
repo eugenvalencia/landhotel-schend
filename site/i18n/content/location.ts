@@ -41,7 +41,7 @@ export const locationContent: Record<Locale, LocationContent> = {
     subline: "Landhaus Schend · Hauptstraße 9 · 54552 Immerath · Vulkaneifel",
     mapTitle: "Karte von Google Maps",
     mapConsentHtml:
-      'Beim Laden der Karte werden Daten — u.&nbsp;a. Ihre IP-Adresse — an Google übertragen, auch in die USA. Erst nach Ihrer Zustimmung wird die interaktive Karte geladen. Mehr dazu in unseren <a href="/datenschutz" class="text-secondary underline hover:no-underline">Datenschutzhinweisen</a>.',
+      'Beim Laden der Karte werden Daten — u.&nbsp;a. Ihre IP-Adresse — an Google übertragen, auch in die USA. Erst nach Ihrer Zustimmung wird die interaktive Karte geladen. Mehr dazu in unseren <a href="/datenschutz/" class="text-secondary underline hover:no-underline">Datenschutzhinweisen</a>.',
     mapLoad: "Karte laden",
     googleMaps: "Google Maps",
     appleMaps: "Apple Maps",
