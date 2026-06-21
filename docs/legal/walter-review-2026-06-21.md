@@ -64,11 +64,13 @@ Gast-Versand stehen.
   Offen nur die exakte **Bewertungs-Anzahl** (Quellen schwanken 147/252/289 — je
   nach „mit Kommentar" vs. gesamt); Footer nennt „252 Bew.". **Beimler/Extranet
   als einzig autoritative Quelle vor Go-Live gegenchecken.**
-- **Option Spitzenstellung (nicht umgesetzt).** Booking.com zeigt Schend als
-  **„#1 von 4 Hotels in Immerath"** (reales Vergleichsfeld, anders als Tripadvisors
-  #1 von 1). Ein vorsichtiger Claim „bestbewertetes Hotel in Immerath laut
-  Booking.com (Stand 06/2026)" wäre damit **deutlich besser haltbar** — aber nur
-  **mit datiertem Screenshot-Beleg** und auf Eugens Entscheidung. Aktuell bewusst
-  weggelassen (reine Score-Darstellung).
+- **Spitzenstellung Booking (umgesetzt 21.06., Eugen-Entscheidung).** Booking.com
+  zeigt Schend 2× bestätigt als **„Nr. 1 von 4 Hotels in Immerath"** + Badge
+  „Gästefavoriten" — **reales Vergleichsfeld** (4 Hotels), anders als Tripadvisors
+  #1 von 1. Auf der Booking-Plattformkarte als „Nr. 1 von 4 Hotels in Immerath"
+  (DE/EN/FR/NL) ausgespielt — Feldgröße („von 4") **explizit genannt** + Quelle =
+  die Karte selbst → UWG-haltbare Spitzenstellung statt irreführender Alleinstellung.
+  **Beweislast:** Eugen/Beimler legt einen **datierten Screenshot** der
+  Booking-Ranking-Anzeige zu den Akten (bei Ranking-Änderung Claim anpassen).
 - **DEHOGA-/Klassifizierungs-Aussagen** (3-Sterne-Superior etc.) wie gehabt nur
   mit gültigem Zertifikat — separat im 14.06.-Review behandelt.
