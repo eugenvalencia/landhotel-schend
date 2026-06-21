@@ -73,12 +73,12 @@ const hotelGraph = {
       priceRange: "€€",
       // Günstigster realer Einstieg: Doppelzimmer ab 57 €/Person inkl. Frühstück.
       makesOffer: fromOffer(57, { url: "https://landhaus-schend.de/anfrage/", unitText: "Person/Nacht" }),
-      starRating: { "@type": "Rating", ratingValue: "3", additionalType: "Superior" },
+      starRating: { "@type": "Rating", ratingValue: "3", bestRating: "5", worstRating: "1" },
       address: { "@type": "PostalAddress", streetAddress: "Hauptstraße 9", addressLocality: "Immerath", addressRegion: "Rheinland-Pfalz", postalCode: "54552", addressCountry: "DE" },
       geo: { "@type": "GeoCoordinates", latitude: 50.1303, longitude: 6.9594 },
       hasMap: "https://www.google.com/maps?q=Landhaus+Schend+Immerath",
-      checkinTime: "T15:00",
-      checkoutTime: "T11:00",
+      checkinTime: "15:00",
+      checkoutTime: "11:00",
       numberOfRooms: 21,
       smokingAllowed: false,
       amenityFeature: [
@@ -93,10 +93,10 @@ const hotelGraph = {
         { "@type": "LocationFeatureSpecification", name: "Massagen", value: true },
         { "@type": "LocationFeatureSpecification", name: "Familienzimmer", value: true },
       ],
-      potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: "https://landhaus-schend.de/anfrage", actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] }, result: { "@type": "LodgingReservation", name: "Direktbuchung Zimmer" } },
+      potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: "https://landhaus-schend.de/anfrage/", actionPlatform: ["https://schema.org/DesktopWebPlatform", "https://schema.org/MobileWebPlatform"] }, result: { "@type": "LodgingReservation", name: "Direktbuchung Zimmer" } },
       // Rück-Referenz aufs hauseigene Restaurant (schließt die Verknüpfung zum
       // einseitigen containedInPlace auf der Restaurant-Seite).
-      containsPlace: { "@id": "https://landhaus-schend.de/restaurant#restaurant" },
+      containsPlace: { "@id": "https://landhaus-schend.de/restaurant/#restaurant" },
       // Plattform-Bewertungen 1:1 zum sichtbaren Inhalt (kein erfundener Mittelwert).
       // Plattform-Namen vor Go-Live von Walter (UWG/Marke) prüfen lassen.
       review: [

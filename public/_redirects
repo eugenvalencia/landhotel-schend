@@ -7,3 +7,7 @@
 /login            /           302
 /dashboard*       /           302
 /operator         /           302
+
+# Alte Menue-URL "GASTRONOMIE" -> echte Restaurant-Seite (verhindert 404 / toten Link).
+/gastronomie      /restaurant/   301
+/gastronomie/*    /restaurant/   301

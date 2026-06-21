@@ -22,10 +22,10 @@ const CUISINE: Record<Locale, string[]> = {
   fr: ["Cuisine de l'Eifel", "Allemande", "Régionale"],
   nl: ["Eifeler streekkeuken", "Duits", "Regionaal"],
 };
-// @id je Sprache eindeutig; DE bleibt byte-gleich zur Home-containsPlace-Referenz.
-const restId = lang === "de"
-  ? "https://landhaus-schend.de/restaurant#restaurant"
-  : `${ORIGIN}${localizedPath("/restaurant", lang)}#restaurant`;
+// Physisches Restaurant = EINE Entität über alle Sprachen → konstanter @id
+// (byte-gleich zur Home-containsPlace-Referenz). Die Sprachvarianten trennen hreflang
+// + der sprachspezifische url/description-Inhalt der jeweiligen Seite, nicht der @id.
+const restId = "https://landhaus-schend.de/restaurant/#restaurant";
 const breadcrumb = breadcrumbLd(ORIGIN, lang, [homeCrumb(lang), { name: "Restaurant", path: "/restaurant" }]);
 
 // FAQPage je Sprache — eigene @id/url (/restaurant#faq), anderer Fokus/Formulierung
@@ -74,7 +74,7 @@ const restaurantSchema = {
   // gegeben). Verweist auf die Restaurant-Seite als Menü-Ankerpunkt.
   hasMenu: { "@type": "Menu", "@id": `${faqUrl}#menu`, url: faqUrl },
   sameAs: ["https://www.facebook.com/Landhotel.Schend/", "https://www.booking.com/hotel/de/landhaus-schend.html", "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html"],
-  potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: `${ORIGIN}${localizedPath("/anfrage", lang)}`, actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] }, result: { "@type": "FoodEstablishmentReservation", name: "Tischreservierung" } },
+  potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: `${ORIGIN}${localizedPath("/anfrage", lang)}`, actionPlatform: ["https://schema.org/DesktopWebPlatform", "https://schema.org/MobileWebPlatform"] }, result: { "@type": "FoodEstablishmentReservation", name: "Tischreservierung" } },
   containedInPlace: { "@id": "https://landhaus-schend.de/#hotel" },
   priceRange: "€€",
   image: `https://landhaus-schend.de${SCHEND_RESTAURANT}`,
