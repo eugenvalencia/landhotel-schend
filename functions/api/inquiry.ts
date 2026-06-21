@@ -134,7 +134,7 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
   <h2 style="font-family:Georgia,serif;color:#9a7b3f;margin:0 0 2px">Landhaus Schend</h2>
   <p style="color:#9a7b3f;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;margin:0 0 18px">Hotel · Restaurant · Vulkaneifel</p>
   <p>Guten Tag ${esc(name)},</p>
-  <p>vielen Dank für Ihre Anfrage. Wir haben sie erhalten und melden uns persönlich bei Ihnen, sobald wir die Verfügbarkeit für Ihren Wunschzeitraum geprüft haben. Dies ist eine automatische Eingangsbestätigung – noch keine verbindliche Buchung.</p>
+  <p>vielen Dank — Ihre Anfrage ist bei uns eingegangen. Wir melden uns persönlich bei Ihnen, sobald wir die Verfügbarkeit für Ihren Wunschzeitraum geprüft haben. Dies ist eine automatische Eingangsbestätigung – noch keine verbindliche Buchung.</p>
   <p style="margin:18px 0 6px;font-weight:bold;color:#9a7b3f">Ihre Angaben im Überblick</p>
   <table cellpadding="6" style="border-collapse:collapse;font-size:14px;width:100%;font-family:Arial,Helvetica,sans-serif">
     ${guestRows.map(([k, v]) => `<tr><td style="color:#888;vertical-align:top;white-space:nowrap;padding-right:12px">${esc(k)}</td><td><strong>${esc(v)}</strong></td></tr>`).join("\n")}
@@ -149,7 +149,7 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
   const guestText =
     `Landhaus Schend – Eingangsbestätigung Ihrer Anfrage\n\n` +
     `Guten Tag ${name},\n\n` +
-    `vielen Dank für Ihre Anfrage. Wir haben sie erhalten und melden uns persönlich, sobald wir die Verfügbarkeit geprüft haben. ` +
+    `vielen Dank — Ihre Anfrage ist bei uns eingegangen. Wir melden uns persönlich, sobald wir die Verfügbarkeit geprüft haben. ` +
     `Dies ist eine automatische Eingangsbestätigung – noch keine verbindliche Buchung.\n\n` +
     `Ihre Angaben:\n` +
     guestRows.map(([k, v]) => `${k}: ${v}`).join("\n") +
