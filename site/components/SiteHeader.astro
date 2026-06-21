@@ -241,15 +241,28 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
       );
       iconOpen.classList.toggle("hidden", open);
       iconClose.classList.toggle("hidden", !open);
+      // Fokus beim Öffnen ins Menü ziehen, beim Schließen zurück auf den Button.
+      if (open) menu.querySelector<HTMLElement>("a")?.focus();
+      else toggle.focus();
     };
     toggle.addEventListener("click", () => setOpen(menu.hidden));
     // Beim Klick auf einen Menülink schließen
     menu.querySelectorAll("a").forEach((a) =>
       a.addEventListener("click", () => setOpen(false)),
     );
-    // Esc schließt
+    // Esc schließt; Tab hält den Fokus im offenen Vollbild-Menü (Trap analog Lightbox).
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !menu.hidden) setOpen(false);
+      if (menu.hidden) return;
+      if (e.key === "Escape") setOpen(false);
+      else if (e.key === "Tab") {
+        const f = Array.from(menu.querySelectorAll<HTMLElement>("a, button")).filter(
+          (el) => !el.hidden && el.offsetParent !== null,
+        );
+        if (!f.length) return;
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     });
   }
 
@@ -290,6 +303,21 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
       syncThemeIcons();
     }),
   );
+
+  // Sprach-Dropdown (natives <details>) per Esc/Außenklick schließen — konsistent
+  // zu Mobile-Menü und A11y-Panel.
+  const langDd = document.querySelector<HTMLDetailsElement>("details.lang-dd");
+  if (langDd) {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && langDd.open) {
+        langDd.open = false;
+        langDd.querySelector<HTMLElement>("summary")?.focus();
+      }
+    });
+    document.addEventListener("click", (e) => {
+      if (langDd.open && !langDd.contains(e.target as Node)) langDd.open = false;
+    });
+  }
 </script>
 <style>
   /* Sprach-Dropdown (native <details>) — Marker weg. */

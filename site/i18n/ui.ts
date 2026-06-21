@@ -61,6 +61,7 @@ export const UI = {
 
   // — Allgemein —
   skip_to_content: { de: "Zum Inhalt springen", en: "Skip to content", fr: "Aller au contenu", nl: "Naar de inhoud" },
+  section_nav_aria: { de: "Abschnitts-Navigation", en: "Section navigation", fr: "Navigation par sections", nl: "Sectienavigatie" },
 } satisfies Record<string, L>;
 
 export type UIKey = keyof typeof UI;

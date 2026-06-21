@@ -6,20 +6,29 @@
 // durchgereicht. WebP-Datei muss neben dem Original liegen (gen-Skript).
 // width/height: explizit übergebene Werte gewinnen; sonst intrinsische Maße aus
 // foto-dims.json (für /fotos/*) → reserviert Platz, vermeidet Layout-Shift (CLS).
+// widths/sizes (optional, opt-in): liefert ein responsives WebP-srcset, damit
+// mobile Geräte (60-80% des Traffics) nicht das volle Desktop-Foto laden. Nur
+// aktiv, wenn `widths` gesetzt ist — ohne `widths` bleibt die Ausgabe identisch
+// zu vorher (kein Verweis auf evtl. fehlende Breiten-Dateien). Die Breiten-WebPs
+// folgen der Konvention `name-<w>.webp` (vom gen-Skript zu erzeugen).
 import dimsJson from "../lib/foto-dims.json";
 const dims = dimsJson as Record<string, [number, number]>;
-const { src, width, height, ...rest } = Astro.props as { src: string; width?: number | string; height?: number | string; [key: string]: unknown };
+const { src, width, height, widths, sizes, ...rest } = Astro.props as { src: string; width?: number | string; height?: number | string; widths?: number[]; sizes?: string; [key: string]: unknown };
 const canWebp = typeof src === "string" && /\.(jpe?g|png)$/i.test(src);
 const webp = canWebp ? src.replace(/\.(jpe?g|png)$/i, ".webp") : src;
 const dim = typeof src === "string" ? dims[src] : undefined;
 const w = width ?? dim?.[0];
 const h = height ?? dim?.[1];
+// Responsives WebP-srcset nur wenn Breiten explizit angefordert wurden.
+const webpSrcset = canWebp && widths?.length
+  ? widths.map((bw) => `${src.replace(/\.(jpe?g|png)$/i, "")}-${bw}.webp ${bw}w`).join(", ")
+  : undefined;
 ---
 {canWebp ? (
   <picture class="contents">
-    <source srcset={webp} type="image/webp" />
-    <img src={src} width={w} height={h} {...rest} />
+    <source srcset={webpSrcset ?? webp} type="image/webp" sizes={sizes} />
+    <img src={src} width={w} height={h} sizes={sizes} {...rest} />
   </picture>
 ) : (
-  <img src={src} width={w} height={h} {...rest} />
+  <img src={src} width={w} height={h} sizes={sizes} {...rest} />
 )}

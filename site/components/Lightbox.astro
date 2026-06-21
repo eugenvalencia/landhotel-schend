@@ -5,6 +5,25 @@
 // normale Bild-Kacheln (Inhalt + GEO unberührt).
 // Body-level gerendert → kein backdrop-filter/transform-Vorfahr, der fixed einsperrt
 // ([[backdrop-filter-traps-fixed-portal-gotcha]]).
+import { localeFromPath, type Locale } from "../i18n";
+
+interface Props {
+  lang?: Locale;
+}
+// Locale aus dem Pfad ableiten (Galerie ist die einzige Seite mit aktivem Trigger,
+// z.B. "/en/galerie" → en) — ein durchgereichtes lang-Prop hat Vorrang.
+const { lang = localeFromPath(Astro.url.pathname) } = Astro.props;
+
+// Lokale Übersetzungen der Bedien-Labels (Screenreader-Chrome). Deutsche Ausgabe
+// bleibt 1:1 wie zuvor; EN/FR/NL bekommen je Locale die passende Ansage (WCAG 3.1.2).
+type L = Record<Locale, string>;
+const LB: Record<"view" | "close" | "prev" | "next", L> = {
+  view: { de: "Bildansicht", en: "Image view", fr: "Affichage de l’image", nl: "Afbeeldingsweergave" },
+  close: { de: "Schließen", en: "Close", fr: "Fermer", nl: "Sluiten" },
+  prev: { de: "Vorheriges Bild", en: "Previous image", fr: "Image précédente", nl: "Vorige afbeelding" },
+  next: { de: "Nächstes Bild", en: "Next image", fr: "Image suivante", nl: "Volgende afbeelding" },
+};
+const lb = (key: keyof typeof LB): string => LB[key][lang] ?? LB[key].de;
 ---
 
 <div
@@ -12,7 +31,7 @@
   class="fixed inset-0 z-[120] hidden items-center justify-center"
   role="dialog"
   aria-modal="true"
-  aria-label="Bildansicht"
+  aria-label={lb("view")}
   data-open="false"
 >
   <div data-lb-backdrop class="absolute inset-0 bg-[hsl(220_22%_8%)]/92 backdrop-blur-sm"></div>
@@ -26,13 +45,13 @@
     <figcaption data-lb-cap class="font-display text-base md:text-lg text-[hsl(38_30%_92%)] text-center max-w-2xl"></figcaption>
   </figure>
 
-  <button data-lb-close type="button" aria-label="Schließen" class="lb-btn absolute top-4 right-4 z-20">
+  <button data-lb-close type="button" aria-label={lb("close")} class="lb-btn absolute top-4 right-4 z-20">
     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
   </button>
-  <button data-lb-prev type="button" aria-label="Vorheriges Bild" class="lb-btn absolute left-2 md:left-5 top-1/2 -translate-y-1/2 z-20">
+  <button data-lb-prev type="button" aria-label={lb("prev")} class="lb-btn absolute left-2 md:left-5 top-1/2 -translate-y-1/2 z-20">
     <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
   </button>
-  <button data-lb-next type="button" aria-label="Nächstes Bild" class="lb-btn absolute right-2 md:right-5 top-1/2 -translate-y-1/2 z-20">
+  <button data-lb-next type="button" aria-label={lb("next")} class="lb-btn absolute right-2 md:right-5 top-1/2 -translate-y-1/2 z-20">
     <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
   </button>
   <div data-lb-count class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 text-[11px] tracking-[0.22em] uppercase text-[hsl(38_30%_92%)]/70 tabular-nums"></div>

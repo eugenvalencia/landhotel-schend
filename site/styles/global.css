@@ -689,8 +689,10 @@
   /* Headline-Mask-Reveal — die Ueberschrift wischt beim Laden von oben auf
      (clip-path), statt nur zu faden. animationDelay kommt inline vom Element. */
   @keyframes headline-reveal {
-    from { clip-path: inset(0 0 100% 0); opacity: 0; transform: translateY(10px); }
-    to   { clip-path: inset(0 0 0 0);    opacity: 1; transform: translateY(0); }
+    /* Start nur leicht verdeckt + fast voll sichtbar — der fruehe Paint zaehlt fuer
+       LCP, der Wisch bleibt als Premium-Effekt erhalten. */
+    from { clip-path: inset(0 0 15% 0); opacity: 0.85; transform: translateY(10px); }
+    to   { clip-path: inset(0 0 0 0);   opacity: 1;    transform: translateY(0); }
   }
   .headline-reveal {
     animation: headline-reveal 1s cubic-bezier(0.22, 1, 0.36, 1) both;

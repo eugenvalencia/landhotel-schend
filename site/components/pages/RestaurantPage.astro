@@ -84,7 +84,7 @@ const restaurantSchema = {
         <span class="text-[11px] md:text-xs font-medium tracking-[0.24em] uppercase text-white/90" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">{c.heroBadge}</span>
         <span class="block h-px w-12 md:w-20 bg-white/65"></span>
       </div>
-      <h1 class="font-display text-balance text-[2.5rem] sm:text-5xl md:text-7xl leading-[0.95] mb-5 max-w-3xl" style="text-shadow:0 2px 14px rgba(0,0,0,0.55)">Landhaus Restaurant</h1>
+      <h1 class="headline-reveal font-display text-balance text-[2.5rem] sm:text-5xl md:text-7xl leading-[0.95] mb-5 max-w-3xl" style="text-shadow:0 2px 14px rgba(0,0,0,0.55)">Landhaus Restaurant</h1>
       <p class="font-display-italic text-balance text-white/95 text-lg md:text-2xl max-w-xl leading-snug mb-8" style="text-shadow:0 1px 8px rgba(0,0,0,0.55)">{c.heroSubtitle}</p>
       <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
         <a href="tel:+496573306" class="inline-flex items-center justify-center gap-3 px-9 py-4 min-h-[56px] bg-white text-zinc-900 text-xs sm:text-sm font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors">
@@ -107,8 +107,8 @@ const restaurantSchema = {
 
   <!-- Drei Spalten -->
   <section class="container mx-auto px-4 py-16 md:py-24">
-    <div class="grid md:grid-cols-3 gap-px bg-border/50 max-w-5xl mx-auto border border-border/40 rounded-md overflow-hidden shadow-card" data-reveal>
-      <div class="bg-background p-8 flex flex-col">
+    <div class="grid md:grid-cols-3 gap-px bg-border/50 max-w-5xl mx-auto border border-border/40 rounded-md overflow-hidden shadow-card">
+      <div class="bg-background p-8 flex flex-col" data-reveal>
         <h3 class="font-display text-xl md:text-2xl mb-5 leading-tight">{c.hoursH3}</h3>
         <div class="space-y-3 text-sm flex-1">
           <div><p class="font-medium">{c.hoursThuSat}</p><p class="text-muted-foreground">{c.hoursThuSatTime}</p></div>
@@ -116,14 +116,14 @@ const restaurantSchema = {
           <div><p class="font-medium">{c.restDayLabel}</p><p class="text-muted-foreground">{c.restDayText}</p></div>
         </div>
       </div>
-      <div class="bg-background p-8 flex flex-col">
+      <div class="bg-background p-8 flex flex-col" data-reveal style="--reveal-delay:0.08s">
         <h3 class="font-display text-xl md:text-2xl mb-5 leading-tight">{c.kitchenH3}</h3>
         <ul class="space-y-2.5 text-sm text-muted-foreground flex-1">
           {c.kitchen.map((k) => <li>{k}</li>)}
         </ul>
         <p class="text-xs text-muted-foreground italic mt-5">{c.kitchenNote}</p>
       </div>
-      <div class="bg-background p-8 flex flex-col">
+      <div class="bg-background p-8 flex flex-col" data-reveal style="--reveal-delay:0.16s">
         <h3 class="font-display text-xl md:text-2xl mb-5 leading-tight">{c.feastH3}</h3>
         <p class="text-sm text-muted-foreground flex-1 leading-relaxed">
           {c.feastText}
@@ -147,7 +147,7 @@ const restaurantSchema = {
   <!-- Kontakt / Anfahrt -->
   <section class="container mx-auto px-4 py-16 md:py-24">
     <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 md:gap-16">
-      <div>
+      <div data-reveal>
         <p class="eyebrow">{c.reserveEyebrow}</p>
         <h2 class="font-display text-3xl md:text-4xl mt-3 mb-8 leading-tight">{c.reserveH2}</h2>
         <div class="space-y-5">
@@ -167,7 +167,7 @@ const restaurantSchema = {
           </a>
         </div>
       </div>
-      <div>
+      <div data-reveal style="--reveal-delay:0.08s">
         <p class="eyebrow">{c.directionsEyebrow}</p>
         <h2 class="font-display text-3xl md:text-4xl mt-3 mb-8 leading-tight">{c.directionsH2}</h2>
         <div class="flex items-start gap-4 mb-6">
@@ -203,9 +203,16 @@ const restaurantSchema = {
       <p class="text-foreground/85 leading-relaxed max-w-prose mb-6">
         {c.spreadText}
       </p>
-      <a href="tel:+496573306" class="inline-flex items-center gap-3 px-7 py-3.5 min-h-[52px] self-start bg-primary text-primary-foreground rounded-sm text-xs sm:text-sm font-medium tracking-[0.2em] uppercase hover:bg-secondary hover:text-secondary-foreground transition-colors">
-        {c.spreadCta}
-      </a>
+      <!-- Anrufen UND E-Mail nebeneinander: wer abends nicht telefonieren mag,
+           kann die Feier-Anfrage trotzdem hier abschließen (mailto als Zweitweg). -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 self-start">
+        <a href="tel:+496573306" class="inline-flex items-center justify-center gap-3 px-7 py-3.5 min-h-[52px] bg-primary text-primary-foreground rounded-sm text-xs sm:text-sm font-medium tracking-[0.2em] uppercase hover:bg-secondary hover:text-secondary-foreground transition-colors">
+          {c.spreadCta}
+        </a>
+        <a href={`mailto:info@landhaus-schend.de?subject=${encodeURIComponent(c.spreadEyebrow)}`} class="inline-flex items-center justify-center gap-2 px-7 py-3.5 min-h-[52px] border border-foreground/25 text-foreground rounded-sm text-xs sm:text-sm font-medium tracking-[0.2em] uppercase hover:border-secondary hover:text-secondary transition-colors">
+          E-Mail
+        </a>
+      </div>
     </div>
   </section>
 </Layout>

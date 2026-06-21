@@ -8,6 +8,7 @@ import LocationSection from "../LocationSection.astro";
 import { ROOM_TYPES } from "../../lib/rooms";
 import { SCHEND_RESTAURANT, galleryForRoomType } from "../../lib/photos";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
+import { t } from "../../i18n/ui";
 import { homeContent } from "../../i18n/content/home";
 import { findRoomFor, zimmerChrome } from "../../i18n/content/zimmer";
 import { paketeFor } from "../../i18n/content/pakete";
@@ -89,6 +90,16 @@ const hotelGraph = {
         { "@type": "LocationFeatureSpecification", name: "Familienzimmer", value: true },
       ],
       potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: "https://landhaus-schend.de/anfrage", actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] }, result: { "@type": "LodgingReservation", name: "Direktbuchung Zimmer" } },
+      // Rück-Referenz aufs hauseigene Restaurant (schließt die Verknüpfung zum
+      // einseitigen containedInPlace auf der Restaurant-Seite).
+      containsPlace: { "@id": "https://landhaus-schend.de/restaurant#restaurant" },
+      // Plattform-Bewertungen 1:1 zum sichtbaren Inhalt (kein erfundener Mittelwert).
+      // Plattform-Namen vor Go-Live von Walter (UWG/Marke) prüfen lassen.
+      review: [
+        { "@type": "Review", author: { "@type": "Organization", name: "Booking.com" }, reviewRating: { "@type": "Rating", ratingValue: "8.7", bestRating: "10" } },
+        { "@type": "Review", author: { "@type": "Organization", name: "Tripadvisor" }, reviewRating: { "@type": "Rating", ratingValue: "4.0", bestRating: "5" } },
+        { "@type": "Review", author: { "@type": "Organization", name: "HRS" }, reviewRating: { "@type": "Rating", ratingValue: "9.0", bestRating: "10" } },
+      ],
     },
     {
       "@type": "Organization", "@id": "https://landhaus-schend.de/#organization",
@@ -100,6 +111,18 @@ const hotelGraph = {
     },
     { "@type": "WebSite", "@id": "https://landhaus-schend.de/#website", url: "https://landhaus-schend.de/", name: "Landhaus Schend", publisher: { "@id": "https://landhaus-schend.de/#organization" }, inLanguage: [c.schemaInLanguage] },
   ],
+};
+
+// FAQPage-Schema aus dem Home-FAQ-Auszug (1:1 zu c.faqHome, je Sprache) — gleiches
+// Muster wie FaqPage.astro, damit die 6 sichtbaren Fragen Rich-Result-fähig sind.
+const faqGraph = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: c.faqHome.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
 };
 
 const uspIcon: Record<string, string> = {
@@ -126,6 +149,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
   ogType="hotel"
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(hotelGraph)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqGraph)} />
   <link rel="preload" as="image" href={HERO_POSTER} type="image/webp" fetchpriority="high" slot="head" />
 
   <!-- HERO -->
@@ -202,7 +226,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
   <section id="rooms" class="bg-gradient-to-b from-background via-muted/20 to-background">
     <div class="container mx-auto px-4 py-20 md:py-28">
       <div class="text-center mb-14 md:mb-20" data-reveal>
-        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">{c.roomsH2}</h2>
+        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl text-balance">{c.roomsH2}</h2>
         <p class="text-muted-foreground mt-5 max-w-prose mx-auto leading-relaxed text-pretty">
           {c.roomsIntro}
         </p>
@@ -236,6 +260,23 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
     </div>
   </section>
 
+  <!-- ANFRAGE-CTA (dezenter Inline-Streifen zwischen Zimmer & Pakete) -->
+  <section aria-labelledby="cta-strip-title" class="bg-muted/30 border-y border-border/60">
+    <div class="container mx-auto px-4 py-12 md:py-14">
+      <div class="max-w-3xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-6 text-center md:text-left" data-reveal>
+        <div>
+          <span class="hairline block max-w-[3rem] mx-auto md:mx-0 mb-4"></span>
+          <h2 id="cta-strip-title" class="font-display text-2xl md:text-3xl text-balance leading-snug">{c.ctaStripTitle}</h2>
+          <p class="text-sm text-muted-foreground mt-3 leading-relaxed text-pretty max-w-prose mx-auto md:mx-0">{c.ctaStripText}</p>
+        </div>
+        <a href={localizedPath("/anfrage", lang)} class="shrink-0 inline-flex items-center justify-center gap-3 px-8 py-4 min-h-[52px] bg-primary text-primary-foreground rounded-sm text-xs sm:text-sm font-medium tracking-[0.2em] uppercase hover:bg-secondary hover:text-secondary-foreground transition-colors">
+          {c.ctaStripButton}
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- RESTAURANT (voll) -->
   <section id="restaurant" class="bg-gradient-to-b from-muted/40 via-muted/20 to-muted/40">
     <div class="animate-pulse-banner border-y border-border/60">
@@ -257,7 +298,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
         </div>
       </div>
       <div class="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>
-        <span class="hairline block max-w-[3rem] mb-5"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">{c.restH2}</h2>
+        <span class="hairline block max-w-[3rem] mb-5"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mb-8 text-balance leading-[1.05]">{c.restH2}</h2>
         <div class="space-y-5 text-foreground/85 leading-relaxed max-w-prose">
           <p class="drop-cap">{c.restPara1}</p>
           <p>{c.restPara2}</p>
@@ -266,9 +307,9 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
           <div class="hairline mb-5"></div>
           <p class="eyebrow mb-4">{c.hoursEyebrow}</p>
           <div class="text-sm space-y-2">
-            <div class="grid grid-cols-[140px_1fr] gap-x-6"><span class="font-medium">{c.hoursThuSat}</span><span class="text-muted-foreground">{c.hoursThuSatTime}</span></div>
-            <div class="grid grid-cols-[140px_1fr] gap-x-6"><span class="font-medium">{c.hoursSun}</span><div class="text-muted-foreground"><p>{c.hoursSunT1}</p><p>{c.hoursSunT2}</p></div></div>
-            <div class="grid grid-cols-[140px_1fr] gap-x-6"><span class="font-medium">{c.hoursRuhetag}</span><span class="text-muted-foreground">{c.hoursRuhetagDays}</span></div>
+            <div class="grid grid-cols-[auto_1fr] gap-x-4"><span class="font-medium">{c.hoursThuSat}</span><span class="text-muted-foreground">{c.hoursThuSatTime}</span></div>
+            <div class="grid grid-cols-[auto_1fr] gap-x-4"><span class="font-medium">{c.hoursSun}</span><div class="text-muted-foreground"><p>{c.hoursSunT1}</p><p>{c.hoursSunT2}</p></div></div>
+            <div class="grid grid-cols-[auto_1fr] gap-x-4"><span class="font-medium">{c.hoursRuhetag}</span><span class="text-muted-foreground">{c.hoursRuhetagDays}</span></div>
           </div>
           <p class="text-xs text-muted-foreground mt-3">{c.hoursNote}</p>
           <div class="mt-10 pt-6 border-t border-border/60">
@@ -288,7 +329,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
     </div>
 
     <div class="container mx-auto px-4 py-14 md:py-20">
-      <div class="text-center mb-10 md:mb-12" data-reveal>        <h3 class="font-display text-2xl md:text-3xl mt-3 text-balance">{c.kitchenH3}</h3>
+      <div class="text-center mb-10 md:mb-12" data-reveal>        <h3 class="font-display text-2xl md:text-3xl text-balance">{c.kitchenH3}</h3>
       </div>
       <div class="grid sm:grid-cols-2 gap-px bg-border/50 max-w-3xl mx-auto" data-reveal>
         <div class="bg-background p-6 md:p-8 flex flex-col"><p class="text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">{c.card1Eyebrow}</p><h4 class="font-display text-xl md:text-2xl mb-3 leading-tight">{c.card1H4}</h4><p class="text-sm text-muted-foreground leading-relaxed flex-1">{c.card1Text}</p><div class="hairline mt-6 mb-3"></div><p class="text-xs text-muted-foreground">{c.card1Note}</p></div>
@@ -304,7 +345,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
         </div>
       </div>
       <div class="lg:col-span-5 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>
-        <span class="hairline block max-w-[3rem] mb-5"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-8 text-balance leading-[1.05]">{c.feiernH2}</h2>
+        <span class="hairline block max-w-[3rem] mb-5"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mb-8 text-balance leading-[1.05]">{c.feiernH2}</h2>
         <p class="text-foreground/85 leading-relaxed max-w-prose">{c.feiernText}</p>
       </div>
     </div>
@@ -314,7 +355,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
   <section id="pakete" class="bg-gradient-to-b from-muted/30 via-background to-muted/15">
     <div class="container mx-auto px-4 py-20 md:py-28">
       <div class="text-center mb-14 md:mb-20" data-reveal>
-        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance">{c.paketeH2}</h2>
+        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl text-balance">{c.paketeH2}</h2>
         <p class="text-muted-foreground mt-5 max-w-prose mx-auto leading-relaxed text-pretty">{c.paketeIntro}</p>
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -341,7 +382,9 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
   <!-- URLAUBSREGION -->
   <section id="region" class="bg-background">
     <div class="container mx-auto px-4 py-20 md:py-28">
-      <div class="text-center mb-14 md:mb-20 max-w-3xl mx-auto" data-reveal>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-6 text-balance leading-[1.05]">{c.regionH2}</h2>
+      <div class="text-center mb-14 md:mb-20 max-w-3xl mx-auto" data-reveal>
+        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mb-6 text-balance leading-[1.05]">{c.regionH2}</h2>
         <p class="text-foreground/85 text-base md:text-lg leading-relaxed text-pretty">{c.regionIntro}</p>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mb-16 md:mb-20" data-reveal>
@@ -379,7 +422,9 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
           <Pic src="/fotos/landhaus-schend-zeichnung-innenhof-historisch.jpg" alt={c.zeichnungAlt} class="w-full h-full object-cover object-center contrast-110" loading="lazy" decoding="async" />
         </div>
       </div>
-      <div class="lg:col-span-6 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mt-4 mb-10 text-balance leading-[1.05]">{c.aboutH2}</h2>
+      <div class="lg:col-span-6 px-6 md:px-12 lg:px-16 py-16 md:py-24 flex flex-col justify-center" data-reveal>
+        <span class="hairline block max-w-[3rem] mb-5"></span>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mb-10 text-balance leading-[1.05]">{c.aboutH2}</h2>
         <div class="space-y-5 text-foreground/85 leading-relaxed max-w-prose">
           <p class="drop-cap">{c.aboutP1}</p>
           <p set:html={c.aboutP2Html} />
@@ -450,7 +495,9 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
   <!-- FAQ (Auszug, alle auf /faq) -->
   <section id="faq" class="bg-gradient-to-b from-muted/15 via-background to-muted/15">
     <div class="container mx-auto px-4 py-20 md:py-28 max-w-3xl">
-      <div class="text-center mb-14" data-reveal>        <h2 class="font-display text-4xl md:text-5xl mt-4 text-balance">{c.faqH2}</h2>
+      <div class="text-center mb-14" data-reveal>
+        <span class="hairline block max-w-[3rem] mx-auto mb-6"></span>
+        <h2 class="font-display text-4xl md:text-5xl text-balance">{c.faqH2}</h2>
       </div>
       <div class="border-t border-border/70">
         {c.faqHome.map((f, i) => (
@@ -475,7 +522,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
   <LocationSection lang={lang} />
 
   <!-- Abschnitts-Navigation (Punkte rechts) -->
-  <nav id="section-dots" aria-label="Abschnitts-Navigation" data-visible="false" inert class="hidden lg:flex fixed lg:right-5 top-1/2 -translate-y-1/2 z-40 flex-col gap-1.5 lg:gap-3 opacity-0 pointer-events-none transition-opacity duration-500">
+  <nav id="section-dots" aria-label={t("section_nav_aria", lang)} data-visible="false" inert class="hidden lg:flex fixed lg:right-5 top-1/2 -translate-y-1/2 z-40 flex-col gap-1.5 lg:gap-3 opacity-0 pointer-events-none transition-opacity duration-500">
     {dotIds.map((id, i) => (
       <a href={`#${id}`} data-dot={id} aria-label={c.dotLabels[i]} class="dot-link group relative grid place-items-center w-8 h-8 lg:w-5 lg:h-5">
         <span class="dot block rounded-full w-2 h-2 lg:w-1.5 lg:h-1.5 bg-secondary/70 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out group-hover:bg-secondary group-hover:scale-110"></span>

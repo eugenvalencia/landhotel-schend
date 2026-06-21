@@ -15,6 +15,15 @@ interface Props {
 }
 const { lang = DEFAULT_LOCALE } = Astro.props;
 const c = anfrageContent[lang];
+
+// Sichtbare Pflichtfeld-Legende (WCAG 3.3.2). Lokal in dieser Datei gehalten,
+// da der gemeinsame Inhalts-Typ in anfrage.ts diesen Schlüssel (noch) nicht führt.
+const pflichtHint: Record<Locale, string> = {
+  de: "Mit * markierte Felder sind Pflichtfelder.",
+  en: "Fields marked with * are required.",
+  fr: "Les champs marqués d'un * sont obligatoires.",
+  nl: "Velden met een * zijn verplicht.",
+};
 ---
 
 <Layout
@@ -55,20 +64,25 @@ const c = anfrageContent[lang];
           <label>{c.honeypotLabel} <input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
         </div>
 
+        <!-- Pflichtfeld-Legende (WCAG 3.3.2) -->
+        <p class="-mt-4 text-xs text-muted-foreground">
+          <span class="anf-req" aria-hidden="true">*</span> {pflichtHint[lang]}
+        </p>
+
         <!-- Name -->
         <div class="anf-field">
-          <label for="name">{c.nameLabel}<span class="anf-req">*</span></label>
+          <label for="name">{c.nameLabel}<span class="anf-req" aria-hidden="true">*</span></label>
           <input id="name" name="name" type="text" required autocomplete="name" maxlength="120" />
         </div>
 
         <!-- Adresse -->
         <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
           <div class="anf-field">
-            <label for="street">{c.streetLabel}<span class="anf-req">*</span></label>
+            <label for="street">{c.streetLabel}<span class="anf-req" aria-hidden="true">*</span></label>
             <input id="street" name="street" type="text" required autocomplete="street-address" maxlength="160" />
           </div>
           <div class="anf-field">
-            <label for="city">{c.cityLabel}<span class="anf-req">*</span></label>
+            <label for="city">{c.cityLabel}<span class="anf-req" aria-hidden="true">*</span></label>
             <input id="city" name="city" type="text" required autocomplete="address-level2" maxlength="120" />
           </div>
         </div>
@@ -76,11 +90,11 @@ const c = anfrageContent[lang];
         <!-- Kontakt -->
         <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
           <div class="anf-field">
-            <label for="email">{c.emailLabel}<span class="anf-req">*</span></label>
+            <label for="email">{c.emailLabel}<span class="anf-req" aria-hidden="true">*</span></label>
             <input id="email" name="email" type="email" required autocomplete="email" maxlength="254" />
           </div>
           <div class="anf-field">
-            <label for="phone">{c.phoneLabel}<span class="anf-req">*</span></label>
+            <label for="phone">{c.phoneLabel}<span class="anf-req" aria-hidden="true">*</span></label>
             <input id="phone" name="phone" type="tel" required autocomplete="tel" maxlength="40" />
           </div>
         </div>
@@ -88,7 +102,7 @@ const c = anfrageContent[lang];
         <!-- Personen + Paket -->
         <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
           <div class="anf-field">
-            <label for="persons">{c.personsLabel}<span class="anf-req">*</span></label>
+            <label for="persons">{c.personsLabel}<span class="anf-req" aria-hidden="true">*</span></label>
             <input id="persons" name="persons" type="number" min="1" max="99" inputmode="numeric" value="2" required />
           </div>
           <div class="anf-field">
@@ -130,11 +144,11 @@ const c = anfrageContent[lang];
         <!-- Zeitraum -->
         <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
           <div class="anf-field">
-            <label for="checkin">{c.checkinLabel}<span class="anf-req">*</span></label>
+            <label for="checkin">{c.checkinLabel}<span class="anf-req" aria-hidden="true">*</span></label>
             <input id="checkin" name="checkin" type="date" required />
           </div>
           <div class="anf-field">
-            <label for="checkout">{c.checkoutLabel}<span class="anf-req">*</span></label>
+            <label for="checkout">{c.checkoutLabel}<span class="anf-req" aria-hidden="true">*</span></label>
             <input id="checkout" name="checkout" type="date" required />
           </div>
         </div>
@@ -164,7 +178,7 @@ const c = anfrageContent[lang];
         <!-- Datenschutz -->
         <label class="flex items-start gap-3 cursor-pointer text-foreground/90">
           <input type="checkbox" name="datenschutz" class="anf-check mt-1" required />
-          <span><a href={localizedPath("/datenschutz", lang)} class="underline hover:text-secondary" target="_blank" rel="noopener">{c.dsLinkText}</a> {c.dsAfter}<span class="anf-req">*</span></span>
+          <span><a href={localizedPath("/datenschutz", lang)} class="underline hover:text-secondary" target="_blank" rel="noopener">{c.dsLinkText}</a> {c.dsAfter}<span class="anf-req" aria-hidden="true">*</span></span>
         </label>
 
         <!-- Senden -->
@@ -230,6 +244,8 @@ const c = anfrageContent[lang];
     background: hsl(var(--background));
     border: 1px solid hsl(var(--border));
     border-radius: 0.375rem;
+    /* min-height für komfortables Touch-Ziel (≥44px) auf Mobil. */
+    min-height: 44px;
     padding: 0.45rem 0.7rem;
     color: hsl(var(--foreground));
     font-size: 0.95rem;

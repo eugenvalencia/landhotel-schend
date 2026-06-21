@@ -14,8 +14,16 @@ import A11yPanel from "../components/A11yPanel.astro";
 import StickyCTA from "../components/StickyCTA.astro";
 import Lightbox from "../components/Lightbox.astro";
 import { ORIGIN, SITE_NAME } from "../lib/site";
-import { hreflangAlternates, type Locale } from "../i18n";
+import { hreflangAlternates, LOCALES, type Locale } from "../i18n";
 import { t } from "../i18n/ui";
+
+// og:locale braucht das Underscore-Format (sprache_LAND), nicht den BCP47-Code.
+const OG_LOCALE: Record<Locale, string> = {
+  de: "de_DE",
+  en: "en_GB",
+  fr: "fr_FR",
+  nl: "nl_NL",
+};
 
 interface Props {
   title?: string;
@@ -54,6 +62,13 @@ const robots = noindex
 // Voll-reziproke hreflang-Alternates aus dem (sprach-neutralen) canonicalPath.
 // Nur für mehrsprachige Seiten — Deutsch-only-Seiten (Rechtstexte/404) bekommen keine.
 const alternates = localized ? hreflangAlternates(ORIGIN, canonicalPath) : [];
+
+// og:locale spiegelt die Seitensprache; og:locale:alternate listet die übrigen
+// (nur bei mehrsprachigen Seiten — Deutsch-only-Texte bleiben de_DE ohne Alternates).
+const ogLocale = OG_LOCALE[lang];
+const ogLocaleAlternates = localized
+  ? LOCALES.filter((loc) => loc !== lang).map((loc) => OG_LOCALE[loc])
+  : [];
 ---
 
 <!doctype html>
@@ -130,7 +145,11 @@ const alternates = localized ? hreflangAlternates(ORIGIN, canonicalPath) : [];
 
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="Landhaus Schend" />
-    <meta property="og:locale" content="de_DE" />
+    <meta property="og:locale" content={ogLocale} />
+    {/* Übrige Sprachvarianten als og:locale:alternate (nur mehrsprachige Seiten). */}
+    {ogLocaleAlternates.map((loc) => (
+      <meta property="og:locale:alternate" content={loc} />
+    ))}
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={fullTitle} />
     {description && <meta property="og:description" content={description} />}
