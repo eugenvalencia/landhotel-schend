@@ -7,12 +7,45 @@
 //   RESEND_API_KEY  (Secret, Pflicht)         — API-Key von resend.com
 //   INQUIRY_TO      (optional)                 — Empfänger; Default = Test-Postfach
 //   INQUIRY_FROM    (optional)                 — Absender (verifizierte Domain bei Resend)
+//
+// KV-Binding (Settings → Functions → KV namespace bindings):
+//   RATE_LIMIT      (optional)                 — KV-Namespace fürs Rate-Limit. Fehlt es,
+//                                                läuft das Formular ohne Limit weiter (fail-open).
+
+// Minimal-Typ für das KV-Binding (kein @cloudflare/workers-types nötig).
+interface KVNamespace {
+  get(key: string): Promise<string | null>;
+  put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void>;
+}
 
 interface Env {
   RESEND_API_KEY?: string;
   INQUIRY_TO?: string;
   INQUIRY_FROM?: string;
+  RATE_LIMIT?: KVNamespace; // optional — fehlt das Binding, wird durchgelassen (fail-open)
 }
+
+// Rate-Limit: max RL_MAX Anfragen pro IP pro Zeitfenster. FAIL-OPEN — ohne KV-Binding
+// (oder bei KV-Fehler) wird die Anfrage DURCHGELASSEN, damit das Formular nie wegen der
+// Schutzschicht ausfällt. KV ist eventually-consistent: bei extremem Burst kann kurz mehr
+// durchgehen — gedacht als Ergänzung zum Honeypot, nicht als alleinige Mauer. Schützt vor
+// dem teuren Pfad (2 Resend-Mails pro Anfrage) und vor Missbrauch der Gast-Kopie als Relay.
+const RL_MAX = 5;
+const RL_WINDOW = 600; // Sekunden (10 Minuten)
+
+const rateLimited = async (env: Env, ip: string): Promise<boolean> => {
+  const kv = env.RATE_LIMIT;
+  if (!kv || !ip) return false; // fail-open: kein Binding / keine IP → nicht blocken
+  try {
+    const key = `inq:${ip}`;
+    const count = Number((await kv.get(key)) ?? 0) || 0;
+    if (count >= RL_MAX) return true;
+    await kv.put(key, String(count + 1), { expirationTtl: RL_WINDOW });
+    return false;
+  } catch {
+    return false; // KV-Fehler → fail-open
+  }
+};
 
 interface Room { kategorie?: string; anzahl?: number }
 interface Payload {
@@ -41,6 +74,12 @@ const ALLOWED_ZIMMER = new Set(["1", "2", "3", "4", "5", "6", "7", "8", "9", "me
 
 export const onRequestPost = async (context: { request: Request; env: Env }): Promise<Response> => {
   const { request, env } = context;
+
+  // Rate-Limit ZUERST (vor JSON-Parse) — begrenzt auch Müll-Payloads pro IP.
+  const ip = request.headers.get("CF-Connecting-IP") || "";
+  if (await rateLimited(env, ip)) {
+    return json({ ok: false, error: "rate_limited" }, 429);
+  }
 
   let body: Payload;
   try {
