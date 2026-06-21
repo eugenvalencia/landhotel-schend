@@ -15,7 +15,20 @@ const { lang = DEFAULT_LOCALE, slug } = Astro.props;
 const c = paketeChrome[lang];
 const paket = findPaketFor(slug, lang)!;
 
-const stripQ = (s: string) => s.replace(/[„""]/g, "");
+const stripQ = (s: string) => s.replace(/[„“”"]/g, "");
+
+// Eigene metaDescription je Paket: dünne Intros mit echten Fakten (erstes Highlight +
+// Preis) anreichern; sonst Intro. Hart auf ~160 Zeichen begrenzt. Nur reale Daten.
+function buildMetaDescription(): string {
+  const intro = stripQ(paket.intro);
+  if (intro.length >= 110) return intro.length > 160 ? intro.slice(0, 157).trimEnd() + "…" : intro;
+  // Preis endet teils schon mit "." — doppelten Punkt vermeiden.
+  const facts = [paket.highlights[0], paket.price?.replace(/\.$/, "")].filter(Boolean).join(" · ");
+  const out = facts ? `${intro} ${facts}.` : intro;
+  return out.length > 160 ? out.slice(0, 157).trimEnd() + "…" : out;
+}
+const metaDescription = buildMetaDescription();
+
 const breadcrumb = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -32,7 +45,7 @@ const productSchema = lowPrice
       "@context": "https://schema.org",
       "@type": "Product",
       name: stripQ(paket.title),
-      description: paket.intro,
+      description: metaDescription,
       image: `${ORIGIN}${paket.cover}`,
       url: `${ORIGIN}${localizedPath(`/pakete/${paket.slug}`, lang)}`,
       offers: { "@type": "Offer", price: Number(lowPrice), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: `${ORIGIN}${localizedPath("/anfrage", lang)}`, seller: { "@id": "https://landhaus-schend.de/#hotel" } },
@@ -41,8 +54,8 @@ const productSchema = lowPrice
 ---
 
 <Layout
-  title={paket.title.replace(/"/g, "")}
-  description={paket.intro}
+  title={`${stripQ(paket.title)} · ${c.detailTitleSuffix}`}
+  description={metaDescription}
   canonicalPath={localizedPath(`/pakete/${paket.slug}`, lang)}
   ogImage={paket.cover}
   lang={lang}
@@ -52,7 +65,7 @@ const productSchema = lowPrice
 
   <!-- Hero -->
   <section class="relative">
-    <Pic src={paket.cover} alt={paket.title} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
+    <Pic src={paket.cover} alt={paket.coverAlt ?? paket.title} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
     <div class="absolute inset-0 gradient-hero"></div>
     <div class="relative container mx-auto px-4 py-24 md:py-32 max-w-3xl text-[hsl(38_30%_95%)]" style="text-shadow:0 1px 8px rgba(0,0,0,0.45)">
       <a href={localizedPath("/pakete", lang)} class="inline-flex items-center gap-1.5 text-sm text-[hsl(38_30%_95%)]/80 hover:text-[hsl(38_30%_95%)] transition-colors mb-5">
@@ -98,10 +111,34 @@ const productSchema = lowPrice
     <div class="grid grid-cols-3 gap-3 mt-10">
       {paket.gallery.map((src, i) => (
         <div class="aspect-[4/3] overflow-hidden rounded-md" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
-          <Pic src={src} alt={`${paket.title} — ${c.impressionLabel} ${i + 1}`} class="w-full h-full object-cover" loading="lazy" decoding="async" />
+          <Pic src={src} alt={i === 0 && paket.coverAlt ? paket.coverAlt : `${stripQ(paket.title)} — ${c.impressionLabel} ${i + 1}`} class="w-full h-full object-cover" loading="lazy" decoding="async" />
         </div>
       ))}
     </div>
+
+    <!-- Hub-Spoke: thematisch nahe Seiten -->
+    <div class="hairline my-10"></div>
+    <h2 class="font-display text-xl md:text-2xl mb-4">{c.relatedH2}</h2>
+    <ul class="space-y-2.5">
+      <li>
+        <a href={localizedPath("/urlaubsregion", lang)} class="group inline-flex items-center gap-2 text-foreground/90 hover:text-secondary transition-colors">
+          <svg class="h-4 w-4 shrink-0 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <span class="leading-snug">{c.relatedRegion}</span>
+        </a>
+      </li>
+      <li>
+        <a href={localizedPath("/zimmer", lang)} class="group inline-flex items-center gap-2 text-foreground/90 hover:text-secondary transition-colors">
+          <svg class="h-4 w-4 shrink-0 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <span class="leading-snug">{c.relatedRooms}</span>
+        </a>
+      </li>
+      <li>
+        <a href={localizedPath("/restaurant", lang)} class="group inline-flex items-center gap-2 text-foreground/90 hover:text-secondary transition-colors">
+          <svg class="h-4 w-4 shrink-0 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <span class="leading-snug">{c.relatedRestaurant}</span>
+        </a>
+      </li>
+    </ul>
 
     <!-- CTA -->
     <div class="mt-12 flex flex-wrap gap-3">

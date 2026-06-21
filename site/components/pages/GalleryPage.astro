@@ -17,6 +17,29 @@ const { lang = DEFAULT_LOCALE } = Astro.props;
 const m = galleryMeta[lang];
 
 const breadcrumb = breadcrumbLd(ORIGIN, lang, [homeCrumb(lang), { name: m.h1, path: "/galerie" }]);
+
+// Hub-and-Spoke: kontextuelle Links unter dem Raster zu thematisch nahen Seiten.
+const galleryUrl = `${ORIGIN}${localizedPath("/galerie", lang)}`;
+const spokeLinks = [
+  { href: localizedPath("/zimmer", lang), label: m.linkRooms },
+  { href: localizedPath("/restaurant", lang), label: m.linkRestaurant },
+  { href: localizedPath("/urlaubsregion", lang), label: m.linkRegion },
+  { href: localizedPath("/anfrage", lang), label: m.linkAnfrage },
+];
+
+// FAQPage: eigene @id/url + andere Formulierungen als /faq (kein Frage-Dublett).
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${galleryUrl}#galerie-faq`,
+  url: galleryUrl,
+  mainEntity: m.faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 // ImageGallery: 30 Fotos maschinenlesbar mit lokalisierten Captions (Google-Bilder/AI).
 const imageGallery = {
   "@context": "https://schema.org",
@@ -41,6 +64,7 @@ const imageGallery = {
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(imageGallery)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
   <section class="container mx-auto px-4 pt-12 md:pt-16 pb-10 text-center max-w-2xl mx-auto">
     <p class="eyebrow">{m.eyebrow}</p>
     <h1 class="font-display text-4xl md:text-5xl lg:text-6xl mt-3 text-balance leading-[1.05]">{m.h1}</h1>
@@ -49,12 +73,34 @@ const imageGallery = {
     </p>
   </section>
 
-  <section class="container mx-auto px-4 pb-20">
+  <section class="container mx-auto px-4 pb-12">
     <div class="gap-3 [column-count:2] lg:[column-count:3]">
       {galleryPhotos.map((f, i) => (
         <div class="mb-3 break-inside-avoid overflow-hidden rounded-md shadow-card" data-reveal style={`--reveal-delay:${(i % 4) * 0.06}s`}>
           <Pic src={f.src} alt={f.alt[lang]} width={dims[f.src]?.[0]} height={dims[f.src]?.[1]} data-lightbox="galerie" class="w-full h-auto block transition-transform duration-700 hover:scale-105" loading="lazy" decoding="async" />
         </div>
+      ))}
+    </div>
+
+    <nav class="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm" aria-label={m.linksLead}>
+      <span class="text-muted-foreground">{m.linksLead}</span>
+      {spokeLinks.map((l) => (
+        <a href={l.href} class="font-medium underline-offset-4 hover:underline">{l.label}</a>
+      ))}
+    </nav>
+  </section>
+
+  <section class="container mx-auto px-4 pb-20 max-w-3xl">
+    <h2 class="font-display text-2xl md:text-3xl text-center mb-8">{m.faqHeading}</h2>
+    <div class="space-y-3">
+      {m.faq.map((f) => (
+        <details class="group rounded-md border border-border/60 bg-muted/10 px-5 py-4">
+          <summary class="cursor-pointer list-none font-medium flex items-center justify-between gap-4">
+            {f.q}
+            <span class="text-muted-foreground transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+          </summary>
+          <p class="text-muted-foreground mt-3 leading-relaxed">{f.a}</p>
+        </details>
       ))}
     </div>
   </section>

@@ -26,6 +26,21 @@ const aboutSchema = {
   mainEntity: { "@id": "https://landhaus-schend.de/#organization" },
 };
 const breadcrumb = breadcrumbLd(ORIGIN, lang, [homeCrumb(lang), { name: c.h1, path: "/ueber-uns" }]);
+
+// Eigene FAQPage für die Über-uns-Fragen (Geschichte/Gastgeber/Klassifizierung).
+// Eigene @id/url, damit es nicht mit der /faq-Seite kollidiert.
+const aboutUrl = `${ORIGIN}${localizedPath("/ueber-uns", lang)}`;
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${aboutUrl}#faq`,
+  url: aboutUrl,
+  mainEntity: c.faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
 ---
 
 <Layout
@@ -36,6 +51,7 @@ const breadcrumb = breadcrumbLd(ORIGIN, lang, [homeCrumb(lang), { name: c.h1, pa
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(aboutSchema)} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 
   <!-- History — asymmetrischer Magazine-Spread -->
   <section class="grid lg:grid-cols-12 items-stretch">
@@ -83,6 +99,15 @@ const breadcrumb = breadcrumbLd(ORIGIN, lang, [homeCrumb(lang), { name: c.h1, pa
         <p class="eyebrow">{c.gastgeberEyebrow}</p>
         <h2 class="font-display text-3xl md:text-4xl mt-3 mb-5 leading-tight">{c.gastgeberH2}</h2>
         <p class="text-foreground/85 leading-relaxed max-w-prose">{c.gastgeberText}</p>
+        <p class="mt-5 text-foreground/80 leading-relaxed max-w-prose">
+          {c.hubIntro}{" "}
+          {c.hubLinks.map((l, i) => (
+            <>
+              {i > 0 && (i === c.hubLinks.length - 1 ? " · " : ", ")}
+              <a href={localizedPath(l.path, lang)} class="text-secondary underline-offset-4 hover:underline">{l.label}</a>
+            </>
+          ))}.
+        </p>
       </div>
     </div>
   </section>
@@ -142,5 +167,21 @@ const breadcrumb = breadcrumbLd(ORIGIN, lang, [homeCrumb(lang), { name: c.h1, pa
         </div>
       ))}
     </div>
+  </section>
+
+  <!-- GEO-Q&A — kurze Fakten zum Haus (eigener Fokus, ergänzt /faq) -->
+  <section class="container mx-auto px-4 pb-20 md:pb-28">
+    <div class="max-w-3xl mx-auto text-center mb-10 md:mb-14">
+      <p class="eyebrow">{c.faqEyebrow}</p>
+      <h2 class="font-display text-2xl md:text-3xl lg:text-4xl mt-4 text-balance">{c.faqH2}</h2>
+    </div>
+    <dl class="max-w-3xl mx-auto divide-y divide-border/50 border-y border-border/50">
+      {c.faq.map((f, i) => (
+        <div class="py-6" data-reveal style={`--reveal-delay:${i * 0.06}s`}>
+          <dt class="font-display text-lg md:text-xl text-foreground mb-2">{f.q}</dt>
+          <dd class="text-foreground/80 leading-relaxed text-pretty">{f.a}</dd>
+        </div>
+      ))}
+    </dl>
   </section>
 </Layout>

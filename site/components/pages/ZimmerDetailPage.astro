@@ -6,7 +6,7 @@ import Pic from "../Pic.astro";
 import { ORIGIN } from "../../lib/site";
 import { roomSchema, findRoom } from "../../lib/rooms";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
-import { findRoomFor, zimmerChrome } from "../../i18n/content/zimmer";
+import { findRoomFor, zimmerChrome, galleryAltFor, roomFaqFor } from "../../i18n/content/zimmer";
 
 interface Props {
   lang?: Locale;
@@ -55,10 +55,34 @@ const breadcrumb = {
 const metaDesc = room.description.length > 160
   ? room.description.slice(0, 157).replace(/\s+\S*$/, "") + "…"
   : room.description;
+
+// Beschreibender, lokalisierter Galerie-Alt (Motiv aus Dateiname) mit Fallback.
+const galleryAlt = galleryAltFor[lang];
+const altFor = (src: string, i: number) =>
+  galleryAlt[src] ? `${galleryAlt[src]} ${c.altSuffix}` : `${room.type} — ${c.ansichtLabel} ${i + 1}`;
+
+// Zimmer-spezifische GEO-FAQ + eigenes FAQPage-JSON-LD (eigene @id, andere Fragen
+// als /faq → keine Dubletten).
+const faqs = roomFaqFor[lang][room.slug] ?? [];
+const faqUrl = `${ORIGIN}${localizedPath(`/zimmer/${room.slug}`, lang)}`;
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${faqUrl}#room-faq`,
+  url: faqUrl,
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
+// Hub-Spoke: zum jeweils anderen Zimmertyp verlinken.
+const otherSlug = room.slug === "doppelzimmer" ? "familienzimmer" : "doppelzimmer";
 ---
 
 <Layout
-  title={`${room.type} — ${c.detailTitleSuffix}`}
+  title={`${room.type} ${c.detailTitleSuffix}`}
   description={metaDesc}
   canonicalPath={localizedPath(`/zimmer/${room.slug}`, lang)}
   ogImage={room.gallery[0]}
@@ -66,6 +90,9 @@ const metaDesc = room.description.length > 160
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(schema)} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  {faqs.length > 0 && (
+    <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+  )}
 
   <!-- Hero -->
   <section class="relative">
@@ -110,7 +137,7 @@ const metaDesc = room.description.length > 160
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
           {room.gallery.map((src, i) => (
             <div class="aspect-[4/3] overflow-hidden rounded-md" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
-              <Pic src={src} alt={`${room.type} — ${c.ansichtLabel} ${i + 1}`} data-lightbox="zimmer" class="w-full h-full object-cover" loading="lazy" decoding="async" />
+              <Pic src={src} alt={altFor(src, i)} data-lightbox="zimmer" class="w-full h-full object-cover" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
@@ -118,6 +145,24 @@ const metaDesc = room.description.length > 160
     )}
 
     <p class="text-xs text-muted-foreground mt-8">{c.beispielHinweisDetail}</p>
+
+    {faqs.length > 0 && (
+      <>
+        <div class="hairline my-10"></div>
+        <h2 class="font-display text-2xl md:text-3xl mb-6">{c.faqHeading}</h2>
+        <div class="border-t border-border/70">
+          {faqs.map((f, i) => (
+            <details class="faq-item border-b border-border/70" open={i === 0}>
+              <summary class="flex items-start justify-between gap-5 py-5 cursor-pointer list-none group">
+                <span class="font-display text-lg leading-snug text-balance pt-0.5 group-hover:text-secondary transition-colors">{f.q}</span>
+                <svg class="faq-chevron shrink-0 mt-1.5 h-4 w-4 text-secondary transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <p class="pb-6 pr-8 text-foreground/85 leading-relaxed max-w-prose">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </>
+    )}
 
     <div class="mt-12 flex flex-wrap gap-3">
       <a href={localizedPath("/anfrage", lang)} class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">
@@ -128,5 +173,23 @@ const metaDesc = room.description.length > 160
       </a>
     </div>
     <p class="text-sm text-muted-foreground mt-4">{c.commissionNote}</p>
+
+    <!-- Hub-Spoke: kontextuelle interne Links zu thematisch nahen Seiten -->
+    <nav class="hairline mt-12 pt-8 flex flex-col gap-2.5 text-sm" aria-label={c.breadcrumbList}>
+      <a href={localizedPath(`/zimmer/${otherSlug}`, lang)} class="inline-flex items-center gap-2 text-foreground/80 hover:text-secondary transition-colors">
+        <span class="text-secondary">→</span>{c.linkOtherRoom[room.slug]}
+      </a>
+      <a href={localizedPath("/restaurant", lang)} class="inline-flex items-center gap-2 text-foreground/80 hover:text-secondary transition-colors">
+        <span class="text-secondary">→</span>{c.linkRestaurant}
+      </a>
+      <a href={localizedPath("/urlaubsregion", lang)} class="inline-flex items-center gap-2 text-foreground/80 hover:text-secondary transition-colors">
+        <span class="text-secondary">→</span>{c.linkRegion}
+      </a>
+    </nav>
   </section>
+
+  <style>
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item[open] .faq-chevron { transform: rotate(180deg); }
+  </style>
 </Layout>

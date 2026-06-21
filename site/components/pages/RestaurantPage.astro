@@ -28,6 +28,21 @@ const restId = lang === "de"
   : `${ORIGIN}${localizedPath("/restaurant", lang)}#restaurant`;
 const breadcrumb = breadcrumbLd(ORIGIN, lang, [homeCrumb(lang), { name: "Restaurant", path: "/restaurant" }]);
 
+// FAQPage je Sprache — eigene @id/url (/restaurant#faq), anderer Fokus/Formulierung
+// als die /faq-Seite (Feiertage / wechselnde Karte / Festsaal-Kapazität).
+const faqUrl = `${ORIGIN}${localizedPath("/restaurant", lang)}`;
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${faqUrl}#faq`,
+  url: faqUrl,
+  mainEntity: c.faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 // Laufband — NUR Essen (keine Saal-/Panorama-Aufnahmen, Beimler-Wunsch 20.06.).
 const FOOD_PHOTOS = [
   "/pakete/food-0.jpg",
@@ -55,6 +70,9 @@ const restaurantSchema = {
   email: "info@landhaus-schend.de",
   servesCuisine: CUISINE[lang],
   acceptsReservations: "True",
+  // hasMenu-Stub: es gibt keine fixe Online-Karte (Wochenmenü wird morgens bekannt
+  // gegeben). Verweist auf die Restaurant-Seite als Menü-Ankerpunkt.
+  hasMenu: { "@type": "Menu", "@id": `${faqUrl}#menu`, url: faqUrl },
   sameAs: ["https://www.facebook.com/Landhotel.Schend/", "https://www.booking.com/hotel/de/landhaus-schend.html", "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html"],
   potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: `${ORIGIN}${localizedPath("/anfrage", lang)}`, actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] }, result: { "@type": "FoodEstablishmentReservation", name: "Tischreservierung" } },
   containedInPlace: { "@id": "https://landhaus-schend.de/#hotel" },
@@ -85,6 +103,7 @@ const restaurantSchema = {
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(restaurantSchema)} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 
   <!-- HERO -->
   <section class="relative h-[60vh] min-h-[420px] max-h-[680px] overflow-hidden">
@@ -101,7 +120,7 @@ const restaurantSchema = {
         <span class="text-[11px] md:text-xs font-medium tracking-[0.24em] uppercase text-white/90" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">{c.heroBadge}</span>
         <span class="block h-px w-12 md:w-20 bg-white/65"></span>
       </div>
-      <h1 class="headline-reveal font-display text-balance text-[2.5rem] sm:text-5xl md:text-7xl leading-[0.95] mb-5 max-w-3xl" style="text-shadow:0 2px 14px rgba(0,0,0,0.55)">Landhaus Restaurant</h1>
+      <h1 class="headline-reveal font-display text-balance text-[2.5rem] sm:text-5xl md:text-7xl leading-[0.95] mb-5 max-w-3xl" style="text-shadow:0 2px 14px rgba(0,0,0,0.55)">{c.heroH1}</h1>
       <p class="font-display-italic text-balance text-white/95 text-lg md:text-2xl max-w-xl leading-snug mb-8" style="text-shadow:0 1px 8px rgba(0,0,0,0.55)">{c.heroSubtitle}</p>
       <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
         <a href="tel:+496573306" class="inline-flex items-center justify-center gap-3 px-9 py-4 min-h-[56px] bg-white text-zinc-900 text-xs sm:text-sm font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors">
@@ -230,6 +249,31 @@ const restaurantSchema = {
           E-Mail
         </a>
       </div>
+      <!-- Hub-Spoke: kontextuelle Anker zu Zimmern (Halbpension) und Paketen. -->
+      <p class="mt-7 flex flex-col gap-2 text-sm text-muted-foreground self-start">
+        <a href={localizedPath("/zimmer", lang)} class="inline-flex items-center gap-2 text-secondary hover:text-foreground transition-colors underline underline-offset-4 decoration-secondary/40">
+          {c.linkRooms} →
+        </a>
+        <a href={localizedPath("/pakete", lang)} class="inline-flex items-center gap-2 text-secondary hover:text-foreground transition-colors underline underline-offset-4 decoration-secondary/40">
+          {c.linkPackages} →
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- GEO-FAQ — andere Formulierung/Fokus als die /faq-Seite -->
+  <section class="container mx-auto px-4 py-16 md:py-24">
+    <div class="max-w-3xl mx-auto">
+      <p class="eyebrow text-center">{c.faqEyebrow}</p>
+      <h2 class="font-display text-3xl md:text-4xl mt-3 mb-10 text-center text-balance leading-tight">{c.faqH2}</h2>
+      <dl class="divide-y divide-border/60 border-y border-border/60">
+        {c.faq.map((f) => (
+          <div class="py-6" data-reveal>
+            <dt class="font-display text-lg md:text-xl leading-snug mb-2">{f.q}</dt>
+            <dd class="text-sm md:text-base text-muted-foreground leading-relaxed">{f.a}</dd>
+          </div>
+        ))}
+      </dl>
     </div>
   </section>
 </Layout>

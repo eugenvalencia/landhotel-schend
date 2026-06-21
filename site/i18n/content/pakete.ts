@@ -12,9 +12,21 @@ type PaketText = {
   price?: string;
   priceSingle?: string;
   priceNote?: string;
+  /** Beschreibender Bild-Alt-Text fürs Cover (Motiv, nicht Titel/Quote). */
+  coverAlt?: string;
 };
 
-// DE = exakt aus den Original-Daten.
+// Beschreibende Cover-Alt-Texte (DE) — Motiv aus bekanntem Paket-Inhalt, kein Titel.
+const deCoverAlt: Record<string, string> = {
+  "eifler-wandertage": "Wanderweg durch die herbstliche Vulkaneifel-Landschaft rund um das Landhaus Schend",
+  "rad-erlebnisse": "Radweg entlang eines Eifelmaars Richtung Moseltal — Maare-Mosel-Radweg in der Vulkaneifel",
+  "erholung-entschleunigung": "Blick über ein Eifelmaar von der Sonnenterrasse des Landhauses Schend",
+  "eifelgold-weissdornhecken": "Gelbe Ginsterblüte im Immerather Kraterkessel der Vulkaneifel",
+  "bunt-sind-schon-die-waelder": "Bunt verfärbter Eifeler Mischwald im Herbst nahe Immerath",
+  "zimmer-ohne-paket": "Doppelzimmer mit Doppelbett und Holzboden im Landhaus Schend",
+};
+
+// DE = exakt aus den Original-Daten (+ beschreibender Cover-Alt-Text).
 const de: Record<string, PaketText> = Object.fromEntries(
   PAKETE.map((p) => [
     p.slug,
@@ -26,6 +38,7 @@ const de: Record<string, PaketText> = Object.fromEntries(
       price: p.price,
       priceSingle: p.priceSingle,
       priceNote: p.priceNote,
+      coverAlt: deCoverAlt[p.slug],
     },
   ]),
 );
@@ -47,6 +60,7 @@ const en: Record<string, PaketText> = {
     price: "from 339 € pp",
     priceSingle: "Single occupancy from 399 €",
     priceNote: "Family room on request",
+    coverAlt: "Hiking trail through the autumnal Volcanic Eifel landscape around Landhaus Schend",
   },
   "rad-erlebnisse": {
     title: "Eifel cycling adventures",
@@ -64,6 +78,7 @@ const en: Record<string, PaketText> = {
     price: "from 349 € pp",
     priceSingle: "Single occupancy from 409 €",
     priceNote: "Family room on request",
+    coverAlt: "Cycle path past an Eifel maar towards the Mosel valley — the Maare-Mosel cycle route in the Volcanic Eifel",
   },
   "erholung-entschleunigung": {
     title: "Days of rest and deceleration",
@@ -80,6 +95,7 @@ const en: Record<string, PaketText> = {
     price: "from 249 € pp",
     priceSingle: "Single occupancy from 319 €",
     priceNote: "Family room on request",
+    coverAlt: "View over an Eifel maar from the sun terrace of Landhaus Schend",
   },
   "eifelgold-weissdornhecken": {
     title: '"Eifelgold" and hawthorn hedges',
@@ -97,6 +113,7 @@ const en: Record<string, PaketText> = {
     price: "from 379 € pp",
     priceSingle: "Single occupancy from 449 €",
     priceNote: "Family room on request",
+    coverAlt: "Yellow gorse blossom in the Immerath crater basin of the Volcanic Eifel",
   },
   "bunt-sind-schon-die-waelder": {
     title: '"The forests are already colourful"',
@@ -114,6 +131,7 @@ const en: Record<string, PaketText> = {
     price: "from 449 € pp",
     priceSingle: "Single occupancy from 519 €",
     priceNote: "Family room on request",
+    coverAlt: "Eifel mixed forest in autumn colours near Immerath",
   },
   "zimmer-ohne-paket": {
     title: "Room without a package",
@@ -127,6 +145,7 @@ const en: Record<string, PaketText> = {
     ],
     details:
       "Choose your dates freely and put together your stay individually — we take care of the rest.",
+    coverAlt: "Double room with double bed and wooden floor at Landhaus Schend",
   },
 };
 
@@ -147,6 +166,7 @@ const fr: Record<string, PaketText> = {
     price: "à partir de 339 € / pers.",
     priceSingle: "Occupation simple à partir de 399 €",
     priceNote: "Chambre familiale sur demande",
+    coverAlt: "Sentier de randonnée à travers le paysage automnal de l'Eifel volcanique autour du Landhaus Schend",
   },
   "rad-erlebnisse": {
     title: "Aventures à vélo dans l'Eifel",
@@ -164,6 +184,7 @@ const fr: Record<string, PaketText> = {
     price: "à partir de 349 € / pers.",
     priceSingle: "Occupation simple à partir de 409 €",
     priceNote: "Chambre familiale sur demande",
+    coverAlt: "Piste cyclable longeant un maar de l'Eifel vers la vallée de la Moselle — la voie Maare-Mosel dans l'Eifel volcanique",
   },
   "erholung-entschleunigung": {
     title: "Jours de repos et de décélération",
@@ -180,6 +201,7 @@ const fr: Record<string, PaketText> = {
     price: "à partir de 249 € / pers.",
     priceSingle: "Occupation simple à partir de 319 €",
     priceNote: "Chambre familiale sur demande",
+    coverAlt: "Vue sur un maar de l'Eifel depuis la terrasse ensoleillée du Landhaus Schend",
   },
   "eifelgold-weissdornhecken": {
     title: "« Eifelgold » et haies d'aubépine",
@@ -197,6 +219,7 @@ const fr: Record<string, PaketText> = {
     price: "à partir de 379 € / pers.",
     priceSingle: "Occupation simple à partir de 449 €",
     priceNote: "Chambre familiale sur demande",
+    coverAlt: "Floraison jaune des genêts dans la cuvette du cratère d'Immerath, Eifel volcanique",
   },
   "bunt-sind-schon-die-waelder": {
     title: "« Les forêts se parent déjà de couleurs »",
@@ -214,6 +237,7 @@ const fr: Record<string, PaketText> = {
     price: "à partir de 449 € / pers.",
     priceSingle: "Occupation simple à partir de 519 €",
     priceNote: "Chambre familiale sur demande",
+    coverAlt: "Forêt mixte de l'Eifel aux couleurs d'automne près d'Immerath",
   },
   "zimmer-ohne-paket": {
     title: "Chambre sans forfait",
@@ -227,6 +251,7 @@ const fr: Record<string, PaketText> = {
     ],
     details:
       "Choisissez librement vos dates et composez votre séjour à votre guise — nous nous occupons du reste.",
+    coverAlt: "Chambre double avec lit double et parquet au Landhaus Schend",
   },
 };
 
@@ -247,6 +272,7 @@ const nl: Record<string, PaketText> = {
     price: "vanaf 339 € p.p.",
     priceSingle: "Eenpersoonsgebruik vanaf 399 €",
     priceNote: "Familiekamer op aanvraag",
+    coverAlt: "Wandelpad door het herfstige landschap van de Vulkaaneifel rond Landhaus Schend",
   },
   "rad-erlebnisse": {
     title: "Eifeler fietsbelevenissen",
@@ -264,6 +290,7 @@ const nl: Record<string, PaketText> = {
     price: "vanaf 349 € p.p.",
     priceSingle: "Eenpersoonsgebruik vanaf 409 €",
     priceNote: "Familiekamer op aanvraag",
+    coverAlt: "Fietspad langs een Eifelmaar richting het Moezeldal — het Maare-Mosel-fietspad in de Vulkaaneifel",
   },
   "erholung-entschleunigung": {
     title: "Dagen van rust en onthaasting",
@@ -280,6 +307,7 @@ const nl: Record<string, PaketText> = {
     price: "vanaf 249 € p.p.",
     priceSingle: "Eenpersoonsgebruik vanaf 319 €",
     priceNote: "Familiekamer op aanvraag",
+    coverAlt: "Uitzicht over een Eifelmaar vanaf het zonneterras van Landhaus Schend",
   },
   "eifelgold-weissdornhecken": {
     title: "„Eifelgold\" en meidoornhagen",
@@ -297,6 +325,7 @@ const nl: Record<string, PaketText> = {
     price: "vanaf 379 € p.p.",
     priceSingle: "Eenpersoonsgebruik vanaf 449 €",
     priceNote: "Familiekamer op aanvraag",
+    coverAlt: "Gele brembloei in de Immerather kraterketel van de Vulkaaneifel",
   },
   "bunt-sind-schon-die-waelder": {
     title: "„Bont zijn de bossen al\"",
@@ -314,6 +343,7 @@ const nl: Record<string, PaketText> = {
     price: "vanaf 449 € p.p.",
     priceSingle: "Eenpersoonsgebruik vanaf 519 €",
     priceNote: "Familiekamer op aanvraag",
+    coverAlt: "Eifeler gemengd bos in herfstkleuren nabij Immerath",
   },
   "zimmer-ohne-paket": {
     title: "Kamer zonder pakket",
@@ -327,16 +357,20 @@ const nl: Record<string, PaketText> = {
     ],
     details:
       "Kies uw periode vrij en stel uw verblijf individueel samen — wij zorgen voor de rest.",
+    coverAlt: "Tweepersoonskamer met tweepersoonsbed en houten vloer in Landhaus Schend",
   },
 };
 
 export const paketeText: Record<Locale, Record<string, PaketText>> = { de, en, fr, nl };
 
+/** Paket-Struktur (aus lib/pakete.ts) + lokalisierter, beschreibender Cover-Alt-Text. */
+export type LocalizedPaket = Paket & { coverAlt?: string };
+
 /** Sprachneutrale Struktur (slug/cover/gallery) + lokalisierter Text + Preise. */
-export function paketeFor(locale: Locale): Paket[] {
+export function paketeFor(locale: Locale): LocalizedPaket[] {
   return PAKETE.map((p) => ({ ...p, ...paketeText[locale][p.slug] }));
 }
-export function findPaketFor(slug: string, locale: Locale): Paket | undefined {
+export function findPaketFor(slug: string, locale: Locale): LocalizedPaket | undefined {
   const base = PAKETE.find((p) => p.slug === slug);
   return base ? { ...base, ...paketeText[locale][slug] } : undefined;
 }
@@ -351,12 +385,22 @@ export interface PaketeChrome {
   detailsCta: string;
   backToAll: string;
   detailEyebrow: string;
+  /** Kurzer, ortsbezogener Zusatz für den metaTitle-Kern der Detailseite (Kern < 60). */
+  detailTitleSuffix: string;
   includedH2: string;
   impressionLabel: string;
   ctaInquire: string;
   commissionNote: string;
   breadcrumbHome: string;
   breadcrumbList: string;
+  /** Hub-Spoke: Überschrift + kontextuelle Links auf thematisch nahe Seiten (Detail). */
+  relatedH2: string;
+  relatedRegion: string;
+  relatedRooms: string;
+  relatedRestaurant: string;
+  /** GEO-Q&A auf der Übersichtsseite (eigene Fragen, andere Formulierung als /faq). */
+  faqH2: string;
+  faq: { q: string; a: string }[];
 }
 
 export const paketeChrome: Record<Locale, PaketeChrome> = {
@@ -371,12 +415,36 @@ export const paketeChrome: Record<Locale, PaketeChrome> = {
     detailsCta: "Details →",
     backToAll: "Alle Pauschalen",
     detailEyebrow: "Pauschale",
+    detailTitleSuffix: "Pauschale Eifel",
     includedH2: "Im Paket enthalten",
     impressionLabel: "Eindruck",
     ctaInquire: "Jetzt anfragen",
     commissionNote: "Direktbuchung ist provisionsfrei — ohne Aufschlag eines Buchungsportals.",
     breadcrumbHome: "Startseite",
     breadcrumbList: "Pauschalen",
+    relatedH2: "Passend zur Pauschale",
+    relatedRegion: "Wandern, Maare & Touren in der Vulkaneifel",
+    relatedRooms: "Unsere Zimmer ansehen",
+    relatedRestaurant: "Eifeler Landküche im Restaurant",
+    faqH2: "Gut zu wissen vor der Buchung",
+    faq: [
+      {
+        q: "Ist das Frühstück in jeder Pauschale enthalten?",
+        a: "Ja. In allen Pauschalen ist das Frühstücksbuffet mit frischen, regionalen Eifeler Produkten enthalten — die Wander- und Rad-Pauschalen ergänzen es zusätzlich um Halbpension mit einem 3-Gang-Menü aus der Eifeler Landküche.",
+      },
+      {
+        q: "Wie anspruchsvoll ist die Strecke der Rad-Pauschale?",
+        a: "Der Maare-Mosel-Radweg der Eifler Rad-Erlebnisse ist insgesamt 55 Kilometer lang und lässt sich gut in Etappen fahren. Mit Steigungen von maximal 3 % ist er auch für Familien geeignet, die unterwegs in die Radler-Busse einsteigen können.",
+      },
+      {
+        q: "Kann ich auch ohne Pauschale übernachten?",
+        a: "Ja. Mit „Zimmer ohne Paket“ wählen Sie Ihren Zeitraum frei — inklusive großem Frühstücksbuffet sowie kostenfreiem WLAN und Parkplatz am Haus. Halbpension lässt sich auf Wunsch für +23 € pro Person und Tag dazubuchen.",
+      },
+      {
+        q: "Fällt bei der Buchung einer Pauschale Provision an?",
+        a: "Nein. Wenn Sie direkt beim Landhaus Schend anfragen, buchen Sie provisionsfrei — ohne den Aufschlag eines Buchungsportals.",
+      },
+    ],
   },
   en: {
     listMetaTitle: "Offers & packages for the Eifel",
@@ -389,17 +457,41 @@ export const paketeChrome: Record<Locale, PaketeChrome> = {
     detailsCta: "Details →",
     backToAll: "All packages",
     detailEyebrow: "Package",
+    detailTitleSuffix: "Eifel package",
     includedH2: "Included in the package",
     impressionLabel: "Impression",
     ctaInquire: "Enquire now",
     commissionNote: "Booking direct is commission-free — without the surcharge of a booking portal.",
     breadcrumbHome: "Home",
     breadcrumbList: "Packages",
+    relatedH2: "To go with your package",
+    relatedRegion: "Hiking, maars & tours in the Volcanic Eifel",
+    relatedRooms: "See our rooms",
+    relatedRestaurant: "Eifel country cuisine in the restaurant",
+    faqH2: "Good to know before you book",
+    faq: [
+      {
+        q: "Is breakfast included in every package?",
+        a: "Yes. Every package includes the breakfast buffet with fresh, regional Eifel produce — and the hiking and cycling packages add half board on top, with a three-course menu of Eifel country cuisine.",
+      },
+      {
+        q: "How demanding is the route of the cycling package?",
+        a: "The Maare-Mosel cycle path of the Eifel cycling adventures is 55 kilometres in total and is easily ridden in stages. With gradients of no more than 3 %, it suits families too, who can hop onto the cyclist buses along the way.",
+      },
+      {
+        q: "Can I stay without booking a package?",
+        a: "Yes. With \"Room without a package\" you choose your dates freely — including the large breakfast buffet plus free Wi-Fi and parking at the house. Half board can be added on request for +23 € per person and day.",
+      },
+      {
+        q: "Is there a commission when I book a package?",
+        a: "No. When you enquire directly with Landhaus Schend, you book commission-free — without the surcharge of a booking portal.",
+      },
+    ],
   },
   fr: {
     listMetaTitle: "Offres & forfaits pour l'Eifel",
     listMetaDescription:
-      "Forfaits randonnée, vélo et plaisir au Landhaus Schend, Eifel volcanique — petit-déjeuner buffet, menu du soir de l'Eifel et conseils d'itinéraires inclus. Réservez sans commission.",
+      "Forfaits randonnée, vélo et plaisir au Landhaus Schend, Eifel volcanique — petit-déjeuner buffet, menu du soir et conseils d'itinéraires. Sans commission.",
     listEyebrow: "Offres & forfaits",
     listH1: "Forfaits pour votre escapade dans l'Eifel",
     listIntro:
@@ -407,12 +499,36 @@ export const paketeChrome: Record<Locale, PaketeChrome> = {
     detailsCta: "Détails →",
     backToAll: "Tous les forfaits",
     detailEyebrow: "Forfait",
+    detailTitleSuffix: "Forfait Eifel",
     includedH2: "Compris dans le forfait",
     impressionLabel: "Aperçu",
     ctaInquire: "Demander maintenant",
     commissionNote: "La réservation en direct est sans commission — sans le supplément d'un portail de réservation.",
     breadcrumbHome: "Accueil",
     breadcrumbList: "Forfaits",
+    relatedH2: "Pour compléter votre forfait",
+    relatedRegion: "Randonnée, maars & circuits dans l'Eifel volcanique",
+    relatedRooms: "Voir nos chambres",
+    relatedRestaurant: "La cuisine régionale de l'Eifel au restaurant",
+    faqH2: "Bon à savoir avant de réserver",
+    faq: [
+      {
+        q: "Le petit-déjeuner est-il compris dans chaque forfait ?",
+        a: "Oui. Tous les forfaits incluent le petit-déjeuner buffet avec des produits régionaux frais de l'Eifel — et les forfaits randonnée et vélo y ajoutent la demi-pension, avec un menu trois plats de cuisine régionale de l'Eifel.",
+      },
+      {
+        q: "Le parcours du forfait vélo est-il difficile ?",
+        a: "La piste cyclable Maare-Mosel des aventures à vélo dans l'Eifel fait 55 kilomètres au total et se parcourt facilement par étapes. Avec des pentes de 3 % maximum, elle convient aussi aux familles, qui peuvent monter en chemin dans les bus pour cyclistes.",
+      },
+      {
+        q: "Puis-je séjourner sans réserver de forfait ?",
+        a: "Oui. Avec « Chambre sans forfait », vous choisissez librement vos dates — petit-déjeuner buffet, Wi-Fi et parking gratuits sur place inclus. La demi-pension peut être ajoutée sur demande pour +23 € par personne et par jour.",
+      },
+      {
+        q: "Y a-t-il une commission lors de la réservation d'un forfait ?",
+        a: "Non. En réservant directement auprès du Landhaus Schend, vous réservez sans commission — sans le supplément d'un portail de réservation.",
+      },
+    ],
   },
   nl: {
     listMetaTitle: "Aanbiedingen & arrangementen voor de Eifel",
@@ -425,11 +541,35 @@ export const paketeChrome: Record<Locale, PaketeChrome> = {
     detailsCta: "Details →",
     backToAll: "Alle arrangementen",
     detailEyebrow: "Arrangement",
+    detailTitleSuffix: "Arrangement Eifel",
     includedH2: "Inbegrepen in het arrangement",
     impressionLabel: "Impressie",
     ctaInquire: "Nu aanvragen",
     commissionNote: "Direct boeken is provisievrij — zonder toeslag van een boekingsportaal.",
     breadcrumbHome: "Startpagina",
     breadcrumbList: "Arrangementen",
+    relatedH2: "Passend bij uw arrangement",
+    relatedRegion: "Wandelen, maren & routes in de Vulkaaneifel",
+    relatedRooms: "Bekijk onze kamers",
+    relatedRestaurant: "Eifeler streekkeuken in het restaurant",
+    faqH2: "Goed om te weten vóór het boeken",
+    faq: [
+      {
+        q: "Is het ontbijt bij elk arrangement inbegrepen?",
+        a: "Ja. Bij elk arrangement is het ontbijtbuffet met verse, regionale Eifeler producten inbegrepen — de wandel- en fietsarrangementen vullen dit bovendien aan met halfpension en een driegangenmenu uit de Eifeler streekkeuken.",
+      },
+      {
+        q: "Hoe zwaar is de route van het fietsarrangement?",
+        a: "Het Maare-Mosel-fietspad van de Eifeler fietsbelevenissen is in totaal 55 kilometer lang en laat zich goed in etappes fietsen. Dankzij hellingen van maximaal 3 % is het ook geschikt voor gezinnen, die onderweg in de fietsbussen kunnen stappen.",
+      },
+      {
+        q: "Kan ik ook zonder arrangement overnachten?",
+        a: "Ja. Met „Kamer zonder pakket\" kiest u uw periode vrij — inclusief groot ontbijtbuffet en gratis wifi en parkeerplaats bij het huis. Halfpension is op verzoek bij te boeken voor +23 € per persoon per dag.",
+      },
+      {
+        q: "Betaal ik provisie bij het boeken van een arrangement?",
+        a: "Nee. Als u rechtstreeks bij Landhaus Schend aanvraagt, boekt u provisievrij — zonder de toeslag van een boekingsportaal.",
+      },
+    ],
   },
 };

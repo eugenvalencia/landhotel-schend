@@ -31,6 +31,29 @@ const regionSchema = {
     "Eifelsteig", "Maare-Mosel-Radweg", "Nürburgring", "Vulkanhaus Strohn", "Maarmuseum Manderscheid",
   ].map((n) => ({ "@type": "TouristAttraction", name: n })),
 };
+
+// Eigenes FAQPage-JSON-LD für die sichtbare Region-FAQ (anderer Fokus/Wortlaut als /faq);
+// eigene @id/url verhindert Frage-Dubletten in den Rich Results.
+const regionUrl = `${ORIGIN}${localizedPath("/urlaubsregion", lang)}`;
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${regionUrl}#region-faq`,
+  url: regionUrl,
+  mainEntity: c.faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
+// Hub-Spoke: hubLine mit lokalisierten Ankern (Platzhalter {restaurant}/{pakete}/{galerie}).
+const hubParts = c.hubLine.split(/(\{restaurant\}|\{pakete\}|\{galerie\})/);
+const hubLinks: Record<string, { href: string; label: string }> = {
+  "{restaurant}": { href: localizedPath("/restaurant", lang), label: c.hubRestaurant },
+  "{pakete}": { href: localizedPath("/pakete", lang), label: c.hubPakete },
+  "{galerie}": { href: localizedPath("/galerie", lang), label: c.hubGalerie },
+};
 ---
 
 <Layout
@@ -41,6 +64,7 @@ const regionSchema = {
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(regionSchema)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
   <!-- Hero -->
   <section class="relative">
     <Pic src="/pakete/eifel-2.jpg" alt={c.heroAlt} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
@@ -51,6 +75,13 @@ const regionSchema = {
       <p class="mt-6 text-lg leading-relaxed max-w-2xl text-[hsl(38_30%_95%)]/90 text-pretty">
         {c.heroText}
       </p>
+      <p class="mt-4 text-base leading-relaxed max-w-2xl text-[hsl(38_30%_95%)]/85 text-pretty">
+        {hubParts.map((part) =>
+          hubLinks[part]
+            ? <a href={hubLinks[part].href} class="underline decoration-[hsl(38_48%_72%)]/60 underline-offset-2 hover:decoration-[hsl(38_48%_72%)] transition-colors">{hubLinks[part].label}</a>
+            : part
+        )}
+      </p>
     </div>
   </section>
 
@@ -60,7 +91,7 @@ const regionSchema = {
       {c.highlights.map((h, i) => (
         <article class="spotlight rounded-md overflow-hidden border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${(i % 2) * 0.1}s`}>
           <div class="aspect-[16/10] overflow-hidden">
-            <Pic src={h.img} alt={h.title} class="w-full h-full object-cover" loading="lazy" decoding="async" />
+            <Pic src={h.img} alt={h.alt} class="w-full h-full object-cover" loading="lazy" decoding="async" />
           </div>
           <div class="p-6">
             <h2 class="font-display text-2xl">{h.title}</h2>
@@ -100,6 +131,21 @@ const regionSchema = {
           <p class="text-sm text-muted-foreground mt-3">{c.addressLabel}: {REGION_ADDRESS}</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- GEO-FAQ (Region & Anreise) -->
+  <section class="container mx-auto px-4 py-16 md:py-20">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="font-display text-2xl md:text-3xl mb-8">{c.faqH2}</h2>
+      <dl class="space-y-6">
+        {c.faq.map((f) => (
+          <div class="border-b border-border/60 pb-6">
+            <dt class="font-medium text-lg">{f.q}</dt>
+            <dd class="text-muted-foreground mt-2 leading-relaxed text-pretty">{f.a}</dd>
+          </div>
+        ))}
+      </dl>
     </div>
   </section>
 

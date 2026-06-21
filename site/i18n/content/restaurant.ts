@@ -7,6 +7,7 @@ export interface RestaurantContent {
   metaDescription: string;
   schemaDescription: string;
   heroAlt: string;
+  heroH1: string;
   heroBadge: string;
   heroSubtitle: string;
   ctaReserve: string;
@@ -42,6 +43,13 @@ export interface RestaurantContent {
   spreadH2: string;
   spreadText: string;
   spreadCta: string;
+  // Hub-Spoke: kontextuelle Anker zu thematisch nahen Seiten.
+  linkRooms: string;
+  linkPackages: string;
+  // GEO-Q&A: kurze sichtbare FAQ + FAQPage-JSON-LD (andere Formulierung als /faq).
+  faqEyebrow: string;
+  faqH2: string;
+  faq: { q: string; a: string }[];
 }
 
 export const restaurantContent: Record<Locale, RestaurantContent> = {
@@ -53,6 +61,7 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
       "Hauseigenes Eifeler Restaurant des Landhauses Schend in Immerath/Vulkaneifel. Regional-typische Küche mit wöchentlich wechselnder Speisekarte, auch für Tagesgäste offen. Halbpension, Festtafel für Hochzeiten und Familienfeiern bis 70 Personen.",
     heroAlt:
       "Gedeckter Tisch im Landhaus Restaurant Schend mit Schnitzelteller, Beilagen und einem Glas Wein",
+    heroH1: "Landhaus Restaurant",
     heroBadge: "Eifeler Landküche · Anno 1856",
     heroSubtitle: "Regional. Ehrlich. Auch ohne Übernachtung.",
     ctaReserve: "Tisch reservieren →",
@@ -98,16 +107,35 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     spreadText:
       "Vom intimen Geburtstag bis zur Hochzeit mit 70 Gästen — Familie Beimler gestaltet gemeinsam mit Ihnen das passende Menü und kümmert sich um jedes Detail. Tisch- und Saaldekoration, persönliche Menükarten, individuelle Wünsche — alles geht.",
     spreadCta: "Anfrage besprechen",
+    linkRooms: "Übernachten und am Abend hier essen? Unsere Zimmer im Landhaus",
+    linkPackages: "Genießer-Pakete mit Halbpension ansehen",
+    faqEyebrow: "Gut zu wissen",
+    faqH2: "Häufige Fragen zum Restaurant",
+    faq: [
+      {
+        q: "Hat das Restaurant an Feiertagen geöffnet?",
+        a: "Ja. An Feiertagen ist unser Restaurant für Sie geöffnet — auch wenn der Feiertag auf einen unserer üblichen Ruhetage (Montag bis Mittwoch) fällt. À-la-carte servieren wir regulär Donnerstag bis Samstag von 17:30 bis 20:00 Uhr sowie sonntags von 12:00 bis 14:00 und 17:30 bis 20:00 Uhr.",
+      },
+      {
+        q: "Gibt es eine feste Speisekarte?",
+        a: "Unsere Speisekarte wechselt wöchentlich und folgt der Saison — Wildgerichte im Herbst, Spargel im Frühjahr. Das aktuelle Wochenmenü geben wir jeden Morgen bekannt. Auf Wunsch servieren wir ein 3-Gang-Menü, auch als Halbpension für Übernachtungsgäste.",
+      },
+      {
+        q: "Wie viele Gäste fasst der Festsaal für eine Feier?",
+        a: "Unser Festsaal fasst bis zu 70 Gäste und verbindet historischen Charme mit gemütlicher Atmosphäre — passend für Hochzeiten, runde Geburtstage oder Firmenessen. Menü oder Buffet stellen wir individuell mit Ihnen zusammen; Anfragen nehmen wir telefonisch oder per E-Mail entgegen.",
+      },
+    ],
   },
 
   en: {
     metaTitle: "Landhaus Restaurant — Eifel cuisine",
     metaDescription:
-      "Eifel restaurant in Immerath/Volcanic Eifel — open to day guests too. Half board, banquet table for celebrations of up to 70 people. Reserve a table: +49 6573 306.",
+      "Eifel restaurant in Immerath/Volcanic Eifel, open to day guests too. Half board, banquet hall for up to 70. Reserve a table: +49 6573 306.",
     schemaDescription:
       "The Landhaus Schend's own Eifel restaurant in Immerath/Volcanic Eifel. Regional cuisine with a weekly changing menu, open to day guests too. Half board and a banquet hall for weddings and family celebrations of up to 70 people.",
     heroAlt:
       "Laid table at the Landhaus Schend restaurant with a schnitzel plate, sides and a glass of wine",
+    heroH1: "Landhaus Restaurant",
     heroBadge: "Eifel country kitchen · Anno 1856",
     heroSubtitle: "Regional. Honest. No overnight stay required.",
     ctaReserve: "Reserve a table →",
@@ -153,16 +181,35 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     spreadText:
       "From an intimate birthday to a wedding for 70 guests — the Beimler family plans the right menu together with you and takes care of every detail. Table and hall decoration, personal menu cards, individual wishes — anything is possible.",
     spreadCta: "Discuss your enquiry",
+    linkRooms: "Staying over and dining here in the evening? Our rooms at the Landhaus",
+    linkPackages: "See our gourmet packages with half board",
+    faqEyebrow: "Good to know",
+    faqH2: "Frequently asked about the restaurant",
+    faq: [
+      {
+        q: "Is the restaurant open on public holidays?",
+        a: "Yes. On public holidays our restaurant is open for you — even when the holiday falls on one of our usual closing days (Monday to Wednesday). Our regular à-la-carte hours are Thursday to Saturday from 5:30 to 8:00 pm and Sunday from 12:00 to 2:00 pm and 5:30 to 8:00 pm.",
+      },
+      {
+        q: "Is there a fixed menu?",
+        a: "Our menu changes weekly and follows the season — game in autumn, asparagus in spring. We announce the current week's menu each morning. On request we serve a three-course menu, also as half board for overnight guests.",
+      },
+      {
+        q: "How many guests does the banquet hall hold for a celebration?",
+        a: "Our banquet hall seats up to 70 guests and combines historic charm with a cosy atmosphere — ideal for weddings, milestone birthdays or company dinners. We put together the menu or buffet individually with you; enquiries are welcome by phone or email.",
+      },
+    ],
   },
 
   fr: {
     metaTitle: "Restaurant du Landhaus — cuisine de l'Eifel",
     metaDescription:
-      "Restaurant de l'Eifel à Immerath/Eifel volcanique — ouvert aussi aux visiteurs d'un jour. Demi-pension, table de fête pour des célébrations jusqu'à 70 personnes. Réserver : +49 6573 306.",
+      "Restaurant de l'Eifel à Immerath/Eifel volcanique, ouvert aux visiteurs d'un jour. Demi-pension, salle de fête jusqu'à 70 personnes. Réserver : +49 6573 306.",
     schemaDescription:
       "Le restaurant de l'Eifel propre au Landhaus Schend à Immerath/Eifel volcanique. Cuisine régionale avec une carte qui change chaque semaine, ouvert aussi aux visiteurs d'un jour. Demi-pension et salle des fêtes pour mariages et fêtes de famille jusqu'à 70 personnes.",
     heroAlt:
       "Table dressée au restaurant du Landhaus Schend avec escalope, garnitures et un verre de vin",
+    heroH1: "Restaurant du Landhaus",
     heroBadge: "Cuisine régionale de l'Eifel · Anno 1856",
     heroSubtitle: "Régional. Authentique. Même sans nuitée.",
     ctaReserve: "Réserver une table →",
@@ -208,6 +255,24 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     spreadText:
       "De l'anniversaire intime au mariage pour 70 invités — la famille Beimler élabore avec vous le menu adapté et veille à chaque détail. Décoration de table et de salle, menus personnalisés, souhaits particuliers — tout est possible.",
     spreadCta: "Discuter de votre demande",
+    linkRooms: "Séjourner et dîner ici le soir ? Nos chambres au Landhaus",
+    linkPackages: "Voir nos forfaits gourmands en demi-pension",
+    faqEyebrow: "Bon à savoir",
+    faqH2: "Questions fréquentes sur le restaurant",
+    faq: [
+      {
+        q: "Le restaurant est-il ouvert les jours fériés ?",
+        a: "Oui. Les jours fériés, notre restaurant vous accueille — même si le jour férié tombe sur l'un de nos jours de fermeture habituels (lundi à mercredi). Nos horaires à la carte sont jeudi à samedi de 17h30 à 20h00 et dimanche de 12h00 à 14h00 ainsi que de 17h30 à 20h00.",
+      },
+      {
+        q: "Y a-t-il une carte fixe ?",
+        a: "Notre carte change chaque semaine et suit la saison — gibier en automne, asperges au printemps. Nous annonçons le menu de la semaine chaque matin. Sur demande, nous servons un menu trois plats, également en demi-pension pour les hôtes en chambre.",
+      },
+      {
+        q: "Combien d'invités la salle des fêtes peut-elle accueillir ?",
+        a: "Notre salle des fêtes accueille jusqu'à 70 convives et allie charme historique et atmosphère chaleureuse — idéale pour mariages, anniversaires marquants ou dîners d'entreprise. Nous composons le menu ou le buffet sur mesure avec vous ; demandes par téléphone ou par e-mail.",
+      },
+    ],
   },
 
   nl: {
@@ -218,6 +283,7 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
       "Het eigen Eifeler restaurant van Landhaus Schend in Immerath/Vulkaneifel. Regionale keuken met een wekelijks wisselende kaart, ook open voor dagjesgasten. Halfpension en een feestzaal voor bruiloften en familiefeesten tot 70 personen.",
     heroAlt:
       "Gedekte tafel in het restaurant van Landhaus Schend met schnitzel, bijgerechten en een glas wijn",
+    heroH1: "Landhaus-restaurant",
     heroBadge: "Eifeler streekkeuken · Anno 1856",
     heroSubtitle: "Regionaal. Eerlijk. Ook zonder overnachting.",
     ctaReserve: "Tafel reserveren →",
@@ -263,5 +329,23 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     spreadText:
       "Van een intieme verjaardag tot een bruiloft voor 70 gasten — de familie Beimler stelt samen met u het passende menu samen en zorgt voor elk detail. Tafel- en zaaldecoratie, persoonlijke menukaarten, individuele wensen — alles kan.",
     spreadCta: "Aanvraag bespreken",
+    linkRooms: "Overnachten en hier 's avonds dineren? Onze kamers in het Landhaus",
+    linkPackages: "Bekijk onze genietersarrangementen met halfpension",
+    faqEyebrow: "Goed om te weten",
+    faqH2: "Veelgestelde vragen over het restaurant",
+    faq: [
+      {
+        q: "Is het restaurant op feestdagen geopend?",
+        a: "Ja. Op feestdagen is ons restaurant voor u geopend — ook als de feestdag op een van onze gebruikelijke rustdagen (maandag tot en met woensdag) valt. Onze reguliere à-la-cartetijden zijn donderdag tot en met zaterdag van 17:30 tot 20:00 uur en zondag van 12:00 tot 14:00 en 17:30 tot 20:00 uur.",
+      },
+      {
+        q: "Is er een vaste kaart?",
+        a: "Onze kaart wisselt wekelijks en volgt het seizoen — wildgerechten in de herfst, asperges in het voorjaar. Het menu van de week maken wij elke ochtend bekend. Op verzoek serveren wij een driegangenmenu, ook als halfpension voor overnachtende gasten.",
+      },
+      {
+        q: "Hoeveel gasten biedt de feestzaal plaats voor een viering?",
+        a: "Onze feestzaal biedt plaats aan tot 70 gasten en combineert historische charme met een gezellige sfeer — ideaal voor bruiloften, ronde verjaardagen of bedrijfsdiners. Menu of buffet stellen wij samen met u op maat samen; aanvragen graag telefonisch of per e-mail.",
+      },
+    ],
   },
 };

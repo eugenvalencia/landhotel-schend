@@ -24,6 +24,13 @@ export type AboutContent = {
   philoH2: string;
   philoText: string;
   values: { num: string; title: string; text: string }[];
+  // Kontextuelle interne Verlinkung (Hub-Spoke) — Einleitung + benannte Anker.
+  hubIntro: string;
+  hubLinks: { path: string; label: string }[];
+  // Kurze, sichtbare GEO-Q&A (eigener Fokus, keine Dubletten zur /faq-Seite).
+  faqEyebrow: string;
+  faqH2: string;
+  faq: { q: string; a: string }[];
 };
 
 export const aboutContent: Record<Locale, AboutContent> = {
@@ -36,7 +43,7 @@ export const aboutContent: Record<Locale, AboutContent> = {
     eyebrow: "Über uns",
     h1: "Die Geschichte des Landhauses",
     history: [
-      "Anno 1856 wurde das Grundhaus erbaut und diente bereits damals als Gasthaus und zeitweise auch als Poststelle für den Ort.",
+      "Anno 1856 wurde das Grundhaus in Immerath in der Vulkaneifel erbaut und diente bereits damals als Gasthaus und zeitweise auch als Poststelle für den Ort.",
       `${YEAR("1954")} übernahmen die Eheleute Änni und Leo Schneiders die elterliche Dorfgaststätte sowie den kleinbäuerlichen Selbstversorgungsbetrieb. ${YEAR("1970")} erweiterten sie den Betrieb um drei Gästezimmer mit fließendem Warm- und Kaltwasser und modernisierten die Dorfgaststätte.`,
       `Seit ${YEAR("1976")} arbeiteten Tochter Roswitha und Ehemann Reinhold im Betrieb mit, den die beiden ${YEAR("1993")} übernahmen. Nach dem Tod der Eltern stand das Ehepaar Schend vor der Wahl, den Betrieb aufzugeben oder zu investieren — sie entschlossen sich dafür und begannen ${YEAR("1995")} mit umfangreichen Umbaumaßnahmen: Das alte Ökonomiegebäude wurde abgerissen und ein neues Gästehaus mit 22 Betten sowie einem Speiseraum errichtet.`,
       `Zwei Jahre später, ${YEAR("1997")}, eröffneten sie das neue Gebäude unter dem Namen „Landhaus Schend". In den folgenden Jahren wuchs die Bettenzahl auf 44; ein Lift, ein moderner Speisesaal und ein gemütliches Kaminzimmer kamen hinzu. Seit ${YEAR("1999")} ist das Landhaus Schend mit 3 Sternen der Deutschen Hotelklassifizierung ausgezeichnet.`,
@@ -46,7 +53,7 @@ export const aboutContent: Record<Locale, AboutContent> = {
     gastgeberEyebrow: "Ihre Gastgeber",
     gastgeberH2: "Familie Beimler",
     gastgeberText:
-      "Seit 2019 führt Familie Beimler das Landhaus Schend und setzt die über 170-jährige Tradition des Hauses mit Herzblut fort — herzlich, persönlich und authentisch eifelerisch.",
+      "Seit 2019 führt Familie Beimler das Landhaus Schend in Immerath in der Vulkaneifel und setzt die über 170-jährige Tradition des Hauses mit Herzblut fort — herzlich, persönlich und authentisch eifelerisch.",
     timelineEyebrow: "170+ Jahre Gastfreundschaft",
     timelineH2:
       '<span class="font-display-italic font-light">Vom</span> Gasthaus 1856 <span class="font-display-italic font-light">bis</span> heute',
@@ -70,6 +77,20 @@ export const aboutContent: Record<Locale, AboutContent> = {
       { num: "02", title: "Qualität", text: "Regionale Eifeler Küche und liebevoll gestaltete Zimmer mit Charakter." },
       { num: "03", title: "Tradition", text: "Über 170 Jahre Gastfreundschaft an diesem Ort — bis heute mit Herz familiär geführt." },
     ],
+    hubIntro: "Lernen Sie das Haus näher kennen:",
+    hubLinks: [
+      { path: "/zimmer", label: "unsere 21 Zimmer in der Vulkaneifel" },
+      { path: "/restaurant", label: "die Eifeler Landküche im Landhaus Restaurant" },
+      { path: "/urlaubsregion", label: "Wandern, Maare und Eifelsteig rund um Immerath" },
+    ],
+    faqEyebrow: "Gut zu wissen",
+    faqH2: "Über das Haus — kurz beantwortet",
+    faq: [
+      { q: "Seit wann gibt es das Landhaus Schend?", a: "Das Grundhaus wurde 1856 in Immerath erbaut und diente schon damals als Gasthaus. Damit blicken wir auf über 170 Jahre Gastfreundschaft an diesem Ort zurück." },
+      { q: "Wer betreibt das Landhaus Schend heute?", a: "Seit 2019 führt Familie Beimler das Haus — ein familiengeführtes Hotel mitten in der Vulkaneifel, das die lange Tradition mit Herzblut fortsetzt." },
+      { q: "Welche Klassifizierung hat das Hotel?", a: "Das Landhaus Schend ist ein ★★★ Superior Familienhotel mit 21 Zimmern (19 Doppel- und 2 Familienzimmer). Die erste 3-Sterne-Klassifizierung erhielt das Haus 1999." },
+      { q: "Wo liegt das Landhaus Schend?", a: "Wir liegen in Immerath in der Vulkaneifel, in der Mulde eines erloschenen Vulkans — Ausgangspunkt für Wanderungen am Eifelsteig und zu den Maaren der Region." },
+    ],
   },
   en: {
     metaTitle: "About us — family hotel since 1856 in Immerath",
@@ -80,7 +101,7 @@ export const aboutContent: Record<Locale, AboutContent> = {
     eyebrow: "About us",
     h1: "The story of the Landhaus",
     history: [
-      "The original building was erected in 1856 and even then served as an inn and, at times, as the village post office.",
+      "The original building was erected in Immerath in the Volcanic Eifel in 1856 and even then served as an inn and, at times, as the village post office.",
       `In ${YEAR("1954")}, Änni and Leo Schneiders took over the family's village tavern and the small self-sufficient farm. In ${YEAR("1970")} they expanded with three guest rooms with running hot and cold water and modernised the tavern.`,
       `From ${YEAR("1976")}, daughter Roswitha and her husband Reinhold worked in the business, which the two took over in ${YEAR("1993")}. After the parents passed away, the Schend couple faced the choice of giving up the business or investing — they chose to invest and began extensive rebuilding in ${YEAR("1995")}: the old farm building was demolished and a new guest house with 22 beds and a dining room was built.`,
       `Two years later, in ${YEAR("1997")}, they opened the new building under the name “Landhaus Schend”. Over the following years the number of beds grew to 44; a lift, a modern dining hall and a cosy fireplace lounge were added. Since ${YEAR("1999")} Landhaus Schend has held a 3-star German hotel classification.`,
@@ -90,7 +111,7 @@ export const aboutContent: Record<Locale, AboutContent> = {
     gastgeberEyebrow: "Your hosts",
     gastgeberH2: "The Beimler family",
     gastgeberText:
-      "Since 2019 the Beimler family has run Landhaus Schend, continuing the house's 170-year tradition with heart and soul — warm, personal and authentically Eifel.",
+      "Since 2019 the Beimler family has run Landhaus Schend in Immerath in the Volcanic Eifel, continuing the house's 170-year tradition with heart and soul — warm, personal and authentically Eifel.",
     timelineEyebrow: "170+ years of hospitality",
     timelineH2:
       '<span class="font-display-italic font-light">From</span> the 1856 inn <span class="font-display-italic font-light">to</span> today',
@@ -114,17 +135,31 @@ export const aboutContent: Record<Locale, AboutContent> = {
       { num: "02", title: "Quality", text: "Regional Eifel cuisine and lovingly designed rooms with character." },
       { num: "03", title: "Tradition", text: "Over 170 years of hospitality in this spot — still run with heart as a family." },
     ],
+    hubIntro: "Get to know the house in more detail:",
+    hubLinks: [
+      { path: "/zimmer", label: "our 21 rooms in the Volcanic Eifel" },
+      { path: "/restaurant", label: "Eifel country cuisine at the Landhaus restaurant" },
+      { path: "/urlaubsregion", label: "hiking, the maars and the Eifelsteig around Immerath" },
+    ],
+    faqEyebrow: "Good to know",
+    faqH2: "About the house — in brief",
+    faq: [
+      { q: "How long has Landhaus Schend existed?", a: "The original building was erected in Immerath in 1856 and served as an inn even then. That means over 170 years of hospitality in this very spot." },
+      { q: "Who runs Landhaus Schend today?", a: "Since 2019 the Beimler family has run the house — a family-run hotel in the heart of the Volcanic Eifel, continuing its long tradition with heart and soul." },
+      { q: "What classification does the hotel hold?", a: "Landhaus Schend is a ★★★ Superior family hotel with 21 rooms (19 doubles and 2 family rooms). It received its first 3-star classification in 1999." },
+      { q: "Where is Landhaus Schend located?", a: "We're in Immerath in the Volcanic Eifel, in the basin of an extinct volcano — a starting point for walks on the Eifelsteig and to the region's maars." },
+    ],
   },
   fr: {
     metaTitle: "À propos — hôtel familial depuis 1856 à Immerath",
     metaDescription:
-      "L'histoire du Landhaus Schend : construit comme auberge en 1856, aujourd'hui hôtel familial ★★★ Superior dans l'Eifel volcanique — tenu par la famille Beimler depuis 2019.",
+      "L'histoire du Landhaus Schend : auberge dès 1856, aujourd'hui hôtel familial ★★★ Superior dans l'Eifel volcanique — tenu par la famille Beimler depuis 2019.",
     schemaDescription:
       "L'histoire du Landhaus Schend à Immerath : auberge depuis 1856, aujourd'hui hôtel familial ★★★ Superior — tenu par la famille Beimler depuis 2019.",
     eyebrow: "À propos",
     h1: "L'histoire du Landhaus",
     history: [
-      "Le bâtiment d'origine fut érigé en 1856 et servait déjà à l'époque d'auberge et, par moments, de bureau de poste du village.",
+      "Le bâtiment d'origine fut érigé à Immerath, dans l'Eifel volcanique, en 1856 et servait déjà à l'époque d'auberge et, par moments, de bureau de poste du village.",
       `En ${YEAR("1954")}, les époux Änni et Leo Schneiders reprirent l'auberge villageoise familiale ainsi que la petite exploitation agricole de subsistance. En ${YEAR("1970")}, ils ajoutèrent trois chambres d'hôtes avec eau chaude et froide courante et modernisèrent l'auberge.`,
       `À partir de ${YEAR("1976")}, la fille Roswitha et son mari Reinhold travaillèrent dans l'établissement, qu'ils reprirent en ${YEAR("1993")}. Après le décès des parents, le couple Schend dut choisir entre cesser l'activité ou investir — ils choisirent d'investir et entreprirent en ${YEAR("1995")} d'importants travaux : l'ancien bâtiment agricole fut démoli et une nouvelle maison d'hôtes de 22 lits avec une salle à manger fut construite.`,
       `Deux ans plus tard, en ${YEAR("1997")}, ils ouvrirent le nouveau bâtiment sous le nom de « Landhaus Schend ». Au fil des ans, le nombre de lits passa à 44 ; un ascenseur, une salle à manger moderne et un salon-cheminée chaleureux furent ajoutés. Depuis ${YEAR("1999")}, le Landhaus Schend est classé 3 étoiles selon la classification hôtelière allemande.`,
@@ -134,7 +169,7 @@ export const aboutContent: Record<Locale, AboutContent> = {
     gastgeberEyebrow: "Vos hôtes",
     gastgeberH2: "La famille Beimler",
     gastgeberText:
-      "Depuis 2019, la famille Beimler dirige le Landhaus Schend et perpétue avec passion la tradition plus que centenaire de la maison — chaleureuse, personnelle et authentiquement de l'Eifel.",
+      "Depuis 2019, la famille Beimler dirige le Landhaus Schend à Immerath, dans l'Eifel volcanique, et perpétue avec passion la tradition plus que centenaire de la maison — chaleureuse, personnelle et authentiquement de l'Eifel.",
     timelineEyebrow: "Plus de 170 ans d'hospitalité",
     timelineH2:
       '<span class="font-display-italic font-light">De</span> l\'auberge de 1856 <span class="font-display-italic font-light">à</span> aujourd\'hui',
@@ -158,6 +193,20 @@ export const aboutContent: Record<Locale, AboutContent> = {
       { num: "02", title: "Qualité", text: "Cuisine régionale de l'Eifel et chambres aménagées avec soin et caractère." },
       { num: "03", title: "Tradition", text: "Plus de 170 ans d'hospitalité en ce lieu — toujours dirigé avec cœur en famille." },
     ],
+    hubIntro: "Découvrez la maison plus en détail :",
+    hubLinks: [
+      { path: "/zimmer", label: "nos 21 chambres dans l'Eifel volcanique" },
+      { path: "/restaurant", label: "la cuisine régionale de l'Eifel au restaurant Landhaus" },
+      { path: "/urlaubsregion", label: "la randonnée, les maars et l'Eifelsteig autour d'Immerath" },
+    ],
+    faqEyebrow: "Bon à savoir",
+    faqH2: "À propos de la maison — en bref",
+    faq: [
+      { q: "Depuis quand le Landhaus Schend existe-t-il ?", a: "Le bâtiment d'origine fut érigé à Immerath en 1856 et servait déjà d'auberge à l'époque. Cela représente plus de 170 ans d'hospitalité en ce lieu." },
+      { q: "Qui dirige le Landhaus Schend aujourd'hui ?", a: "Depuis 2019, la famille Beimler dirige la maison — un hôtel familial au cœur de l'Eifel volcanique, qui perpétue avec passion sa longue tradition." },
+      { q: "Quel est le classement de l'hôtel ?", a: "Le Landhaus Schend est un hôtel familial ★★★ Superior de 21 chambres (19 doubles et 2 familiales). Il a obtenu son premier classement 3 étoiles en 1999." },
+      { q: "Où se situe le Landhaus Schend ?", a: "Nous sommes à Immerath, dans l'Eifel volcanique, dans la cuvette d'un volcan éteint — point de départ pour des randonnées sur l'Eifelsteig et vers les maars de la région." },
+    ],
   },
   nl: {
     metaTitle: "Over ons — familiehotel sinds 1856 in Immerath",
@@ -168,7 +217,7 @@ export const aboutContent: Record<Locale, AboutContent> = {
     eyebrow: "Over ons",
     h1: "Het verhaal van het Landhaus",
     history: [
-      "Het oorspronkelijke pand werd in 1856 gebouwd en deed toen al dienst als gasthuis en tijdelijk ook als postkantoor voor het dorp.",
+      "Het oorspronkelijke pand werd in 1856 gebouwd in Immerath in de Vulkaaneifel en deed toen al dienst als gasthuis en tijdelijk ook als postkantoor voor het dorp.",
       `In ${YEAR("1954")} namen het echtpaar Änni en Leo Schneiders de ouderlijke dorpsherberg en het kleine zelfvoorzienende boerenbedrijf over. In ${YEAR("1970")} breidden zij uit met drie gastenkamers met stromend warm en koud water en moderniseerden de herberg.`,
       `Vanaf ${YEAR("1976")} werkten dochter Roswitha en haar man Reinhold mee in het bedrijf, dat de twee in ${YEAR("1993")} overnamen. Na het overlijden van de ouders stond het echtpaar Schend voor de keuze het bedrijf op te geven of te investeren — ze kozen voor investeren en begonnen in ${YEAR("1995")} met een grote verbouwing: het oude bedrijfsgebouw werd gesloopt en een nieuw gastenhuis met 22 bedden en een eetzaal gebouwd.`,
       `Twee jaar later, in ${YEAR("1997")}, openden ze het nieuwe gebouw onder de naam „Landhaus Schend". In de jaren daarna groeide het aantal bedden naar 44; een lift, een moderne eetzaal en een gezellige haardkamer kwamen erbij. Sinds ${YEAR("1999")} draagt Landhaus Schend een 3-sterrenclassificatie van de Duitse hotelclassificatie.`,
@@ -178,7 +227,7 @@ export const aboutContent: Record<Locale, AboutContent> = {
     gastgeberEyebrow: "Uw gastheren",
     gastgeberH2: "Familie Beimler",
     gastgeberText:
-      "Sinds 2019 leidt familie Beimler Landhaus Schend en zet de ruim 170-jarige traditie van het huis met hart en ziel voort — hartelijk, persoonlijk en authentiek Eifels.",
+      "Sinds 2019 leidt familie Beimler Landhaus Schend in Immerath in de Vulkaaneifel en zet de ruim 170-jarige traditie van het huis met hart en ziel voort — hartelijk, persoonlijk en authentiek Eifels.",
     timelineEyebrow: "170+ jaar gastvrijheid",
     timelineH2:
       '<span class="font-display-italic font-light">Van</span> het gasthuis uit 1856 <span class="font-display-italic font-light">tot</span> vandaag',
@@ -201,6 +250,20 @@ export const aboutContent: Record<Locale, AboutContent> = {
       { num: "01", title: "Hartelijkheid", text: "Persoonlijke service met een familiale sfeer — we kennen onze gasten bij naam." },
       { num: "02", title: "Kwaliteit", text: "Regionale Eifeler keuken en met zorg ingerichte kamers met karakter." },
       { num: "03", title: "Traditie", text: "Ruim 170 jaar gastvrijheid op deze plek — tot vandaag met hart als familie geleid." },
+    ],
+    hubIntro: "Leer het huis beter kennen:",
+    hubLinks: [
+      { path: "/zimmer", label: "onze 21 kamers in de Vulkaaneifel" },
+      { path: "/restaurant", label: "de Eifeler streekkeuken in het Landhaus-restaurant" },
+      { path: "/urlaubsregion", label: "wandelen, de maren en de Eifelsteig rond Immerath" },
+    ],
+    faqEyebrow: "Goed om te weten",
+    faqH2: "Over het huis — kort beantwoord",
+    faq: [
+      { q: "Sinds wanneer bestaat Landhaus Schend?", a: "Het oorspronkelijke pand werd in 1856 in Immerath gebouwd en deed toen al dienst als gasthuis. Daarmee kijken we terug op ruim 170 jaar gastvrijheid op deze plek." },
+      { q: "Wie leidt Landhaus Schend vandaag?", a: "Sinds 2019 leidt familie Beimler het huis — een familiehotel midden in de Vulkaaneifel dat de lange traditie met hart en ziel voortzet." },
+      { q: "Welke classificatie heeft het hotel?", a: "Landhaus Schend is een ★★★ Superior familiehotel met 21 kamers (19 tweepersoons- en 2 familiekamers). De eerste 3-sterrenclassificatie kreeg het huis in 1999." },
+      { q: "Waar ligt Landhaus Schend?", a: "We liggen in Immerath in de Vulkaaneifel, in de kom van een uitgedoofde vulkaan — startpunt voor wandelingen op de Eifelsteig en naar de maren van de regio." },
     ],
   },
 };

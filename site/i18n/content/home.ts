@@ -112,7 +112,7 @@ export interface HomeContent {
 
 export const homeContent: Record<Locale, HomeContent> = {
   de: {
-    metaTitle: "3-Sterne-Hotel & Kurzurlaub in der Vulkaneifel",
+    metaTitle: "3-Sterne-Hotel in Immerath · Kurzurlaub Vulkaneifel",
     metaDescription:
       "Familiengeführtes 3-Sterne-Hotel in Immerath, Vulkaneifel — 21 Zimmer, Eifeler Landküche, Halbpension. Ideal zum Wandern. Provisionsfrei direkt buchen.",
     schemaHotelDescription:
@@ -151,7 +151,7 @@ export const homeContent: Record<Locale, HomeContent> = {
     ctaStripButton: "Unverbindlich anfragen",
     banner: "Auch ohne Übernachtung — Tagesgäste herzlich willkommen",
     bannerReserve: "Tisch reservieren: +49 6573 306 →",
-    restImgAlt: "Landhaus Restaurant & Terrasse",
+    restImgAlt: "Heller Speisesaal mit Buffet im Restaurant des Landhaus Schend in Immerath",
     restH2: "Landhaus Restaurant & Terrasse",
     restPara1:
       "Für den großen Hunger ist unser besonders gemütliches Restaurant genau die richtige Wahl — Eifeler und internationale Spezialitäten in stilvoller Atmosphäre, frisch gezapftes Bitburger und Produkte der Eifeler Landküche.",
@@ -251,7 +251,7 @@ export const homeContent: Record<Locale, HomeContent> = {
   },
 
   en: {
-    metaTitle: "Three-star hotel & short break in the Volcanic Eifel",
+    metaTitle: "Three-star hotel in Immerath · Volcanic Eifel break",
     metaDescription:
       "Family-run three-star hotel in Immerath, Volcanic Eifel — 21 rooms, Eifel country cuisine, half board. Ideal for hiking. Book direct, commission-free.",
     schemaHotelDescription:
@@ -290,7 +290,7 @@ export const homeContent: Record<Locale, HomeContent> = {
     ctaStripButton: "Make a non-binding enquiry",
     banner: "No overnight stay needed — day guests warmly welcome",
     bannerReserve: "Reserve a table: +49 6573 306 →",
-    restImgAlt: "Landhaus Restaurant & Terrace",
+    restImgAlt: "Bright dining hall with buffet at the restaurant of Landhaus Schend in Immerath",
     restH2: "Landhaus Restaurant & Terrace",
     restPara1:
       "For a hearty appetite, our especially cosy restaurant is just the right choice — Eifel and international specialities in a stylish atmosphere, freshly tapped Bitburger and produce from the Eifel country kitchen.",
@@ -390,7 +390,7 @@ export const homeContent: Record<Locale, HomeContent> = {
   },
 
   fr: {
-    metaTitle: "Hôtel trois étoiles & court séjour dans l'Eifel volcanique",
+    metaTitle: "Hôtel 3 étoiles à Immerath · Eifel volcanique",
     metaDescription:
       "Hôtel trois étoiles familial à Immerath, Eifel volcanique — 21 chambres, cuisine régionale de l'Eifel, demi-pension. Idéal pour la randonnée. Réservez en direct, sans commission.",
     schemaHotelDescription:
@@ -429,7 +429,7 @@ export const homeContent: Record<Locale, HomeContent> = {
     ctaStripButton: "Demande sans engagement",
     banner: "Même sans nuitée — visiteurs d'un jour les bienvenus",
     bannerReserve: "Réserver une table : +49 6573 306 →",
-    restImgAlt: "Restaurant & terrasse du Landhaus",
+    restImgAlt: "Salle à manger lumineuse avec buffet au restaurant du Landhaus Schend à Immerath",
     restH2: "Restaurant & terrasse du Landhaus",
     restPara1:
       "Pour les grandes faims, notre restaurant particulièrement chaleureux est le bon choix — spécialités de l'Eifel et internationales dans une atmosphère élégante, Bitburger fraîchement tirée et produits de la cuisine régionale de l'Eifel.",
@@ -529,7 +529,7 @@ export const homeContent: Record<Locale, HomeContent> = {
   },
 
   nl: {
-    metaTitle: "Driesterrenhotel & korte vakantie in de Vulkaneifel",
+    metaTitle: "Driesterrenhotel in Immerath · Vulkaneifel",
     metaDescription:
       "Familiaal driesterrenhotel in Immerath, Vulkaneifel — 21 kamers, Eifeler streekkeuken, halfpension. Ideaal om te wandelen. Boek direct, provisievrij.",
     schemaHotelDescription:
@@ -568,7 +568,7 @@ export const homeContent: Record<Locale, HomeContent> = {
     ctaStripButton: "Vrijblijvend aanvragen",
     banner: "Ook zonder overnachting — dagjesgasten van harte welkom",
     bannerReserve: "Tafel reserveren: +49 6573 306 →",
-    restImgAlt: "Landhaus-restaurant & terras",
+    restImgAlt: "Lichte eetzaal met buffet in het restaurant van Landhaus Schend in Immerath",
     restH2: "Landhaus-restaurant & terras",
     restPara1:
       "Voor de grote honger is ons bijzonder gezellige restaurant precies de juiste keuze — Eifeler en internationale specialiteiten in een stijlvolle sfeer, vers getapt Bitburger en producten uit de Eifeler streekkeuken.",

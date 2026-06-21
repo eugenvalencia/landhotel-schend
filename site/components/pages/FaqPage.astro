@@ -61,7 +61,14 @@ const breadcrumb = breadcrumbLd(ORIGIN, lang, [homeCrumb(lang), { name: meta.hea
               </span>
               <svg class="faq-chevron shrink-0 mt-1.5 h-4 w-4 text-secondary transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
             </summary>
-            <p class="pb-7 pr-8 md:pr-10 text-foreground/85 leading-relaxed max-w-prose">{f.a}</p>
+            <p class="pb-2 pr-8 md:pr-10 text-foreground/85 leading-relaxed max-w-prose">{f.a}</p>
+            {f.links && f.links.length > 0 && (
+              <p class="pb-7 pr-8 md:pr-10 flex flex-wrap gap-x-5 gap-y-1.5 text-sm">
+                {f.links.map((l) => (
+                  <a href={localizedPath(l.path, lang)} class="text-secondary underline underline-offset-4 hover:no-underline">{l.label}</a>
+                ))}
+              </p>
+            )}
           </details>
         ))}
       </div>

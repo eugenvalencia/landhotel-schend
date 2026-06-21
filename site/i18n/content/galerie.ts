@@ -9,6 +9,15 @@ export interface GalleryMeta {
   eyebrow: string;
   h1: string;
   intro: string;
+  // Beschriftung der Link-Zeile unter dem Bild-Raster (Hub-and-Spoke).
+  linksLead: string;
+  linkRooms: string;
+  linkRestaurant: string;
+  linkRegion: string;
+  linkAnfrage: string;
+  // Sichtbare GEO-Q&A unter der Galerie (eigene Formulierungen, kein /faq-Dublett).
+  faqHeading: string;
+  faq: { q: string; a: string }[];
 }
 export interface GalleryPhoto {
   src: string;
@@ -23,7 +32,27 @@ export const galleryMeta: Record<Locale, GalleryMeta> = {
     eyebrow: "Galerie",
     h1: "Bilder vom Landhaus Schend",
     intro:
-      "Haus & Garten, Zimmer, das Landhaus Restaurant und die Vulkaneifel rundum — einige Eindrücke.",
+      "Haus & Garten, Zimmer, das Landhaus Restaurant und die Vulkaneifel rundum — einige Eindrücke. Das familiengeführte Landhaus liegt in Immerath in der Vulkaneifel, in der Mulde eines erloschenen Vulkans. 21 Zimmer, hauseigene Eifeler Landküche und ein Festsaal für bis zu 70 Gäste — Cochem an der Mosel und der Nürburgring sind je rund 25 bzw. 30 Minuten entfernt.",
+    linksLead: "Mehr entdecken:",
+    linkRooms: "Zimmer & Preise ansehen",
+    linkRestaurant: "Landhaus Restaurant",
+    linkRegion: "Urlaubsregion Vulkaneifel",
+    linkAnfrage: "Unverbindlich anfragen",
+    faqHeading: "Fragen zu den Bildern",
+    faq: [
+      {
+        q: "Wo wurden die Fotos aufgenommen?",
+        a: "Alle Bilder stammen vom Landhaus Schend in der Hauptstraße 9, 54552 Immerath, sowie aus der umliegenden Vulkaneifel — Haus und Garten, die Zimmer, das Landhaus Restaurant, der Festsaal und Wander- und Radwege der Region.",
+      },
+      {
+        q: "Sind die gezeigten Zimmer Beispielbilder?",
+        a: "Ja. Die Zimmerfotos sind Beispielbilder — Ausstattung und Ansicht des tatsächlich zugewiesenen Zimmers können je nach Verfügbarkeit leicht abweichen. Wir haben 21 Zimmer: 19 Doppelzimmer und 2 Familienzimmer.",
+      },
+      {
+        q: "Kann man die festlich gedeckten Säle für Feiern mieten?",
+        a: "Ja. Der Festsaal fasst bis zu 70 Gäste — der Rahmen für Hochzeiten, runde Geburtstage und Firmenessen. Menü oder Buffet stellt Familie Beimler individuell mit Ihnen zusammen.",
+      },
+    ],
   },
   en: {
     metaTitle: "Gallery — pictures of Landhaus Schend",
@@ -32,7 +61,27 @@ export const galleryMeta: Record<Locale, GalleryMeta> = {
     eyebrow: "Gallery",
     h1: "Pictures of Landhaus Schend",
     intro:
-      "House & garden, rooms, the Landhaus restaurant and the Volcanic Eifel all around — a few impressions.",
+      "House & garden, rooms, the Landhaus restaurant and the Volcanic Eifel all around — a few impressions. The family-run country house lies in Immerath in the Volcanic Eifel, in the basin of an extinct volcano. 21 rooms, our own Eifel country kitchen and a banquet hall for up to 70 guests — Cochem on the Moselle and the Nürburgring are about 25 and 30 minutes away.",
+    linksLead: "Discover more:",
+    linkRooms: "See rooms & rates",
+    linkRestaurant: "Landhaus restaurant",
+    linkRegion: "Volcanic Eifel holiday region",
+    linkAnfrage: "Send a no-obligation enquiry",
+    faqHeading: "Questions about the pictures",
+    faq: [
+      {
+        q: "Where were the photos taken?",
+        a: "All images are from Landhaus Schend at Hauptstraße 9, 54552 Immerath, and the surrounding Volcanic Eifel — house and garden, the rooms, the Landhaus restaurant, the banquet hall and the region's hiking and cycle paths.",
+      },
+      {
+        q: "Are the rooms shown example images?",
+        a: "Yes. The room photos are example images — the furnishings and view of the room actually assigned may vary slightly depending on availability. We have 21 rooms: 19 double rooms and 2 family rooms.",
+      },
+      {
+        q: "Can the festively laid halls be hired for celebrations?",
+        a: "Yes. The banquet hall seats up to 70 guests — the setting for weddings, milestone birthdays and company dinners. The Beimler family puts together the menu or buffet individually with you.",
+      },
+    ],
   },
   fr: {
     metaTitle: "Galerie — photos du Landhaus Schend",
@@ -41,7 +90,27 @@ export const galleryMeta: Record<Locale, GalleryMeta> = {
     eyebrow: "Galerie",
     h1: "Photos du Landhaus Schend",
     intro:
-      "Maison & jardin, chambres, le restaurant du Landhaus et l'Eifel volcanique alentour — quelques impressions.",
+      "Maison & jardin, chambres, le restaurant du Landhaus et l'Eifel volcanique alentour — quelques impressions. Cette maison de campagne familiale se trouve à Immerath, dans l'Eifel volcanique, au creux d'un volcan éteint. 21 chambres, notre propre cuisine régionale de l'Eifel et une salle des fêtes jusqu'à 70 convives — Cochem sur la Moselle et le Nürburgring sont à environ 25 et 30 minutes.",
+    linksLead: "Découvrir plus :",
+    linkRooms: "Voir les chambres & tarifs",
+    linkRestaurant: "Restaurant du Landhaus",
+    linkRegion: "Région de vacances Eifel volcanique",
+    linkAnfrage: "Demande sans engagement",
+    faqHeading: "Questions sur les photos",
+    faq: [
+      {
+        q: "Où les photos ont-elles été prises ?",
+        a: "Toutes les images proviennent du Landhaus Schend, Hauptstraße 9, 54552 Immerath, et de l'Eifel volcanique alentour — maison et jardin, les chambres, le restaurant du Landhaus, la salle des fêtes ainsi que les sentiers de randonnée et pistes cyclables de la région.",
+      },
+      {
+        q: "Les chambres présentées sont-elles des exemples ?",
+        a: "Oui. Les photos de chambres sont des exemples — l'équipement et la vue de la chambre réellement attribuée peuvent légèrement varier selon les disponibilités. Nous avons 21 chambres : 19 chambres doubles et 2 chambres familiales.",
+      },
+      {
+        q: "Peut-on louer les salles dressées pour des fêtes ?",
+        a: "Oui. La salle des fêtes accueille jusqu'à 70 convives — le cadre pour mariages, anniversaires marquants et dîners d'entreprise. La famille Beimler compose le menu ou le buffet sur mesure avec vous.",
+      },
+    ],
   },
   nl: {
     metaTitle: "Galerij — foto's van Landhaus Schend",
@@ -50,7 +119,27 @@ export const galleryMeta: Record<Locale, GalleryMeta> = {
     eyebrow: "Galerij",
     h1: "Foto's van Landhaus Schend",
     intro:
-      "Huis & tuin, kamers, het Landhaus-restaurant en de Vulkaneifel rondom — enkele impressies.",
+      "Huis & tuin, kamers, het Landhaus-restaurant en de Vulkaneifel rondom — enkele impressies. Het familiebedrijf ligt in Immerath in de Vulkaneifel, in de kom van een uitgedoofde vulkaan. 21 kamers, een eigen Eifeler streekkeuken en een feestzaal voor tot 70 gasten — Cochem aan de Moezel en de Nürburgring liggen op zo'n 25 respectievelijk 30 minuten.",
+    linksLead: "Meer ontdekken:",
+    linkRooms: "Kamers & tarieven bekijken",
+    linkRestaurant: "Landhaus-restaurant",
+    linkRegion: "Vakantieregio Vulkaneifel",
+    linkAnfrage: "Vrijblijvend aanvragen",
+    faqHeading: "Vragen over de foto's",
+    faq: [
+      {
+        q: "Waar zijn de foto's gemaakt?",
+        a: "Alle beelden komen van Landhaus Schend aan de Hauptstraße 9, 54552 Immerath, en uit de omliggende Vulkaneifel — huis en tuin, de kamers, het Landhaus-restaurant, de feestzaal en de wandel- en fietspaden van de regio.",
+      },
+      {
+        q: "Zijn de getoonde kamers voorbeeldbeelden?",
+        a: "Ja. De kamerfoto's zijn voorbeeldbeelden — de inrichting en het uitzicht van de daadwerkelijk toegewezen kamer kunnen afhankelijk van de beschikbaarheid licht afwijken. We hebben 21 kamers: 19 tweepersoonskamers en 2 familiekamers.",
+      },
+      {
+        q: "Kun je de feestelijk gedekte zalen huren voor vieringen?",
+        a: "Ja. De feestzaal biedt plaats aan tot 70 gasten — het kader voor bruiloften, ronde verjaardagen en bedrijfsdiners. De familie Beimler stelt menu of buffet samen met u op maat samen.",
+      },
+    ],
   },
 };
 

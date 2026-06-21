@@ -151,5 +151,18 @@ const roomList = itemListLd(roomTypes.map((r) => {
     <div class="text-center mt-10">
       <a href={localizedPath("/anfrage", lang)} class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">{c.unverbindlichAnfragen}</a>
     </div>
+
+    <!-- Hub-Spoke: kontextuelle interne Links zu thematisch nahen Seiten -->
+    <nav class="hairline max-w-4xl mx-auto mt-12 pt-8 grid sm:grid-cols-3 gap-x-8 gap-y-2.5 text-sm" aria-label={c.h1}>
+      <a href={localizedPath("/restaurant", lang)} class="inline-flex items-center gap-2 text-foreground/80 hover:text-secondary transition-colors">
+        <span class="text-secondary">→</span>{c.linkRestaurant}
+      </a>
+      <a href={localizedPath("/urlaubsregion", lang)} class="inline-flex items-center gap-2 text-foreground/80 hover:text-secondary transition-colors">
+        <span class="text-secondary">→</span>{c.linkRegion}
+      </a>
+      <a href={localizedPath("/pakete", lang)} class="inline-flex items-center gap-2 text-foreground/80 hover:text-secondary transition-colors">
+        <span class="text-secondary">→</span>{c.linkPakete}
+      </a>
+    </nav>
   </section>
 </Layout>
