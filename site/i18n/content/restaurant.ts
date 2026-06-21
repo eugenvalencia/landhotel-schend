@@ -161,6 +161,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
       "Restaurant de l'Eifel à Immerath/Eifel volcanique — ouvert aussi aux visiteurs d'un jour. Demi-pension, table de fête pour des célébrations jusqu'à 70 personnes. Réserver : +49 6573 306.",
     schemaDescription:
       "Le restaurant de l'Eifel propre au Landhaus Schend à Immerath/Eifel volcanique. Cuisine régionale avec une carte qui change chaque semaine, ouvert aussi aux visiteurs d'un jour. Demi-pension et salle des fêtes pour mariages et fêtes de famille jusqu'à 70 personnes.",
+    heroAlt:
+      "Table dressée au restaurant du Landhaus Schend avec escalope, garnitures et un verre de vin",
     heroBadge: "Cuisine régionale de l'Eifel · Anno 1856",
     heroSubtitle: "Régional. Authentique. Même sans nuitée.",
     ctaReserve: "Réserver une table →",
@@ -214,6 +216,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
       "Eifeler restaurant in Immerath/Vulkaneifel — ook voor dagjesgasten. Halfpension, feesttafel voor vieringen tot 70 personen. Tafel reserveren: +49 6573 306.",
     schemaDescription:
       "Het eigen Eifeler restaurant van Landhaus Schend in Immerath/Vulkaneifel. Regionale keuken met een wekelijks wisselende kaart, ook open voor dagjesgasten. Halfpension en een feestzaal voor bruiloften en familiefeesten tot 70 personen.",
+    heroAlt:
+      "Gedekte tafel in het restaurant van Landhaus Schend met schnitzel, bijgerechten en een glas wijn",
     heroBadge: "Eifeler streekkeuken · Anno 1856",
     heroSubtitle: "Regionaal. Eerlijk. Ook zonder overnachting.",
     ctaReserve: "Tafel reserveren →",

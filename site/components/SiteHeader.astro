@@ -164,7 +164,7 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
   </div>
 
   <!-- Mobile-Menü (bis xl) -->
-  <div id="mobile-menu" hidden class="xl:hidden border-t bg-background animate-fade-up">
+  <div id="mobile-menu" hidden class="xl:hidden border-t bg-background animate-fade-up max-h-[calc(100dvh-4rem)] md:max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain">
     <div class="container mx-auto px-4 py-4 flex flex-col gap-1">
       <a
         href={HOTEL.phoneHref}
@@ -231,6 +231,9 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
   if (toggle && menu && iconOpen && iconClose) {
     const setOpen = (open: boolean) => {
       menu.hidden = !open;
+      // Hintergrund-Scroll sperren, solange das Menü offen ist — sonst war auf kleinen
+      // iPhones die „Anfragen"-CTA am Menü-Ende nicht erreichbar.
+      document.documentElement.style.overflow = open ? "hidden" : "";
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute(
         "aria-label",

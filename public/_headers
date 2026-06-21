@@ -1,8 +1,12 @@
 # Cloudflare Pages Headers — wirkt auf dist/ nach Deploy
 # Format: https://developers.cloudflare.com/pages/configuration/headers/
 
-# Asset-Bundles (Vite-Hash im Namen) — ein Jahr immutable cachen
-/assets/*
+# Gehashte Build-Bundles (Astro legt sie unter /_astro/ ab) + selbst-gehostete Fonts —
+# Dateinamen tragen einen Inhalts-Hash → für immer stabil → ein Jahr immutable cachen.
+# (Die frühere /assets/*-Regel war wirkungslos: Astro nutzt /assets nicht.)
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+/fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
 # Fotos in /fotos/ — fester Dateiname OHNE Hash, Inhalt kann sich ändern (Foto-Tausch).
@@ -12,6 +16,10 @@
 # (100 % stale-frei für immer = Hash im Dateinamen — größerer Umbau, auf Wunsch separat.)
 /fotos/*
   Cache-Control: public, max-age=300, stale-while-revalidate=2592000
+
+# Hero-Video + Poster (fester Name, ändern sich praktisch nie) — 30 Tage cachen.
+/hero/*
+  Cache-Control: public, max-age=2592000
 
 # Logo / Favicons / Manifest — wöchentlich neu prüfen
 /icon-*
