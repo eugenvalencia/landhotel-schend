@@ -97,13 +97,18 @@ const hotelGraph = {
       // Rück-Referenz aufs hauseigene Restaurant (schließt die Verknüpfung zum
       // einseitigen containedInPlace auf der Restaurant-Seite).
       containsPlace: { "@id": "https://landhaus-schend.de/restaurant/#restaurant" },
-      // Plattform-Bewertungen 1:1 zum sichtbaren Inhalt (kein erfundener Mittelwert).
-      // Plattform-Namen vor Go-Live von Walter (UWG/Marke) prüfen lassen.
-      review: [
-        { "@type": "Review", author: { "@type": "Organization", name: "Booking.com" }, reviewRating: { "@type": "Rating", ratingValue: "8.7", bestRating: "10" } },
-        { "@type": "Review", author: { "@type": "Organization", name: "Tripadvisor" }, reviewRating: { "@type": "Rating", ratingValue: "4.0", bestRating: "5" } },
-        { "@type": "Review", author: { "@type": "Organization", name: "HRS" }, reviewRating: { "@type": "Rating", ratingValue: "9.0", bestRating: "10" } },
-      ],
+      // Aggregierte Gäste-Bewertung — Booking.com als Quelle (größte, transparente
+      // Stichprobe: 8,7/10 aus 252 Bewertungen, 1:1 zum sichtbaren Footer/Reviews-
+      // Abschnitt; kein erfundener Mittelwert über verschiedene Skalen). Wert v.a. für
+      // GEO/KI-Suche (LLM-Zitate) — Google zeigt für Hotels self-serving Sterne oft
+      // NICHT. UWG/Marken-Prüfung der Plattform-Nennung durch Walter vor Go-Live.
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "8.7",
+        bestRating: "10",
+        worstRating: "1",
+        ratingCount: "252",
+      },
     },
     {
       "@type": "Organization", "@id": "https://landhaus-schend.de/#organization",
