@@ -31,6 +31,28 @@ export function breadcrumbLd(origin: string, lang: Locale, items: Crumb[]) {
   };
 }
 
+/** „ab"-Preis korrekt als Offer mit priceSpecification.minPrice (statt festem price,
+ *  der Google bei variablen Preisen als irreführend werten kann). */
+export function fromOffer(
+  minPrice: number,
+  opts: { url?: string; unitText?: string; seller?: unknown; description?: string } = {},
+) {
+  return {
+    "@type": "Offer",
+    priceCurrency: "EUR",
+    priceSpecification: {
+      "@type": "UnitPriceSpecification",
+      minPrice,
+      priceCurrency: "EUR",
+      ...(opts.unitText ? { unitText: opts.unitText } : {}),
+    },
+    availability: "https://schema.org/InStock",
+    ...(opts.url ? { url: opts.url } : {}),
+    ...(opts.seller ? { seller: opts.seller } : {}),
+    ...(opts.description ? { description: opts.description } : {}),
+  };
+}
+
 export type ListEntry = { url: string; name: string; item?: unknown };
 
 /** ItemList — geordnete Liste (Listen-/Übersichtsseiten). */

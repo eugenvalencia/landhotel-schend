@@ -4,7 +4,7 @@
 import Layout from "../../layouts/Layout.astro";
 import Pic from "../Pic.astro";
 import { ORIGIN } from "../../lib/site";
-import { breadcrumbLd, homeCrumb, itemListLd } from "../../lib/schema";
+import { breadcrumbLd, homeCrumb, itemListLd, fromOffer } from "../../lib/schema";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
 import {
   introFor, ausstattungFor, sonstigesFor, extrasFor, ratesFor, roomTypesFor, zimmerChrome,
@@ -34,7 +34,7 @@ const roomList = itemListLd(roomTypes.map((r) => {
       name: r.type,
       url,
       occupancy: { "@type": "QuantitativeValue", maxValue: r.maxPersons, unitText: c.schemaPersonsUnit },
-      makesOffer: { "@type": "Offer", price: r.priceFrom, priceCurrency: "EUR", description: r.priceLabel, availability: "https://schema.org/InStock", url: `${ORIGIN}${localizedPath("/anfrage", lang)}`, seller: { "@id": "https://landhaus-schend.de/#hotel" } },
+      makesOffer: fromOffer(r.priceFrom, { url: `${ORIGIN}${localizedPath("/anfrage", lang)}`, description: r.priceLabel, seller: { "@id": "https://landhaus-schend.de/#hotel" } }),
     },
   };
 }));

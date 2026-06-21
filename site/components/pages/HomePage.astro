@@ -8,6 +8,7 @@ import LocationSection from "../LocationSection.astro";
 import { ROOM_TYPES } from "../../lib/rooms";
 import { SCHEND_RESTAURANT, galleryForRoomType } from "../../lib/photos";
 import { GUEST_VOICES } from "../../lib/guest-voices";
+import { fromOffer } from "../../lib/schema";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
 import { t } from "../../i18n/ui";
 import { homeContent } from "../../i18n/content/home";
@@ -71,13 +72,13 @@ const hotelGraph = {
       logo: "https://landhaus-schend.de/schend-logo-black.svg",
       priceRange: "€€",
       // Günstigster realer Einstieg: Doppelzimmer ab 57 €/Person inkl. Frühstück.
-      makesOffer: { "@type": "Offer", priceCurrency: "EUR", price: 57, availability: "https://schema.org/InStock", url: "https://landhaus-schend.de/anfrage", category: "Übernachtung" },
+      makesOffer: fromOffer(57, { url: "https://landhaus-schend.de/anfrage/", unitText: "Person/Nacht" }),
       starRating: { "@type": "Rating", ratingValue: "3", additionalType: "Superior" },
       address: { "@type": "PostalAddress", streetAddress: "Hauptstraße 9", addressLocality: "Immerath", addressRegion: "Rheinland-Pfalz", postalCode: "54552", addressCountry: "DE" },
       geo: { "@type": "GeoCoordinates", latitude: 50.1303, longitude: 6.9594 },
       hasMap: "https://www.google.com/maps?q=Landhaus+Schend+Immerath",
-      checkinTime: "15:00",
-      checkoutTime: "11:00",
+      checkinTime: "T15:00",
+      checkoutTime: "T11:00",
       numberOfRooms: 21,
       smokingAllowed: false,
       amenityFeature: [

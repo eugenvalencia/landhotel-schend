@@ -4,6 +4,7 @@
 import Layout from "../../layouts/Layout.astro";
 import Pic from "../Pic.astro";
 import { ORIGIN } from "../../lib/site";
+import { fromOffer } from "../../lib/schema";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
 import { findPaketFor, paketeChrome } from "../../i18n/content/pakete";
 
@@ -44,11 +45,12 @@ const productSchema = lowPrice
   ? {
       "@context": "https://schema.org",
       "@type": "Product",
+      "@id": `${ORIGIN}${localizedPath(`/pakete/${paket.slug}`, lang)}#paket`,
       name: stripQ(paket.title),
       description: metaDescription,
       image: `${ORIGIN}${paket.cover}`,
       url: `${ORIGIN}${localizedPath(`/pakete/${paket.slug}`, lang)}`,
-      offers: { "@type": "Offer", price: Number(lowPrice), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: `${ORIGIN}${localizedPath("/anfrage", lang)}`, seller: { "@id": "https://landhaus-schend.de/#hotel" } },
+      offers: fromOffer(Number(lowPrice), { url: `${ORIGIN}${localizedPath("/anfrage", lang)}`, seller: { "@id": "https://landhaus-schend.de/#hotel" } }),
     }
   : null;
 ---

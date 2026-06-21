@@ -121,7 +121,15 @@ export const ROOM_TYPES: RoomType[] = [
 
 export const findRoom = (slug: string) => ROOM_TYPES.find((r) => r.slug === slug);
 
+// schema.org BedType ist ein englisches Enum — freier DE-Text (für die sichtbare
+// Anzeige) wird hier auf gültige Enum-Werte gemappt. Familienzimmer (getrennte
+// Räume, kein einzelner Bett-Typ) bekommt KEIN bed-Feld (occupancy reicht).
+export const SCHEMA_BED_TYPE: Record<string, string | undefined> = {
+  doppelzimmer: "Double",
+};
+
 export function roomSchema(r: RoomType) {
+  const bedType = SCHEMA_BED_TYPE[r.slug];
   return {
     "@context": "https://schema.org",
     "@type": "HotelRoom",
@@ -130,13 +138,13 @@ export function roomSchema(r: RoomType) {
     url: `https://landhaus-schend.de/zimmer/${r.slug}`,
     image: r.gallery.map((g) => `https://landhaus-schend.de${g}`),
     occupancy: { "@type": "QuantitativeValue", maxValue: r.maxPersons, unitText: "Personen" },
-    bed: { "@type": "BedDetails", typeOfBed: r.bed },
+    ...(bedType ? { bed: { "@type": "BedDetails", typeOfBed: bedType } } : {}),
     amenityFeature: r.amenities.map((a) => ({ "@type": "LocationFeatureSpecification", name: a, value: true })),
-    isPartOf: { "@id": "https://landhaus-schend.de/#hotel" },
+    containedInPlace: { "@id": "https://landhaus-schend.de/#hotel" },
     makesOffer: {
       "@type": "Offer",
-      price: r.priceFrom,
       priceCurrency: "EUR",
+      priceSpecification: { "@type": "UnitPriceSpecification", minPrice: r.priceFrom, priceCurrency: "EUR", unitText: "Person/Nacht" },
       description: `${r.priceLabel}, inkl. Frühstücksbuffet`,
       availability: "https://schema.org/InStock",
     },

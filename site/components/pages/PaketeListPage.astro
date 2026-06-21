@@ -4,7 +4,7 @@
 import Layout from "../../layouts/Layout.astro";
 import Pic from "../Pic.astro";
 import { ORIGIN } from "../../lib/site";
-import { breadcrumbLd, homeCrumb, itemListLd } from "../../lib/schema";
+import { breadcrumbLd, homeCrumb, itemListLd, fromOffer } from "../../lib/schema";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
 import { paketeFor, paketeChrome } from "../../i18n/content/pakete";
 
@@ -43,7 +43,7 @@ const paketeList = itemListLd(pakete.map((p) => {
       url,
       ...(p.cover ? { image: `${ORIGIN}${p.cover}` } : {}),
       ...(lowPrice
-        ? { offers: { "@type": "Offer", price: Number(lowPrice), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: `${ORIGIN}${localizedPath("/anfrage", lang)}`, seller: { "@id": "https://landhaus-schend.de/#hotel" } } }
+        ? { offers: fromOffer(Number(lowPrice), { url: `${ORIGIN}${localizedPath("/anfrage", lang)}`, seller: { "@id": "https://landhaus-schend.de/#hotel" } }) }
         : {}),
     },
   };

@@ -4,7 +4,8 @@
 import Layout from "../../layouts/Layout.astro";
 import Pic from "../Pic.astro";
 import { ORIGIN } from "../../lib/site";
-import { roomSchema, findRoom } from "../../lib/rooms";
+import { roomSchema, findRoom, SCHEMA_BED_TYPE } from "../../lib/rooms";
+import { fromOffer } from "../../lib/schema";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
 import { findRoomFor, zimmerChrome, galleryAltFor, roomFaqFor } from "../../i18n/content/zimmer";
 
@@ -28,16 +29,10 @@ const schema =
         url: `${ORIGIN}${localizedPath(`/zimmer/${room.slug}`, lang)}`,
         image: room.gallery.map((g) => `${ORIGIN}${g}`),
         occupancy: { "@type": "QuantitativeValue", maxValue: room.maxPersons, unitText: c.schemaPersonsUnit },
-        bed: { "@type": "BedDetails", typeOfBed: room.bed },
+        ...(SCHEMA_BED_TYPE[room.slug] ? { bed: { "@type": "BedDetails", typeOfBed: SCHEMA_BED_TYPE[room.slug] } } : {}),
         amenityFeature: room.amenities.map((a) => ({ "@type": "LocationFeatureSpecification", name: a, value: true })),
-        isPartOf: { "@id": "https://landhaus-schend.de/#hotel" },
-        makesOffer: {
-          "@type": "Offer",
-          price: room.priceFrom,
-          priceCurrency: "EUR",
-          description: `${room.priceLabel}, ${c.schemaOfferBreakfast}`,
-          availability: "https://schema.org/InStock",
-        },
+        containedInPlace: { "@id": "https://landhaus-schend.de/#hotel" },
+        makesOffer: fromOffer(room.priceFrom, { url: `${ORIGIN}${localizedPath("/anfrage", lang)}`, description: `${room.priceLabel}, ${c.schemaOfferBreakfast}` }),
       };
 
 const breadcrumb = {
