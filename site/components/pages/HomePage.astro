@@ -248,7 +248,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
           return (
             <a href={localizedPath(`/zimmer/${base.slug}`, lang)} class="group block" data-reveal style={`--reveal-delay:${idx * 0.08}s`}>
               <div class="spotlight tilt-card card-reveal aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
-                <Pic src={cardPhoto} alt={`${r.type} ${altSuffix}, Vulkaneifel`} class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" loading="lazy" decoding="async" />
+                <Pic src={cardPhoto} alt={`${r.type} ${altSuffix}, Vulkaneifel`} class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" loading="lazy" decoding="async" sizes="(min-width: 640px) 440px, 92vw" />
                 <div class="card-caption">
                   <p class="text-[10px] tracking-[0.2em] uppercase text-white/80 mb-1">{c.roomCardEyebrow}</p>
                   <p class="font-display text-white text-lg leading-snug">{r.hint}</p>

@@ -18,6 +18,12 @@ export default defineConfig({
   srcDir: "./site",
   outDir: "./dist-astro",
   publicDir: "./public",
+  // Kritisches CSS direkt ins <head> inlinen statt als eigene render-blockierende
+  // Datei. Lighthouse flaggte Layout.css als render-blocking (~600 ms auf langsamem
+  // 4G) → verzögerte den LCP (Hero-Poster malt erst nach CSS-Parse). Inline = kein
+  // Extra-Roundtrip vor dem ersten Paint; HTML wird per gzip/brotli (Cloudflare)
+  // komprimiert (~13 KB on-the-wire). Bessere LCP/FCP.
+  build: { inlineStylesheets: "always" },
   // Eine kanonische URL-Form: immer mit Trailing-Slash (= was Cloudflare Pages aus
   // ordner/index.html ausliefert). So treffen canonical + hreflang + interne Links die
   // 200-URL direkt statt eines 308-Redirects. localizedPath() hängt den Slash passend an.

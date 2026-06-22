@@ -44,6 +44,9 @@ const RESPONSIVE_SRCS = [
   "/fotos/doppelzimmer-komfort-mit-sofa-und-holzlamellenwand-landhaus-schend-vulkaneifel.jpg",
   "/fotos/familienzimmer-doppelbett-landhaus-schend-vulkaneifel.jpg",
   "/fotos/suite-mit-sitzecke-landhaus-schend-vulkaneifel.jpg",
+  // Home-Zimmer-Karten (galleryForRoomType[idx]) — Familienzimmer-Karte lud sonst
+  // das Vollbild (Lighthouse: ~111 KiB unnötig auf einem ~440px-Slot).
+  "/fotos/familienzimmer-mit-nebenraum-landhaus-schend-vulkaneifel.jpg",
   // Große Split-Sektionen (sizes ~50vw Desktop / 100vw Mobil)
   "/fotos/restaurant-speisesaal-mit-buffet-landhaus-schend.jpg",
   "/fotos/festsaal-50er-geburtstag-schwarz-gold-landhaus-schend-vulkaneifel.jpg",
