@@ -39,12 +39,14 @@ const breadcrumb = {
     { "@type": "ListItem", position: 3, name: stripQ(paket.title), item: `${ORIGIN}${localizedPath(`/pakete/${paket.slug}`, lang)}` },
   ],
 };
-// Product/Offer nur für bepreiste Pakete (lowPrice aus "ab …€"-Zahl) — Rich-Results.
+// TouristTrip/Offer für bepreiste Pakete (lowPrice aus "ab …€"-Zahl). NICHT Product:
+// Hotel-Pakete sind keine Shop-Produkte; Product triggert Googles "Händlereinträge"-
+// Prüfung (Versand/Rückgabe nötig) -> ungültig. TouristTrip ist der korrekte Typ.
 const lowPrice = (paket.price?.match(/(\d+)/) || [])[1];
 const productSchema = lowPrice
   ? {
       "@context": "https://schema.org",
-      "@type": "Product",
+      "@type": "TouristTrip",
       "@id": `${ORIGIN}${localizedPath(`/pakete/${paket.slug}`, lang)}#paket`,
       name: stripQ(paket.title),
       description: metaDescription,

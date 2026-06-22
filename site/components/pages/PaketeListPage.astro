@@ -30,7 +30,9 @@ const faqGraph = {
     acceptedAnswer: { "@type": "Answer", text: f.a },
   })),
 };
-// ItemList der Pakete; bepreiste als Product mit Offer (lowPrice aus "ab …€"-Zahl).
+// ItemList der Pakete; bepreiste als TouristTrip mit Offer. NICHT Product —
+// Hotel-Pakete sind keine Shop-Produkte; Product triggert Googles "Händlereinträge"-
+// Prüfung (verlangt Versand/Rückgabe) -> ungültig. TouristTrip ist der passende Typ.
 const paketeList = itemListLd(pakete.map((p) => {
   const url = `${ORIGIN}${localizedPath(`/pakete/${p.slug}`, lang)}`;
   const lowPrice = (p.price?.match(/(\d+)/) || [])[1];
@@ -38,7 +40,7 @@ const paketeList = itemListLd(pakete.map((p) => {
     url,
     name: stripQ(p.title),
     item: {
-      "@type": "Product",
+      "@type": "TouristTrip",
       name: stripQ(p.title),
       url,
       ...(p.cover ? { image: `${ORIGIN}${p.cover}` } : {}),
