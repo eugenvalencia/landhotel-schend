@@ -43,6 +43,7 @@ const paketeList = itemListLd(pakete.map((p) => {
       "@type": "TouristTrip",
       name: stripQ(p.title),
       url,
+      ...(p.intro ? { description: stripQ(p.intro) } : {}),
       ...(p.cover ? { image: `${ORIGIN}${p.cover}` } : {}),
       ...(lowPrice
         ? { offers: fromOffer(Number(lowPrice), { url: `${ORIGIN}${localizedPath("/anfrage", lang)}`, seller: { "@id": "https://landhaus-schend.de/#hotel" } }) }

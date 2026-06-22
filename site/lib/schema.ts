@@ -31,21 +31,20 @@ export function breadcrumbLd(origin: string, lang: Locale, items: Crumb[]) {
   };
 }
 
-/** „ab"-Preis korrekt als Offer mit priceSpecification.minPrice (statt festem price,
- *  der Google bei variablen Preisen als irreführend werten kann). */
+/** „ab"-Preis als AggregateOffer mit lowPrice — der von Google akzeptierte, ehrliche
+ *  Weg für variable „ab …"-Preise. Ein fester Offer.price würde einen Fixpreis
+ *  behaupten; ein UnitPriceSpecification.minPrice erfüllt Googles Pflichtfeld
+ *  „price / priceSpecification.price" NICHT → „Feld price fehlt"-Fehler (war auf
+ *  /pakete/ live). AggregateOffer.lowPrice ist der korrekte Range-Typ und gültig
+ *  für Produkt-Snippets, Händlereinträge UND makesOffer (Offer-Subtyp). */
 export function fromOffer(
   minPrice: number,
-  opts: { url?: string; unitText?: string; seller?: unknown; description?: string } = {},
+  opts: { url?: string; seller?: unknown; description?: string } = {},
 ) {
   return {
-    "@type": "Offer",
+    "@type": "AggregateOffer",
     priceCurrency: "EUR",
-    priceSpecification: {
-      "@type": "UnitPriceSpecification",
-      minPrice,
-      priceCurrency: "EUR",
-      ...(opts.unitText ? { unitText: opts.unitText } : {}),
-    },
+    lowPrice: minPrice,
     availability: "https://schema.org/InStock",
     ...(opts.url ? { url: opts.url } : {}),
     ...(opts.seller ? { seller: opts.seller } : {}),

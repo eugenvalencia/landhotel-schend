@@ -141,10 +141,13 @@ export function roomSchema(r: RoomType) {
     ...(bedType ? { bed: { "@type": "BedDetails", typeOfBed: bedType } } : {}),
     amenityFeature: r.amenities.map((a) => ({ "@type": "LocationFeatureSpecification", name: a, value: true })),
     containedInPlace: { "@id": "https://landhaus-schend.de/#hotel" },
+    // „ab"-Preis als AggregateOffer.lowPrice (gleiches Muster wie lib/schema.ts
+    // fromOffer) — minPrice/UnitPriceSpecification erfüllt Googles Preis-Pflichtfeld
+    // nicht; lowPrice ist der korrekte Range-Typ. „Person/Nacht" steckt in priceLabel.
     makesOffer: {
-      "@type": "Offer",
+      "@type": "AggregateOffer",
       priceCurrency: "EUR",
-      priceSpecification: { "@type": "UnitPriceSpecification", minPrice: r.priceFrom, priceCurrency: "EUR", unitText: "Person/Nacht" },
+      lowPrice: r.priceFrom,
       description: `${r.priceLabel}, inkl. Frühstücksbuffet`,
       availability: "https://schema.org/InStock",
     },
