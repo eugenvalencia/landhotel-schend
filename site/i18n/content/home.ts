@@ -48,8 +48,8 @@ export interface HomeContent {
   hoursSun: string;
   hoursSunT1: string;
   hoursSunT2: string;
-  hoursRuhetag: string;
-  hoursRuhetagDays: string;
+  hoursMonWed: string;
+  hoursMonWedNote: string;
   hoursNote: string;
   fullRestLink: string;
   fullRestSub: string;
@@ -163,10 +163,10 @@ export const homeContent: Record<Locale, HomeContent> = {
     hoursSun: "Sonntag",
     hoursSunT1: "12:00 – 14:00",
     hoursSunT2: "17:30 – 20:00",
-    hoursRuhetag: "Ruhetag",
-    hoursRuhetagDays: "Montag, Dienstag, Mittwoch",
+    hoursMonWed: "Montag – Mittwoch",
+    hoursMonWedNote: "Für unsere Übernachtungsgäste",
     hoursNote:
-      "Mo–Mi auf Vorbestellung — wir verwöhnen Sie gern mit unseren liebevoll kreierten Menüs auch ausserhalb der À-la-carte-Zeiten. An Feiertagen regulär geöffnet.",
+      "Montag bis Mittwoch kochen wir exklusiv für unsere Übernachtungsgäste — mit einem täglich wechselnden 3-Gänge-Menü. An Feiertagen regulär geöffnet.",
     fullRestLink: "Volle Restaurant-Seite ansehen",
     fullRestSub: "Mit Festtafel-Anfrage und Anfahrt für Tagesgäste",
     kitchenH3: "Aus unserer Küche",
@@ -302,10 +302,10 @@ export const homeContent: Record<Locale, HomeContent> = {
     hoursSun: "Sunday",
     hoursSunT1: "12:00 – 2:00 pm",
     hoursSunT2: "5:30 – 8:00 pm",
-    hoursRuhetag: "Closed",
-    hoursRuhetagDays: "Monday, Tuesday, Wednesday",
+    hoursMonWed: "Monday – Wednesday",
+    hoursMonWedNote: "For overnight guests",
     hoursNote:
-      "Mon–Wed by prior arrangement — we are happy to spoil you with our lovingly created set menus even outside à-la-carte hours. Open as usual on public holidays.",
+      "Monday to Wednesday we cook exclusively for our overnight guests — with a daily changing three-course menu. Open as usual on public holidays.",
     fullRestLink: "View the full restaurant page",
     fullRestSub: "With banquet enquiries and directions for day guests",
     kitchenH3: "From our kitchen",
@@ -441,10 +441,10 @@ export const homeContent: Record<Locale, HomeContent> = {
     hoursSun: "Dimanche",
     hoursSunT1: "12h00 – 14h00",
     hoursSunT2: "17h30 – 20h00",
-    hoursRuhetag: "Jours de fermeture",
-    hoursRuhetagDays: "lundi, mardi, mercredi",
+    hoursMonWed: "Lundi – mercredi",
+    hoursMonWedNote: "Pour les hôtes en chambre",
     hoursNote:
-      "Lun–mer sur réservation — nous vous régalons avec plaisir de nos menus préparés avec soin, même en dehors des heures à la carte. Ouvert normalement les jours fériés.",
+      "Du lundi au mercredi, nous cuisinons exclusivement pour nos hôtes en chambre — avec un menu trois plats qui change chaque jour. Ouvert normalement les jours fériés.",
     fullRestLink: "Voir la page complète du restaurant",
     fullRestSub: "Avec demande de table de fête et accès pour les visiteurs d'un jour",
     kitchenH3: "De notre cuisine",
@@ -580,10 +580,10 @@ export const homeContent: Record<Locale, HomeContent> = {
     hoursSun: "Zondag",
     hoursSunT1: "12:00 – 14:00",
     hoursSunT2: "17:30 – 20:00",
-    hoursRuhetag: "Rustdag",
-    hoursRuhetagDays: "maandag, dinsdag, woensdag",
+    hoursMonWed: "Maandag – woensdag",
+    hoursMonWedNote: "Voor overnachtende gasten",
     hoursNote:
-      "Ma–wo op aanmelding — wij verwennen u graag met onze met zorg samengestelde menu's, ook buiten de à-la-carte-tijden. Op feestdagen gewoon geopend.",
+      "Van maandag tot en met woensdag koken wij exclusief voor onze overnachtende gasten — met een dagelijks wisselend driegangenmenu. Op feestdagen gewoon geopend.",
     fullRestLink: "Volledige restaurantpagina bekijken",
     fullRestSub: "Met feesttafel-aanvraag en route voor dagjesgasten",
     kitchenH3: "Uit onze keuken",

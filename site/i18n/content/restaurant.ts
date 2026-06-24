@@ -77,8 +77,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
         { days: "Sonntag", time: "12:00 – 14:00 Uhr", note: "Gönnen Sie sich ein gemütliches Mittagessen bei uns — wir bitten nur um eine Reservierung bis Samstag 12:00 Uhr." },
       ],
       external: [
-        { days: "Montag – Mittwoch", time: "", note: "An diesen Tagen kochen wir exklusiv für unsere Übernachtungsgäste. Von Donnerstag bis Sonntag heißen wir Sie aber herzlich gern bei uns willkommen!" },
-        { days: "Donnerstag – Sonntag", time: "17:30 – 20:00 Uhr", note: "Schauen Sie gern vorbei — es erwartet Sie ein 3-Gänge-Tagesmenü oder die À-la-carte-Auswahl. Herzlich willkommen!" },
+        { days: "Montag – Mittwoch", time: "", note: "An diesen Tagen kochen wir exklusiv für unsere Übernachtungsgäste. Von Donnerstag bis Sonntag freuen wir uns aber auf Ihren Besuch!" },
+        { days: "Donnerstag – Sonntag", time: "17:30 – 20:00 Uhr", note: "Schauen Sie gern vorbei — es erwartet Sie ein 3-Gänge-Tagesmenü oder die À-la-carte-Auswahl." },
         { days: "Sonntag", time: "12:00 – 14:00 Uhr", note: "Ein entspanntes Mittagessen am Sonntag — reservieren Sie einfach bis Samstag 12:00 Uhr." },
       ],
       holidayNote: "An Feiertagen ist unser Restaurant für Sie geöffnet — schauen Sie gern vorbei.",
@@ -158,8 +158,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
         { days: "Sunday", time: "12:00 – 2:00 pm", note: "Treat yourself to a relaxed lunch with us — we simply ask that you reserve by Saturday 12:00." },
       ],
       external: [
-        { days: "Monday – Wednesday", time: "", note: "On these days we cook exclusively for our overnight guests. From Thursday to Sunday, however, we warmly welcome you to join us!" },
-        { days: "Thursday – Sunday", time: "5:30 – 8:00 pm", note: "Do drop by — a three-course menu of the day or our à-la-carte selection awaits you. A warm welcome!" },
+        { days: "Monday – Wednesday", time: "", note: "On these days we cook exclusively for our overnight guests. From Thursday to Sunday, however, we look forward to your visit!" },
+        { days: "Thursday – Sunday", time: "5:30 – 8:00 pm", note: "Do drop by — a three-course menu of the day or our à-la-carte selection awaits you." },
         { days: "Sunday", time: "12:00 – 2:00 pm", note: "A relaxed Sunday lunch — simply reserve by Saturday 12:00." },
       ],
       holidayNote: "On public holidays our restaurant is open for you — do come and visit.",
@@ -239,8 +239,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
         { days: "Dimanche", time: "12h00 – 14h00", note: "Offrez-vous un déjeuner convivial chez nous — nous vous demandons simplement de réserver avant samedi 12h00." },
       ],
       external: [
-        { days: "Lundi – mercredi", time: "", note: "Ces jours-là, nous cuisinons exclusivement pour nos hôtes en chambre. Du jeudi au dimanche, en revanche, nous vous accueillons très volontiers !" },
-        { days: "Jeudi – dimanche", time: "17h30 – 20h00", note: "Passez nous voir — un menu du jour trois plats ou la sélection à la carte vous attend. Soyez les bienvenus !" },
+        { days: "Lundi – mercredi", time: "", note: "Ces jours-là, nous cuisinons exclusivement pour nos hôtes en chambre. Du jeudi au dimanche, en revanche, nous nous réjouissons de votre visite !" },
+        { days: "Jeudi – dimanche", time: "17h30 – 20h00", note: "Passez nous voir — un menu du jour trois plats ou la sélection à la carte vous attend." },
         { days: "Dimanche", time: "12h00 – 14h00", note: "Un déjeuner détendu le dimanche — réservez simplement avant samedi 12h00." },
       ],
       holidayNote: "Les jours fériés, notre restaurant vous accueille — passez nous voir.",
@@ -320,8 +320,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
         { days: "Zondag", time: "12:00 – 14:00 uur", note: "Gun uzelf een gezellige lunch bij ons — wij vragen u alleen om uiterlijk zaterdag 12:00 uur te reserveren." },
       ],
       external: [
-        { days: "Maandag – woensdag", time: "", note: "Op deze dagen koken wij exclusief voor onze overnachtende gasten. Van donderdag tot en met zondag heten wij u echter van harte welkom!" },
-        { days: "Donderdag – zondag", time: "17:30 – 20:00 uur", note: "Kom gerust langs — een driegangen-dagmenu of de à-la-cartekeuze staat voor u klaar. Van harte welkom!" },
+        { days: "Maandag – woensdag", time: "", note: "Op deze dagen koken wij exclusief voor onze overnachtende gasten. Van donderdag tot en met zondag verheugen wij ons echter op uw bezoek!" },
+        { days: "Donderdag – zondag", time: "17:30 – 20:00 uur", note: "Kom gerust langs — een driegangen-dagmenu of de à-la-cartekeuze staat voor u klaar." },
         { days: "Zondag", time: "12:00 – 14:00 uur", note: "Een ontspannen lunch op zondag — reserveer eenvoudig uiterlijk zaterdag 12:00 uur." },
       ],
       holidayNote: "Op feestdagen is ons restaurant voor u geopend — kom gerust langs.",
