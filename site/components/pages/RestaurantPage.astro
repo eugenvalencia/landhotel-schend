@@ -169,22 +169,6 @@ const restaurantSchema = {
         </div>
         <p class="text-xs text-muted-foreground italic mt-5">{c.hours.holidayNote}</p>
       </div>
-      {/* Unsere Küche */}
-      <div class="bg-background p-8 flex flex-col" data-reveal style="--reveal-delay:0.16s">
-        <h3 class="font-display text-xl md:text-2xl mb-5 leading-tight">{c.kitchenH3}</h3>
-        <ul class="space-y-2.5 text-sm text-muted-foreground flex-1">
-          {c.kitchen.map((k) => <li>{k}</li>)}
-        </ul>
-        <p class="text-xs text-muted-foreground italic mt-5">{c.kitchenNote}</p>
-      </div>
-      {/* Festtafel & Feiern */}
-      <div class="bg-background p-8 flex flex-col" data-reveal style="--reveal-delay:0.24s">
-        <h3 class="font-display text-xl md:text-2xl mb-5 leading-tight">{c.feastH3}</h3>
-        <p class="text-sm text-muted-foreground flex-1 leading-relaxed">
-          {c.feastText}
-        </p>
-        <p class="text-xs text-muted-foreground italic mt-5">{c.feastNote}</p>
-      </div>
     </div>
   </section>
 
