@@ -14,13 +14,13 @@ export interface RestaurantContent {
   ctaHotel: string;
   banner: string;
   hoursH3: string;
-  hoursThuSat: string;
-  hoursThuSatTime: string;
-  hoursSun: string;
-  hoursSunTime1: string;
-  hoursSunTime2: string;
-  restDayLabel: string;
-  restDayText: string;
+  hours: {
+    guestsTitle: string;
+    externalTitle: string;
+    guests: { days: string; time: string; note: string }[];
+    external: { days: string; time: string; note: string }[];
+    holidayNote: string;
+  };
   kitchenH3: string;
   kitchen: string[];
   kitchenNote: string;
@@ -68,14 +68,21 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     ctaHotel: "Zum Hotel",
     banner: "Auch ohne Übernachtung — Einheimische und Vorbeireisende herzlich willkommen",
     hoursH3: "Öffnungszeiten",
-    hoursThuSat: "Donnerstag – Samstag",
-    hoursThuSatTime: "17:30 – 20:00 Uhr",
-    hoursSun: "Sonntag",
-    hoursSunTime1: "12:00 – 14:00 Uhr",
-    hoursSunTime2: "17:30 – 20:00 Uhr",
-    restDayLabel: "Ruhetag: Montag – Mittwoch",
-    restDayText:
-      "Von Montag bis Mittwoch ist unser À-la-carte-Restaurant geschlossen. Wir freuen uns jedoch darauf, Sie mit unseren liebevoll kreierten Menüs zu verwöhnen — Anmeldung erwünscht. An Feiertagen ist das Restaurant für Sie geöffnet.",
+    hours: {
+      guestsTitle: "Für Übernachtungsgäste",
+      externalTitle: "Für externe Gäste",
+      guests: [
+        { days: "Montag – Mittwoch", time: "17:30 – 20:00 Uhr", note: "Täglich wechselndes 3-Gänge-Menü — Vorspeise, Hauptgang, Dessert. Frisch und handgemacht; Essenswünsche berücksichtigen wir gern. (Keine À-la-carte an diesen Tagen.)" },
+        { days: "Donnerstag – Sonntag", time: "17:30 – 20:00 Uhr", note: "3-Gänge-Tagesmenü oder À-la-carte." },
+        { days: "Sonntag", time: "12:00 – 14:00 Uhr", note: "Mittagessen auf Reservierung — bitte bis Samstag 12:00 Uhr." },
+      ],
+      external: [
+        { days: "Montag – Mittwoch", time: "", note: "An diesen Tagen kochen wir exklusiv für unsere Hotelgäste — als externer Gast können wir Sie Mo–Mi leider nicht bewirten." },
+        { days: "Donnerstag – Sonntag", time: "17:30 – 20:00 Uhr", note: "3-Gänge-Tagesmenü oder À-la-carte — herzlich willkommen!" },
+        { days: "Sonntag", time: "12:00 – 14:00 Uhr", note: "Mittagessen auf Reservierung — bitte bis Samstag 12:00 Uhr." },
+      ],
+      holidayNote: "An Feiertagen ist das Restaurant für Sie geöffnet.",
+    },
     kitchenH3: "Unsere Küche",
     kitchen: [
       "Eifeler Landküche — regional, ehrlich",
@@ -114,7 +121,7 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     faq: [
       {
         q: "Hat das Restaurant an Feiertagen geöffnet?",
-        a: "Ja. An Feiertagen ist unser Restaurant für Sie geöffnet — auch wenn der Feiertag auf einen unserer üblichen Ruhetage (Montag bis Mittwoch) fällt. À-la-carte servieren wir regulär Donnerstag bis Samstag von 17:30 bis 20:00 Uhr sowie sonntags von 12:00 bis 14:00 und 17:30 bis 20:00 Uhr.",
+        a: "Ja. An Feiertagen ist unser Restaurant für Sie geöffnet — auch wenn der Feiertag auf Montag bis Mittwoch fällt, also auf Tage, an denen wir sonst exklusiv für unsere Hotelgäste kochen. À-la-carte servieren wir regulär von Donnerstag bis Sonntag, 17:30 bis 20:00 Uhr, sonntags zusätzlich von 12:00 bis 14:00 Uhr.",
       },
       {
         q: "Gibt es eine feste Speisekarte?",
@@ -142,14 +149,21 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     ctaHotel: "To the hotel",
     banner: "No overnight stay needed — locals and passing travellers warmly welcome",
     hoursH3: "Opening hours",
-    hoursThuSat: "Thursday – Saturday",
-    hoursThuSatTime: "5:30 – 8:00 pm",
-    hoursSun: "Sunday",
-    hoursSunTime1: "12:00 – 2:00 pm",
-    hoursSunTime2: "5:30 – 8:00 pm",
-    restDayLabel: "Closed: Monday – Wednesday",
-    restDayText:
-      "From Monday to Wednesday our à-la-carte restaurant is closed. We would, however, love to spoil you with our lovingly created set menus — by prior arrangement. On public holidays the restaurant is open for you.",
+    hours: {
+      guestsTitle: "For overnight guests",
+      externalTitle: "For day guests",
+      guests: [
+        { days: "Monday – Wednesday", time: "5:30 – 8:00 pm", note: "Daily changing three-course menu — starter, main, dessert. Freshly made by hand; happy to accommodate dietary wishes. (No à-la-carte on these days.)" },
+        { days: "Thursday – Sunday", time: "5:30 – 8:00 pm", note: "Three-course menu of the day or à-la-carte." },
+        { days: "Sunday", time: "12:00 – 2:00 pm", note: "Lunch by reservation — please book by Saturday 12:00." },
+      ],
+      external: [
+        { days: "Monday – Wednesday", time: "", note: "On these days we cook exclusively for our hotel guests — we are unfortunately unable to serve day guests Mon–Wed." },
+        { days: "Thursday – Sunday", time: "5:30 – 8:00 pm", note: "Three-course menu of the day or à-la-carte — most welcome!" },
+        { days: "Sunday", time: "12:00 – 2:00 pm", note: "Lunch by reservation — please book by Saturday 12:00." },
+      ],
+      holidayNote: "On public holidays the restaurant is open for you.",
+    },
     kitchenH3: "Our kitchen",
     kitchen: [
       "Eifel country kitchen — regional, honest",
@@ -188,7 +202,7 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     faq: [
       {
         q: "Is the restaurant open on public holidays?",
-        a: "Yes. On public holidays our restaurant is open for you — even when the holiday falls on one of our usual closing days (Monday to Wednesday). Our regular à-la-carte hours are Thursday to Saturday from 5:30 to 8:00 pm and Sunday from 12:00 to 2:00 pm and 5:30 to 8:00 pm.",
+        a: "Yes. On public holidays our restaurant is open for you — even when the holiday falls on Monday to Wednesday, the days when we otherwise cook exclusively for our hotel guests. Our regular à-la-carte hours are Thursday to Sunday from 5:30 to 8:00 pm, plus Sunday lunch from 12:00 to 2:00 pm.",
       },
       {
         q: "Is there a fixed menu?",
@@ -216,14 +230,21 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     ctaHotel: "Vers l'hôtel",
     banner: "Même sans nuitée — habitants et voyageurs de passage sont les bienvenus",
     hoursH3: "Horaires d'ouverture",
-    hoursThuSat: "Jeudi – samedi",
-    hoursThuSatTime: "17h30 – 20h00",
-    hoursSun: "Dimanche",
-    hoursSunTime1: "12h00 – 14h00",
-    hoursSunTime2: "17h30 – 20h00",
-    restDayLabel: "Jours de fermeture : lundi – mercredi",
-    restDayText:
-      "Du lundi au mercredi, notre restaurant à la carte est fermé. Nous serons toutefois ravis de vous régaler avec nos menus préparés avec soin — sur réservation. Les jours fériés, le restaurant vous accueille.",
+    hours: {
+      guestsTitle: "Pour les hôtes en chambre",
+      externalTitle: "Pour les visiteurs d'un jour",
+      guests: [
+        { days: "Lundi – mercredi", time: "17h30 – 20h00", note: "Menu trois plats changeant chaque jour — entrée, plat, dessert. Fait maison et frais ; nous tenons compte de vos préférences. (Pas de carte ces jours-là.)" },
+        { days: "Jeudi – dimanche", time: "17h30 – 20h00", note: "Menu du jour trois plats ou à la carte." },
+        { days: "Dimanche", time: "12h00 – 14h00", note: "Déjeuner sur réservation — merci de réserver avant samedi 12h00." },
+      ],
+      external: [
+        { days: "Lundi – mercredi", time: "", note: "Ces jours-là, nous cuisinons exclusivement pour nos hôtes en chambre — nous ne pouvons malheureusement pas accueillir de visiteurs d'un jour du lundi au mercredi." },
+        { days: "Jeudi – dimanche", time: "17h30 – 20h00", note: "Menu du jour trois plats ou à la carte — bienvenue !" },
+        { days: "Dimanche", time: "12h00 – 14h00", note: "Déjeuner sur réservation — merci de réserver avant samedi 12h00." },
+      ],
+      holidayNote: "Les jours fériés, le restaurant vous accueille.",
+    },
     kitchenH3: "Notre cuisine",
     kitchen: [
       "Cuisine régionale de l'Eifel — authentique",
@@ -262,7 +283,7 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     faq: [
       {
         q: "Le restaurant est-il ouvert les jours fériés ?",
-        a: "Oui. Les jours fériés, notre restaurant vous accueille — même si le jour férié tombe sur l'un de nos jours de fermeture habituels (lundi à mercredi). Nos horaires à la carte sont jeudi à samedi de 17h30 à 20h00 et dimanche de 12h00 à 14h00 ainsi que de 17h30 à 20h00.",
+        a: "Oui. Les jours fériés, notre restaurant vous accueille — même si le jour férié tombe du lundi au mercredi, jours où nous cuisinons sinon exclusivement pour nos hôtes en chambre. Nos horaires à la carte sont du jeudi au dimanche de 17h30 à 20h00, et le dimanche également de 12h00 à 14h00.",
       },
       {
         q: "Y a-t-il une carte fixe ?",
@@ -290,14 +311,21 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     ctaHotel: "Naar het hotel",
     banner: "Ook zonder overnachting — buurtbewoners en passanten van harte welkom",
     hoursH3: "Openingstijden",
-    hoursThuSat: "Donderdag – zaterdag",
-    hoursThuSatTime: "17:30 – 20:00 uur",
-    hoursSun: "Zondag",
-    hoursSunTime1: "12:00 – 14:00 uur",
-    hoursSunTime2: "17:30 – 20:00 uur",
-    restDayLabel: "Rustdag: maandag – woensdag",
-    restDayText:
-      "Van maandag tot en met woensdag is ons à-la-carterestaurant gesloten. Wij verwennen u echter graag met onze met zorg samengestelde menu's — aanmelding gewenst. Op feestdagen is het restaurant voor u geopend.",
+    hours: {
+      guestsTitle: "Voor overnachtende gasten",
+      externalTitle: "Voor dagjesgasten",
+      guests: [
+        { days: "Maandag – woensdag", time: "17:30 – 20:00 uur", note: "Dagelijks wisselend driegangenmenu — voorgerecht, hoofdgerecht, dessert. Vers en huisgemaakt; met dieetwensen houden wij graag rekening. (Geen à la carte op deze dagen.)" },
+        { days: "Donderdag – zondag", time: "17:30 – 20:00 uur", note: "Driegangen-dagmenu of à la carte." },
+        { days: "Zondag", time: "12:00 – 14:00 uur", note: "Lunch op reservering — graag uiterlijk zaterdag 12:00 uur reserveren." },
+      ],
+      external: [
+        { days: "Maandag – woensdag", time: "", note: "Op deze dagen koken wij exclusief voor onze hotelgasten — als dagjesgast kunnen wij u ma–wo helaas niet ontvangen." },
+        { days: "Donderdag – zondag", time: "17:30 – 20:00 uur", note: "Driegangen-dagmenu of à la carte — van harte welkom!" },
+        { days: "Zondag", time: "12:00 – 14:00 uur", note: "Lunch op reservering — graag uiterlijk zaterdag 12:00 uur reserveren." },
+      ],
+      holidayNote: "Op feestdagen is het restaurant voor u geopend.",
+    },
     kitchenH3: "Onze keuken",
     kitchen: [
       "Eifeler streekkeuken — regionaal, eerlijk",
@@ -336,7 +364,7 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     faq: [
       {
         q: "Is het restaurant op feestdagen geopend?",
-        a: "Ja. Op feestdagen is ons restaurant voor u geopend — ook als de feestdag op een van onze gebruikelijke rustdagen (maandag tot en met woensdag) valt. Onze reguliere à-la-cartetijden zijn donderdag tot en met zaterdag van 17:30 tot 20:00 uur en zondag van 12:00 tot 14:00 en 17:30 tot 20:00 uur.",
+        a: "Ja. Op feestdagen is ons restaurant voor u geopend — ook als de feestdag op maandag tot en met woensdag valt, de dagen waarop wij anders exclusief voor onze hotelgasten koken. Onze reguliere à-la-cartetijden zijn donderdag tot en met zondag van 17:30 tot 20:00 uur, en op zondag bovendien van 12:00 tot 14:00 uur.",
       },
       {
         q: "Is er een vaste kaart?",

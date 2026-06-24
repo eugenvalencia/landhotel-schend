@@ -143,23 +143,42 @@ const restaurantSchema = {
 
   <!-- Drei Spalten -->
   <section class="container mx-auto px-4 py-16 md:py-24">
-    <div class="grid md:grid-cols-3 gap-px bg-border/50 max-w-5xl mx-auto border border-border/40 rounded-md overflow-hidden shadow-card">
+    <div class="grid md:grid-cols-2 gap-px bg-border/50 max-w-5xl mx-auto border border-border/40 rounded-md overflow-hidden shadow-card">
+      {/* Öffnungszeiten — Übernachtungsgäste */}
       <div class="bg-background p-8 flex flex-col" data-reveal>
-        <h3 class="font-display text-xl md:text-2xl mb-5 leading-tight">{c.hoursH3}</h3>
-        <div class="space-y-3 text-sm flex-1">
-          <div><p class="font-medium">{c.hoursThuSat}</p><p class="text-muted-foreground">{c.hoursThuSatTime}</p></div>
-          <div><p class="font-medium">{c.hoursSun}</p><p class="text-muted-foreground">{c.hoursSunTime1}</p><p class="text-muted-foreground">{c.hoursSunTime2}</p></div>
-          <div><p class="font-medium">{c.restDayLabel}</p><p class="text-muted-foreground">{c.restDayText}</p></div>
+        <h3 class="font-display text-xl md:text-2xl mb-5 leading-tight">{c.hours.guestsTitle}</h3>
+        <div class="space-y-4 text-sm flex-1">
+          {c.hours.guests.map((r) => (
+            <div>
+              <p class="font-medium">{r.days}{r.time && <span class="text-muted-foreground font-normal"> · {r.time}</span>}</p>
+              <p class="text-muted-foreground leading-relaxed">{r.note}</p>
+            </div>
+          ))}
         </div>
       </div>
+      {/* Öffnungszeiten — Externe Gäste */}
       <div class="bg-background p-8 flex flex-col" data-reveal style="--reveal-delay:0.08s">
+        <h3 class="font-display text-xl md:text-2xl mb-5 leading-tight">{c.hours.externalTitle}</h3>
+        <div class="space-y-4 text-sm flex-1">
+          {c.hours.external.map((r) => (
+            <div>
+              <p class="font-medium">{r.days}{r.time && <span class="text-muted-foreground font-normal"> · {r.time}</span>}</p>
+              <p class="text-muted-foreground leading-relaxed">{r.note}</p>
+            </div>
+          ))}
+        </div>
+        <p class="text-xs text-muted-foreground italic mt-5">{c.hours.holidayNote}</p>
+      </div>
+      {/* Unsere Küche */}
+      <div class="bg-background p-8 flex flex-col" data-reveal style="--reveal-delay:0.16s">
         <h3 class="font-display text-xl md:text-2xl mb-5 leading-tight">{c.kitchenH3}</h3>
         <ul class="space-y-2.5 text-sm text-muted-foreground flex-1">
           {c.kitchen.map((k) => <li>{k}</li>)}
         </ul>
         <p class="text-xs text-muted-foreground italic mt-5">{c.kitchenNote}</p>
       </div>
-      <div class="bg-background p-8 flex flex-col" data-reveal style="--reveal-delay:0.16s">
+      {/* Festtafel & Feiern */}
+      <div class="bg-background p-8 flex flex-col" data-reveal style="--reveal-delay:0.24s">
         <h3 class="font-display text-xl md:text-2xl mb-5 leading-tight">{c.feastH3}</h3>
         <p class="text-sm text-muted-foreground flex-1 leading-relaxed">
           {c.feastText}
