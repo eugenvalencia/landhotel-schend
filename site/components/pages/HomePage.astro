@@ -23,6 +23,7 @@ const c = homeContent[lang];
 const pakete = paketeFor(lang);
 const altSuffix = zimmerChrome[lang].altSuffix;
 
+const HERO_VIDEO_WEBM = "/hero/schend-hero.webm";
 const HERO_VIDEO = "/hero/schend-hero.mp4";
 const HERO_POSTER = "/hero/schend-hero-poster.webp";
 
@@ -165,6 +166,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
   <section id="top" class="relative h-[100vh] min-h-[640px] max-h-[1100px] overflow-hidden">
     <div data-hero-bg aria-hidden="true" class="absolute inset-0 will-change-transform" style="transform: scale(1.22)">
       <video data-hero-video class="absolute inset-0 w-full h-full object-cover" poster={HERO_POSTER} muted loop playsinline preload="none" aria-hidden="true">
+        <source src={HERO_VIDEO_WEBM} type="video/webm" />
         <source src={HERO_VIDEO} type="video/mp4" />
       </video>
     </div>
