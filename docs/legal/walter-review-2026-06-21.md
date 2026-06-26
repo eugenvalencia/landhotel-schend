@@ -42,10 +42,12 @@ Vor dem echten Go-Live zwingend:
 3. Beleg (Region-Screenshot + DPA-Status) zu den Go-Live-Akten.
 
 Schritt-für-Schritt + Einordnung: `docs/SECURITY-NEXT-STEPS.md` Punkt 2.
-Solange `INQUIRY_FROM = onboarding@resend.dev` (Testmodus, nur an Konto-Mail),
-verlässt **keine** echte Gast-PII das Konto Richtung Hotel — der EU-Region-Beleg
-ist erst zum Domain-Cutover scharf, muss aber **vor** dem ersten echten
-Gast-Versand stehen.
+**UPDATE 2026-06-26:** Testmodus vorbei — Domain-Cutover ist erfolgt
+(`INQUIRY_FROM`/`INQUIRY_TO` = `info@landhaus-schend.de`, live verifiziert).
+Damit fließt jetzt **echte Gast-PII** über Resend → der EU-Region-/DPA-Beleg ist
+**scharf und überfällig**, nicht mehr „erst zum Cutover". Walter: Resend-DPA +
+Transfer-Grundlage (SCC/DPF) jetzt priorisiert klären. Querverweis:
+`conexa-os/docs/kunden/landhaus-schend/ART30-VERARBEITUNGSVERZEICHNIS-SCHEND.md`.
 
 ## 3. Offen — vor Go-Live menschlich zu klären
 

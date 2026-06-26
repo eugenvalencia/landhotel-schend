@@ -61,18 +61,22 @@ Aktuell nur die risikolosen CSP-Direktiven. Eine vollständige
 `script-src`/`style-src`/`connect-src`-CSP braucht einen Test gegen Inline-
 Skripte (Splash/Theme) und evtl. Google-Maps-Embed — separater Schritt.
 
-## E-Mail-Cutover-Checkliste (für `landhaus-schend.de`-Go-Live)
-Aktueller Test-Stand: `INQUIRY_FROM = onboarding@resend.dev` (CF-Env, sendet nur
-an die Resend-Konto-Mail `e.neifer@outlook.de`), `INQUIRY_TO` = Default
-`e.neifer@outlook.de`, `RESEND_API_KEY` gesetzt (Konto `e.neifer@outlook.de`).
+## E-Mail-Cutover-Checkliste (für `landhaus-schend.de`-Go-Live) — ✅ ERLEDIGT
+**Stand 2026-06-26 (in Cloudflare-Pages-Env verifiziert):** Testmodus ist vorbei.
+- `INQUIRY_FROM` = `Landhaus Schend <info@landhaus-schend.de>` (echte Domain, Klartext-Var)
+- `INQUIRY_TO` = `info@landhaus-schend.de` (Hotel — **nicht** mehr der `e.neifer@outlook.de`-Default)
+- `RESEND_API_KEY` = gesetzt (verschlüsseltes Secret)
 
-Beim Umzug auf die echte Domain:
-1. `landhaus-schend.de` (oder `send.conexadigital.eu` als Zwischenlösung) in
-   Resend verifizieren (DNS-Einträge).
-2. In Cloudflare `INQUIRY_FROM` **löschen** → Code nimmt automatisch
-   `buchung@landhaus-schend.de` (Standard im Code).
-3. `INQUIRY_TO` auf **Schends echte Adresse** setzen.
-4. Deploy → Anfragen gehen von der eigenen Domain ans Hotel.
+→ Anfragen gehen live von der eigenen Domain ans Hotel. Der frühere
+`onboarding@resend.dev`-Testmodus ist nicht mehr aktiv.
+
+<details><summary>Historische Cutover-Schritte (abgehakt)</summary>
+
+1. ✅ Domain in Resend verifiziert (DNS).
+2. ✅ `INQUIRY_FROM` auf echte Domain gesetzt.
+3. ✅ `INQUIRY_TO` auf Schends echte Adresse gesetzt.
+4. ✅ Deploy — Anfragen gehen von eigener Domain ans Hotel.
+</details>
 
 ## ⚠️ GEO/KI-Crawler-Check beim Domain-Cutover (Pflicht!)
 Cloudflare blockt KI-Crawler **pro Zone** — der am 21.06. auf `conexadigital.eu`
