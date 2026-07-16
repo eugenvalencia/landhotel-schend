@@ -289,6 +289,24 @@ export const galleryPhotos: GalleryPhoto[] = [
     },
   },
   {
+    src: "/fotos/doppelzimmer-einzelnutzung-mit-holzbett-und-lamellenschrank-landhaus-schend-vulkaneifel.jpg",
+    alt: {
+      de: "Doppelzimmer zur Einzelnutzung im Landhaus Schend mit Holzbett, Holzboden und Lamellen-Kleiderschrank",
+      en: "Double room for single use at Landhaus Schend with a wooden bed, wood floor and a slatted wardrobe",
+      fr: "Chambre double à usage individuel au Landhaus Schend avec lit en bois, parquet et armoire à lamelles",
+      nl: "Tweepersoonskamer voor eenpersoonsgebruik in Landhaus Schend met houten bed, houten vloer en lamellenkast",
+    },
+  },
+  {
+    src: "/fotos/doppelzimmer-einzelnutzung-bad-mit-walk-in-dusche-und-rundspiegel-landhaus-schend-vulkaneifel.jpg",
+    alt: {
+      de: "Modernes Bad des Einzelnutzungs-Doppelzimmers im Landhaus Schend mit ebenerdiger Walk-in-Dusche und beleuchtetem LED-Rundspiegel",
+      en: "Modern bathroom of the single-use double room at Landhaus Schend with a level-access walk-in shower and a backlit round LED mirror",
+      fr: "Salle de bains moderne de la chambre double à usage individuel au Landhaus Schend avec douche à l'italienne de plain-pied et miroir rond LED rétroéclairé",
+      nl: "Moderne badkamer van de tweepersoonskamer voor eenpersoonsgebruik in Landhaus Schend met inloopdouche op vloerniveau en verlichte ronde led-spiegel",
+    },
+  },
+  {
     src: "/fotos/doppelzimmer-bad-mit-walk-in-dusche-und-led-rundspiegel-landhaus-schend-vulkaneifel.jpg",
     alt: {
       de: "Modernes Badezimmer im Landhaus Schend mit ebenerdiger Walk-in-Dusche und beleuchtetem LED-Rundspiegel",
