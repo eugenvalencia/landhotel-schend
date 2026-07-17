@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { activateOnKey } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -121,6 +122,9 @@ export default function DemoComplianceTab() {
                 <li
                   key={d.name}
                   onClick={() => setSelectedDoc(d)}
+                  onKeyDown={activateOnKey(() => setSelectedDoc(d))}
+                  role="button"
+                  tabIndex={0}
                   className="py-2.5 flex items-center justify-between gap-3 text-sm cursor-pointer hover:bg-muted/40 -mx-2 px-2 rounded"
                 >
                   <div className="flex-1 min-w-0">
@@ -146,6 +150,9 @@ export default function DemoComplianceTab() {
                 <li
                   key={p.name}
                   onClick={() => setSelectedSub(p)}
+                  onKeyDown={activateOnKey(() => setSelectedSub(p))}
+                  role="button"
+                  tabIndex={0}
                   className="py-2.5 text-sm cursor-pointer hover:bg-muted/40 -mx-2 px-2 rounded"
                 >
                   <div className="flex items-center justify-between gap-3">

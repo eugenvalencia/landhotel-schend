@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { activateOnKey } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -120,6 +121,9 @@ export default function DemoDatevTab() {
                 <li
                   key={e.period}
                   onClick={() => setSelected(e)}
+                  onKeyDown={activateOnKey(() => setSelected(e))}
+                  role="button"
+                  tabIndex={0}
                   className="py-3 flex items-center justify-between gap-4 text-sm cursor-pointer hover:bg-muted/40 -mx-2 px-2 rounded"
                 >
                   <div className="flex items-center gap-3">

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { activateOnKey } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -129,6 +130,9 @@ export default function DemoMessagingTab() {
                 <li
                   key={t.id}
                   onClick={() => setSelected(t)}
+                  onKeyDown={activateOnKey(() => setSelected(t))}
+                  role="button"
+                  tabIndex={0}
                   className="py-3 flex items-start justify-between gap-3 cursor-pointer hover:bg-muted/40 -mx-2 px-2 rounded"
                 >
                   <div className="flex-1 min-w-0">
@@ -158,6 +162,9 @@ export default function DemoMessagingTab() {
                 <li
                   key={t.name}
                   onClick={() => alert(`Demo-Modus: in produktiv koennte hier "${t.name}" gestartet werden — Gast-Daten werden automatisch eingesetzt.`)}
+                  onKeyDown={activateOnKey(() => alert(`Demo-Modus: in produktiv koennte hier "${t.name}" gestartet werden — Gast-Daten werden automatisch eingesetzt.`))}
+                  role="button"
+                  tabIndex={0}
                   className="hover:bg-muted/60 -mx-2 px-2 py-1.5 rounded cursor-pointer flex items-center gap-2"
                 >
                   <span>{t.icon}</span>

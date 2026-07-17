@@ -172,7 +172,7 @@ export default function Booking() {
   // Earliest forced check-out: first blocked date strictly after the chosen check-in
   const maxCheckout = useMemo(() => {
     if (!checkIn) return undefined;
-    const sorted = [...blockedDates].sort();
+    const sorted = [...blockedDates].sort((a, b) => a.localeCompare(b));
     const inIso = toISODate(checkIn);
     for (const iso of sorted) {
       // parseISOLocal statt new Date(iso): new Date("YYYY-MM-DD") parst UTC-Mitternacht

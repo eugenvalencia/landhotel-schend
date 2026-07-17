@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { activateOnKey } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -121,6 +122,9 @@ export default function DemoVoiceTab() {
               <li
                 key={c.id}
                 onClick={() => setSelected(c)}
+                onKeyDown={activateOnKey(() => setSelected(c))}
+                role="button"
+                tabIndex={0}
                 className="py-3 flex items-start justify-between gap-4 text-sm cursor-pointer hover:bg-muted/40 -mx-2 px-2 rounded"
               >
                 <div className="flex-1">

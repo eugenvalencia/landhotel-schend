@@ -149,7 +149,9 @@ export default function GuestProfileDialog({
     const upcoming = valid.filter((b) => b.check_in >= today).sort((a, b) => a.check_in.localeCompare(b.check_in));
     // bookings ist nach check_in DESC sortiert → past[0] ist NICHT der letzte
     // Aufenthalt. Spaetesten check_out nehmen (ISO-Strings sortieren chronolog.).
-    const lastStay = past.length ? past.map((b) => b.check_out).sort().at(-1) : undefined;
+    const lastStay = past.length
+      ? past.map((b) => b.check_out).sort((a, b) => a.localeCompare(b)).at(-1)
+      : undefined;
     const nextStay = upcoming[0]?.check_in;
     const firstBooking = [...valid].sort((a, b) => a.created_at.localeCompare(b.created_at))[0]?.created_at;
 
