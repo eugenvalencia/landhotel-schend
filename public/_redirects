@@ -11,3 +11,17 @@
 # Alte Menue-URL "GASTRONOMIE" -> echte Restaurant-Seite (verhindert 404 / toten Link).
 /gastronomie      /restaurant/   301
 /gastronomie/*    /restaurant/   301
+
+# Alt-URLs der Vorgaenger-Seite (Framer): tote /gNN- und /page-Slugs, die Google noch
+# im Index hat (Seitenindexierung -> 404), auf die Startseite umleiten. Selbstheilend,
+# aber so verschwinden sie schneller + keine toten Links.
+# WICHTIG: die echte /galerie-Seite (+ /en/galerie) VOR dem /g*-Splat schuetzen,
+# sonst reisst der Splat sie mit. trailingSlash: "always".
+/galerie          /galerie/      301
+/galerie/*        /galerie/      200
+/en/galerie       /en/galerie/   301
+/en/galerie/*     /en/galerie/   200
+/g*               /              301
+/en/g*            /en/           301
+/page             /              301
+/page/*           /              301
