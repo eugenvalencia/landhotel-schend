@@ -139,7 +139,7 @@ export const homeContent: Record<Locale, HomeContent> = {
       "21 Komfortzimmer",
       "Kostenloses WLAN",
       "Großes Frühstücksbuffet",
-      "Booking.com 8,7 · 4,0/5 auf Tripadvisor",
+      "Booking.com 8,8 · 4,0/5 auf Tripadvisor",
     ],
     roomsH2: "Zu Gast im Landhaus Schend",
     roomsIntro:
@@ -278,7 +278,7 @@ export const homeContent: Record<Locale, HomeContent> = {
       "21 comfort rooms",
       "Free Wi-Fi",
       "Large breakfast buffet",
-      "Booking.com 8.7 · 4.0/5 on Tripadvisor",
+      "Booking.com 8.8 · 4.0/5 on Tripadvisor",
     ],
     roomsH2: "A guest at Landhaus Schend",
     roomsIntro:
@@ -417,7 +417,7 @@ export const homeContent: Record<Locale, HomeContent> = {
       "21 chambres confort",
       "Wi-Fi gratuit",
       "Grand petit-déjeuner buffet",
-      "Booking.com 8,7 · 4,0/5 sur Tripadvisor",
+      "Booking.com 8,8 · 4,0/5 sur Tripadvisor",
     ],
     roomsH2: "Séjourner au Landhaus Schend",
     roomsIntro:
@@ -556,7 +556,7 @@ export const homeContent: Record<Locale, HomeContent> = {
       "21 comfortkamers",
       "Gratis wifi",
       "Groot ontbijtbuffet",
-      "Booking.com 8,7 · 4,0/5 op Tripadvisor",
+      "Booking.com 8,8 · 4,0/5 op Tripadvisor",
     ],
     roomsH2: "Te gast in Landhaus Schend",
     roomsIntro:

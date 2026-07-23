@@ -45,7 +45,7 @@ const REGION_SRC = ["/region/eifel-1.jpg", "/region/eifel-2.jpg", "/region/eifel
 const REGION_CLS = ["md:row-span-2 md:h-[33rem]", "md:col-span-2", "md:row-span-2 md:h-[33rem]", "", ""];
 
 const PLATFORMS = [
-  { name: "Booking.com", logo: "/reviews/booking.svg", score: "8,7 / 10", href: "https://www.booking.com/hotel/de/landhaus-schend.html" },
+  { name: "Booking.com", logo: "/reviews/booking.svg", score: "8,8 / 10", href: "https://www.booking.com/hotel/de/landhaus-schend.html" },
   { name: "Tripadvisor", logo: "/reviews/tripadvisor.svg", score: "4,0 / 5", href: "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html" },
   { name: "HRS", mark: "HRS", brand: "#1d4ed8", score: "9,0 / 10", href: "https://www.hrs.com/en/hotel/schend-landhaus/a-542374/" },
   { name: "Google", logo: "/reviews/google.svg", score: "", href: "https://www.google.com/maps/search/?api=1&query=Landhaus+Schend+Immerath" },
@@ -98,16 +98,16 @@ const hotelGraph = {
       // einseitigen containedInPlace auf der Restaurant-Seite).
       containsPlace: { "@id": "https://landhaus-schend.de/restaurant/#restaurant" },
       // Aggregierte Gäste-Bewertung — Booking.com als Quelle (größte, transparente
-      // Stichprobe: 8,7/10 aus 252 Bewertungen, 1:1 zum sichtbaren Footer/Reviews-
+      // Stichprobe: 8,8/10 aus 277 Bewertungen, 1:1 zum sichtbaren Footer/Reviews-
       // Abschnitt; kein erfundener Mittelwert über verschiedene Skalen). Wert v.a. für
       // GEO/KI-Suche (LLM-Zitate) — Google zeigt für Hotels self-serving Sterne oft
       // NICHT. UWG/Marken-Prüfung der Plattform-Nennung durch Walter vor Go-Live.
       aggregateRating: {
         "@type": "AggregateRating",
-        ratingValue: "8.7",
+        ratingValue: "8.8",
         bestRating: "10",
         worstRating: "1",
-        ratingCount: "252",
+        ratingCount: "277",
       },
     },
     {
@@ -188,7 +188,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
       <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 mb-10 md:mb-12 text-white/80" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">
         <span class="text-xs tracking-[0.12em] uppercase font-medium"><span class="text-secondary">★</span> {c.statTripadvisor}</span>
         <span class="text-white/40" aria-hidden="true">·</span>
-        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="8.7" data-count-decimals="1" data-count-mount="1" data-count-delay="600" data-count-dur="1400">8,7</span> {c.statBooking}</span>
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="8.8" data-count-decimals="1" data-count-mount="1" data-count-delay="600" data-count-dur="1400">8,8</span> {c.statBooking}</span>
         <span class="text-white/40" aria-hidden="true">·</span>
         <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="170" data-count-mount="1" data-count-delay="800" data-count-dur="1600">170</span> {c.statTradition}</span>
         <span class="text-white/40 hidden sm:inline" aria-hidden="true">·</span>
