@@ -85,7 +85,16 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
     return json({ ok: false, error: "mail_not_configured" });
   }
 
-  const to = env.INQUIRY_TO || "e.neifer@outlook.de";
+  // KEIN Fallback-Empfänger. Vorher stand hier ein privates Outlook-Postfach des
+  // Dienstleisters: War INQUIRY_TO in irgendeiner Umgebung nicht gesetzt — und
+  // Preview-Deploys laufen bei jedem Pull Request —, gingen Name, Anschrift,
+  // Telefon und Reisezeitraum eines Hotelgastes an einen Empfänger, der in keiner
+  // Datenschutzerklärung steht und für den kein Auftragsverarbeitungsvertrag
+  // existiert. Lieber ein ehrlicher Fehler als eine stille Weiterleitung.
+  if (!env.INQUIRY_TO) {
+    return json({ ok: false, error: "mail_not_configured" });
+  }
+  const to = env.INQUIRY_TO;
   const from = env.INQUIRY_FROM || "Landhaus Schend <info@landhaus-schend.de>";
 
   const zimmerStr = rooms
