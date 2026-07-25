@@ -91,7 +91,7 @@ const en: Record<string, PaketText> = {
       "1× welcome drink",
     ],
     details:
-      "Enjoy soothing treatments with Eifel bee honey and warm basalt stones of volcanic origin, and unwind with a deeply relaxing, grounding Ayurvedic foot massage.",
+      "Discover the healing power of Eifel bee honey and hot basalt stones of volcanic origin, and enjoy a deeply relaxing, grounding Ayurvedic foot massage.",
     price: "from 249 € pp",
     priceSingle: "Single occupancy from 319 €",
     priceNote: "Family room on request",
@@ -197,7 +197,7 @@ const fr: Record<string, PaketText> = {
       "1 boisson de bienvenue",
     ],
     details:
-      "Savourez des soins bienfaisants au miel d'abeille de l'Eifel et aux pierres de basalte chaudes d'origine volcanique, puis détendez-vous pleinement lors d'un massage des pieds ayurvédique ressourçant.",
+      "Découvrez le pouvoir curatif du miel d'abeille de l'Eifel et des pierres de basalte chaudes d'origine volcanique, et savourez en pleine détente un massage des pieds ayurvédique ressourçant.",
     price: "à partir de 249 € / pers.",
     priceSingle: "Occupation simple à partir de 319 €",
     priceNote: "Chambre familiale sur demande",
@@ -303,7 +303,7 @@ const nl: Record<string, PaketText> = {
       "1× welkomstdrankje",
     ],
     details:
-      "Geniet van weldadige behandelingen met Eifeler bijenhoning en warme basaltstenen van vulkanische oorsprong en ontspan diep tijdens een aardende ayurvedische voetmassage.",
+      "Overtuig uzelf van de helende kracht van Eifeler bijenhoning en hete basaltstenen van vulkanische oorsprong en geniet diep ontspannen van een aardende ayurvedische voetmassage.",
     price: "vanaf 249 € p.p.",
     priceSingle: "Eenpersoonsgebruik vanaf 319 €",
     priceNote: "Familiekamer op aanvraag",
