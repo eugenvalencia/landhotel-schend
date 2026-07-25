@@ -38,6 +38,16 @@ export const UI = {
     fr: "Votre hôtel familial dans l’Eifel volcanique — tenu avec cœur par la famille Beimler, avec sa cuisine régionale de l’Eifel, idéal pour un court séjour.",
     nl: "Uw familiehotel in de Vulkaaneifel — met hart geleid door familie Beimler, met een eigen Eifeler streekkeuken, ideaal voor uw korte vakantie.",
   },
+  // §5b Abs. 3 UWG: Wer Verbraucherbewertungen zeigt, muss sagen, ob und wie er
+  // deren Echtheit sicherstellt. Das Fehlen dieser Angabe ist seit 2022 ein
+  // häufiger Abmahngrund — und die Angabe kostet uns nichts, weil sie schlicht
+  // beschreibt, was ohnehin gilt: die Werte kommen unverändert von den Portalen.
+  footer_reviews_note: {
+    de: "Wir prüfen Bewertungen nicht selbst. Die gezeigten Werte stammen unverändert von Booking.com und Tripadvisor; dort werden Bewertungen nur von Gästen zugelassen, die nachweislich gebucht bzw. übernachtet haben. Stand: Juli 2026.",
+    en: "We do not verify reviews ourselves. The figures shown are taken unchanged from Booking.com and Tripadvisor, which only accept reviews from guests who verifiably booked or stayed. As of July 2026.",
+    fr: "Nous ne vérifions pas nous-mêmes les avis. Les valeurs affichées proviennent telles quelles de Booking.com et Tripadvisor, qui n’acceptent que les avis de clients ayant effectivement réservé ou séjourné. État : juillet 2026.",
+    nl: "Wij controleren beoordelingen niet zelf. De getoonde waarden komen ongewijzigd van Booking.com en Tripadvisor, die alleen beoordelingen toelaten van gasten die aantoonbaar hebben geboekt of overnacht. Stand: juli 2026.",
+  },
   footer_quicklinks: { de: "Quick Links", en: "Quick links", fr: "Liens rapides", nl: "Snelkoppelingen" },
   footer_ql_inquire: { de: "Zimmer anfragen", en: "Enquire about rooms", fr: "Demander une chambre", nl: "Kamer aanvragen" },
   footer_ql_faq: { de: "Häufige Fragen", en: "FAQ", fr: "Questions fréquentes", nl: "Veelgestelde vragen" },
