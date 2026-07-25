@@ -70,7 +70,7 @@ export const PAKETE: Paket[] = [
       "1× Willkommensgetränk",
     ],
     details:
-      "Überzeugen Sie sich von der Heilkraft Eifler Bienenhonigs und heißer Basaltsteine vulkanischen Ursprungs und genießen Sie tiefenentspannt eine erdende ayurvedische Fußmassage.",
+      "Genießen Sie wohltuende Anwendungen mit Eifler Bienenhonig und warmen Basaltsteinen vulkanischen Ursprungs und entspannen Sie tiefenentspannt bei einer erdenden ayurvedischen Fußmassage.",
     price: "ab 249 € p. P.",
     priceSingle: "Einzelnutzung ab 319 €",
     priceNote: "Familienzimmer auf Anfrage",
