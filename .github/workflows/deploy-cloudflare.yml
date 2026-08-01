@@ -51,7 +51,9 @@ jobs:
       # Die Buchungs-ANFRAGE läuft rein über Astro + Cloudflare (Mail via Resend) —
       # KEINE React/Supabase-Strecke mehr (Supabase aus dem Gast-Pfad entfernt).
       - name: Astro build (öffentliche SSG-Seite)
-        run: npm run build:site
+        # Hiess bis 01.08.2026 `build:site`, weil daneben noch der SaaS-Build lag.
+        # Der ist nach hospio-os gewandert — jetzt gibt es nur noch diesen einen.
+        run: npm run build
 
       - name: Deploy zu Cloudflare Pages
         uses: cloudflare/wrangler-action@v4
