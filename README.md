@@ -1,109 +1,70 @@
-# Landhotel Schend — Vite-React-App
+# Landhotel Schend — Kundenseite
 
 3-Sterne-Superior Hotel in der Vulkaneifel, KMU-Erstreferenz für Conexa Digital.
 
-- **Brand:** Landhotel Schend (NICHT „Landhaus")
-- **Live:** **https://landhaus-schend.de** (+ `www.`) auf Cloudflare Pages, Projekt `landhotel-schend`
-- **Vorschau:** `https://landhotel-schend.pages.dev` sowie die Branch-Vorschauen von Cloudflare Pages
+- **Brand:** Landhotel Schend (NICHT „Landhaus" — das ist nur die Domain)
+- **Live:** **https://landhaus-schend.de** (+ `www.`) — Cloudflare Pages, Projekt `landhotel-schend`
+- **Vorschau:** `https://landhotel-schend.pages.dev` + Branch-Vorschauen
+- **Stack:** Astro 6 (SSG, kein JavaScript-Framework im Auslieferungspfad) + Tailwind 3
 
-> Bis 01.08.2026 stand hier `schend.conexadigital.eu` als Live-Vorschau auf einem
-> Hetzner-Caddy. Beides gibt es nicht mehr: der Server ist abgeschaltet, der
-> DNS-Eintrag entfernt und die Pages-Bindung gelöst. Der Cutover auf die eigene
-> Domain ist erfolgt — `landhaus-schend.de` IST die Produktion.
-- **Stack:** Vite + React + TypeScript + shadcn/ui + Supabase (Lovable-Init)
+## Was diese Seite tut — und was nicht
 
----
+Sie nimmt **Anfragen** entgegen, keine Buchungen.
 
-## Live-Preview-Workflow
+`/anfrage/` schickt das Formular an `functions/api/inquiry.ts`, eine Cloudflare
+Pages Function. Die macht daraus **eine E-Mail an das Hotel** (Resend) plus eine
+Eingangsbestätigung an den Gast. Danach hört die Software auf: **Schend prüft
+Verfügbarkeit und antwortet von Hand.** Kein Kalender, keine Datenbank, kein
+Rezeptions-Board.
 
-**Schnellster Weg: lokal bauen + deployen mit einem Befehl.**
-
-### Option A — Lokales Deploy-Skript (Bash, Git-Bash auf Windows)
-
-```bash
-cd C:/Projekte/landhotel-schend
-./deploy.sh                # Build + Upload + Verify
-./deploy.sh --skip-build   # Nur Upload (wenn dist/ aktuell)
-```
-
-Dauer: ~30–60s. Output: HTTP-Status + Title + URL.
-
-### Option B — PowerShell-Variante
-
-```powershell
-cd C:\Projekte\landhotel-schend
-.\deploy.ps1               # Build + Upload + Verify
-.\deploy.ps1 -SkipBuild    # Nur Upload
-```
-
-### Option C — Auto-Deploy via GitHub Action (kein lokales Setup nötig)
-
-Bei jedem `git push origin main` baut GitHub und deployt automatisch zu Hetzner (~2 Min Latenz).
-
-**Setup einmalig (Eugen-Task):**
-
-1. SSH-Private-Key kopieren (Inhalt von `C:\Users\info\.ssh\synology_schend`)
-2. GitHub-Repo öffnen → **Settings → Secrets and variables → Actions → New repository secret**
-3. Name: `HETZNER_SSH_KEY`, Value: kompletten Private-Key-Inhalt einfügen (incl. `-----BEGIN OPENSSH PRIVATE KEY-----` und Endzeile)
-4. Speichern. Fertig.
-
-Workflow-Datei: [`.github/workflows/deploy-hetzner.yml`](.github/workflows/deploy-hetzner.yml).
-
-Manueller Trigger jederzeit möglich: GitHub-Repo → **Actions → Deploy zu Hetzner → Run workflow**.
-
----
+> **Bis 01.08.2026 lagen hier 225 Dateien Hotel-SaaS** (Vite/React-Buchungs-
+> strecke, 30 Supabase-Migrationen, Rezeptions-Board), die nie ausgeliefert
+> wurden. Sie lasen sich wie Produktionscode und haben zu einem falschen
+> Sicherheitsbericht geführt. Der SaaS heißt **Hospio OS** und liegt jetzt im
+> eigenen Repo `hospio-os`. Ein Repo pro Kunde, das Produkt getrennt davon.
 
 ## Lokale Entwicklung
 
 ```bash
-bun install
-bun run dev          # http://localhost:5173
-bun run build        # produziert dist/
-bun run preview      # preview von dist/
-bun run test         # Vitest
-bun run lint         # ESLint
+npm install
+npm run dev              # Astro-Dev-Server
+npm run build            # baut nach dist-astro/  — PFLICHT vor jedem Push
+npm run preview          # gebauten Stand anschauen
+npm run check            # astro check
+npm run optimize:images  # Fotos rekomprimieren (mozjpeg)
 ```
 
-Verzeichnis-Struktur grob:
+## Deploy
 
-```
-src/
-├── components/       # shadcn/ui + Custom-Components (incl. A11yPanel)
-├── pages/            # Routen: Index, Booking, Operator, Datenschutz, Impressum, AGB, Barrierefreiheit
-├── lib/              # Supabase-Client, Utils
-└── ...
-public/
-├── fotos/            # Hotel-Bilder (optimiert via scripts/optimize-images.mjs)
-└── ...
-docs/
-├── legal/            # Impressum.md/html/pdf, Datenschutz.*, AGB.*, Barrierefreiheit.*
-└── ...
+```bash
+git push origin main     # löst die GitHub-Action deploy-cloudflare.yml aus
 ```
 
----
+Die Action baut, deployt zu Cloudflare Pages und prüft danach nach: HTTP 200 auf
+`landhaus-schend.de` **und** dass das Anfrageformular auf `/anfrage/` wirklich
+ausgeliefert wird. 200 allein wäre kein Nachweis — die Seite kann antworten und
+trotzdem kaputt sein.
+
+## Aufbau
+
+| Pfad | Zweck |
+|---|---|
+| `site/` | Die Seite: Astro-Komponenten, Seiten, `i18n/` (DE/EN/FR/NL), `lib/` (Zimmer, Pakete, Fotos) |
+| `functions/api/inquiry.ts` | Anfrage → Resend-Mail. Der einzige Server-Code. |
+| `public/fotos/` | Hotel-Bilder, Brand-Meta via IPTC/XMP |
+| `scripts/` | Bild-Optimierung, Brand-Pack, Smoke-Test |
+| `dist-astro/` | Build-Ergebnis |
 
 ## Wichtig: Brand vs. Domain
 
-- **Domain bleibt:** `landhaus-schend.de` (historisch, SEO-Equity)
-- **Brand-Name in allen neuen Texten/Schemas/Titles:** **Landhotel Schend**
+In allen Texten, Schema.org-Daten und Meta-Tags heißt es **Landhotel Schend**.
+Die Domain lautet historisch `landhaus-schend.de`; „Landhaus Schend" darf als
+SEO-Keyword stehen bleiben. Das war mehrfach verwechselt — nicht wieder.
 
-Siehe [`docs/SCHEND-NAMING.md`](docs/SCHEND-NAMING.md) falls vorhanden.
+## Umgebungsvariablen (Cloudflare Pages)
 
----
-
-## Production-Cutover (TODO)
-
-Aktuell läuft die Live-Site auf IONOS (alte WordPress-Apache-Site). Geplanter Cutover:
-
-1. DNS für `landhaus-schend.de` von IONOS → Cloudflare-Zone migrieren (oder bei IONOS-DNS einfach A-Record auf `128.140.101.82` setzen)
-2. Caddyfile auf Hetzner: zusätzlicher Block für `landhaus-schend.de` und `www.landhaus-schend.de`
-3. IONOS auf Mail-Hosting reduzieren (oder zu Hetzner Mailcow migrieren)
-4. Erste Direktbuchungs-KPI-Messung via Umami starten
-
----
-
-## Tech-Stack-Pointer
-
-- [conexa-os/CONEXA-MAP.md](../conexa-os/CONEXA-MAP.md) — Master-Doku Conexa-Infrastruktur
-- [conexa-os/docs/INFRASTRUCTURE.md](../conexa-os/docs/INFRASTRUCTURE.md) — Hetzner + NAS + Cloudflare im Detail
-- [conexa-os/docs/INVENTORY-2026-05-21.md](../conexa-os/docs/INVENTORY-2026-05-21.md) — Letzte Bestandsaufnahme + Have/Need/Skip
+| Variable | Zweck |
+|---|---|
+| `RESEND_API_KEY` | Pflicht. Ohne ihn scheitert die Anfrage ehrlich, statt Erfolg vorzutäuschen. |
+| `INQUIRY_TO` | Empfänger. **Kein Fallback** — ohne ihn wird nichts versendet (DSGVO). |
+| `INQUIRY_FROM` | Absender, verifizierte Domain bei Resend |

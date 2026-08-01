@@ -1,77 +1,109 @@
-# B — Landhotel Schend (Pilot-Kunde, LIVE)
+# B — Landhaus Schend (Pilot-Kunde, LIVE)
 
-Vite + React 18 + TS + shadcn/ui + Supabase + Resend. Site ist live unter `landhaus-schend.de`. Gäste buchen drüber.
+**Astro 6 SSG.** Eine statische Kundenseite, live unter `landhaus-schend.de`.
+
+## ⛔ IMPORTANT — Es gibt hier KEINE Buchungen
+
+Die Seite nimmt **Anfragen** entgegen, keine Buchungen. `/anfrage/` schickt ein
+Formular an `functions/api/inquiry.ts` (Cloudflare Pages Function), das daraus
+**eine E-Mail an das Hotel** macht — über Resend. Danach hört die Software auf.
+**Schend bearbeitet jede Anfrage von Hand:** Verfügbarkeit prüfen, Gast anrufen
+oder anschreiben, zusagen. Es gibt keinen Kalender, keine Datenbank, kein
+Rezeptions-Board, kein Supabase.
+
+> **Warum das hier so groß steht:** Bis 01.08.2026 behauptete diese Datei
+> „Gäste buchen drüber", und 225 Dateien SaaS-Code lagen im Repo, ohne je
+> ausgeliefert zu werden. Das hat am 01.08.2026 zu einem falschen Sicherheits-
+> bericht geführt — gemeldete „Lücken im Buchungssystem" betrafen schlafenden
+> Code. Der SaaS heißt **Hospio OS** und liegt jetzt im Repo `hospio-os`.
+> **Ein Repo pro Kunde, das Produkt getrennt davon** (Doctrine P4).
+
+**Wenn du etwas über den Live-Zustand behauptest: erst messen, dann sagen.**
+Repo-Inhalt ist kein Beleg dafür, dass etwas läuft.
 
 ## IMPORTANT — Brand/Domain (mehrfach falsch gewesen)
 
 - **Brand in Texten/Schemas/Meta-Tags:** `Landhotel Schend`
-- **Domain (historisch):** `landhaus-schend.de`
+- **Domain:** `landhaus-schend.de`
 - **Legacy-Keyword:** `Landhaus Schend` darf als SEO-Keyword bleiben
 - **NEVER** Brand und Domain verwechseln. Siehe `[[feedback-schend-naming]]`.
 
 ## IMPORTANT — Deploy-Regel
 
-- **NEVER** `./deploy.sh` ohne vorherigen lokalen Build + Browser-Smoke-Test (`npm run build && npm run preview`).
-- **NEVER** Online-Payment hinzufügen — Eugen-Entscheidung, siehe `[[open-problem-finanzamt-online-buchung]]`.
-- **NEVER** direkt in Production-Supabase editieren — immer Migration in `supabase/migrations/`.
+- **NEVER** pushen ohne vorherigen lokalen Build (`npm run build`) + Blick auf
+  die gebauten Seiten. `git push origin main` löst sofort den Live-Deploy aus.
+- **NEVER** Online-Payment hinzufügen — Eugen-Entscheidung,
+  siehe `[[open-problem-finanzamt-online-buchung]]`.
 
 ## Commands
 
 ```bash
 npm install
-npm run dev                # http://localhost:8080 (oder 5173)
-npm run build              # Production-Build
-npm run preview            # Build lokal anschauen (PFLICHT vor deploy)
-npm run lint
-./deploy.sh                # Build + SCP zu Hetzner + Verify
+npm run dev              # Astro-Dev-Server
+npm run build            # baut nach dist-astro/ (PFLICHT vor Push)
+npm run preview          # gebauten Stand lokal anschauen
+npm run check            # astro check
+npm run optimize:images  # mozjpeg-Recompression der Fotos
 ```
 
 ## Struktur
 
 | Pfad | Zweck |
 |---|---|
-| `src/components/` | UI (shadcn-Style, Komponenten klein halten) |
-| `src/pages/` | Routen |
-| `src/i18n/` | DE/EN/FR/NL — Detection-Hierarchie für Benelux (`[[schend-language-strategy]]`) |
-| `src/lib/mail/` | Resend-Templates |
-| `public/fotos/` | Hotel-Bilder (Brand-Meta schon gesetzt via IPTC/XMP) |
-| `supabase/migrations/` | DB-Schema-Versionierung |
-| `deploy.sh` | Build + SCP + Verify nach Hetzner |
+| `site/` | **Die Seite.** Astro-Komponenten, Seiten, `site/i18n/` (DE/EN/FR/NL), `site/lib/` (Zimmer, Pakete, Fotos) |
+| `site/tailwind.config.cjs` | Tailwind der Kundenseite (die Wurzel hat KEINE mehr) |
+| `functions/api/inquiry.ts` | Anfrage-Formular → Resend-Mail. Der einzige Server-Code. |
+| `public/fotos/` | Hotel-Bilder (Brand-Meta via IPTC/XMP gesetzt) |
+| `scripts/` | Bild-Optimierung, Brand-Pack, Smoke-Test |
+| `dist-astro/` | Build-Ergebnis (wird deployt) |
+
+## Bot-Abwehr im Anfrageformular (01.08.2026)
+
+Honigtopf (`company`), Zeitfalle (unter 3 s = kein Mensch), Bremse pro IP,
+Längen-Kappung, Kategorie-Allowlist, serverseitige Einwilligungsprüfung.
+⚠ Ein fehlender Zeitstempel weist **nie** ab — echte Gäste dürfen daran nie
+scheitern. ⚠ Die Bremse lebt im Arbeitsspeicher einer Worker-Instanz und greift
+nur bei gleichzeitigen Anfragen, nicht bei langsamem Tröpfeln.
+Siehe `[[bot-abwehr-formulare-2026-08-01]]`.
 
 ## Style-Standards
 
-- TS strict, React 18, Vite, Tailwind 3 + shadcn
 - User-facing Sprache: warm, Gast-orientiert (nicht Tech-Sprache)
-- Code-Sprache: Englisch (Props, Variablen). Kommentare auf Deutsch wenn nötig.
+- Kommentare auf Deutsch, sie erklären das **Warum**
 - Polish-Standards: Schatten, 3D-Tiefe, Pixel-Vergleich vor/nach (`[[feedback-style]]`)
 
 ## Definition of Done
 
 1. `npm run build` grün
-2. `npm run preview` — Browser-Smoke-Test wichtige Seiten
+2. Gebaute Seiten ansehen — **200 allein ist kein Nachweis**: Kopf, Navi, Fuß
+   und das Anfrageformular müssen wirklich drin sein
 3. Lighthouse / a11y nicht verschlechtert (BFSG!)
-4. Mobile getestet
-5. Alle 4 Sprachen bei Text-Changes
-6. Bei großen Releases: Git-Tag (`schend-site-v3` etc.)
-7. **Erst dann** `./deploy.sh`
+4. Mobil getestet (390 px)
+5. Alle 4 Sprachen bei Text-Änderungen
+6. **Erst dann** `git push origin main`
 
 ## Hosting
 
 | Was | Wo |
 |---|---|
-| Live (Gäste-Site) | `landhaus-schend.de` + `www.` — Cloudflare Pages, Projekt `landhotel-schend`. Deploy via `git push origin main` (GitHub-Action). |
-| Vorschau | `landhotel-schend.pages.dev` + Branch-Vorschauen von Cloudflare Pages |
-| ~~Bau-Site~~ | `schend.conexadigital.eu` (Hetzner) gibt es **nicht mehr** — Server abgeschaltet, DNS-Eintrag weg, Pages-Bindung am 01.08.2026 gelöst. Entwickelt wird lokal (`npm run dev:site`), geprüft auf der Branch-Vorschau. |
-| DB | Supabase EU-central-1 (Frankfurt, Project `eyplzqxikdznjiemzyoz` im outlook-Account) |
-| Mail | Resend |
+| Live (Gäste-Site) | `landhaus-schend.de` + `www.` — Cloudflare Pages, Projekt `landhotel-schend`. Deploy via `git push origin main` (GitHub-Action `deploy-cloudflare.yml`). |
+| Vorschau | `landhotel-schend.pages.dev` + Branch-Vorschauen |
+| Mail | Resend (`RESEND_API_KEY`, `INQUIRY_TO`, `INQUIRY_FROM` als Pages-Variablen) |
 | Analytics | Umami (`analytics.conexadigital.eu`) |
+| ~~Bau-Site, Hetzner, Supabase~~ | **Alles weg.** `schend.conexadigital.eu` am 01.08.2026 zurückgebaut, Hetzner abgeschaltet, Supabase zog mit dem SaaS nach `hospio-os`. |
 
 ## Wichtigste Memorys
 
-`[[project-landhaus-schend]]` · `[[feedback-schend-naming]]` · `[[feedback-verify-before-deploy]]` · `[[schend-language-strategy]]` · `[[open-problem-finanzamt-online-buchung]]` · `[[karpathy-code-rules]]`
+`[[project-landhaus-schend]]` · `[[feedback-schend-naming]]` · `[[feedback-verify-before-deploy]]` ·
+`[[schend-language-strategy]]` · `[[open-problem-finanzamt-online-buchung]]` ·
+`[[schend-hosting-cloudflare-2026-08-01]]` · `[[bot-abwehr-formulare-2026-08-01]]` ·
+`[[methode-waechter-der-immer-rot-leuchtet]]` · `[[karpathy-code-rules]]`
 
 ## Code-Doctrine
 
-> Vor jeder Coding-Session: [`../CONEXA-CODE-RULES.md`](../CONEXA-CODE-RULES.md) — Karpathy-4-Regeln + 3 Conexa-Ergänzungen. Regel 6 (Build-Test bevor Deploy) hat hier explizite Form: `npm run build && npm run preview` PFLICHT vor `./deploy.sh` oder Push (siehe oben "Deploy-Regel"). Lock-File-Sync nicht vergessen — CI nutzt `npm ci` strict.
+> Vor jeder Coding-Session: [`../CONEXA-CODE-RULES.md`](../CONEXA-CODE-RULES.md) —
+> Karpathy-4-Regeln + 3 Conexa-Ergänzungen. Regel 6 (Build-Test vor Deploy) hat
+> hier explizite Form: `npm run build` und ein Blick auf das Ergebnis sind
+> Pflicht vor jedem Push.
 
 @README.md
