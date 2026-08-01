@@ -34,7 +34,7 @@ const APPLE_MAPS = `https://maps.apple.com/?q=${ENC}&ll=${LAT},${LNG}`;
         <svg class="h-8 w-8 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
         <p class="font-display text-xl text-foreground">{c.mapTitle}</p>
         <p class="text-sm text-muted-foreground max-w-md leading-relaxed" set:html={c.mapConsentHtml} />
-        <button type="button" data-map-load data-src={MAP_SRC} class="inline-flex items-center gap-2 mt-1 px-7 py-3 rounded-sm border border-primary/40 text-xs font-medium uppercase tracking-[0.18em] hover:border-secondary hover:text-secondary transition-colors">
+        <button type="button" data-map-load data-src={MAP_SRC} class="inline-flex min-h-11 items-center gap-2 mt-1 px-7 py-3 rounded-sm border border-primary/40 text-xs font-medium uppercase tracking-[0.18em] hover:border-secondary hover:text-secondary transition-colors">
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
           {c.mapLoad}
         </button>
@@ -43,15 +43,15 @@ const APPLE_MAPS = `https://maps.apple.com/?q=${ENC}&ll=${LAT},${LNG}`;
 
     <!-- Route-Aktionen -->
     <div class="flex flex-wrap items-center justify-center gap-3 mb-20 md:mb-24">
-      <a href={ROUTE_URL} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-7 py-3 rounded-sm border border-primary/40 text-xs font-medium uppercase tracking-[0.18em] hover:border-secondary hover:text-secondary transition-colors">
+      <a href={ROUTE_URL} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center gap-2 px-7 py-3 rounded-sm border border-primary/40 text-xs font-medium uppercase tracking-[0.18em] hover:border-secondary hover:text-secondary transition-colors">
         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
         {c.googleMaps}
       </a>
-      <a href={APPLE_MAPS} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-7 py-3 rounded-sm border border-primary/40 text-xs font-medium uppercase tracking-[0.18em] hover:border-secondary hover:text-secondary transition-colors">
+      <a href={APPLE_MAPS} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center gap-2 px-7 py-3 rounded-sm border border-primary/40 text-xs font-medium uppercase tracking-[0.18em] hover:border-secondary hover:text-secondary transition-colors">
         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
         {c.appleMaps}
       </a>
-      <button type="button" data-copy-coords data-copied={c.copied} aria-label={c.copyAria} class="inline-flex items-center gap-2 px-5 py-3 text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-primary transition-colors">
+      <button type="button" data-copy-coords data-copied={c.copied} aria-label={c.copyAria} class="inline-flex min-h-11 items-center gap-2 px-5 py-3 text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-primary transition-colors">
         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         <span data-coords>{LAT}, {LNG}</span>
       </button>
