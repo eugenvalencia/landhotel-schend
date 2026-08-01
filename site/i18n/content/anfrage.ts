@@ -48,6 +48,8 @@ export interface AnfrageContent {
   jsSuccess: string;
   jsValidationServer: string;
   jsFailed: string;
+  /** Bremse gegen Bots hat gegriffen — kann auch einen echten Gast treffen. */
+  jsRateLimited: string;
   jsConnFailed: string;
 }
 
@@ -102,6 +104,7 @@ export const anfrageContent: Record<Locale, AnfrageContent> = {
     jsValidationServer:
       "Bitte prüfen Sie Ihre Angaben — tippen Sie sie ggf. direkt ein. Automatisch ausgefüllte Felder (Browser) werden nicht immer übernommen.",
     jsFailed: "Das hat leider nicht geklappt. Bitte rufen Sie uns an: +49 6573 306 — oder versuchen Sie es später erneut.",
+    jsRateLimited: "Es kamen gerade sehr viele Anfragen an. Bitte versuchen Sie es in einigen Minuten noch einmal — oder rufen Sie uns an: +49 6573 306.",
     jsConnFailed: "Verbindung fehlgeschlagen. Bitte rufen Sie uns an: +49 6573 306 — oder versuchen Sie es später erneut.",
   },
 
@@ -155,6 +158,7 @@ export const anfrageContent: Record<Locale, AnfrageContent> = {
     jsValidationServer:
       "Please check your details — type them in directly if needed. Auto-filled fields (browser) are not always transmitted.",
     jsFailed: "Unfortunately that did not work. Please call us: +49 6573 306 — or try again later.",
+    jsRateLimited: "We have just received a great many requests. Please try again in a few minutes — or call us: +49 6573 306.",
     jsConnFailed: "Connection failed. Please call us: +49 6573 306 — or try again later.",
   },
 
@@ -208,6 +212,7 @@ export const anfrageContent: Record<Locale, AnfrageContent> = {
     jsValidationServer:
       "Veuillez vérifier vos informations — saisissez-les directement si besoin. Les champs remplis automatiquement (navigateur) ne sont pas toujours transmis.",
     jsFailed: "Cela n'a malheureusement pas fonctionné. Appelez-nous : +49 6573 306 — ou réessayez plus tard.",
+    jsRateLimited: "Nous venons de recevoir un très grand nombre de demandes. Merci de réessayer dans quelques minutes — ou appelez-nous : +49 6573 306.",
     jsConnFailed: "Échec de la connexion. Appelez-nous : +49 6573 306 — ou réessayez plus tard.",
   },
 
@@ -261,6 +266,7 @@ export const anfrageContent: Record<Locale, AnfrageContent> = {
     jsValidationServer:
       "Controleer a.u.b. uw gegevens — typ ze zo nodig direct in. Automatisch ingevulde velden (browser) worden niet altijd doorgegeven.",
     jsFailed: "Dat is helaas niet gelukt. Bel ons: +49 6573 306 — of probeer het later opnieuw.",
+    jsRateLimited: "We hebben zojuist heel veel aanvragen ontvangen. Probeer het over een paar minuten opnieuw — of bel ons: +49 6573 306.",
     jsConnFailed: "Verbinding mislukt. Bel ons: +49 6573 306 — of probeer het later opnieuw.",
   },
 };

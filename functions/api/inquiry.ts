@@ -20,7 +20,49 @@ interface Payload {
   persons?: number; paket?: string; rooms?: Room[]; zimmer?: string;
   checkin?: string; checkout?: string; message?: string;
   halbpension?: boolean; kinderbett?: boolean; hund?: boolean;
-  datenschutz?: boolean; company?: string;
+  datenschutz?: boolean; company?: string; gestartet?: string;
+}
+
+// ── Bremse pro Absender ─────────────────────────────────────────────────────
+// Anlass: auf der Conexa-Seite kamen am 30.07./01.08.2026 Bot-Einsendungen an.
+// Honeypot und Längen-Kappung hatte dieses Formular bereits, eine Bremse nicht:
+// ein Bot konnte also beliebig viele Anfragen auslösen. Der Schaden wäre nicht
+// das Postfach, sondern das gerissene Resend-Kontingent — und damit die nächste
+// ECHTE Gast-Anfrage, die dann nicht mehr durchkommt.
+//
+// ⚠ Die Zähler leben im Arbeitsspeicher EINER Worker-Instanz. Cloudflare startet
+// je Rechenzentrum eigene Instanzen, die Bremse greift also grosszügiger als auf
+// einem einzelnen Server. Für einzelne Bots reicht das; gegen einen verteilten
+// Angriff gehört hier ein Durable Object oder KV hin.
+const WINDOW_MS = 10 * 60 * 1000;
+const MAX_PER_WINDOW = 5;      // Anfragen je IP und Fenster
+const GLOBAL_HOURLY_CAP = 40;  // harte Obergrenze über alle Absender
+const MIN_FILL_MS = 3_000;     // schneller tippt niemand ein Anfrageformular aus
+
+type Bucket = { count: number; resetAt: number };
+const ipBuckets = new Map<string, Bucket>();
+let globalHour: Bucket = { count: 0, resetAt: 0 };
+
+const clientIp = (req: Request): string =>
+  req.headers.get("cf-connecting-ip") ||
+  req.headers.get("x-real-ip") ||
+  (req.headers.get("x-forwarded-for") || "").split(",")[0]?.trim() ||
+  "unknown";
+
+function rateLimit(ip: string, now: number): boolean {
+  if (now > globalHour.resetAt) globalHour = { count: 0, resetAt: now + 60 * 60 * 1000 };
+  if (globalHour.count >= GLOBAL_HOURLY_CAP) return false;
+
+  const b = ipBuckets.get(ip);
+  if (!b || now > b.resetAt) ipBuckets.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+  else if (b.count >= MAX_PER_WINDOW) return false;
+  else b.count += 1;
+
+  globalHour.count += 1;
+  if (ipBuckets.size > 5000) {
+    for (const [k, v] of ipBuckets) if (now > v.resetAt) ipBuckets.delete(k);
+  }
+  return true;
 }
 
 const json = (data: unknown, status = 200) =>
@@ -51,6 +93,21 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
 
   // Spam-Honeypot: ausgefüllt = Bot → "ok" vortäuschen, aber NICHT senden.
   if (body.company && String(body.company).trim() !== "") return json({ ok: true });
+
+  const now = Date.now();
+
+  // Zeitfalle: wer in unter 3 Sekunden absendet, hat nicht getippt. Fehlt das
+  // Feld (kein JavaScript, ältere zwischengespeicherte Seite), wird NICHT
+  // abgewiesen — sonst sperren wir echte Gäste aus. Geprüft wird nur, was da ist.
+  const gestartet = Number(body.gestartet);
+  if (Number.isFinite(gestartet) && gestartet > 0 && now - gestartet < MIN_FILL_MS) {
+    return json({ ok: true }); // wie beim Honeypot: Erfolg vortäuschen, nichts senden
+  }
+
+  // Bremse pro IP — ehrlich abweisen, das kann auch einen echten Gast treffen.
+  if (!rateLimit(clientIp(request), now)) {
+    return json({ ok: false, error: "rate_limited" }, 429);
+  }
 
   // Validierung + Längen-Limits (das Formular validiert zusätzlich clientseitig).
   const name = clamp(body.name, 120);

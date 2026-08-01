@@ -57,6 +57,7 @@ const pflichtHint: Record<Locale, string> = {
         data-msg-success={c.jsSuccess}
         data-msg-validation={c.jsValidationServer}
         data-msg-failed={c.jsFailed}
+        data-msg-limit={c.jsRateLimited}
         data-msg-conn={c.jsConnFailed}
       >
         <!-- Honeypot (Spam-Schutz, für Menschen unsichtbar) -->
@@ -314,8 +315,14 @@ const pflichtHint: Record<Locale, string> = {
       success: D.msgSuccess ?? "Danke!",
       validation: D.msgValidation ?? "Bitte Angaben prüfen.",
       failed: D.msgFailed ?? "Hat nicht geklappt.",
+      limit: D.msgLimit ?? "Zu viele Anfragen in kurzer Zeit. Bitte in einigen Minuten erneut versuchen — oder anrufen: +49 6573 306.",
       conn: D.msgConn ?? "Verbindung fehlgeschlagen.",
     };
+
+    // Bot-Abwehr: Zeitpunkt des Seitenaufrufs. Wer in unter 3 Sekunden absendet,
+    // hat nicht getippt — das prüft functions/api/inquiry.ts. Fehlt der Wert,
+    // wird NICHT abgewiesen; echte Gäste dürfen daran nie scheitern.
+    const gestartet = String(Date.now());
 
     // Anreise frühestens heute; Abreise frühestens am Anreisetag.
     const checkin = form.querySelector<HTMLInputElement>("#checkin");
@@ -407,6 +414,7 @@ const pflichtHint: Record<Locale, string> = {
         hund: checked("hund"),
         datenschutz: checked("datenschutz"),
         company: honey, // Honeypot serverseitig nochmal geprüft
+        gestartet,      // Zeitfalle serverseitig geprüft
       };
 
       submitBtn.disabled = true;
@@ -425,6 +433,8 @@ const pflichtHint: Record<Locale, string> = {
           statusEl.scrollIntoView({ behavior: "smooth", block: "center" });
         } else if (data.error === "validation") {
           setStatus(MSG.validation, false);
+        } else if (data.error === "rate_limited") {
+          setStatus(MSG.limit, false);
         } else {
           setStatus(MSG.failed, false);
         }
