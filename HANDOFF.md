@@ -1,7 +1,13 @@
 # Handoff — nächste Session
 
+> ⚠ **VERALTET (Stand 2026-05-24).** Dieses Dokument ist als historischer Übergabe-
+> zettel stehengeblieben, nicht als Lagebild. Zwei Dinge darin stimmen nicht mehr:
+> `schend.conexadigital.eu` existiert nicht mehr (Server abgeschaltet, DNS entfernt,
+> Pages-Bindung am 01.08.2026 gelöst), und der DNS-Rollback zu Hetzner unten zeigt
+> auf einen ausgeschalteten Server. **Aktueller Stand: `README.md` und `CLAUDE.md`.**
+
 **Stand:** 2026-05-24 ~16:10
-**Live:** https://schend.conexadigital.eu/ — auf **Cloudflare Pages** (global Edge-CDN)
+**Live (damals):** https://schend.conexadigital.eu/ — auf **Cloudflare Pages** (global Edge-CDN)
 **Letzter Commit:** `86f149f` (mega-menu Bilder entfernt nach V2.3 Polish-Welle)
 **Rollback-Tags:** `pre-design-polish-2026-05-24`, `pre-design-polish-v22-2026-05-24`, `pre-image-opt-2026-05-24`, `schend-site-v2`
 
@@ -47,7 +53,7 @@
 **Tool dafür**: `scripts/smoke.sh` — Headless-Chrome-Wrapper ohne Node-Deps.
 
 ```bash
-bash scripts/smoke.sh https://schend.conexadigital.eu/ https://schend.conexadigital.eu/restaurant
+bash scripts/smoke.sh https://landhaus-schend.de/ https://landhaus-schend.de/restaurant
 ```
 
 ---
@@ -96,8 +102,9 @@ git reset --hard pre-design-polish-2026-05-24
 # Ganz vor Polish-Welle (vor V2.1)
 git reset --hard schend-site-v2
 
-# DNS-Rollback zu Hetzner (Cloudflare Pages umgehen):
-bash ~/.conexa/cf.sh dns update conexadigital.eu d2f965931d9a06be7bf02e585191f674 A schend.conexadigital.eu 128.140.101.82 false
+# DNS-Rollback zu Hetzner — FUNKTIONIERT NICHT MEHR (Server 128.140.101.82 ist aus,
+# Subdomain entfernt). Nur als Beleg stehengelassen, nicht ausführen.
+# bash ~/.conexa/cf.sh dns update conexadigital.eu d2f965931d9a06be7bf02e585191f674 A schend.conexadigital.eu 128.140.101.82 false
 ```
 
 ---
@@ -110,7 +117,7 @@ bash ~/.conexa/cf.sh dns update conexadigital.eu d2f965931d9a06be7bf02e585191f67
 - `c:\Projekte\conexa-marketing-skills\skills\orchestration\` — 3 Master-Agents
 
 **Live:**
-- Schend: https://schend.conexadigital.eu (Cloudflare Pages, `landhotel-schend.pages.dev`)
+- Schend: https://landhaus-schend.de (Cloudflare Pages, `landhotel-schend.pages.dev`)
 - Conexa V2: https://demo.conexadigital.eu (Hetzner)
 - Discovery: https://demo.conexadigital.eu/discovery/schend
 - n8n: https://n8n.conexadigital.eu (Hetzner, Owner-Setup ausstehend)

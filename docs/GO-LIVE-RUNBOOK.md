@@ -10,7 +10,7 @@
 
 | | URL | liegt auf | Stand |
 |---|---|---|---|
-| **Vorschau** | `schend.conexadigital.eu` | Cloudflare Pages (Projekt `landhotel-schend`) | **neuer Build, voll funktional**, SaaS unter `/_saas/` erreichbar |
+| **Vorschau** | `landhotel-schend.pages.dev` | Cloudflare Pages (Projekt `landhotel-schend`) | **neuer Build, voll funktional**, SaaS unter `/_saas/` erreichbar |
 | **Echte Domain** | `landhaus-schend.de` | **alter Apache-Server** (Altbestand) | alte Seite, KEINE neue SaaS — Cutover noch offen (gewollt, erst nach Schends OK) |
 
 **Mechanik:** Push auf `main` → GitHub Action `deploy-cloudflare.yml` baut `site/` (Astro)
@@ -56,7 +56,7 @@ git add src/integrations/supabase/types.ts && git commit -m "chore: Supabase-Typ
 ```
 
 **Verifikation nach Deploy (Eugen, 2 Min):**
-1. Auf `schend.conexadigital.eu/booking` eine Testbuchung mit EIGENER Mail abschicken →
+1. Auf `landhaus-schend.de/booking` eine Testbuchung mit EIGENER Mail abschicken →
    „Anfrage erhalten"-Mail muss ankommen, Owner-Alert ans Hotel-Postfach muss ankommen.
 2. IDOR-Gegentest (optional, technisch): `notify-schend` mit fremder `booking_id` ohne
    Token aufrufen → muss **403** liefern, keine Mail.

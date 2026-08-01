@@ -33,12 +33,16 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 // CORS: Diese Function wird seit dem Umstieg auf Client-Trigger (DB-Trigger in
 // Migration 20260604180000 entfernt) vom Browser aufgerufen — sowohl von der
 // öffentlichen Gast-Buchung als auch vom Rezeptions-Board. Statt offenem "*"
-// reflektieren wir nur bekannte Origins (Live-Domain, Vorschau, Cloudflare-Preview,
+// reflektieren wir nur bekannte Origins (Live-Domain, Cloudflare-Preview,
 // lokales Dev) — Defense-in-Depth zusätzlich zum notify_token unten.
+//
+// schend.conexadigital.eu stand hier bis 01.08.2026 als „Vorschau". Diesen Host
+// gibt es nicht mehr: der DNS-Eintrag ist weg und die Pages-Bindung ist gelöst.
+// Eine Freigabe für einen Namen, den niemand mehr erreicht, schützt nichts —
+// sie täuscht nur vor, es gäbe dort noch etwas Betriebenes.
 const ALLOWED_ORIGINS = [
   "https://landhaus-schend.de",
   "https://www.landhaus-schend.de",
-  "https://schend.conexadigital.eu",
 ];
 function corsHeadersFor(req: Request): Record<string, string> {
   const origin = req.headers.get("Origin") ?? "";

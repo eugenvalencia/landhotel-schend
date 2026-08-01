@@ -59,8 +59,9 @@ npm run lint
 
 | Was | Wo |
 |---|---|
-| Aktive Bau-Site | `schend.conexadigital.eu` (Hetzner) — hier werden alle Änderungen entwickelt + getestet |
-| Live (Gäste-Site) | `landhaus-schend.de` — Hosting-Provider noch zu klären (IONOS-Daten vorhanden, Hetzner als Ziel). Umzug erfolgt erst wenn Bau-Site fertig ist. |
+| Live (Gäste-Site) | `landhaus-schend.de` + `www.` — Cloudflare Pages, Projekt `landhotel-schend`. Deploy via `git push origin main` (GitHub-Action). |
+| Vorschau | `landhotel-schend.pages.dev` + Branch-Vorschauen von Cloudflare Pages |
+| ~~Bau-Site~~ | `schend.conexadigital.eu` (Hetzner) gibt es **nicht mehr** — Server abgeschaltet, DNS-Eintrag weg, Pages-Bindung am 01.08.2026 gelöst. Entwickelt wird lokal (`npm run dev:site`), geprüft auf der Branch-Vorschau. |
 | DB | Supabase EU-central-1 (Frankfurt, Project `eyplzqxikdznjiemzyoz` im outlook-Account) |
 | Mail | Resend |
 | Analytics | Umami (`analytics.conexadigital.eu`) |

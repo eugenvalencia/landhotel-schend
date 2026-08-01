@@ -2,6 +2,13 @@
 
 Stand: 2026-05-24
 
+> ⚠ **Protokoll, keine Anleitung.** Die Migration ist gelaufen und abgeschlossen.
+> Die Befehle unten drehen sich um `schend.conexadigital.eu` — diesen Host gibt es
+> seit 01.08.2026 nicht mehr (DNS entfernt, Pages-Bindung gelöst). Der
+> „DNS-Rollback zu Hetzner" weiter unten zeigt auf `128.140.101.82`, einen
+> **abgeschalteten** Server: ausgeführt richtet er die Seite nicht wieder her,
+> sondern legt sie lahm. Aktueller Stand: `../README.md` und `../CLAUDE.md`.
+
 ## Warum
 
 Aktueller Deploy via GitHub-Actions → rsync → Hetzner CX23 dauert 90-120s,

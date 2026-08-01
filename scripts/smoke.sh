@@ -4,7 +4,7 @@
 #
 # Usage:
 #   bash scripts/smoke.sh                              # default: http://localhost:4173/
-#   bash scripts/smoke.sh https://schend.conexadigital.eu/
+#   bash scripts/smoke.sh https://landhaus-schend.de/
 #   bash scripts/smoke.sh http://localhost:4173/restaurant http://localhost:4173/booking
 #
 # Exit 0 wenn alle URLs ohne Errors laden, sonst 1.

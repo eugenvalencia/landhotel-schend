@@ -82,7 +82,7 @@ Response sollte sein:
 { "ok": true, "n8n": { "ok": true, "status": 200 }, "mail": { "ok": true, "status": 200 } }
 ```
 
-**Variante B — Echte Buchung** über `https://schend.conexadigital.eu/booking` mit eigener Email-Adresse.
+**Variante B — Echte Buchung** über `https://landhaus-schend.de/booking` mit eigener Email-Adresse.
 
 ## Was beim Versand passiert
 

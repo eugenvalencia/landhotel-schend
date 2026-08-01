@@ -3,7 +3,7 @@
 Kontext: Die Gäste-Buchung ist auf eine schlanke **Anfrage** umgestellt
 (`/anfrage` Astro-Seite → Cloudflare Pages Function `functions/api/inquiry.ts`
 → Resend-E-Mail). **Kein Supabase mehr im Gast-Pfad, keine DB-Speicherung.**
-Live auf `schend.conexadigital.eu` (Vorschau).
+Live auf `landhaus-schend.de`.
 
 ## Security-Review-Ergebnis (18.06.)
 **Gesamturteil: solide, kein kritischer Fund.** Kundendaten nicht öffentlich:

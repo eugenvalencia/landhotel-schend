@@ -3,8 +3,13 @@
 3-Sterne-Superior Hotel in der Vulkaneifel, KMU-Erstreferenz für Conexa Digital.
 
 - **Brand:** Landhotel Schend (NICHT „Landhaus")
-- **Domain Production:** `landhaus-schend.de` (DNS aktuell noch IONOS, Cutover steht aus)
-- **Live-Preview:** **https://schend.conexadigital.eu** (Hetzner-Caddy mit Auto-TLS)
+- **Live:** **https://landhaus-schend.de** (+ `www.`) auf Cloudflare Pages, Projekt `landhotel-schend`
+- **Vorschau:** `https://landhotel-schend.pages.dev` sowie die Branch-Vorschauen von Cloudflare Pages
+
+> Bis 01.08.2026 stand hier `schend.conexadigital.eu` als Live-Vorschau auf einem
+> Hetzner-Caddy. Beides gibt es nicht mehr: der Server ist abgeschaltet, der
+> DNS-Eintrag entfernt und die Pages-Bindung gelöst. Der Cutover auf die eigene
+> Domain ist erfolgt — `landhaus-schend.de` IST die Produktion.
 - **Stack:** Vite + React + TypeScript + shadcn/ui + Supabase (Lovable-Init)
 
 ---
