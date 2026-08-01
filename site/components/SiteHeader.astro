@@ -64,7 +64,10 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
 >
   <div class="container mx-auto px-4 flex items-center justify-between gap-4 h-16 md:h-20">
     <!-- Brand -->
-    <a href={localizedPath("/", lang)} class="group flex items-center gap-3 min-w-0" aria-label={t("brand_home_aria", lang)}>
+    <!-- `min-h-11` = 44 px. Der Logo-Link war 36 px hoch — dieselbe Stelle, die
+         am 31.07.2026 auf acht anderen Kundenseiten nachgezogen wurde; Schend
+         war als Astro-Seite nicht dabei. -->
+    <a href={localizedPath("/", lang)} class="group flex min-h-11 items-center gap-3 min-w-0" aria-label={t("brand_home_aria", lang)}>
       <span
         role="img"
         aria-label="Landhaus Schend Logo"

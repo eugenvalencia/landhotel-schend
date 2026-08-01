@@ -319,6 +319,11 @@ const ogLocaleAlternates = localized
         top: -100px;
         left: 1rem;
         z-index: 100;
+        /* 44 px Mindesthöhe — der Sprunglink ist für genau die Nutzer da,
+           die ihn am wenigsten treffen dürfen. */
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.75rem;
         padding: 0.6rem 1rem;
         border-radius: 0.4rem;
         background: hsl(var(--primary));

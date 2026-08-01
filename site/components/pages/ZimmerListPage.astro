@@ -80,7 +80,9 @@ const roomList = itemListLd(roomTypes.map((r) => {
             ))}
           </ul>
           <a href={localizedPath("/anfrage", lang)} class="mt-6 inline-flex items-center justify-center px-5 py-3 rounded-sm bg-secondary text-secondary-foreground text-sm font-semibold tracking-[0.16em] uppercase hover:bg-secondary/90 transition-colors">{c.anfragenCta}</a>
-          <a href={localizedPath(r.href, lang)} class="mt-2 text-center text-xs text-muted-foreground hover:text-secondary transition-colors">{c.mehrZumZimmer}</a>
+          <!-- `min-h-11` = 44 px: freistehender Verweis, kein Fließtext-Link —
+               er braucht die volle Trefferfläche. -->
+          <a href={localizedPath(r.href, lang)} class="mt-2 inline-flex min-h-11 items-center justify-center text-center text-xs text-muted-foreground hover:text-secondary transition-colors">{c.mehrZumZimmer}</a>
         </div>
       ))}
     </div>

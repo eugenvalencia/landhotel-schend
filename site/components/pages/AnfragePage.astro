@@ -160,24 +160,30 @@ const pflichtHint: Record<Locale, string> = {
           <textarea id="message" name="message" rows="4" maxlength="2000" placeholder={c.messagePlaceholder}></textarea>
         </div>
 
-        <!-- Optionen -->
-        <div class="space-y-3">
-          <label class="flex items-center gap-3 cursor-pointer text-foreground/90">
+        <!-- Optionen.
+             `min-h-11` = 44 px: die Zeile IST die Trefferfläche, nicht das
+             20-px-Kästchen. Ohne das trifft ein Daumen bei 390 px daneben.
+             Bewusst über die Zeilenhöhe gelöst und NICHT über negative Ränder —
+             die ließen die Nachbarzeilen überlappen. -->
+        <div class="space-y-1">
+          <label class="flex min-h-11 items-center gap-3 py-1 cursor-pointer text-foreground/90">
             <input type="checkbox" name="halbpension" class="anf-check" />
             <span>{c.optHalbpension} <span class="text-muted-foreground text-sm">{c.optHalbpensionNote}</span></span>
           </label>
-          <label class="flex items-center gap-3 cursor-pointer text-foreground/90">
+          <label class="flex min-h-11 items-center gap-3 py-1 cursor-pointer text-foreground/90">
             <input type="checkbox" name="kinderbett" class="anf-check" />
             <span>{c.optKinderbett}</span>
           </label>
-          <label class="flex items-center gap-3 cursor-pointer text-foreground/90">
+          <label class="flex min-h-11 items-center gap-3 py-1 cursor-pointer text-foreground/90">
             <input type="checkbox" name="hund" class="anf-check" />
             <span>{c.optHund} <span class="text-muted-foreground text-sm">{c.optHundNote}</span></span>
           </label>
         </div>
 
-        <!-- Datenschutz -->
-        <label class="flex items-start gap-3 cursor-pointer text-foreground/90">
+        <!-- Datenschutz — PFLICHTFELD. Ohne dieses Häkchen lässt sich das
+             Formular nicht absenden; eine 26-px-Zeile war hier der teuerste
+             Treffer der ganzen Seite. -->
+        <label class="flex min-h-11 items-start gap-3 py-1.5 cursor-pointer text-foreground/90">
           <input type="checkbox" name="datenschutz" class="anf-check mt-1" required />
           <span><a href={localizedPath("/datenschutz", lang)} class="underline hover:text-secondary" target="_blank" rel="noopener">{c.dsLinkText}</a> {c.dsAfter}<span class="anf-req" aria-hidden="true">*</span></span>
         </label>
