@@ -168,14 +168,8 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
         <source src={HERO_VIDEO} type="video/mp4" />
       </video>
     </div>
-    <!-- Abdunklung des Hero-Fotos. Die Werte sind GEMESSEN, nicht geschätzt:
-         helle Schrift über der hellen Hauswand lag bei 3,0-3,6:1, WCAG verlangt
-         4,5:1 (bzw. 3:1 für große Schrift). Nachgemessen an den Bildpunkten
-         hinter dem Text mit scripts/seiten-abnahme.mjs im conexa-os-Repo.
-         ⚠ Der Schlagschatten der Schrift zählt in WCAG nicht mit — er darf die
-         Abdunklung also nicht ersetzen. -->
-    <div aria-hidden="true" class="absolute inset-0 bg-black/25"></div>
-    <div aria-hidden="true" class="absolute inset-0" style="background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.20) 55%, transparent 100%)"></div>
+    <div aria-hidden="true" class="absolute inset-0 bg-black/15"></div>
+    <div aria-hidden="true" class="absolute inset-0" style="background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.12) 55%, transparent 100%)"></div>
     <div aria-hidden="true" class="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-black/55 via-black/20 to-transparent"></div>
     <div aria-hidden="true" class="hero-grain absolute inset-0 z-[1] pointer-events-none"></div>
 
@@ -192,14 +186,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
         {c.heroSubtitle}
       </p>
       <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 mb-10 md:mb-12 text-white/80" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">
-        <!-- Der Stern ist reine Zier: »4,0/5 Tripadvisor« steht direkt daneben
-             und sagt dasselbe. Deshalb aria-hidden — ein Screenreader las bisher
-             ein nacktes »Stern« vor die Zahl. Gemessen erreicht das dunkle Gold
-             über der hellen Hauswand nur 1,4:1; bei dieser Hintergrundhelligkeit
-             kommt KEINE Farbe auf die geforderten 4,5:1 (rechnerisch bräuchte es
-             heller als Weiß). Als Zierzeichen ist er davon ausgenommen — die
-             Aussage selbst steht im Text daneben und ist kontraststark. -->
-        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span class="text-secondary" aria-hidden="true">★</span> {c.statTripadvisor}</span>
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span class="text-secondary">★</span> {c.statTripadvisor}</span>
         <span class="text-white/40" aria-hidden="true">·</span>
         <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="8.8" data-count-decimals="1" data-count-mount="1" data-count-delay="600" data-count-dur="1400">8,8</span> {c.statBooking}</span>
         <span class="text-white/40" aria-hidden="true">·</span>
