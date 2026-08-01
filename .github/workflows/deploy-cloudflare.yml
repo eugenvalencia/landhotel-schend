@@ -61,11 +61,28 @@ jobs:
           command: pages deploy dist-astro --project-name=landhotel-schend --branch=${{ github.head_ref || github.ref_name }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
+      # Geprüft wird die Adresse, unter der Gäste die Seite wirklich aufrufen.
+      # Vorher stand hier schend.conexadigital.eu — diesen Host gibt es nicht
+      # mehr, curl brach mit Code 6 ab (Name nicht auflösbar), und JEDER Deploy
+      # wurde seit mindestens 25.07.2026 als fehlgeschlagen gemeldet, obwohl er
+      # lief. Das ist die teurere Sorte Fehler: ein ECHTER Fehlschlag hätte
+      # genauso ausgesehen und wäre als bekanntes Rauschen abgetan worden.
+      #
+      # -L folgt der 308-Weiterleitung auf den Schrägstrich (/anfrage →
+      # /anfrage/). Ohne -L prüft man die Weiterleitung statt der Seite.
       - name: Verifikation HTTPS (nur auf main)
         if: github.ref == 'refs/heads/main'
         run: |
           sleep 8
-          HTTP=$(curl -s -o /dev/null -w "%{http_code}" https://schend.conexadigital.eu)
-          TITLE=$(curl -s https://schend.conexadigital.eu | grep -oE '<title[^>]*>[^<]+</title>' | head -1 | sed 's/<[^>]*>//g')
+          SEITE=https://landhaus-schend.de/
+          HTTP=$(curl -sL -o /dev/null -w "%{http_code}" --max-time 20 "$SEITE")
+          TITLE=$(curl -sL --max-time 20 "$SEITE" | grep -oE '<title[^>]*>[^<]+</title>' | head -1 | sed 's/<[^>]*>//g')
           echo "::notice::HTTP $HTTP — $TITLE"
           [ "$HTTP" = "200" ]
+          # Gegenprobe: 200 allein beweist nur, dass irgendetwas antwortet.
+          # Das Anfrageformular ist die Seite, an der Geld hängt — es muss da sein.
+          ANFRAGE=$(curl -sL --max-time 20 "https://landhaus-schend.de/anfrage/")
+          echo "$ANFRAGE" | grep -q 'id="anfrage-form"' || {
+            echo "::error::Anfrageformular fehlt auf /anfrage/ — Deploy ist nicht brauchbar"
+            exit 1
+          }
