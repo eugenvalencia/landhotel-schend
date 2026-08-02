@@ -96,7 +96,41 @@ const hotelGraph = {
       potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: "https://landhaus-schend.de/anfrage/", actionPlatform: ["https://schema.org/DesktopWebPlatform", "https://schema.org/MobileWebPlatform"] }, result: { "@type": "LodgingReservation", name: "Direktbuchung Zimmer" } },
       // Rück-Referenz aufs hauseigene Restaurant (schließt die Verknüpfung zum
       // einseitigen containedInPlace auf der Restaurant-Seite).
-      containsPlace: { "@id": "https://landhaus-schend.de/restaurant/#restaurant" },
+      /**
+       * ⚠ Das Restaurant steht hier VOLLSTÄNDIG, nicht nur als @id-Verweis.
+       *
+       * Vorher stand hier ausschließlich `{"@id": ".../restaurant/#restaurant"}`.
+       * Diese ID wird aber erst auf der Restaurantseite definiert, und Google
+       * folgt @id-Verweisen über Seitengrenzen hinweg nicht verlässlich — auf
+       * der Startseite blieb der Verweis damit praktisch leer.
+       *
+       * Das kostet genau die Suchen, die Umsatz bringen: „wer hat heute abend
+       * offen", „Restaurant Vulkaneifel". Die Öffnungszeiten stimmen wörtlich
+       * mit RestaurantPage.astro und dem sichtbaren Text überein — weichen sie
+       * je auseinander, ist die Angabe irreführend, nicht bloß unsauber.
+       */
+      containsPlace: {
+        "@type": "Restaurant",
+        "@id": "https://landhaus-schend.de/restaurant/#restaurant",
+        name: "Landhaus Restaurant",
+        url: "https://landhaus-schend.de/restaurant/",
+        telephone: "+49-6573-306",
+        servesCuisine: ["Eifeler Landküche", "Deutsch", "Regional"],
+        priceRange: "€€",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "Hauptstraße 9",
+          addressLocality: "Immerath",
+          addressRegion: "Rheinland-Pfalz",
+          postalCode: "54552",
+          addressCountry: "DE",
+        },
+        openingHoursSpecification: [
+          { "@type": "OpeningHoursSpecification", dayOfWeek: ["Thursday", "Friday", "Saturday"], opens: "17:30", closes: "20:00" },
+          { "@type": "OpeningHoursSpecification", dayOfWeek: ["Sunday"], opens: "12:00", closes: "14:00" },
+          { "@type": "OpeningHoursSpecification", dayOfWeek: ["Sunday"], opens: "17:30", closes: "20:00" },
+        ],
+      },
       // Aggregierte Gäste-Bewertung — Booking.com als Quelle (größte, transparente
       // Stichprobe: 8,8/10 aus 277 Bewertungen, 1:1 zum sichtbaren Footer/Reviews-
       // Abschnitt; kein erfundener Mittelwert über verschiedene Skalen). Wert v.a. für
@@ -115,7 +149,13 @@ const hotelGraph = {
       name: "Landhaus Schend", alternateName: "Landhaus Schend", url: "https://landhaus-schend.de/",
       logo: "https://landhaus-schend.de/schend-logo-black.svg",
       foundingDate: "1856",
-      contactPoint: { "@type": "ContactPoint", telephone: "+49-6573-306", contactType: "Reservierung", areaServed: "DE", availableLanguage: ["German"] },
+      // areaServed: Die Vulkaneifel lebt stark vom niederländischen und
+      // belgischen Quellmarkt — „DE" allein schnitt das Haus in der Suche
+      // dieser Gäste unnötig ab.
+      // ⚠ availableLanguage nennt nur Sprachen, in denen die SEITE vorliegt
+      // (DE/EN/FR/NL). Ob am Telefon jemand Französisch spricht, ist damit
+      // NICHT behauptet — das wäre eine Angabe, die ich nicht belegen kann.
+      contactPoint: { "@type": "ContactPoint", telephone: "+49-6573-306", contactType: "Reservierung", areaServed: ["DE", "NL", "BE", "LU"], availableLanguage: ["German", "English", "French", "Dutch"] },
       sameAs: ["https://www.facebook.com/profile.php?id=100008296860156", "https://www.instagram.com/landhaus_schend/", "https://www.booking.com/hotel/de/landhaus-schend.html", "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html"],
     },
     { "@type": "WebSite", "@id": "https://landhaus-schend.de/#website", url: "https://landhaus-schend.de/", name: "Landhaus Schend", publisher: { "@id": "https://landhaus-schend.de/#organization" }, inLanguage: [c.schemaInLanguage] },
