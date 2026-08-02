@@ -32,6 +32,38 @@ function gitDatum(pfad) {
 }
 
 /**
+ * ⚠ Warnt, wenn die Git-Historie abgeschnitten ist (flacher Klon).
+ *
+ * Ohne volle Historie findet `git log` für JEDE Datei nur den einen geholten
+ * Commit — alle Seiten bekommen dann denselben Tag, nämlich den des Deploys.
+ * Die Sitemap sieht dabei völlig in Ordnung aus: 76 Einträge, 76 Daten. Nur
+ * sind sie alle falsch, und Google lernt „alles ändert sich täglich", was das
+ * Signal wertlos macht.
+ *
+ * Genau das ist am 02.08.2026 passiert (GitHub Actions holt standardmäßig
+ * einen Commit). Der Build meldete nichts. Deshalb diese laute Warnung —
+ * ein Fehler, der nur an der ausgelieferten Datei sichtbar wird, muss beim
+ * Bauen schreien. → [[methode-waechter-der-immer-rot-leuchtet]]
+ */
+function historiePruefen() {
+  try {
+    const flach = execFileSync("git", ["rev-parse", "--is-shallow-repository"], {
+      encoding: "utf8", stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+    if (flach === "true") {
+      console.warn(
+        "\n\x1b[33m\x1b[1m⚠ Flacher Git-Klon — die lastmod-Daten der Sitemap werden ALLE gleich sein.\x1b[0m\n" +
+        "  Abhilfe in .github/workflows/deploy-cloudflare.yml:\n" +
+        "    - uses: actions/checkout@v6\n" +
+        "      with:\n" +
+        "        fetch-depth: 0\n",
+      );
+    }
+  } catch { /* kein git — dann gibt gitDatum() ohnehin null zurück */ }
+}
+historiePruefen();
+
+/**
  * Seitenpfad → die Datei(en), die den Inhalt dieser Seite bestimmen.
  *
  * ⚠ Die Inhaltsdateien heißen DEUTSCH (`zimmer.ts`, nicht `rooms.ts`). Beim

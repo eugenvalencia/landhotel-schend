@@ -36,6 +36,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          # ⚠ Volle Historie nötig, sonst sind die lastmod-Daten in der Sitemap
+          # WERTLOS. astro.config.mjs liest je Seite das Git-Datum ihrer
+          # Inhaltsquelle. Der Standard-Checkout holt nur EINEN Commit — dann
+          # findet `git log` für jede Datei nur diesen einen, und alle 76 Seiten
+          # tragen dasselbe Datum: den Deploy-Tag.
+          #
+          # Genau das ist am 02.08.2026 passiert. Lokal war die Staffelung
+          # korrekt (8 Seiten heute, 20 gestern, 16 aus Juni), live standen
+          # danach alle 76 auf heute. Gefunden nur durch die Gegenprobe an der
+          # ausgelieferten Sitemap — der Build meldete keinerlei Fehler.
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v6
