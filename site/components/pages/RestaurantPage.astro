@@ -73,7 +73,7 @@ const restaurantSchema = {
   // hasMenu-Stub: es gibt keine fixe Online-Karte (Wochenmenü wird morgens bekannt
   // gegeben). Verweist auf die Restaurant-Seite als Menü-Ankerpunkt.
   hasMenu: { "@type": "Menu", "@id": `${faqUrl}#menu`, url: faqUrl },
-  sameAs: ["https://www.facebook.com/Landhotel.Schend/", "https://www.booking.com/hotel/de/landhaus-schend.html", "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html"],
+  sameAs: ["https://www.facebook.com/profile.php?id=100008296860156", "https://www.booking.com/hotel/de/landhaus-schend.html", "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html"],
   potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: `${ORIGIN}${localizedPath("/anfrage", lang)}`, actionPlatform: ["https://schema.org/DesktopWebPlatform", "https://schema.org/MobileWebPlatform"] }, result: { "@type": "FoodEstablishmentReservation", name: "Tischreservierung" } },
   containedInPlace: { "@id": "https://landhaus-schend.de/#hotel" },
   priceRange: "€€",

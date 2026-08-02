@@ -10,11 +10,14 @@ export const SITE_DESCRIPTOR = "Hotel - Restaurant";
 export const LEGAL_NAME = "Landhaus Schend, Hotel - Restaurant";
 
 // Social-Media-Profile (Footer-Icons). EINE Stelle zum Pflegen.
-// Facebook = aktueller echter Handle — Karin benennt die Seite später auf
-// „Landhaus Schend" um, dann hier die neue URL eintragen.
+// Facebook: am 02.08.2026 auf Eugens Ansage auf das aktuell gepflegte Profil
+// umgestellt (vorher „/Landhotel.Schend/").
+// ⚠ Diese URL steht zusätzlich in den strukturierten Daten (`sameAs`) von
+// HomePage.astro und RestaurantPage.astro. Wer nur hier ändert, hinterlässt
+// dort einen Widerspruch — Google liest beide.
 // Instagram = Platzhalter, bis der echte Handle feststeht.
 export const SOCIAL = {
-  facebook: "https://www.facebook.com/Landhotel.Schend/",
+  facebook: "https://www.facebook.com/profile.php?id=100008296860156",
   instagram: "https://www.instagram.com/landhaus_schend/",
 } as const;
 
