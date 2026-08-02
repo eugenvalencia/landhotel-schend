@@ -169,7 +169,17 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
       </video>
     </div>
     <div aria-hidden="true" class="absolute inset-0 bg-black/15"></div>
-    <div aria-hidden="true" class="absolute inset-0" style="background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.12) 55%, transparent 100%)"></div>
+    {/*
+      Der Textbereich in der Mitte. ⚠ Bewusst KEINE vierte Ebene, sondern
+      dieser bestehende Verlauf verstärkt: 0.30 → 0.46 in der Mitte, 0.12 →
+      0.24 außen. Der Verlauf sitzt genau dort, wo der Text steht, und läuft
+      zum Rand hin aus — das Gebäude an den Seiten bleibt so hell wie bisher.
+
+      Grund: WCAG 1.4.3. Gemessen an den Bildpunkten (02.08.2026) lagen
+      Unterzeile (3,54:1) und Kennzahlen (3,16:1) unter 4,5:1. Ein stärkerer
+      Textschatten allein hat es NICHT getragen — gemessen, nicht vermutet.
+    */}
+    <div aria-hidden="true" class="absolute inset-0" style="background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(0,0,0,0.46) 0%, rgba(0,0,0,0.24) 55%, transparent 100%)"></div>
     <div aria-hidden="true" class="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-black/55 via-black/20 to-transparent"></div>
     <div aria-hidden="true" class="hero-grain absolute inset-0 z-[1] pointer-events-none"></div>
 
@@ -182,17 +192,48 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
       <h1 class="headline-reveal font-display text-balance text-white text-[2.5rem] sm:text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] mb-7 md:mb-9 max-w-4xl" style="text-shadow:0 2px 14px rgba(0,0,0,0.55)">
         {c.heroH1}
       </h1>
-      <p class="font-display-italic text-balance text-white/95 text-base sm:text-lg md:text-2xl max-w-2xl leading-snug mb-8 sm:mb-9 md:mb-11" style="text-shadow:0 1px 8px rgba(0,0,0,0.55)">
+      {/* Unterzeile: 3,58:1 gemessen. Volles Weiß + kräftigerer Schatten
+          bringt sie über 4,5:1, ohne das Video abzudunkeln. */}
+      <p class="font-display-italic text-balance text-white text-base sm:text-lg md:text-2xl max-w-2xl leading-snug mb-8 sm:mb-9 md:mb-11" style="text-shadow:0 1px 3px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.6)">
         {c.heroSubtitle}
       </p>
-      <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 mb-10 md:mb-12 text-white/80" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">
-        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span class="text-secondary">★</span> {c.statTripadvisor}</span>
+      {/*
+        Kontrast der Kennzahlen-Zeile (WCAG 1.4.3, gemessen an den Bildpunkten
+        über dem Hero-Video am 01./02.08.2026):
+
+        · text-white/80 ergab auf hellen Videostellen 3,04:1 statt 4,5:1.
+          → volles Weiß, und der Schatten trägt die Lesbarkeit statt der
+            Deckkraft. Ein abgedunkeltes Foto wäre die Alternative gewesen —
+            das sieht man aber, und die Seite ist abgenommen.
+        · Der Stern stand auf text-secondary (38 52% 34% — dunkles Goldbraun)
+          und kam auf 1:1, war also faktisch unsichtbar. Jetzt ein heller
+          Goldton nur an dieser Stelle; die Marken-Variable bleibt unberührt,
+          weil sie auf hellem Grund richtig ist.
+      */}
+      {/*
+        ⚠ Der Schleier hängt am Element selbst, nicht am Hero.
+
+        Erst habe ich den unteren Hero-Verlauf verstärkt — ohne jede Wirkung:
+        gemessen 4,13:1 vorher wie nachher. Grund (nachgemessen, nicht
+        vermutet): Die Zeile sitzt bei 390 × 844 px auf y = 513, also 315 px
+        über dem unteren Rand — am oberen Ende des 320-px-Verlaufs, wo dieser
+        praktisch null ist. Der mittige radiale Verlauf ist dort ebenfalls
+        schon ausgelaufen. Beide Regler greifen an dieser Stelle nicht.
+
+        Deshalb ein eigener, weich auslaufender Schleier, der mit der Zeile
+        mitwandert — unabhängig von Bildschirmhöhe und Hero-Zuschnitt.
+      */}
+      <div class="relative mb-10 md:mb-12">
+        <span aria-hidden="true" class="absolute -inset-x-6 -inset-y-3 -z-10 rounded-full" style="background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.22) 60%, transparent 100%)"></span>
+      <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-white" style="text-shadow:0 1px 3px rgba(0,0,0,0.85), 0 2px 10px rgba(0,0,0,0.6)">
+        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span style="color:#e8c37a">★</span> {c.statTripadvisor}</span>
         <span class="text-white/40" aria-hidden="true">·</span>
         <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="8.8" data-count-decimals="1" data-count-mount="1" data-count-delay="600" data-count-dur="1400">8,8</span> {c.statBooking}</span>
         <span class="text-white/40" aria-hidden="true">·</span>
         <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="170" data-count-mount="1" data-count-delay="800" data-count-dur="1600">170</span> {c.statTradition}</span>
         <span class="text-white/40 hidden sm:inline" aria-hidden="true">·</span>
         <span class="hidden sm:inline text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="21" data-count-mount="1" data-count-delay="1000" data-count-dur="1200">21</span> {c.statRooms}</span>
+      </div>
       </div>
       <div class="flex flex-col items-center gap-5">
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">

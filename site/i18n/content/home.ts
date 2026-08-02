@@ -119,7 +119,7 @@ export const homeContent: Record<Locale, HomeContent> = {
       "Familiengeführtes 3-Sterne-Superior Landhaus in Immerath / Vulkaneifel mit 21 komfortablen Zimmern, hauseigenem Eifeler Restaurant und Halbpension auf Wunsch.",
     schemaInLanguage: "de-DE",
     heroBadge: "Anno 1856 · Vulkaneifel",
-    heroH1: "Willkommen im Landhaus Schend",
+    heroH1: "Landhaus Schend — Hotel & Restaurant in der Vulkaneifel",
     heroSubtitle:
       "Ihr ★★★ Superior Hotel für den Kurzurlaub in der Vulkaneifel — Eifelsteig, Maare-Mosel-Radweg und Nürburgring direkt vor der Tür. Eifeler Landküche, Halbpension auf Wunsch, kostenlose Parkplätze.",
     statTripadvisor: "4,0/5 Tripadvisor",
@@ -258,7 +258,7 @@ export const homeContent: Record<Locale, HomeContent> = {
       "Family-run 3-star superior country house in Immerath / Volcanic Eifel with 21 comfortable rooms, its own Eifel restaurant and half board on request.",
     schemaInLanguage: "en",
     heroBadge: "Anno 1856 · Volcanic Eifel",
-    heroH1: "Welcome to Landhaus Schend",
+    heroH1: "Landhaus Schend — Hotel & Restaurant in the Volcanic Eifel",
     heroSubtitle:
       "Your ★★★ Superior hotel for a short break in the Volcanic Eifel — the Eifelsteig trail, the Maare-Mosel cycle path and the Nürburgring right on the doorstep. Eifel country cuisine, half board on request, free parking.",
     statTripadvisor: "4.0/5 Tripadvisor",
@@ -397,7 +397,7 @@ export const homeContent: Record<Locale, HomeContent> = {
       "Maison de campagne 3 étoiles supérieure, familiale, à Immerath / Eifel volcanique, avec 21 chambres confortables, son propre restaurant de l'Eifel et la demi-pension sur demande.",
     schemaInLanguage: "fr",
     heroBadge: "Anno 1856 · Eifel volcanique",
-    heroH1: "Bienvenue au Landhaus Schend",
+    heroH1: "Landhaus Schend — hôtel et restaurant dans l’Eifel volcanique",
     heroSubtitle:
       "Votre hôtel ★★★ Superior pour un court séjour dans l'Eifel volcanique — le sentier Eifelsteig, la piste cyclable Maare-Mosel et le Nürburgring juste devant la porte. Cuisine régionale de l'Eifel, demi-pension sur demande, parking gratuit.",
     statTripadvisor: "4,0/5 Tripadvisor",
@@ -536,7 +536,7 @@ export const homeContent: Record<Locale, HomeContent> = {
       "Familiaal 3-sterren-superior landhuis in Immerath / Vulkaneifel met 21 comfortabele kamers, een eigen Eifeler restaurant en halfpension op verzoek.",
     schemaInLanguage: "nl",
     heroBadge: "Anno 1856 · Vulkaneifel",
-    heroH1: "Welkom in Landhaus Schend",
+    heroH1: "Landhaus Schend — hotel & restaurant in de Vulkaneifel",
     heroSubtitle:
       "Uw ★★★ Superior hotel voor een korte vakantie in de Vulkaneifel — de Eifelsteig, het Maare-Mosel-fietspad en de Nürburgring vlak voor de deur. Eifeler streekkeuken, halfpension op verzoek, gratis parkeren.",
     statTripadvisor: "4,0/5 Tripadvisor",
