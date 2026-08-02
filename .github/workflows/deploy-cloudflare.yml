@@ -75,6 +75,22 @@ jobs:
           command: pages deploy dist-astro --project-name=landhotel-schend --branch=${{ github.head_ref || github.ref_name }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
+      # IndexNow: meldet Bing (und Yandex/Seznam/Naver) sofort, WELCHE Seiten
+      # sich geändert haben — statt zu warten, bis jemand vorbeischaut. Google
+      # nimmt an IndexNow nicht teil.
+      #
+      # ⚠ Nur auf main. Ein Vorschau-Branch, der Live-URLs meldet, würde
+      # Suchmaschinen auf Inhalte hetzen, die dort gar nicht stehen.
+      #
+      # ⚠ continue-on-error: Ein fehlgeschlagener Ping darf den Deploy nicht
+      # rot färben. Die Seite ist dann trotzdem live und wird regulär gefunden —
+      # ein roter Deploy wegen einer Nebensache ist ein Wächter, der grundlos
+      # leuchtet, und solche Warnungen werden bald ignoriert.
+      - name: IndexNow — geänderte Seiten melden
+        if: github.ref_name == 'main'
+        continue-on-error: true
+        run: node scripts/indexnow.mjs
+
       # Geprüft wird die Adresse, unter der Gäste die Seite wirklich aufrufen.
       # Vorher stand hier schend.conexadigital.eu — diesen Host gibt es nicht
       # mehr, curl brach mit Code 6 ab (Name nicht auflösbar), und JEDER Deploy
