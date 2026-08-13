@@ -119,7 +119,23 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
         <a href={localizedPath("/agb", lang)} class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_terms", lang)}</a>
         <a href={localizedPath("/barrierefreiheit", lang)} class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_a11y", lang)}</a>
         <a href={localizedPath("/bildnachweis", lang)} class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors">{t("legal_credits", lang)}</a>
+        {/* ⚠ Pflicht, kein Komfort: Der Widerruf der Einwilligung muss so leicht
+            sein wie ihre Erteilung (Art. 7 Abs. 3 DSGVO). Deshalb dauerhaft in
+            der Fußzeile und nicht nur im einmaligen Banner. Öffnet die
+            Einstellungen (zeigt die aktuelle Wahl), nicht die Erstabfrage. */}
+        <button
+          type="button"
+          data-open-consent
+          class="footer-link inline-flex items-center min-h-11 py-1.5 hover:text-secondary transition-colors"
+        >{t("consent_settings", lang)}</button>
       </nav>
+      <script is:inline>
+        document.querySelectorAll("[data-open-consent]").forEach(function (b) {
+          b.addEventListener("click", function () {
+            window.dispatchEvent(new Event("open-consent-settings"));
+          });
+        });
+      </script>
     </div>
   </div>
 </footer>

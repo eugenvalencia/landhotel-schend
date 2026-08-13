@@ -63,6 +63,31 @@ export const UI = {
   legal_a11y: { de: "Barrierefreiheit", en: "Accessibility", fr: "Accessibilité", nl: "Toegankelijkheid" },
   legal_credits: { de: "Bildnachweis", en: "Image credits", fr: "Crédits photos", nl: "Fotoverantwoording" },
 
+  // — Einwilligung (Cookie-Banner, seit 13.08.2026) —
+  // ⚠ Bis dahin kam diese Seite OHNE Banner aus: Cloudflare Web Analytics ist
+  // cookiefrei und einwilligungsfrei. Microsoft Clarity setzt Cookies (_clck,
+  // _clsk) und braucht deshalb eine Einwilligung nach § 25 Abs. 1 TDDDG.
+  // Die Datenschutzerklärung wurde entsprechend nachgezogen — dort stand
+  // wörtlich »ein Cookie-Banner entfällt«.
+  consent_title: { de: "Dürfen wir mitzählen?", en: "May we count along?", fr: "Pouvons-nous mesurer l’audience ?", nl: "Mogen we meetellen?" },
+  consent_body: {
+    de: "Wir möchten verstehen, welche Seiten unsere Gäste interessieren — dafür würden wir Microsoft Clarity einsetzen (Heatmaps und Sitzungsanalyse, Ihre Eingaben werden dabei unkenntlich gemacht). Ohne Ihre Zustimmung passiert das nicht. Die Seite funktioniert vollständig auch ohne.",
+    en: "We would like to understand which pages interest our guests — for that we would use Microsoft Clarity (heatmaps and session analysis; anything you type is masked). Without your consent this does not happen. The site works fully without it.",
+    fr: "Nous aimerions comprendre quelles pages intéressent nos hôtes — pour cela nous utiliserions Microsoft Clarity (cartes de chaleur et analyse de session ; vos saisies sont masquées). Sans votre accord, rien de tout cela n’a lieu. Le site fonctionne entièrement sans.",
+    nl: "We willen graag begrijpen welke pagina’s onze gasten interesseren — daarvoor zouden we Microsoft Clarity gebruiken (heatmaps en sessieanalyse; wat u typt wordt onleesbaar gemaakt). Zonder uw toestemming gebeurt dit niet. De site werkt volledig zonder.",
+  },
+  consent_accept: { de: "Einverstanden", en: "I agree", fr: "J’accepte", nl: "Akkoord" },
+  consent_decline: { de: "Nur Notwendiges", en: "Only essentials", fr: "Strict nécessaire", nl: "Alleen noodzakelijk" },
+  consent_more: { de: "Details im Datenschutz", en: "Details in the privacy policy", fr: "Détails dans la politique de confidentialité", nl: "Details in de privacyverklaring" },
+  consent_aria: { de: "Hinweis zur Analyse-Einwilligung", en: "Analytics consent notice", fr: "Avis de consentement à l’analyse", nl: "Kennisgeving analysetoestemming" },
+  // Fußzeilen-Eintrag: Der Widerruf muss so leicht sein wie die Zustimmung
+  // (Art. 7 Abs. 3 DSGVO) — deshalb dauerhaft erreichbar, nicht nur einmalig.
+  consent_settings: { de: "Analyse-Einstellungen", en: "Analytics settings", fr: "Paramètres d’analyse", nl: "Analyse-instellingen" },
+  consent_state_on: { de: "Zurzeit: Analyse erlaubt.", en: "Currently: analytics allowed.", fr: "Actuellement : analyse autorisée.", nl: "Momenteel: analyse toegestaan." },
+  consent_state_off: { de: "Zurzeit: nur Notwendiges.", en: "Currently: essentials only.", fr: "Actuellement : strict nécessaire.", nl: "Momenteel: alleen noodzakelijk." },
+  consent_revoke: { de: "Einwilligung widerrufen", en: "Withdraw consent", fr: "Retirer le consentement", nl: "Toestemming intrekken" },
+  consent_close: { de: "Schließen", en: "Close", fr: "Fermer", nl: "Sluiten" },
+
   // — StickyCTA —
   sticky_region_aria: { de: "Schnellaktion Anruf und Buchung", en: "Quick action: call and booking", fr: "Action rapide : appel et réservation", nl: "Snelactie: bellen en boeken" },
   sticky_call_aria: { de: "Hotel anrufen unter", en: "Call the hotel at", fr: "Appeler l’hôtel au", nl: "Bel het hotel op" },

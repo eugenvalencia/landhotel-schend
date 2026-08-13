@@ -12,6 +12,9 @@ import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import A11yPanel from "../components/A11yPanel.astro";
 import StickyCTA from "../components/StickyCTA.astro";
+// Einwilligung für Microsoft Clarity (13.08.2026). Bewusst am Ende des Body,
+// NICHT im <head>: ohne Zustimmung darf keine Anfrage an Microsoft rausgehen.
+import ConsentBanner from "../components/ConsentBanner.astro";
 import Lightbox from "../components/Lightbox.astro";
 import { ORIGIN, SITE_NAME } from "../lib/site";
 import { hreflangAlternates, LOCALES, type Locale } from "../i18n";
@@ -311,6 +314,7 @@ const ogLocaleAlternates = localized
     <StickyCTA lang={lang} />
     <A11yPanel lang={lang} />
     <Lightbox />
+    <ConsentBanner lang={lang} />
 
     <style is:global>
       /* Skip-Link — visuell versteckt bis Tastatur-Fokus (a11y). */

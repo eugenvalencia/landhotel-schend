@@ -1,0 +1,216 @@
+---
+/**
+ * Einwilligungs-Banner für Microsoft Clarity (seit 13.08.2026).
+ *
+ * ⚠⚠ WARUM DIESE SEITE ÜBERHAUPT EIN BANNER HAT
+ *
+ * Bis zum 13.08.2026 kam landhaus-schend.de OHNE Cookie-Banner aus, und die
+ * Datenschutzerklärung sagte das ausdrücklich: Cloudflare Web Analytics ist
+ * cookiefrei, greift nicht auf das Endgerät zu und ist damit nach § 25 TDDDG
+ * einwilligungsfrei. Microsoft Clarity ist anders — es setzt Cookies (_clck,
+ * _clsk) und zeichnet den Sitzungsverlauf auf. Das geht nur mit Einwilligung.
+ *
+ * ⚠⚠ MICROSOFT IST HIER NICHT AUFTRAGSVERARBEITER, SONDERN SELBST
+ *    VERANTWORTLICHER. Microsoft schreibt in der eigenen Dokumentation
+ *    wörtlich: »Clarity is GDPR-compliant as a data controller«
+ *    (learn.microsoft.com/en-us/clarity/faq). Es gibt für Clarity daher KEINEN
+ *    Art.-28-Vertrag, und Microsoft nutzt die Daten auch für eigene Zwecke
+ *    einschließlich Microsoft Advertising. Deshalb steht Clarity in der
+ *    Datenschutzerklärung NICHT unter »Auftragsverarbeiter« (Ziffer 6),
+ *    sondern in einem eigenen Abschnitt, der diese Rolle offen benennt.
+ *    Wer das später verschiebt, macht aus einer richtigen eine falsche Angabe.
+ *
+ * Aufbau (bewusst wie auf conexadigital.eu, wo dieselbe Mechanik erprobt ist):
+ *   · Entscheidung in localStorage, Schlüssel `schend_consent_v1`
+ *   · Ohne »granted« wird NICHTS von Microsoft geladen — keine Anfrage
+ *   · Ablehnen ist gleichrangig sichtbar, nicht versteckt (§ 25 TDDDG, Art. 7 DSGVO)
+ *   · Widerruf über die Fußzeile, so leicht wie die Zustimmung (Art. 7 Abs. 3)
+ *
+ * Gegenprobe nach Änderungen IM BROWSER, nicht im HTML:
+ *   ohne Zustimmung → 0 Anfragen an clarity.ms · nach Zustimmung → _clck/_clsk
+ */
+import { DEFAULT_LOCALE, localizedPath, type Locale } from "../i18n";
+import { t } from "../i18n/ui";
+
+interface Props {
+  lang?: Locale;
+}
+const { lang = DEFAULT_LOCALE } = Astro.props;
+
+/** Projekt-ID aus dem Clarity-Dashboard (Landhaus Schend). */
+const CLARITY_ID = "xwovs2bd7d";
+const STORAGE_KEY = "schend_consent_v1";
+---
+
+<div
+  id="consent-banner"
+  data-state="pending"
+  data-clarity-id={CLARITY_ID}
+  data-storage-key={STORAGE_KEY}
+  data-state-on={t("consent_state_on", lang)}
+  data-state-off={t("consent_state_off", lang)}
+  role="dialog"
+  aria-live="polite"
+  aria-label={t("consent_aria", lang)}
+  hidden
+>
+  <div class="consent-card">
+    <p class="consent-title">{t("consent_title", lang)}</p>
+    <p class="consent-body">{t("consent_body", lang)}</p>
+    <p class="consent-state" data-role="state" hidden></p>
+    <div class="consent-actions">
+      <button type="button" data-consent="granted" class="consent-btn consent-btn-primary">
+        {t("consent_accept", lang)}
+      </button>
+      <button type="button" data-consent="denied" class="consent-btn consent-btn-ghost">
+        {t("consent_decline", lang)}
+      </button>
+    </div>
+    <a href={localizedPath("/datenschutz", lang)} class="consent-link">{t("consent_more", lang)}</a>
+  </div>
+</div>
+
+<style>
+  #consent-banner[hidden] { display: none; }
+
+  #consent-banner {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 60;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .consent-card {
+    width: 100%;
+    max-width: 34rem;
+    background: hsl(var(--card, 38 44% 97%));
+    color: hsl(var(--foreground, 25 25% 15%));
+    border: 1px solid hsl(38 30% 60% / 0.35);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    box-shadow: 0 18px 48px -12px rgb(0 0 0 / 0.35);
+  }
+
+  .consent-title { font-weight: 600; font-size: 1.02rem; margin: 0 0 0.5rem; }
+  .consent-body { font-size: 0.9rem; line-height: 1.55; margin: 0 0 0.9rem; opacity: 0.85; }
+  .consent-state { font-size: 0.86rem; margin: 0 0 0.75rem; opacity: 0.75; }
+
+  .consent-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+  /* ⚠ Beide Knöpfe gleich groß und gleich auffällig: Ein versteckter oder
+     kleiner »Ablehnen«-Knopf macht die Einwilligung unwirksam. 44 px Höhe,
+     damit sie auf dem Telefon sicher zu treffen sind. */
+  .consent-btn {
+    flex: 1 1 12rem;
+    min-height: 44px;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+  }
+  .consent-btn:hover { opacity: 0.88; }
+
+  .consent-btn-primary {
+    background: hsl(var(--secondary, 152 30% 32%));
+    color: hsl(38 44% 97%);
+    border: 1px solid transparent;
+  }
+  .consent-btn-ghost {
+    background: transparent;
+    color: inherit;
+    border: 1px solid hsl(38 30% 45% / 0.5);
+  }
+
+  .consent-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 0.4rem;
+    font-size: 0.86rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    opacity: 0.8;
+  }
+  .consent-link:hover { opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .consent-btn { transition: none; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var el = document.getElementById("consent-banner");
+    if (!el) return;
+
+    var KEY = el.dataset.storageKey;
+    var ID = el.dataset.clarityId;
+    var geladen = false;
+
+    function lies() {
+      try { return localStorage.getItem(KEY); } catch (e) { return null; }
+    }
+
+    /**
+     * Lädt Clarity — ausschließlich nach »granted«.
+     * `consent` und `masking` werden VOR dem Loader gesetzt, damit keine
+     * unmaskierte Eingabe das Gerät verlässt, falls das Skript schneller ist.
+     */
+    function ladeClarity() {
+      if (geladen || !ID) return;
+      geladen = true;
+      window.clarity = window.clarity || function () {
+        (window.clarity.q = window.clarity.q || []).push(arguments);
+      };
+      window.clarity("consent");
+      window.clarity("set", "masking", "true");
+      var s = document.createElement("script");
+      s.async = 1;
+      s.src = "https://www.clarity.ms/tag/" + ID;
+      var f = document.getElementsByTagName("script")[0];
+      f.parentNode.insertBefore(s, f);
+    }
+
+    function zeigeBanner() {
+      el.dataset.state = "asking";
+      el.querySelector('[data-role="state"]').hidden = true;
+      el.hidden = false;
+    }
+
+    /** Einstellungen: zeigt die aktuelle Wahl, statt erneut zu fragen. */
+    function zeigeEinstellungen(wahl) {
+      var s = el.querySelector('[data-role="state"]');
+      s.textContent = wahl === "granted" ? STATE_ON : STATE_OFF;
+      s.hidden = false;
+      el.dataset.state = "settings";
+      el.hidden = false;
+    }
+
+    var STATE_ON = el.dataset.stateOn || "";
+    var STATE_OFF = el.dataset.stateOff || "";
+
+    el.addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-consent]");
+      if (!b) return;
+      var wahl = b.dataset.consent;
+      try { localStorage.setItem(KEY, wahl); } catch (e) {}
+      el.hidden = true;
+      if (wahl === "granted") ladeClarity();
+      // Bei Widerruf wird NICHT nachgeladen; wirksam ab dem nächsten Aufruf.
+    });
+
+    // Fußzeilen-Link: Widerruf so leicht wie die Zustimmung (Art. 7 Abs. 3 DSGVO).
+    window.addEventListener("open-consent-settings", function () {
+      zeigeEinstellungen(lies());
+    });
+
+    var gespeichert = lies();
+    if (gespeichert === "granted") ladeClarity();
+    else if (gespeichert !== "denied") zeigeBanner();
+  })();
+</script>
