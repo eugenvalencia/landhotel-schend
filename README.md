@@ -45,27 +45,26 @@ Die Action baut, deployt zu Cloudflare Pages und prüft danach nach: HTTP 200 au
 ausgeliefert wird. 200 allein wäre kein Nachweis — die Seite kann antworten und
 trotzdem kaputt sein.
 
-### Vercel hängt zusätzlich am `preview`-Branch
+### Kein Vercel mehr (13.08.2026)
 
-Produktiv ist **allein Cloudflare Pages**. An `preview` (den `mirror-preview.yml`
-aus `main` fortschreibt) hängt zusätzlich ein Vercel-Projekt — ein Überbleibsel
-aus der Zeit vor dem Astro-Umbau.
+Ausgeliefert wird **ausschließlich über Cloudflare Pages**. Falls in alten
+Notizen noch Vercel auftaucht: Das Projekt ist am 13.08.2026 gelöscht worden,
+zusammen mit `vercel.json`.
 
-Es scheiterte bei jedem Push mit *„No Output Directory named `dist` found"*:
-Vercel sucht standardmäßig `dist`, Astro schreibt hier aber nach `dist-astro`
-(eigener `outDir`, siehe `astro.config.mjs`). Behoben am 13.08.2026 über
-`vercel.json` → `outputDirectory`.
+Es hing am `preview`-Branch (den `mirror-preview.yml` aus `main` fortschreibt)
+und war ein Überbleibsel aus der Zeit vor dem Astro-Umbau — nirgends
+dokumentiert, für nichts zuständig, und es scheiterte bei jedem Push mit
+*„No Output Directory named `dist` found"* (Astro schreibt nach `dist-astro`).
 
-⚠ Dabei ist aus `vercel.json` die alte Regel
-`rewrites: [{ source: "/(.*)", destination: "/index.html" }]` entfernt worden.
-Die stammte aus der React-SPA-Zeit und wäre für eine statische Seite schädlich:
-Sie hätte **jede** Adresse auf die Startseite umgeleitet und damit sowohl die
-echten Unterseiten als auch die 404-Seite ausgehebelt. Astro erzeugt echte
-Ordner mit `index.html` — dafür braucht es keine Umschreibung.
+⚠ **Die Lehre, warum das hier steht:** In `vercel.json` stand noch
+`rewrites: [{ source: "/(.*)", destination: "/index.html" }]` aus der
+React-SPA-Zeit. Auf einer statischen Seite hätte diese Regel **jede** Adresse
+auf die Startseite umgeleitet — `/datenschutz/`, `/anfrage/` und auch die
+404-Seite. Aufgefallen ist sie nie, weil der Build ohnehin abbrach: Der kaputte
+Build hat den schlimmeren Fehler verdeckt.
 
-Wer Vercel nicht mehr braucht: Projekt dort löschen. Solange es existiert, muss
-es grün sein — ein System, das dauerhaft rot meldet, wird ignoriert, und dann
-fällt der echte Fehler auch nicht mehr auf.
+Ein System, das dauerhaft rot meldet, wird ignoriert — und versteckt dann
+genau das, wofür man es aufgesetzt hat. Entweder grün halten oder abschalten.
 
 ## Aufbau
 
