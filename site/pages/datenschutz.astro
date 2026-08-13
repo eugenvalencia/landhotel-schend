@@ -144,6 +144,24 @@ import TextPage from "../layouts/TextPage.astro";
       stützt Google auf den EU-US Data Privacy Framework bzw. EU-Standardvertragsklauseln.
       Die vollständige Adresse steht als Text daneben — Sie müssen die Karte nicht laden.
     </p>
+    {/* ⚠ Ergänzt am 13.08.2026, gleiche Klasse wie der Clarity-Befund: Google
+        stellt Maps ausdrücklich unter die »Google Maps Controller-Controller
+        Data Protection Terms« — beide Seiten sind eigenständig Verantwortliche,
+        Google verarbeitet NICHT in unserem Auftrag. Ein AVV nach Art. 28 wäre
+        hier also die falsche Grundlage.
+        Quelle: cloud.google.com/maps-platform/terms/maps-controller-terms/
+        Die Überschrift von Ziffer 6 lautet »Auftragsverarbeiter UND eingebundene
+        Dienste« — Maps fällt unter den zweiten Teil, war also nie falsch
+        eingeordnet. Was fehlte, war die Rolle. */}
+    <p class="mt-3">
+      <strong>Zur Rolle von Google:</strong> Google verarbeitet diese Daten nicht in
+      unserem Auftrag, sondern ist dafür — wie wir — <strong>eigenständig
+      verantwortlich</strong>; Google stellt Maps ausdrücklich unter seine
+      „Controller-Controller Data Protection Terms". Google verwendet die Daten daher
+      auch für eigene Zwecke. Ein Auftragsverarbeitungsvertrag nach Art.&nbsp;28 DSGVO
+      besteht für Google Maps deshalb nicht. Was Google mit den Daten tut, steht in der
+      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google-Datenschutzerklärung</a>.
+    </p>
     <h3>e) Reichweitenmessung — Cloudflare Web Analytics</h3>
     <p>
       Um zu verstehen, welche Seiten unsere Gäste interessieren, nutzen wir
