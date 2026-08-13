@@ -210,8 +210,20 @@ import TextPage from "../layouts/TextPage.astro";
     <p class="mt-3">
       Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen.
       Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Betriebs­sicherheit).
-      Speicherdauer: 7 Tage, danach automatische Löschung bzw. Anonymisierung.
+      Wir selbst betreiben keinen eigenen Webserver und führen keine eigenen
+      Server-Log-Dateien; die Verarbeitung liegt beim Hosting-Anbieter, der die Daten
+      nach seinen eigenen Fristen zur Betriebs- und Angriffssicherheit verarbeitet
+      und uns nicht zugänglich macht.
     </p>
+    {/* ⚠ Hier stand bis zum 13.08.2026 »Speicherdauer: 7 Tage, danach automatische
+        Löschung bzw. Anonymisierung«. Diese Frist war nicht belegbar: Die Seite
+        liegt statisch auf Cloudflare Pages, HTTP-Request-Logs werden dort
+        standardmäßig gar nicht aufbewahrt (Aufbewahrung müsste erst aktiviert
+        werden, developers.cloudflare.com/logs/logpull/enabling-log-retention/).
+        Eine konkrete Zahl, die niemand einhalten oder nachweisen kann, ist
+        schlechter als die ehrliche Auskunft — gleiches Muster wie beim
+        beschriebenen, aber nicht laufenden Dienst (Rechtsprüfung 13.08.2026, L-3).
+        ⚠ Wer hier wieder eine Frist einträgt: erst belegen, dass sie stimmt. */}
     <h3>Zimmer-Anfrage / Booking-Formular</h3>
     <p>Über das Buchungsformular erheben wir folgende Daten:</p>
     <ul>
