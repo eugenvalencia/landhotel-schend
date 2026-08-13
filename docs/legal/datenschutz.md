@@ -66,7 +66,7 @@ Diese Website wird auf einer Infrastruktur betrieben, die unser Auftragsverarbei
 
 ### b) Versand der Anfrage per E-Mail — Resend
 
-Ihre Anfrage über das Formular wird **nicht in einer Datenbank gespeichert**, sondern ausschließlich per E-Mail an unsere Rezeption weitergeleitet. Den technischen Versand übernimmt **Resend** (Resend Inc., USA; Versand über EU-Region). Zusätzlich erhalten Sie eine automatische Eingangsbestätigung an Ihre eigene E-Mail-Adresse. Übermittelt werden die von Ihnen im Formular eingegebenen Anfrage-Daten. Mit Resend besteht ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO; der USA-Transfer ist auf EU-Standardvertragsklauseln gestützt. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen, Vertragsanbahnung).
+Ihre Anfrage über das Formular wird **nicht in einer Datenbank gespeichert**, sondern ausschließlich per E-Mail an unsere Rezeption weitergeleitet. Den technischen Versand übernimmt **Resend** (Plus Five Five, Inc., USA; Versand über EU-Region). Zusätzlich erhalten Sie eine automatische Eingangsbestätigung an Ihre eigene E-Mail-Adresse. Übermittelt werden die von Ihnen im Formular eingegebenen Anfrage-Daten. Mit Resend besteht ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO; der USA-Transfer ist auf EU-Standardvertragsklauseln gestützt. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen, Vertragsanbahnung).
 
 ### c) E-Mail-Versand & -Empfang — IONOS
 
@@ -123,7 +123,7 @@ Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenomm
 **Empfänger / Auftragsverarbeiter:**
 
 - **Cloudflare, Inc.** — Hosting/Auslieferung der Website und Betrieb des Anfrage-Endpunkts (Server-Region EU), siehe Ziffer 6 a.
-- **Resend** (Resend Inc., USA; Versand über EU-Region) — technischer Versand Ihrer Anfrage per E-Mail an unsere Rezeption sowie einer automatischen Eingangsbestätigung an Ihre eigene E-Mail-Adresse. USA-Transfer gestützt auf EU-Standardvertragsklauseln.
+- **Resend** (Plus Five Five, Inc., USA; Versand über EU-Region) — technischer Versand Ihrer Anfrage per E-Mail an unsere Rezeption sowie einer automatischen Eingangsbestätigung an Ihre eigene E-Mail-Adresse. USA-Transfer gestützt auf EU-Standardvertragsklauseln.
 - **Conexa Digital** (Inhaber Eugen Neifer) — technischer Dienstleister für Betrieb und Wartung der Website. Über Annahme oder Ablehnung Ihrer Anfrage entscheidet ausschließlich ein Mensch.
 
 Mit allen genannten Dienstleistern bestehen Auftragsverarbeitungsverträge nach Art. 28 DSGVO. Eine Weitergabe an sonstige Dritte erfolgt nicht.
