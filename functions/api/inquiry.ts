@@ -194,7 +194,25 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
     `\n\nAntwort geht an die Gast-E-Mail.`;
 
   // Eingangsbestätigung an den GAST (Schend-Stil) — eigene, gäste-freundliche Kopie.
-  const guestRows = rows.filter(([k]) => k !== "Datenschutz akzeptiert" && k !== "Name");
+  //
+  // ⚠ OHNE das Nachrichtenfeld (14.08.2026). Diese Mail geht an die Adresse,
+  // die jemand ins Formular getippt hat — und wir prüfen nicht, ob sie ihm
+  // gehört. Solange seine freie Nachricht (bis 2.000 Zeichen) mitging, konnte
+  // damit jeder beliebigen Text an eine beliebige Adresse senden lassen,
+  // abgeschickt von landhaus-schend.de und korrekt signiert. Für den
+  // Empfänger sah das aus wie eine echte Mail des Hotels.
+  //
+  // Kein Einbruch, und gedeckelt (5 je IP in 10 Minuten, 40 je Stunde). Der
+  // Schaden träfe aber das HOTEL: Wer so eine Mail als Spam meldet, senkt die
+  // Zustellrate der Domain — und dann landet die nächste echte Antwort an
+  // einen Gast im Junk-Ordner.
+  //
+  // Die kurzen, beschrifteten Felder (Anreise, Zimmerwunsch, Personen)
+  // bleiben: Sie sind der Zweck einer Bestätigung, tragen keinen frei
+  // wählbaren Fließtext und werden nirgends zu einem klickbaren Link.
+  const guestRows = rows.filter(
+    ([k]) => k !== "Datenschutz akzeptiert" && k !== "Name" && k !== "Nachricht",
+  );
   const guestSubject = "Ihre Anfrage beim Landhaus Schend – wir haben sie erhalten";
   const guestHtml = `<div style="font-family:Georgia,'Times New Roman',serif;color:#2b2b2b;max-width:560px;line-height:1.6">
   <h2 style="font-family:Georgia,serif;color:#9a7b3f;margin:0 0 2px">Landhaus Schend</h2>
