@@ -102,8 +102,12 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
         <span class="hidden sm:inline text-[hsl(38_30%_92%)]/25">·</span>
         <p class="text-[11px] tracking-wide text-[hsl(38_30%_92%)]/55">
           Powered by{" "}
+          {/* 16.08.2026: von www. auf die kanonische Adresse umgestellt.
+              www.conexadigital.eu antwortet mit 301 — der Verweis lief über
+              einen Umweg, und er ist derzeit der einzige von einer Kundenseite
+              zu uns. Gemessen: Brave kennt 2 von 338 unserer Seiten. */}
           <a
-            href="https://www.conexadigital.eu"
+            href="https://conexadigital.eu"
             target="_blank"
             rel="noopener noreferrer"
             class="inline-flex items-center gap-1.5 align-middle hover:text-secondary underline-offset-2 hover:underline transition-colors"
