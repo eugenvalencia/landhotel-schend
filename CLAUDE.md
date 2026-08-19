@@ -52,7 +52,8 @@ npm run optimize:images  # mozjpeg-Recompression der Fotos
 |---|---|
 | `site/` | **Die Seite.** Astro-Komponenten, Seiten, `site/i18n/` (DE/EN/FR/NL), `site/lib/` (Zimmer, Pakete, Fotos) |
 | `site/tailwind.config.cjs` | Tailwind der Kundenseite (die Wurzel hat KEINE mehr) |
-| `functions/api/inquiry.ts` | Anfrage-Formular → Resend-Mail. Der einzige Server-Code. |
+| `functions/api/inquiry.ts` | Anfrage-Formular → Resend-Mail an das Hotel + Eingangsbestätigung an den Gast |
+| `functions/api/resend-webhook.ts` | Resend meldet zurückgekommene Mails → Warnung ans Hotel. Scharfschalten: `docs/BOUNCE-MELDER-EINRICHTEN.md`, Messung: `scripts/pruefe-resend-webhook.mjs` |
 | `public/fotos/` | Hotel-Bilder (Brand-Meta via IPTC/XMP gesetzt) |
 | `scripts/` | Bild-Optimierung, Brand-Pack, Smoke-Test |
 | `dist-astro/` | Build-Ergebnis (wird deployt) |
