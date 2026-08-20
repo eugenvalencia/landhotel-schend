@@ -29,6 +29,29 @@ Empfänger, damit das Hotel keine Testwarnung bekommt. Das Fenster war
 Teil. Ohne diese Gegenprobe wäre ein Endpunkt, der **jede** Meldung annimmt,
 von einem funktionierenden nicht zu unterscheiden.
 
+### Conexa liest mit (`ALERT_CC`)
+
+Eugen, 20.08.2026: *»sollte bei Schend was nicht laufen, ruft er uns sowieso
+an«*. Deshalb geht die Warnung an **beide** — Hotel und uns —, und die Mail ans
+Hotel sagt das auch: *»Das Team von Conexa Digital ist informiert.«*
+
+| Variable | Wert |
+|---|---|
+| `ALERT_CC` | `info@conexadigital.eu` (kommagetrennte Liste möglich; nicht gesetzt = wie vorher) |
+
+⚠ Der Hinweissatz erscheint **nur**, wenn wirklich jemand in Kopie steht —
+sonst stünde in der Mail ans Hotel eine Zusage, die niemand einlöst.
+⚠⚠ Die Mitleser sind von der Schleifenbremse mit erfasst. Ohne das wäre eine
+Warnung, die bei **uns** zurückprellt, ein neuer »betroffener Gast« — die
+Endlosschleife wäre nur eine Ecke länger als die über das Hotelpostfach.
+
+**Live belegt am 20.08.2026, 18:09:** Beim Test stand als Hotel-Adresse
+kurzzeitig `e.neifer@outlook.de` drin. Dass die Warnung trotzdem bei
+`info@conexadigital.eu` ankam — mit dem Hinweissatz —, ist nur über `ALERT_CC`
+möglich. Resend meldete danach **kein** Webhook-Ereignis, es kam also auch
+nichts zurück. (Bei `e.neifer@outlook.de` kam nichts an; Outlook sortiert
+solche Mails gern aus. Für Hotel und uns ist die Zustellung nachgewiesen.)
+
 ⚠ **Das Resend-Protokoll hinkt hinterher.** Direkt nach dem Versand stand der
 `POST /emails` dort noch nicht — ältere Aufrufe schon. Wer daran misst, hält
 einen erfolgreichen Versand für gescheitert. Im Zweifel im Postfach nachsehen.
