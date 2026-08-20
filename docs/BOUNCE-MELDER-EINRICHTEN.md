@@ -5,6 +5,34 @@
 > drei Schritte unten nicht gemacht sind** — und das ist Absicht: ohne
 > Signaturgeheimnis weist er jede Meldung ab, statt ungeprüfte durchzureichen.
 
+## ✅ Stand: scharfgeschaltet am 20.08.2026
+
+Alle drei Schritte unten sind **erledigt**. Sie stehen hier weiterhin, weil das
+Geheimnis irgendwann gewechselt werden muss und der Weg dann derselbe ist.
+
+Was am 20.08.2026 an der **laufenden Produktion** gemessen wurde — nicht am
+Quelltext, nicht an einer Anzeige:
+
+| Fall | Erwartet | Gemessen |
+|---|---|---|
+| Gültige Resend-Signatur, einziger Empfänger ist das Hotel | annehmen, **keine** Mail | `200 {"ok":true,"ignored":"hotel_recipient"}` |
+| Signatur um vier Zeichen verfälscht | abweisen | `401 {"error":"bad_signature"}` |
+| Signatur mit fremdem Geheimnis | abweisen | `401 {"error":"bad_signature"}` |
+| Gültige Signatur, echter Gast betroffen | Warn-Mail geht raus | `200 {"ok":true,"alerted":"…"}` — **Mail nachweislich angekommen** |
+
+Der letzte Fall lief mit kurzzeitig auf `info@conexadigital.eu` umgestelltem
+Empfänger, damit das Hotel keine Testwarnung bekommt. Das Fenster war
+**2 Minuten 35 Sekunden** offen (17:57:15–17:59:50); danach stand
+`INQUIRY_TO` gegengeprüft wieder auf `info@landhaus-schend.de`.
+
+⚠ Dass die verfälschte Signatur abgewiesen wird, ist der eigentlich wichtige
+Teil. Ohne diese Gegenprobe wäre ein Endpunkt, der **jede** Meldung annimmt,
+von einem funktionierenden nicht zu unterscheiden.
+
+⚠ **Das Resend-Protokoll hinkt hinterher.** Direkt nach dem Versand stand der
+`POST /emails` dort noch nicht — ältere Aufrufe schon. Wer daran misst, hält
+einen erfolgreichen Versand für gescheitert. Im Zweifel im Postfach nachsehen.
+
 ## Warum es das gibt
 
 Am **13.08.2026** hat der Mailserver eines Gastes die Eingangsbestätigung
