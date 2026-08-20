@@ -15,12 +15,19 @@
 //   RESEND_API_KEY         (Secret, PFLICHT)  — derselbe Key wie in inquiry.ts
 //   INQUIRY_TO             (PFLICHT)          — Postfach des Hotels
 //   INQUIRY_FROM           (optional)         — Absender, Default wie in inquiry.ts
+//   ALERT_CC               (optional)         — wer die Warnung MITBEKOMMT,
+//                                               kommagetrennt. Gedacht für uns
+//                                               (Conexa): das Hotel ruft im
+//                                               Ernstfall ohnehin an — dann
+//                                               wissen wir schon Bescheid,
+//                                               statt beim Anruf zu raten.
 
 interface Env {
   RESEND_WEBHOOK_SECRET?: string;
   RESEND_API_KEY?: string;
   INQUIRY_TO?: string;
   INQUIRY_FROM?: string;
+  ALERT_CC?: string;
   // NUR für die Messung (scripts/pruefe-resend-webhook.mjs): zeigt auf einen
   // lokalen Nachbau von Resend, damit die Prüfung den echten Inhalt der
   // Warn-Mail lesen kann, OHNE eine Mail ans Hotel auszulösen. In Cloudflare
@@ -197,13 +204,25 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
   const hotel = env.INQUIRY_TO.trim().toLowerCase();
   const from = env.INQUIRY_FROM || "Landhaus Schend <info@landhaus-schend.de>";
 
+  // Wer die Warnung mitbekommt. Leer, wenn ALERT_CC nicht gesetzt ist — dann
+  // verhält sich der Melder wie vorher.
+  const mitleser = (env.ALERT_CC || "")
+    .split(",")
+    .map((a) => a.trim())
+    .filter(Boolean);
+
   // ⚠ SCHLEIFENBREMSE — zugleich die Prüfung, ob überhaupt ein Gast betroffen ist.
   // Die Warnung unten geht ans Hotelpostfach. Käme SIE zurück, meldete Resend
   // erneut, wir schrieben erneut ans Hotel — endlos. Deshalb: Wenn der einzige
   // betroffene Empfänger das Hotel selbst ist, wird nichts verschickt.
   // (Und es wäre ohnehin sinnlos — wir schrieben an genau das Postfach, das
   // gerade nachweislich nichts annimmt.)
-  const gaeste = empfaenger.filter((a) => a.toLowerCase() !== hotel);
+  //
+  // ⚠⚠ Die Mitleser gehören in DIESELBE Ausnahme. Sonst reicht eine Warnung,
+  // die bei UNS zurückprellt, um eine neue Warnung auszulösen — mit uns selbst
+  // als vermeintlich betroffenem Gast. Die Schleife wäre nur eine Ecke länger.
+  const ausgenommen = new Set([hotel, ...mitleser.map((a) => a.toLowerCase())]);
+  const gaeste = empfaenger.filter((a) => !ausgenommen.has(a.toLowerCase()));
   if (gaeste.length === 0) {
     console.error("resend-webhook hotel_mailbox_bounced", ev.data?.email_id, grundKlartext(ev));
     gesehen.set(id, now);
@@ -223,6 +242,19 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
     ["Was passiert ist", grund],
   ];
 
+  // ⚠ Dieser Satz darf NUR erscheinen, wenn wir wirklich in Kopie sind. Sonst
+  // stünde in der Mail ans Hotel eine Zusage, die niemand eingelöst hat.
+  const mitgelesen = mitleser.length > 0;
+  const hinweisHtml = mitgelesen
+    ? `<p style="background:#f6f2e8;border-left:3px solid #9a7b3f;padding:10px 14px;margin:16px 0">
+    <strong>Das Team von Conexa Digital ist informiert.</strong> Diese Nachricht ging zugleich an uns —
+    Sie müssen uns nichts weiterleiten. Wenn Sie Fragen haben, rufen Sie einfach an.</p>`
+    : "";
+  const hinweisText = mitgelesen
+    ? "\nDas Team von Conexa Digital ist informiert. Diese Nachricht ging zugleich\n" +
+      "an uns — Sie muessen uns nichts weiterleiten.\n"
+    : "";
+
   const subject = "Wichtig: Unsere E-Mail an " + adresse + " kam nicht an";
   const html = `<div style="font-family:Georgia,'Times New Roman',serif;color:#2b2b2b;max-width:560px;line-height:1.6">
   <h2 style="font-family:Georgia,serif;color:#9a7b3f;margin:0 0 2px">Landhaus Schend</h2>
@@ -234,6 +266,7 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
   </table>
   <p style="margin:18px 0 6px;font-weight:bold;color:#9a7b3f">Was jetzt zu tun ist</p>
   <p>Suchen Sie in Ihrem Postfach nach <strong>${esc(adresse)}</strong> — dort liegt die Buchungsanfrage mit Name und Telefonnummer. Ein kurzer Anruf klärt es.</p>
+  ${hinweisHtml}
   <p style="font-family:Arial,Helvetica,sans-serif;color:#aaa;font-size:12px;margin-top:20px;border-top:1px solid #eee;padding-top:12px">
     Automatischer Hinweis der Website landhaus-schend.de. Er wird ausgelöst, sobald eine E-Mail zurückkommt — Sie müssen nichts einrichten.
   </p>
@@ -245,8 +278,9 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
     zeilen.map(([k, v]) => k + ": " + v).join("\n") +
     "\n\nWas jetzt zu tun ist:\n" +
     "Suchen Sie in Ihrem Postfach nach " + adresse + " — dort liegt die Buchungs-\n" +
-    "anfrage mit Name und Telefonnummer. Ein kurzer Anruf klärt es.\n\n" +
-    "Automatischer Hinweis der Website landhaus-schend.de.";
+    "anfrage mit Name und Telefonnummer. Ein kurzer Anruf klärt es.\n" +
+    hinweisText +
+    "\nAutomatischer Hinweis der Website landhaus-schend.de.";
 
   try {
     const r = await fetch((env.RESEND_API_BASE || "https://api.resend.com") + "/emails", {
@@ -254,7 +288,10 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + env.RESEND_API_KEY },
       body: JSON.stringify({
         from,
-        to: [env.INQUIRY_TO],
+        // Das Hotel zuerst, dann die Mitleser. Eine Mail an alle statt zwei
+        // getrennte: so sieht das Hotel im eigenen Postfach, wer noch Bescheid
+        // weiß, und wir sehen denselben Wortlaut, den es bekommen hat.
+        to: [env.INQUIRY_TO, ...mitleser],
         subject,
         html,
         text,

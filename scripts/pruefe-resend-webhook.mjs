@@ -27,6 +27,10 @@ import process from "node:process";
 const GEHEIMNIS = "whsec_" + Buffer.from("pruefgeheimnis-nur-fuer-die-messung").toString("base64");
 const HOTEL = "postfach-des-hotels@example.invalid";
 const GAST = "gast@example.invalid";
+// Wer die Warnung mitbekommt (in der Wirklichkeit: info@conexadigital.eu).
+// Eugen, 20.08.2026: »sollte bei Schend was nicht laufen, ruft er uns sowieso an«
+// — dann wollen wir es vorher wissen, statt beim Anruf zu raten.
+const MITLESER = "team-conexa@example.invalid";
 const PORT_PRUEFLING = 8788;
 const PORT_RESEND = 8799;
 
@@ -255,6 +259,39 @@ const faelle = [
       return null;
     },
   },
+  {
+    name: "13. Warnung geht an Hotel UND an uns, und sagt das auch",
+    lauf: async () => {
+      gesendet = [];
+      const r = await sende({ rumpf: ereignis("email.bounced", GAST, BOUNCE) });
+      if (r.status !== 200) return `Status ${r.status} statt 200`;
+      if (gesendet.length !== 1) return `${gesendet.length} Mails statt genau 1`;
+      const m = gesendet[0].mail;
+      if (!m.to.includes(HOTEL)) return `Das Hotel fehlt unter den Empfängern: ${JSON.stringify(m.to)}`;
+      if (!m.to.includes(MITLESER)) return `Wir stehen nicht in Kopie: ${JSON.stringify(m.to)}`;
+      // Der Satz ist eine Zusage ans Hotel. Steht er drin, ohne dass wir
+      // wirklich in Kopie sind, ist es eine Lüge — deshalb beides prüfen.
+      if (!/Conexa Digital ist informiert/i.test(m.text))
+        return "Der Hinweis, dass wir informiert sind, fehlt im Klartext";
+      if (!/Conexa Digital ist informiert/i.test(m.html))
+        return "Der Hinweis, dass wir informiert sind, fehlt in der HTML-Fassung";
+      return null;
+    },
+  },
+  {
+    name: "14. SCHLEIFENBREMSE: die Warnung prellt bei UNS zurück → keine neue Warnung",
+    lauf: async () => {
+      gesendet = [];
+      // Ohne diese Ausnahme wären wir selbst der »betroffene Gast« — und jede
+      // zurückgekommene Warnung löste die nächste aus. Die Schleife wäre nur
+      // eine Ecke länger als die über das Hotelpostfach.
+      const r = await sende({ rumpf: ereignis("email.bounced", MITLESER, BOUNCE) });
+      if (r.status !== 200) return `Status ${r.status} statt 200`;
+      if (r.body.ignored !== "hotel_recipient") return `ignored="${r.body.ignored}" statt "hotel_recipient"`;
+      if (gesendet.length !== 0) return "Es wurde erneut gewarnt — das ist die Schleife über uns!";
+      return null;
+    },
+  },
 ];
 
 // ── Ablauf ──────────────────────────────────────────────────────────────────
@@ -300,6 +337,7 @@ try {
       "--binding", "RESEND_API_KEY=pruefschluessel",
       "--binding", `INQUIRY_TO=${HOTEL}`,
       "--binding", "INQUIRY_FROM=Landhaus Schend <info@landhaus-schend.de>",
+      "--binding", `ALERT_CC=${MITLESER}`,
       "--binding", `RESEND_API_BASE=http://127.0.0.1:${PORT_RESEND}`,
     ],
     { stdio: ["ignore", "pipe", "pipe"] },
