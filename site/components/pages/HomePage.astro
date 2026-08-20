@@ -478,8 +478,12 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
         <p class="text-foreground/85 text-base md:text-lg leading-relaxed text-pretty">{c.regionIntro}</p>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mb-16 md:mb-20" data-reveal>
+        <!-- <Pic> statt <img>: bringt die WebP-Quelle UND width/height.
+             Als nacktes <img> gingen diese fuenf Bilder als JPG raus, obwohl
+             die WebP-Kopien laengst danebenliegen - und ohne Masse, was
+             Lighthouse am 20.08.2026 als Layout-Sprung meldete. -->
         {REGION_SRC.map((src, i) => (
-          <img src={src} alt={c.mosaicAlts[i]} loading="lazy" decoding="async" class:list={["w-full h-48 md:h-64 object-cover rounded-md shadow-card", REGION_CLS[i]]} />
+          <Pic src={src} alt={c.mosaicAlts[i]} loading="lazy" decoding="async" class:list={["w-full h-48 md:h-64 object-cover rounded-md shadow-card", REGION_CLS[i]]} />
         ))}
       </div>
       <div class="max-w-prose mx-auto space-y-12" data-reveal>

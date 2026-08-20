@@ -79,13 +79,24 @@ for (const url of RESPONSIVE_SRCS) {
 fs.writeFileSync(path.join(ROOT, "site/lib/responsive-widths.json"), JSON.stringify(respWidths, null, 0));
 console.log(`Responsive: ${respMade} Breiten-Dateien für ${Object.keys(respWidths).length} Bilder -> responsive-widths.json`);
 
-// Bildmaße aus /public/fotos (von der Galerie genutzt).
-const fotosDir = path.join(ROOT, "public/fotos");
+// Bildmaße aus ALLEN Bildordnern.
+//
+// ⚠ Bis zum 20.08.2026 stand hier nur `public/fotos`. Die WebP-Kopien wurden
+// über alle IMG_DIRS erzeugt, die MASSE aber nur für einen davon. Folge: jedes
+// Bild aus /marquee, /pakete, /region und /hero ging ohne width/height raus,
+// der Browser konnte keinen Platz reservieren, und Lighthouse meldete auf der
+// Startseite 24 Bilder ohne Maße (Layout-Sprung / CLS).
+// Zwei Listen für dieselbe Sache, und nur eine wurde gepflegt.
 const dims = {};
-for (const f of fs.readdirSync(fotosDir)) {
-  if (!RASTER.test(f)) continue;
-  try { const m = await sharp(path.join(fotosDir, f)).metadata(); dims["/fotos/" + f] = [m.width, m.height]; }
-  catch {}
+for (const rel of IMG_DIRS) {
+  const dir = path.join(ROOT, rel);
+  if (!fs.existsSync(dir)) continue;
+  const url = "/" + rel.replace(/^public\//, "");
+  for (const f of fs.readdirSync(dir)) {
+    if (!RASTER.test(f)) continue;
+    try { const m = await sharp(path.join(dir, f)).metadata(); dims[url + "/" + f] = [m.width, m.height]; }
+    catch {}
+  }
 }
 fs.writeFileSync(path.join(ROOT, "site/lib/foto-dims.json"), JSON.stringify(dims, null, 0));
 

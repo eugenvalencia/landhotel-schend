@@ -51,9 +51,16 @@ const APPLE_MAPS = `https://maps.apple.com/?q=${ENC}&ll=${LAT},${LNG}`;
         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
         {c.appleMaps}
       </a>
-      <button type="button" data-copy-coords data-copied={c.copied} aria-label={c.copyAria} class="inline-flex min-h-11 items-center gap-2 px-5 py-3 text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-primary transition-colors">
+      <!-- Kein aria-label: es ersetzt den sichtbaren Text vollstaendig, und
+           dann heisst der Knopf anders als er aussieht. Wer ihn per Sprache
+           bedient, sagt was er LIEST - und trifft nichts.
+           WCAG 2.5.3 "Label in Name"; gemessen 20.08.2026 als
+           label-content-name-mismatch. Der Zusatz steht deshalb sichtbar
+           im Knopf, nur eben nicht fuer das Auge. -->
+      <button type="button" data-copy-coords data-copied={c.copied} class="inline-flex min-h-11 items-center gap-2 px-5 py-3 text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-primary transition-colors">
         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         <span data-coords>{LAT}, {LNG}</span>
+        <span class="sr-only">{c.copyAria}</span>
       </button>
     </div>
 

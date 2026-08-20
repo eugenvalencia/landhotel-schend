@@ -211,7 +211,24 @@ const ogLocaleAlternates = localized
         animation: splash-failsafe 0s linear 5s forwards; /* falls JS ausfällt */
       }
       html.splash-skip #splash { display: none !important; }
-      #splash.is-done { opacity: 0; pointer-events: none; }
+      /*
+        Nach der Ueberblendung muss der Splash WIRKLICH weg sein - nicht nur
+        durchsichtig. Er liegt auf z-index 200 ueber allem; solange er im Baum
+        haengt, rechnet ein Pruefer den Text DARUNTER (Einwilligungs-Dialog,
+        z-index 60) gegen den dunklen Splash-Grund und meldet zu wenig
+        Kontrast. Genau das kostete am 20.08.2026 die 4 Punkte bei Lighthouse
+        (Barrierefreiheit 96): gemeldet waren "LANDHAUS SCHEND", "100 %" und
+        zweimal der Einwilligungs-Text - vier Meldungen, EINE Ursache.
+
+        `visibility` schaltet erst NACH den .55 s der Ueberblendung um, sonst
+        waere die Ueberblendung weg. Fuer das Auge aendert sich nichts.
+      */
+      #splash.is-done {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+        transition: opacity .55s ease, visibility 0s linear .55s;
+      }
       .splash-stars { display: flex; gap: clamp(.35rem, 2vw, .6rem); margin-bottom: -.3rem; }
       .splash-star {
         width: clamp(16px, 4.6vw, 22px); height: auto;
@@ -259,7 +276,14 @@ const ogLocaleAlternates = localized
   </head>
 
   <body class="min-h-screen flex flex-col bg-background text-foreground">
-    <div id="splash" role="presentation">
+    <!-- Der Ladeschirm ist reine Dekoration: alles darin steht auch auf der
+         Seite. Ohne aria-hidden prueft ein Pruefer den Schriftzug WAEHREND
+         der Ueberblendung und rechnet ihn gegen den durchscheinenden Grund
+         - am 20.08.2026 gemessen: 1,04:1. Ein Kontrast nahe 1:1 ist ein
+         Warnsignal fuers Messverfahren, nicht fuer die Seite; die Schrift
+         steht in Wahrheit mit rund 10:1 auf Dunkel. role="presentation"
+         allein genuegt nicht - das nimmt nur die Rolle, nicht die Kinder. -->
+    <div id="splash" role="presentation" aria-hidden="true">
       <span class="splash-stars" aria-hidden="true">
         <svg class="splash-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         <svg class="splash-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
