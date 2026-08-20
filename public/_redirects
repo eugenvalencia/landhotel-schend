@@ -21,7 +21,42 @@
 /galerie/*        /galerie/      200
 /en/galerie       /en/galerie/   301
 /en/galerie/*     /en/galerie/   200
+# ⚠ VOR dem /en/g*-Splat: die erste passende Regel gewinnt. Steht das hier
+#   darunter, faengt /en/g* das Wort "gastronomie" ab und die Regel greift nie.
+#   Genau die Falle, vor der oben schon /galerie geschuetzt wird.
+/en/gastronomie   /en/restaurant/   301
+/en/gastronomie/* /en/restaurant/   301
 /g*               /              301
 /en/g*            /en/           301
 /page             /              301
 /page/*           /              301
+
+# ── Alt-Adressen, die am 20.08.2026 in der Search Console als 404 standen ──
+#
+# Gemessen, nicht vermutet: /g* und /en/g* leiteten schon (301), /u0*, /kontakt,
+# /ueberuns, /feiern.html und /buchungsanfrage.php nicht. Google hat sie im Juli
+# 2026 zuletzt gecrawlt und meldet sie weiterhin als "Nicht gefunden".
+#
+# ⚠ KEIN /u*-Splat: der risse /urlaubsregion/ mit. Deshalb /u0* — die alten
+#   Zimmer-Slugs hiessen u01…u09, /urlaubsregion faengt mit "ur" an.
+#   Dieselbe Falle wie oben bei /galerie.
+/u0*              /zimmer/       301
+/en/u0*           /en/zimmer/    301
+
+# Kontakt hiess frueher so; heute nimmt /anfrage/ die Anfrage entgegen.
+/kontakt          /anfrage/      301
+/en/kontakt       /en/anfrage/   301
+/kontakt/         /anfrage/      301
+/en/kontakt/      /en/anfrage/   301
+
+# "ueberuns" ohne Bindestrich — die Seite heisst heute /ueber-uns/.
+/ueberuns         /ueber-uns/    301
+/en/ueberuns      /en/ueber-uns/ 301
+/ueberuns/        /ueber-uns/    301
+/en/ueberuns/     /en/ueber-uns/ 301
+
+# Die Vorgaenger-Seite lief auf .html/.php. Beide Adressen stehen noch im Index,
+# teils sogar als http://www.-Variante.
+/feiern.html          /restaurant/   301
+/buchungsanfrage.php  /anfrage/      301
+/index.html           /              301
