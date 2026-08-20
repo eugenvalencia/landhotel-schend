@@ -13,6 +13,29 @@ const ROOT = path.resolve(import.meta.dirname, "..");
 const IMG_DIRS = ["public/fotos", "public/marquee", "public/pakete", "public/region", "public/hero"];
 const RASTER = /\.(jpe?g|png)$/i;
 
+// Stufe je Bild — Standard 80, Ausnahmen hier eintragen.
+//
+// ⚠ Die Stufe gehört HIERHIN, nicht in eine von Hand nachkomprimierte Einzeldatei:
+// dieser Lauf überschreibt jede .webp-Kopie, eine Handkorrektur wäre beim nächsten
+// `npm run images:webp` wieder weg.
+//
+// /hero/schend-hero-poster.jpg — Poster hinter dem Hero-Video und zugleich das
+// LCP-Element. PageSpeed (Mobil, 20.08.2026) meldete dafür 96,3 KiB mit „höhere
+// Komprimierung". Gemessen gegen die Quelle (PSNR/RMSE über alle Bildpunkte):
+//   q80/effort4 = 98,6 KiB  (Stand vorher)
+//   q80/effort6 = 94,1 KiB · 38,69 dB
+//   q72/effort6 = 75,7 KiB · 37,15 dB   ← gewählt
+//   q65/effort6 = 69,4 KiB · 36,40 dB
+// Ab ~36 dB ist der Unterschied bei Fotos im 1:1-Vergleich nicht mehr auszumachen;
+// der Ausschnittsvergleich q80/q72/q65 bestätigte das. q72 lässt Reserve nach oben
+// und spart trotzdem 23 % — das Poster ist auf Mobil das Standbild (dort läuft das
+// Video bewusst nicht) und wird per object-cover ohnehin hochskaliert.
+// effort 6 (statt sharps Standard 4) kostet nur Rechenzeit im Build, keine Qualität.
+const WEBP_OPTS = {
+  "public/hero/schend-hero-poster.jpg": { quality: 72, effort: 6 },
+};
+const WEBP_STANDARD = { quality: 80 };
+
 let made = 0, srcBytes = 0, webpBytes = 0;
 for (const rel of IMG_DIRS) {
   const dir = path.join(ROOT, rel);
@@ -22,7 +45,7 @@ for (const rel of IMG_DIRS) {
     const src = path.join(dir, f);
     const out = src.replace(RASTER, ".webp");
     try {
-      await sharp(src).webp({ quality: 80 }).toFile(out);
+      await sharp(src).webp(WEBP_OPTS[`${rel}/${f}`] ?? WEBP_STANDARD).toFile(out);
       made++; srcBytes += fs.statSync(src).size; webpBytes += fs.statSync(out).size;
     } catch (e) { console.warn("skip", rel + "/" + f, String(e).slice(0, 60)); }
   }
@@ -54,7 +77,19 @@ const RESPONSIVE_SRCS = [
   "/fotos/festtafel-am-fenster-mit-gartenblick-landhaus-schend-vulkaneifel.jpg",
   "/fotos/hotelfront-mit-rosen-landhaus-schend-vulkaneifel.jpg",
 ];
-const LADDER = [640, 1024, 1536, 1920];
+// Breitenleiter. ⚠ Die Lücke 640 → 1024 war bis 21.08.2026 der teuerste Posten
+// unter „Bildübermittlung verbessern": ein Telefon mit 412 CSS-px und Pixeldichte
+// 1,75 braucht 721 echte Bildpunkte — 640 reicht nicht, also nahm der Browser
+// 1024 und lud rund 60 % zu viel. Lighthouse (Mobil, lokal gemessen) wies das für
+// drei Bilder mit zusammen 64 KiB aus.
+//   Speisesaal      1024 = 62,7 KiB → 768 = 40,2 KiB
+//   Doppelzimmer    1024 = 76,5 KiB → 768 = 50,1 KiB
+//   Familienzimmer  1024 = 51,6 KiB → 768 = 32,6 KiB
+// Dieselbe Lücke klafft ein Stück weiter oben: heutige Telefone mit Pixeldichte 3
+// und 390 CSS-px brauchen 1170 Bildpunkte und bekamen bisher 1536 statt 1280
+// (Speisesaal 117,5 statt 87,7 KiB). Beide Sprossen kosten nur Dateien im Build,
+// keinen Bildpunkt Qualität — die Auflösung passt danach besser zum Gerät.
+const LADDER = [640, 768, 1024, 1280, 1536, 1920];
 const respWidths = {};
 let respMade = 0;
 for (const url of RESPONSIVE_SRCS) {

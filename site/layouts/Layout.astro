@@ -19,6 +19,20 @@ import Lightbox from "../components/Lightbox.astro";
 import { ORIGIN, SITE_NAME } from "../lib/site";
 import { hreflangAlternates, LOCALES, type Locale } from "../i18n";
 import { t } from "../i18n/ui";
+import FONTS_CSS from "../../public/fonts/fonts.css?raw";
+
+// Schrift-Deklarationen zur Bauzeit einlesen und weiter unten direkt ins
+// Dokument schreiben, statt sie per <link> nachzuladen.
+//
+// Befund PageSpeed (Mobil, 20.08.2026): „Anfragen zum Blockieren des Renderings"
+// 300 ms, allein durch /fonts/fonts.css (1,9 KiB übertragen). Lokal gemessen
+// waren es 153 ms. Die Datei ist winzig — die Zeit ist fast ganz der zusätzliche
+// Weg zum Server, und der blockiert den ersten Anstrich.
+//
+// Die Datei bleibt die einzige Quelle (regenerierbar aus Google Fonts, DSGVO:
+// die .woff2 liegen selbst gehostet in /public/fonts). `?raw` holt ihren Inhalt
+// zur Bauzeit her — kopiert wird nichts, es bleibt ein Pflegeort.
+// Kosten: 25 KB Rohtext je Seite, komprimiert rund 1 KB auf 45 KB Startseite.
 
 // og:locale braucht das Underscore-Format (sprache_LAND), nicht den BCP47-Code.
 const OG_LOCALE: Record<Locale, string> = {
@@ -142,9 +156,13 @@ const ogLocaleAlternates = localized
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <meta name="apple-mobile-web-app-title" content="Schend" />
 
-    {/* Self-hosted Fonts (DSGVO: kein Google-CDN). woff2 + fonts.css in /public/fonts. */}
+    {/* Self-hosted Fonts (DSGVO: kein Google-CDN). woff2 + fonts.css in /public/fonts.
+        Die @font-face-Regeln stehen direkt hier im Dokument (siehe FONTS_CSS oben) —
+        ein <link rel="stylesheet"> hätte den ersten Anstrich um eine Serverrunde
+        verzögert. Die .woff2 laden weiterhin einzeln und nur nach Bedarf
+        (unicode-range). */}
     <link rel="preload" href="/fonts/inter-UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <style is:inline set:html={FONTS_CSS}></style>
 
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="Landhaus Schend" />

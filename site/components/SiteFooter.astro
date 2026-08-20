@@ -148,15 +148,24 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
   /* Stern-Glint — derselbe wandernde Gold-Funke wie in der Timeline, läuft
      fortlaufend über die 5 Sterne und lässt sie beim Vorbeiziehen aufleuchten. */
   .star-rail { overflow: visible; }
+  /* ⚠ Bewegt wird `transform`, nicht `left`. Lighthouse („Nicht zusammengesetzte
+     Animationen") wies diesen Funken aus: `left` zwingt den Browser bei jedem
+     Bild zu Layout + Anstrich auf dem Hauptstrang, und der Funke läuft
+     endlos. `transform` und `opacity` kann die Grafikeinheit allein.
+     Damit die Prozentangabe im transform weiterhin die BREITE DER STERNREIHE
+     meint (und nicht die 20 px des Funkens), ist das Element jetzt so breit wie
+     die Reihe; der Funke selbst steckt als Hintergrundbild mit fester Größe
+     darin. Aussehen und Weg sind unverändert: Start am linken Rand, Ende mit der
+     linken Kante am rechten Rand. */
   .star-glint {
     position: absolute;
     top: 50%;
     left: 0;
-    width: 20px;
+    width: 100%;
     height: 14px;
-    transform: translateY(-50%);
-    border-radius: 9999px;
-    background: radial-gradient(closest-side, rgba(255, 244, 214, 0.95), rgba(255, 244, 214, 0) 70%);
+    transform: translate(0, -50%);
+    background: radial-gradient(closest-side, rgba(255, 244, 214, 0.95), rgba(255, 244, 214, 0) 70%)
+      0 50% / 20px 14px no-repeat;
     filter: blur(1px);
     mix-blend-mode: screen;
     opacity: 0;
@@ -164,10 +173,10 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
     animation: star-glint-sweep 3.4s ease-in-out 1s infinite;
   }
   @keyframes star-glint-sweep {
-    0%   { left: 0;    opacity: 0; }
+    0%   { transform: translate(0, -50%);    opacity: 0; }
     15%  { opacity: 1; }
     85%  { opacity: 1; }
-    100% { left: 100%; opacity: 0; }
+    100% { transform: translate(100%, -50%); opacity: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     .star-glint { animation: none; opacity: 0; }
