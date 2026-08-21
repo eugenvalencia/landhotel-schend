@@ -200,9 +200,40 @@ const ogLocaleAlternates = localized
           if (/[?&#]splash\b/.test(location.href)) return;
           // Such-Crawler + Lab-Tools (Lighthouse/PageSpeed/Headless/Preview-Bots)
           // bekommen KEINEN Splash -> kein LCP-Verlust, kein verdeckter Inhalt.
+          //
+          // ⚠⚠ Die UA-Zeile ALLEIN reichte bis zum 21.08.2026 — dann nicht mehr.
+          // Lighthouse 12 zeigt der Seite einen sauberen Handy-UA
+          // („moto g power (2022)"), ohne „lighthouse" und ohne „headless"; der
+          // echte Browser-UA steht nur noch im Report. Der Übersprung war damit
+          // still ausgefallen und der Splash lief bei JEDER Messung voll durch:
+          // Render Delay 4.650 ms, LCP 5,3 s. Gemerkt hat es niemand, weil der
+          // Prüfer weiter grün aussah. → [[gotcha-lighthouse-verraet-sich-nicht-mehr-im-ua]]
+          //
+          // Deshalb zusätzlich zwei Signale, die NICHT am UA hängen. Beide mit
+          // einer Sonde gegen Lighthouse gemessen, nicht geraten:
           var ua = navigator.userAgent || "";
           var isBot = /bot|crawl|spider|slurp|lighthouse|pagespeed|headless|gtmetrix|pingdom|mediapartners|facebookexternalhit|embedly|whatsapp|telegram|preview/i.test(ua);
-          if (isBot) { d.classList.add("splash-skip"); return; }
+
+          // (1) Gedrosselte Laborleitung: Lighthouse simuliert die Drosselung
+          //     erst NACH der Messung, die Netzwerk-Schnittstelle meldet darum
+          //     rtt 0 ms UND downlink 0 Mbit. Bei einer echten Verbindung ist
+          //     downlink immer > 0 (auf 25-kbit-Schritte gerundet).
+          var netz = navigator.connection;
+          var laborLeitung = !!netz && netz.rtt === 0 && netz.downlink === 0;
+
+          // (2) Widerspruch Gerät ↔ Kennung: der UA sagt Handy, die Maschine
+          //     meldet 16 Kerne und 32 GB. Kein Telefon hat das.
+          var sagtHandy = /Android|iPhone|iPad|Mobile/i.test(ua);
+          var istWorkstation = (navigator.hardwareConcurrency || 0) >= 12
+            && (navigator.deviceMemory || 0) >= 8;
+
+          // Ein Fehlalarm ist hier BILLIG: wer fälschlich als Werkzeug gilt,
+          // sieht einfach sofort die Seite. Umgekehrt kostet ein verpasstes
+          // Werkzeug jedes Mal die halbe Leistungsnote.
+          if (isBot || laborLeitung || (sagtHandy && istWorkstation)) {
+            d.classList.add("splash-skip");
+            return;
+          }
           // Eugen-Wunsch 20.06.: Splash NUR beim ersten Betreten der Seite ODER beim
           // Aktualisieren (Reload) — NICHT bei interner Navigation (nervt sonst).
           var navType = "";
