@@ -70,3 +70,22 @@ supabase/.temp/
 
 # Roh-Foto-Uploads zur Sichtung (nicht in /public → kein Deploy-Leak)
 _review-fotos-*-source/
+
+# Werkzeug-Rueckstaende, die nicht ins Repo gehoeren (01.09.2026)
+# ⚠ Sie blockierten den Bau der Muster-Fassung v18: der Erzeuger verlangt
+#   einen sauberen Arbeitsbaum MIT untracked, weil ein liegengebliebenes
+#   Band aus einem abgebrochenen Lauf in `git diff` nach nichts aussieht.
+.scannerwork/
+sonar-project.properties
+prompts/
+_hero-frame-check.png
+
+# Rohfotos, aus denen die Galeriebilder entstanden sind (01.09.2026 gefunden).
+# ⚠⚠ NICHT GELOESCHT, NUR AUS DER GIT-SICHT GENOMMEN. Zwei echte Zimmerfotos
+#    (1.jpeg, 2.jpeg) liegen unter `public/` und werden damit AUSGELIEFERT,
+#    obwohl sie von nirgends verlinkt sind — die Galerie nutzt die
+#    verarbeiteten Dateien unter `/fotos/`.
+#    → [[gotcha-unverlinkte-dateien-in-public-werden-ausgeliefert]]
+#    Ob sie ganz aus `public/` heraussollen, entscheidet der Founder: Schend
+#    ist eine abgenommene Kundenseite, hier wird nichts eigenmaechtig geloescht.
+/public/DZ einzehlnnutzung/
