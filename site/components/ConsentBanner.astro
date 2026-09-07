@@ -1,6 +1,7 @@
 ---
 /**
- * Einwilligungs-Banner für Microsoft Clarity (seit 13.08.2026).
+ * Einwilligungs-Banner für Microsoft Clarity (seit 13.08.2026) und
+ * Google Analytics 4 (seit 07.09.2026).
  *
  * ⚠⚠ WARUM DIESE SEITE ÜBERHAUPT EIN BANNER HAT
  *
@@ -27,7 +28,8 @@
  *   · Widerruf über die Fußzeile, so leicht wie die Zustimmung (Art. 7 Abs. 3)
  *
  * Gegenprobe nach Änderungen IM BROWSER, nicht im HTML:
- *   ohne Zustimmung → 0 Anfragen an clarity.ms · nach Zustimmung → _clck/_clsk
+ *   ohne Zustimmung → 0 Anfragen an clarity.ms UND googletagmanager.com ·
+ *   nach Zustimmung → beide, plus _clck/_clsk und _ga
  */
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../i18n";
 import { t } from "../i18n/ui";
@@ -39,6 +41,14 @@ const { lang = DEFAULT_LOCALE } = Astro.props;
 
 /** Projekt-ID aus dem Clarity-Dashboard (Landhaus Schend). */
 const CLARITY_ID = "xwovs2bd7d";
+/**
+ * Mess-ID aus Google Analytics 4, Property `landhaus-schend.de` (553046479).
+ * Angelegt am 07.09.2026 im Analytics-Konto CONEXA DIGITAL.
+ * ⚠ Anders als Clarity ist Google hier AUFTRAGSVERARBEITER (Art. 28 DSGVO).
+ *   Die Datenschutzerklärung trennt beide Dienste deshalb in zwei Abschnitte
+ *   (Ziffer 6 f und 6 g) — wer sie zusammenzieht, ebnet den Unterschied ein.
+ */
+const GA4_ID = "G-VLYBDYD42R";
 const STORAGE_KEY = "schend_consent_v1";
 ---
 
@@ -46,6 +56,7 @@ const STORAGE_KEY = "schend_consent_v1";
   id="consent-banner"
   data-state="pending"
   data-clarity-id={CLARITY_ID}
+  data-ga4-id={GA4_ID}
   data-storage-key={STORAGE_KEY}
   data-state-on={t("consent_state_on", lang)}
   data-state-off={t("consent_state_off", lang)}
@@ -150,7 +161,9 @@ const STORAGE_KEY = "schend_consent_v1";
 
     var KEY = el.dataset.storageKey;
     var ID = el.dataset.clarityId;
+    var GA4 = el.dataset.ga4Id;
     var geladen = false;
+    var ga4Geladen = false;
 
     function lies() {
       try { return localStorage.getItem(KEY); } catch (e) { return null; }
@@ -174,6 +187,30 @@ const STORAGE_KEY = "schend_consent_v1";
       s.src = "https://www.clarity.ms/tag/" + ID;
       var f = document.getElementsByTagName("script")[0];
       f.parentNode.insertBefore(s, f);
+    }
+
+    /**
+     * Lädt Google Analytics 4 — ausschließlich nach »granted«.
+     *
+     * ⚠ `anonymize_ip` steht NICHT hier: GA4 kürzt die IP grundsätzlich, der
+     *   Parameter aus Universal Analytics wird ignoriert. Ihn zu setzen sähe
+     *   nach mehr Schutz aus, als er bewirkt.
+     * ⚠ Kein `gtag('consent', ...)`-Vorspiel: Wir laden das Skript erst NACH
+     *   der Zustimmung überhaupt. Der Consent Mode wäre dafür da, es vorher zu
+     *   laden und gedrosselt laufen zu lassen — genau das wollen wir nicht.
+     */
+    function ladeGA4() {
+      if (ga4Geladen || !GA4) return;
+      ga4Geladen = true;
+      var s = document.createElement("script");
+      s.async = 1;
+      s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA4;
+      var f = document.getElementsByTagName("script")[0];
+      f.parentNode.insertBefore(s, f);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag("js", new Date());
+      window.gtag("config", GA4);
     }
 
     function zeigeBanner() {
@@ -200,7 +237,7 @@ const STORAGE_KEY = "schend_consent_v1";
       var wahl = b.dataset.consent;
       try { localStorage.setItem(KEY, wahl); } catch (e) {}
       el.hidden = true;
-      if (wahl === "granted") ladeClarity();
+      if (wahl === "granted") { ladeClarity(); ladeGA4(); }
       // Bei Widerruf wird NICHT nachgeladen; wirksam ab dem nächsten Aufruf.
     });
 
@@ -210,7 +247,7 @@ const STORAGE_KEY = "schend_consent_v1";
     });
 
     var gespeichert = lies();
-    if (gespeichert === "granted") ladeClarity();
+    if (gespeichert === "granted") { ladeClarity(); ladeGA4(); }
     else if (gespeichert !== "denied") zeigeBanner();
   })();
 </script>

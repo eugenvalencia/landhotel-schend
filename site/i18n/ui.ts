@@ -71,10 +71,10 @@ export const UI = {
   // wörtlich »ein Cookie-Banner entfällt«.
   consent_title: { de: "Dürfen wir mitzählen?", en: "May we count along?", fr: "Pouvons-nous mesurer l’audience ?", nl: "Mogen we meetellen?" },
   consent_body: {
-    de: "Wir möchten verstehen, welche Seiten unsere Gäste interessieren — dafür würden wir Microsoft Clarity einsetzen (Heatmaps und Sitzungsanalyse, Ihre Eingaben werden dabei unkenntlich gemacht). Ohne Ihre Zustimmung passiert das nicht. Die Seite funktioniert vollständig auch ohne.",
-    en: "We would like to understand which pages interest our guests — for that we would use Microsoft Clarity (heatmaps and session analysis; anything you type is masked). Without your consent this does not happen. The site works fully without it.",
-    fr: "Nous aimerions comprendre quelles pages intéressent nos hôtes — pour cela nous utiliserions Microsoft Clarity (cartes de chaleur et analyse de session ; vos saisies sont masquées). Sans votre accord, rien de tout cela n’a lieu. Le site fonctionne entièrement sans.",
-    nl: "We willen graag begrijpen welke pagina’s onze gasten interesseren — daarvoor zouden we Microsoft Clarity gebruiken (heatmaps en sessieanalyse; wat u typt wordt onleesbaar gemaakt). Zonder uw toestemming gebeurt dit niet. De site werkt volledig zonder.",
+    de: "Wir möchten verstehen, welche Seiten unsere Gäste interessieren — dafür würden wir Microsoft Clarity und Google Analytics einsetzen (Heatmaps, Sitzungsanalyse und Besucherstatistik; Ihre Eingaben werden dabei unkenntlich gemacht). Ohne Ihre Zustimmung passiert das nicht. Die Seite funktioniert vollständig auch ohne.",
+    en: "We would like to understand which pages interest our guests — for that we would use Microsoft Clarity and Google Analytics (heatmaps, session analysis and visitor statistics; anything you type is masked). Without your consent this does not happen. The site works fully without it.",
+    fr: "Nous aimerions comprendre quelles pages intéressent nos hôtes — pour cela nous utiliserions Microsoft Clarity et Google Analytics (cartes de chaleur, analyse de session et statistiques de visite ; vos saisies sont masquées). Sans votre accord, rien de tout cela n’a lieu. Le site fonctionne entièrement sans.",
+    nl: "We willen graag begrijpen welke pagina’s onze gasten interesseren — daarvoor zouden we Microsoft Clarity en Google Analytics gebruiken (heatmaps, sessieanalyse en bezoekersstatistiek; wat u typt wordt onleesbaar gemaakt). Zonder uw toestemming gebeurt dit niet. De site werkt volledig zonder.",
   },
   consent_accept: { de: "Einverstanden", en: "I agree", fr: "J’accepte", nl: "Akkoord" },
   consent_decline: { de: "Nur Notwendiges", en: "Only essentials", fr: "Strict nécessaire", nl: "Alleen noodzakelijk" },

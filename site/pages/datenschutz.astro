@@ -184,7 +184,8 @@ import TextPage from "../layouts/TextPage.astro";
       USA-Transfer: EU-Standardvertragsklauseln, Cloudflare ist DPF-zertifiziert.
     </p>
     {/* ⚠ Hier stand »ein Cookie-Banner entfällt«. Das war richtig, solange
-        Cloudflare der einzige Analysedienst war. Seit Clarity (Ziffer 6 f) gibt
+        Cloudflare der einzige Analysedienst war. Seit Clarity (Ziffer 6 f) und
+        Google Analytics 4 (Ziffer 6 g, seit 07.09.2026) gibt
         es einen Einwilligungs-Hinweis — der Satz hätte ihm widersprochen. */}
 
     <h3>f) Sitzungsanalyse — Microsoft Clarity (nur mit Ihrer Einwilligung)</h3>
@@ -229,6 +230,45 @@ import TextPage from "../layouts/TextPage.astro";
       <strong>„Analyse-Einstellungen"</strong> in der Fußzeile widerrufen.
       USA-Transfer: Standardvertragsklauseln, ergänzend der EU-US Data Privacy Framework.
     </p>
+
+    {/* ⚠⚠ ERGÄNZT AM 07.09.2026, ALS GOOGLE ANALYTICS 4 EINGESCHALTET WURDE.
+        Der Abschnitt steht bewusst NEBEN Clarity und nicht darin: Google ist
+        hier Auftragsverarbeiter (Art. 28 DSGVO, »Zusatz zur Datenverarbeitung«),
+        Microsoft ist es für Clarity ausdrücklich NICHT. Die beiden Dienste in
+        einen Absatz zu ziehen würde diese Unterscheidung einebnen — und genau
+        sie ist die rechtlich entscheidende.
+        ⚠ Die 14 Monate sind keine Floskel: Sie sind in der Property
+          `landhaus-schend.de` (553046479) so eingestellt und nachgemessen.
+          Wer die Zahl hier ändert, ändert sie auch dort. */}
+    <h3>g) Reichweitenmessung — Google Analytics 4 (nur mit Ihrer Einwilligung)</h3>
+    <p>
+      Mit derselben Zustimmung setzen wir <strong>Google Analytics 4</strong> ein
+      (Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland). Der
+      Dienst wertet statistisch aus, wie die Website genutzt wird: welche Seiten
+      aufgerufen werden, wie lange Besucher bleiben, über welchen Weg sie kommen und
+      aus welcher ungefähren Region. Daraus lernen wir, welche Inhalte gesucht werden
+      und wo eine Seite nicht weiterhilft. Dabei werden Cookies gesetzt
+      (u.&nbsp;a. <code>_ga</code>, <code>_ga_*</code>).
+    </p>
+    <p class="mt-3">
+      <strong>Zur Rolle von Google:</strong> Anders als Microsoft bei Clarity handelt
+      Google hier <strong>in unserem Auftrag</strong>. Es besteht ein
+      Auftragsverarbeitungsvertrag nach Art.&nbsp;28 DSGVO (Googles »Zusatz zur
+      Datenverarbeitung«). Die IP-Adresse wird von Google Analytics 4 gekürzt, bevor
+      sie gespeichert wird; eine geräteübergreifende Wiedererkennung angemeldeter
+      Google-Nutzer (»Google-Signale«) ist <strong>abgeschaltet</strong>. Die erhobenen
+      Daten werden nach <strong>14 Monaten</strong> automatisch gelöscht.
+    </p>
+    <p class="mt-3">
+      Rechtsgrundlage ist ausschließlich <strong>Ihre Einwilligung</strong>
+      (Art. 6 Abs. 1 lit. a DSGVO; § 25 Abs. 1 TDDDG). Ohne Einwilligung wird Google
+      Analytics nicht geladen — es geht dann keine einzige Anfrage an Google. Sie können
+      Ihre Einwilligung jederzeit mit Wirkung für die Zukunft über
+      <strong>„Analyse-Einstellungen"</strong> in der Fußzeile widerrufen.
+      USA-Transfer: Angemessenheitsbeschluss der EU-Kommission (EU-US Data Privacy
+      Framework), ergänzend Standardvertragsklauseln. Näheres in der
+      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Datenschutzerklärung von Google</a>.
+    </p>
   </section>
 
   <section>
@@ -260,8 +300,8 @@ import TextPage from "../layouts/TextPage.astro";
     <p class="mt-3">
       Ohne Ihre Einwilligung setzen wir <strong>keine Analyse-Cookies</strong> — weder
       eigene noch von Dritten. Nur wenn Sie im Hinweis unten auf der Seite ausdrücklich
-      zustimmen, kommt Microsoft Clarity hinzu (Ziffer 6&nbsp;f); dieser Dienst setzt
-      eigene Cookies. Stimmen Sie nicht zu, bleibt es bei den oben genannten
+      zustimmen, kommen Microsoft Clarity (Ziffer 6&nbsp;f) und Google Analytics 4
+      (Ziffer 6&nbsp;g) hinzu; beide Dienste setzen eigene Cookies. Stimmen Sie nicht zu, bleibt es bei den oben genannten
       Komfort-Einstellungen und der cookiefreien Reichweitenmessung über Cloudflare Web
       Analytics (Ziffer 6&nbsp;e), für die keine Einwilligung nötig ist. Ihre Zustimmung
       können Sie jederzeit über <strong>„Analyse-Einstellungen"</strong> in der Fußzeile
