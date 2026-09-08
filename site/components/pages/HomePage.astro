@@ -42,7 +42,16 @@ const FOOD_PHOTOS = [
 ];
 
 const REGION_SRC = ["/region/eifel-1.jpg", "/region/eifel-2.jpg", "/region/eifel-3.jpg", "/region/eifel-4.jpg", "/region/eifel-5.jpg"];
-const REGION_CLS = ["md:row-span-2 md:h-[33rem]", "md:col-span-2", "md:row-span-2 md:h-[33rem]", "", ""];
+// Ab md wird jede Kachel ausdruecklich gesetzt (Spalte/Zeile), weil die
+// Auto-Verteilung Loecher liess. Alle Klassen stehen ausgeschrieben da,
+// damit Tailwind sie beim Scannen findet (kein zusammengesetzter Name).
+const REGION_CLS = [
+  "md:col-start-1 md:row-start-1 md:row-span-2",
+  "md:col-start-2 md:col-span-2 md:row-start-1",
+  "md:col-start-4 md:row-start-1 md:row-span-2",
+  "md:col-start-2 md:row-start-2",
+  "md:col-start-3 md:row-start-2",
+];
 
 const PLATFORMS = [
   { name: "Booking.com", logo: "/reviews/booking.svg", score: "8,8 / 10", href: "https://www.booking.com/hotel/de/landhaus-schend.html" },
@@ -477,13 +486,25 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
         <h2 class="font-display text-4xl md:text-5xl lg:text-6xl mb-6 text-balance leading-[1.05]">{c.regionH2}</h2>
         <p class="text-foreground/85 text-base md:text-lg leading-relaxed text-pretty">{c.regionIntro}</p>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mb-16 md:mb-20" data-reveal>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mb-16 md:mb-20 md:grid-rows-2 md:h-[33rem] [&_source]:hidden" data-reveal>
         <!-- <Pic> statt <img>: bringt die WebP-Quelle UND width/height.
              Als nacktes <img> gingen diese fuenf Bilder als JPG raus, obwohl
              die WebP-Kopien laengst danebenliegen - und ohne Masse, was
-             Lighthouse am 20.08.2026 als Layout-Sprung meldete. -->
+             Lighthouse am 20.08.2026 als Layout-Sprung meldete.
+             Folge davon: <Pic> rendert <picture class="contents">, also werden
+             NICHT nur die <img>, sondern auch die <source> zu Rasterzellen -
+             fuenf unsichtbare 168x192-Kaesten, die am 08.09.2026 die Haelfte
+             des Rasters belegen (Fuellgrad 48 %, vier Zeilen statt zwei).
+             Am Handy war es dieselbe Ursache und schlimmer: die fuenf <source>
+             fuellten die LINKE Spalte, alle Bilder standen rechts bei x=192,
+             fuenf Zeilen statt drei (Fuellgrad 47 %, 992 px hoch).
+             Darum auf JEDER Breite <source> ausblenden (aendert die Bildauswahl
+             nicht, <source> wird nie gezeichnet) + ab md jede Kachel fest
+             platzieren.
+             Die Hoehe kommt jetzt vom Raster (md:h-[33rem] / md:h-full),
+             nicht mehr vom Bild - die doppelte md:h-64 + md:h-[33rem] ist weg. -->
         {REGION_SRC.map((src, i) => (
-          <Pic src={src} alt={c.mosaicAlts[i]} loading="lazy" decoding="async" class:list={["w-full h-48 md:h-64 object-cover rounded-md shadow-card", REGION_CLS[i]]} />
+          <Pic src={src} alt={c.mosaicAlts[i]} loading="lazy" decoding="async" class:list={["w-full h-48 md:h-full object-cover rounded-md shadow-card", REGION_CLS[i]]} />
         ))}
       </div>
       <div class="max-w-prose mx-auto space-y-12" data-reveal>
