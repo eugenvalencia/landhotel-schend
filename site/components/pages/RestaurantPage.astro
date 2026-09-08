@@ -7,7 +7,7 @@ import { ORIGIN } from "../../lib/site";
 import { breadcrumbLd, homeCrumb } from "../../lib/schema";
 import { SCHEND_RESTAURANT } from "../../lib/photos";
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "../../i18n";
-import { restaurantContent } from "../../i18n/content/restaurant";
+import { restaurantContent, MENU_SECTIONS, ADDITIVE_NUMBERS } from "../../i18n/content/restaurant";
 
 interface Props {
   lang?: Locale;
@@ -58,6 +58,31 @@ const FOOD_PHOTOS = [
   "/fotos/kaese-schnitzel-mit-preiselbeeren-und-bratkartoffeln-landhaus-schend.jpg",
 ];
 
+// Die Speisekarte liegt zusätzlich als PDF in public/ — Download, NICHT die
+// Textquelle: ein eingebettetes PDF ist für Google und die Antwortmaschinen
+// wertlos, deshalb steht die Karte unten als echter HTML-Text auf der Seite.
+const MENU_PDF = "/speisekarte-landhaus-schend.pdf";
+
+// schema.org/Menu aus DENSELBEN Daten wie die sichtbare Karte (MENU_SECTIONS +
+// c.menu). Zwei Quellen für dieselbe Karte würden früher oder später
+// auseinanderlaufen — dann steht im JSON-LD ein anderer Preis als auf der Seite.
+const menuSchema = {
+  "@type": "Menu",
+  "@id": `${faqUrl}#menu`,
+  url: `${faqUrl}#speisekarte`,
+  name: c.menu.h2,
+  hasMenuSection: MENU_SECTIONS.map((s) => ({
+    "@type": "MenuSection",
+    name: c.menu.sections[s.key],
+    hasMenuItem: s.dishes.map((d) => ({
+      "@type": "MenuItem",
+      name: d.name,
+      ...(c.menu.dishes[d.key] ? { description: c.menu.dishes[d.key] } : {}),
+      offers: d.prices.map((p) => ({ "@type": "Offer", price: p.value, priceCurrency: "EUR" })),
+    })),
+  })),
+};
+
 const restaurantSchema = {
   "@context": "https://schema.org",
   "@type": "Restaurant",
@@ -70,9 +95,10 @@ const restaurantSchema = {
   email: "info@landhaus-schend.de",
   servesCuisine: CUISINE[lang],
   acceptsReservations: "True",
-  // hasMenu-Stub: es gibt keine fixe Online-Karte (Wochenmenü wird morgens bekannt
-  // gegeben). Verweist auf die Restaurant-Seite als Menü-Ankerpunkt.
-  hasMenu: { "@type": "Menu", "@id": `${faqUrl}#menu`, url: faqUrl },
+  // Vollständige À-la-carte-Karte mit Gerichten und Preisen (seit 08.09.2026 —
+  // vorher nur ein Stub-Verweis auf die Seite). Zusätzlich gibt es das
+  // wechselnde 3-Gänge-Tagesmenü, das nicht im Voraus feststeht.
+  hasMenu: menuSchema,
   sameAs: ["https://www.facebook.com/profile.php?id=100008296860156", "https://www.booking.com/hotel/de/landhaus-schend.html", "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html"],
   potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: `${ORIGIN}${localizedPath("/anfrage", lang)}`, actionPlatform: ["https://schema.org/DesktopWebPlatform", "https://schema.org/MobileWebPlatform"] }, result: { "@type": "FoodEstablishmentReservation", name: "Tischreservierung" } },
   containedInPlace: { "@id": "https://landhaus-schend.de/#hotel" },
@@ -194,6 +220,91 @@ const restaurantSchema = {
           <Pic src={src} alt="" aria-hidden="true" loading="lazy" decoding="async" class="h-44 md:h-56 w-auto object-cover rounded-md shadow-card mr-4" />
         )),
       )}
+    </div>
+  </section>
+
+  <!-- SPEISEKARTE — echter HTML-Text, kein eingebettetes PDF.
+       Struktur, Gerichtnamen, Zusatzstoff-Nummern und Preise kommen aus
+       MENU_SECTIONS (einmal für alle vier Sprachen), die Überschriften,
+       Beschreibungen und Fußnoten aus c.menu. Fußnoten stehen EINMAL unter der
+       Karte; im PDF wiederholen sie sich auf jeder Seite. -->
+  <section class="container mx-auto px-4 py-16 md:py-24" id="speisekarte">
+    <div class="max-w-3xl mx-auto">
+      <p class="eyebrow text-center">{c.menu.eyebrow}</p>
+      <h2 class="font-display text-3xl md:text-4xl mt-3 mb-6 text-center text-balance leading-tight">{c.menu.h2}</h2>
+      <p class="text-foreground/85 leading-relaxed text-pretty text-center mb-4">{c.menu.intro}</p>
+      <p class="text-sm text-muted-foreground leading-relaxed text-pretty text-center">{c.menu.origin}</p>
+
+      <div class="mt-8 flex flex-col items-center gap-1">
+        <a href={MENU_PDF} download class="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-secondary hover:text-foreground transition-colors underline underline-offset-4 decoration-secondary/40">
+          <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+          {c.menu.pdfLabel}
+        </a>
+        <span class="text-xs text-muted-foreground tabular-nums">{c.menu.pdfMeta}</span>
+        <span class="mt-4 text-xs text-muted-foreground text-center text-pretty">{c.menu.additivesHint}</span>
+      </div>
+
+      {MENU_SECTIONS.map((s) => (
+        <section class="mt-14" data-reveal>
+          <h3 class="font-display text-2xl md:text-3xl leading-tight text-center">{c.menu.sections[s.key]}</h3>
+          <div class="hairline mt-4 mb-8"></div>
+          <ul class="space-y-6">
+            {s.dishes.map((d) => (
+              /* Gericht links (darf umbrechen), Preis rechts (bricht nie um):
+                 min-w-0 + flex-1 am Namen, shrink-0 am Preis. Bei 390 px bleibt
+                 der Preis dadurch am Gericht, statt darunter zu rutschen. */
+              <li class="flex items-baseline gap-4">
+                <div class="min-w-0 flex-1">
+                  <p class="font-display text-lg md:text-xl leading-snug">
+                    {d.name}{d.additives && (
+                      <Fragment>{" "}<a
+                        href="#zusatzstoffe"
+                        class="whitespace-nowrap font-sans text-xs text-muted-foreground underline decoration-dotted underline-offset-2 hover:text-secondary focus-visible:text-secondary transition-colors"
+                      ><span class="sr-only">{c.menu.additivesSr}</span>{d.additives}</a></Fragment>
+                    )}
+                  </p>
+                  {c.menu.dishes[d.key] && (
+                    <p class="text-sm text-muted-foreground leading-relaxed text-pretty mt-1">{c.menu.dishes[d.key]}</p>
+                  )}
+                </div>
+                <p class="shrink-0 text-right">
+                  {d.prices.map((p) => (
+                    <span class="block whitespace-nowrap font-display text-lg md:text-xl text-secondary tabular-nums">
+                      {p.size && <span class="mr-1.5 font-sans text-xs text-muted-foreground">{c.menu.sizes[p.size]}</span>}
+                      <data value={p.value}>{p.text}</data>
+                    </span>
+                  ))}
+                </p>
+              </li>
+            ))}
+          </ul>
+          {s.extras && (
+            /* Zuschläge gelten nur für DIESEN Abschnitt — deshalb stehen sie hier
+               und nicht in den Fußnoten unter der ganzen Karte. */
+            <ul class="mt-7 space-y-2 border-t border-border/50 pt-5">
+              {s.extras.map((e) => (
+                <li class="flex items-baseline gap-4 text-sm text-muted-foreground">
+                  <span class="min-w-0 flex-1 text-pretty">{c.menu.extras[e.key]}</span>
+                  <span class="shrink-0 whitespace-nowrap tabular-nums">{c.menu.surcharge} <data value={e.value}>{e.text}</data></span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ))}
+
+      <!-- Fußnoten: einmal unter der ganzen Karte. Die Ziffern an den Gerichten
+           verlinken hierher (#zusatzstoffe). -->
+      <div id="zusatzstoffe" class="mt-16 border-t border-border/60 pt-8 scroll-mt-28">
+        <h3 class="font-display text-lg leading-snug mb-3">{c.menu.additivesTitle}</h3>
+        <p class="text-xs md:text-sm text-muted-foreground leading-relaxed">
+          {ADDITIVE_NUMBERS.map((n, i) => (
+            <Fragment>{i > 0 && ", "}<span class="whitespace-nowrap"><span class="tabular-nums">{n}</span> {c.menu.additives[n]}</span></Fragment>
+          ))}
+        </p>
+        <p class="text-xs md:text-sm text-muted-foreground leading-relaxed text-pretty mt-3">{c.menu.panierNote}</p>
+        <p class="text-xs text-muted-foreground leading-relaxed mt-3">{c.menu.priceNote}</p>
+      </div>
     </div>
   </section>
 

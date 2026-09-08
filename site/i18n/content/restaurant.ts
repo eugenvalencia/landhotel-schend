@@ -2,6 +2,177 @@
 // „Landhaus Restaurant", Telefon, E-Mail, Adresse, Uhrzeiten bleiben unverändert.
 import type { Locale } from "../index";
 
+/**
+ * ---------------------------------------------------------------------------
+ * Die feste À-la-carte-Karte (Stand September 2026).
+ *
+ * ⚠ Gerichtname, Zusatzstoff-Nummern und Preise stehen NUR HIER — einmal für
+ * alle vier Sprachen. Grund: „Preise und Zusatzstoff-Nummern sind in allen
+ * Sprachen identisch" ist eine Zusicherung, die man nicht prüfen, sondern
+ * bauen muss. Vier Kopien laufen irgendwann auseinander, ohne dass es jemandem
+ * auffällt — hier ist das konstruktiv unmöglich.
+ *
+ * Gerichtnamen bleiben in JEDER Sprachfassung deutsch („Schnitzel Vulkan",
+ * „Tafelspitz") — bei regionaler Küche üblich. Übersetzt werden nur
+ * Abschnitts-Überschriften, Beschreibungen und Fußnoten (→ RestaurantMenuText).
+ *
+ * Quelle: Menuekarte_LandhausSchend_2026_09.pdf
+ *       = public/speisekarte-landhaus-schend.pdf (steht als Download auf der Seite).
+ * ---------------------------------------------------------------------------
+ */
+export interface MenuPrice {
+  /** Anzeige auf der Seite, z. B. "7,50 €". */
+  text: string;
+  /** Maschinenlesbar — <data value> + schema.org Offer.price. */
+  value: string;
+  /** Nur wo ein Gericht zwei Größen hat (Pommes frites): Schlüssel des Größen-Labels. */
+  size?: "gross" | "klein";
+}
+export interface MenuDish {
+  /** Schlüssel der übersetzten Beschreibung (RestaurantMenuText.dishes). */
+  key: string;
+  name: string;
+  /** Zusatzstoff-Nummern wie in der Karte, z. B. "3, 4, 11, 12, 20". */
+  additives?: string;
+  prices: MenuPrice[];
+}
+export interface MenuSection {
+  /** Schlüssel der übersetzten Überschrift (RestaurantMenuText.sections). */
+  key: string;
+  dishes: MenuDish[];
+  /**
+   * Zuschläge, die NUR in diesem Abschnitt gelten. Im PDF stehen sie unter dem
+   * jeweiligen Abschnitt — „zzgl. 3,00 € für Bratkartoffeln statt Pommes" gilt
+   * eben nur dort, wo Pommes dabei sind, nicht für die ganze Karte.
+   */
+  extras?: { key: string; text: string; value: string }[];
+}
+
+/** Reihenfolge + Nummern der Zusatzstoff-Fußnote — sprachunabhängig. */
+export const ADDITIVE_NUMBERS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "16", "17", "20"] as const;
+
+export const MENU_SECTIONS: MenuSection[] = [
+  {
+    key: "suppen",
+    dishes: [
+      { key: "rinderkraftbruehe", name: "Rinderkraftbrühe", additives: "4, 20", prices: [{ text: "7,50 €", value: "7.50" }] },
+      { key: "senfsueppchen", name: "Eifeler Senfsüppchen", additives: "4, 20", prices: [{ text: "6,00 €", value: "6.00" }] },
+      { key: "zwiebelsuppe", name: "Zwiebelsuppe", prices: [{ text: "6,00 €", value: "6.00" }] },
+      { key: "tagessuppe", name: "Tagessuppe", prices: [{ text: "5,50 €", value: "5.50" }] },
+    ],
+  },
+  {
+    key: "vorspeisen",
+    dishes: [
+      { key: "beilagensalat", name: "Beilagensalat", additives: "11, 12, 20", prices: [{ text: "5,00 €", value: "5.00" }] },
+      { key: "tomate-mozzarella", name: "Tomate Mozzarella", additives: "20", prices: [{ text: "8,50 €", value: "8.50" }] },
+      { key: "camembert", name: "Gebackener Camembert", additives: "11, 12, 20", prices: [{ text: "13,50 €", value: "13.50" }] },
+    ],
+  },
+  {
+    key: "zwischendurch",
+    dishes: [
+      { key: "salatteller", name: "Großer gemischter Salatteller", additives: "11, 12, 20", prices: [{ text: "13,00 €", value: "13.00" }] },
+      { key: "strammer-max", name: "Strammer Max", additives: "20", prices: [{ text: "10,50 €", value: "10.50" }] },
+      { key: "bratkartoffeln", name: "Bratkartoffeln", additives: "20", prices: [{ text: "12,50 €", value: "12.50" }] },
+    ],
+  },
+  {
+    key: "schnitzel",
+    dishes: [
+      { key: "champignonrahmschnitzel", name: "Champignonrahmschnitzel", additives: "3, 4, 11, 12, 20", prices: [{ text: "16,00 €", value: "16.00" }] },
+      { key: "schnitzel-vulkan", name: "Schnitzel „Vulkan“", additives: "3, 4, 11, 12, 20", prices: [{ text: "16,50 €", value: "16.50" }] },
+      { key: "zwiebelschnitzel", name: "Zwiebelschnitzel", additives: "3, 11, 12, 20", prices: [{ text: "16,00 €", value: "16.00" }] },
+    ],
+    extras: [
+      { key: "beilagensalat", text: "5,00 €", value: "5.00" },
+      { key: "bratkartoffeln", text: "3,00 €", value: "3.00" },
+    ],
+  },
+  {
+    key: "spezialitaeten",
+    dishes: [
+      { key: "medaillons", name: "Medaillons vom Schweinefilet", additives: "4, 20", prices: [{ text: "18,50 €", value: "18.50" }] },
+      { key: "tafelspitz", name: "Tafelspitz mit Meerrettichsauce", prices: [{ text: "21,00 €", value: "21.00" }] },
+      { key: "rumpsteak", name: "Rumpsteak mit Röstzwiebeln und Kräuterbutter", additives: "4, 11, 12, 20", prices: [{ text: "29,50 €", value: "29.50" }] },
+      { key: "haehnchenbrust", name: "Gebratene Hähnchenbrust", additives: "11, 12", prices: [{ text: "18,50 €", value: "18.50" }] },
+    ],
+    extras: [{ key: "beilagensalat", text: "5,00 €", value: "5.00" }],
+  },
+  {
+    key: "fisch",
+    dishes: [
+      { key: "zanderfilet", name: "Kross gebratenes Zanderfilet", additives: "11, 12, 20", prices: [{ text: "23,50 €", value: "23.50" }] },
+      { key: "forelle", name: "Kradenbacher Forelle „Müllerin“", additives: "7, 11, 12, 20", prices: [{ text: "24,50 €", value: "24.50" }] },
+    ],
+  },
+  {
+    key: "vegetarisch",
+    dishes: [
+      { key: "serviettenknoedel", name: "Hausgemachte Serviettenknödel", prices: [{ text: "12,50 €", value: "12.50" }] },
+      { key: "kartoffelroesti", name: "Eifeler Kartoffel Rösti", prices: [{ text: "14,50 €", value: "14.50" }] },
+    ],
+    extras: [{ key: "beilagensalat", text: "5,00 €", value: "5.00" }],
+  },
+  {
+    key: "kinder",
+    dishes: [
+      {
+        key: "pommes-rot-weiss",
+        name: "Pommes frites, Rot-Weiß",
+        additives: "1, 2, 4",
+        // Einziges Gericht der Karte mit zwei Größen — deshalb zwei Preise.
+        prices: [
+          { text: "5,00 €", value: "5.00", size: "gross" },
+          { text: "3,50 €", value: "3.50", size: "klein" },
+        ],
+      },
+      { key: "kleines-schnitzel", name: "Kleines Schnitzel mit Pommes", additives: "1, 2, 4", prices: [{ text: "8,50 €", value: "8.50" }] },
+      { key: "fischstaebchen", name: "Fischstäbchen mit Pommes", additives: "1, 2, 4", prices: [{ text: "8,50 €", value: "8.50" }] },
+    ],
+  },
+  {
+    key: "dessert",
+    dishes: [
+      { key: "sorbet", name: "Sorbet von schwarzen Johannisbeeren", additives: "1, 4, 5, 7", prices: [{ text: "5,50 €", value: "5.50" }] },
+      { key: "gemischtes-eis", name: "Gemischtes Eis", additives: "1, 4, 7", prices: [{ text: "4,50 €", value: "4.50" }] },
+      { key: "plus-sahne", name: "plus Sahne", prices: [{ text: "0,50 €", value: "0.50" }] },
+      { key: "kuchen", name: "Kuchen (hausgemacht)", prices: [{ text: "3,50 €", value: "3.50" }] },
+      { key: "vanille-gruetze", name: "Vanille Eis (3 Kugeln)", prices: [{ text: "6,50 €", value: "6.50" }] },
+      { key: "vanille-schoko", name: "Vanille Eis (3 Kugeln)", prices: [{ text: "6,50 €", value: "6.50" }] },
+      { key: "apfelstrudel", name: "Apfelstrudel", prices: [{ text: "7,00 €", value: "7.00" }] },
+    ],
+  },
+];
+
+/** Übersetzbarer Teil der Karte — Überschriften, Beschreibungen, Fußnoten. */
+export interface RestaurantMenuText {
+  eyebrow: string;
+  h2: string;
+  intro: string;
+  /** Regionale Lieferanten (Seite 1 des PDF) — steht sonst nirgends auf der Site. */
+  origin: string;
+  pdfLabel: string;
+  pdfMeta: string;
+  additivesHint: string;
+  /** Nur für Screenreader vor den Ziffern am Gericht. */
+  additivesSr: string;
+  additivesTitle: string;
+  /** Nummer → Bezeichnung. Die Nummern kommen aus ADDITIVE_NUMBERS, nie von hier. */
+  additives: Record<string, string>;
+  panierNote: string;
+  priceNote: string;
+  /** Wort vor einem Abschnitts-Zuschlag ("zzgl."). */
+  surcharge: string;
+  sizes: { gross: string; klein: string };
+  /** MenuSection.key → Überschrift. */
+  sections: Record<string, string>;
+  /** MenuDish.key → Beschreibung (fehlt, wo die Karte keine hat). */
+  dishes: Record<string, string>;
+  /** Extra.key → Text des Zuschlags. */
+  extras: Record<string, string>;
+}
+
 export interface RestaurantContent {
   metaTitle: string;
   metaDescription: string;
@@ -50,6 +221,8 @@ export interface RestaurantContent {
   faqEyebrow: string;
   faqH2: string;
   faq: { q: string; a: string }[];
+  // Feste À-la-carte-Karte — Struktur/Namen/Preise in MENU_SECTIONS, Text hier.
+  menu: RestaurantMenuText;
 }
 
 export const restaurantContent: Record<Locale, RestaurantContent> = {
@@ -116,6 +289,81 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     spreadCta: "Anfrage besprechen",
     linkRooms: "Übernachten und am Abend hier essen? Unsere Zimmer im Landhaus",
     linkPackages: "Genießer-Pakete mit Halbpension ansehen",
+    menu: {
+      eyebrow: "À la carte",
+      h2: "Unsere Speisekarte",
+      intro:
+        "Unsere feste Karte — dazu an jedem Abend ein wechselndes 3-Gänge-Tagesmenü und Saisonales wie Wild im Herbst und Spargel im Frühjahr. À la carte servieren wir von Donnerstag bis Sonntag.",
+      origin:
+        "Wir arbeiten ökologisch orientiert und beziehen unsere Waren hauptsächlich aus der Region: das Fleisch von den Metzgereien in Gillenfeld und von der Mosel, die Forellen von den Vulkan-Forellen in Kradenbach, Geflügel und Eier vom Geflügelhof Janshen in Ellscheid.",
+      pdfLabel: "Speisekarte als PDF herunterladen",
+      pdfMeta: "PDF · 1,2 MB · 6 Seiten · Stand September 2026",
+      additivesHint: "Die Ziffern hinter den Gerichten verweisen auf die Zusatzstoffe unter der Karte.",
+      additivesSr: "Zusatzstoffe: ",
+      additivesTitle: "Zusatzstoffe",
+      additives: {
+        "1": "Farbstoffe",
+        "2": "Konservierungsstoffe",
+        "3": "Antioxidationsmittel",
+        "4": "Geschmacksverstärker",
+        "5": "Schwefeldioxid",
+        "6": "geschwärzt",
+        "7": "gewachst",
+        "8": "mit Phosphat",
+        "9": "Stärke",
+        "10": "Milcheiweiß",
+        "11": "Süßungsmittel",
+        "12": "mit Zuckerart und Süßungsmittel",
+        "16": "chininhaltig",
+        "17": "coffeinhaltig",
+        "20": "Jodsalz",
+      },
+      panierNote:
+        "Da wir unser Paniermehl zum größten Teil selbst herstellen, könnten Körner bzw. Nussanteile beinhaltet sein.",
+      priceNote: "Alle Preise in Euro, inklusive Mehrwertsteuer.",
+      surcharge: "zzgl.",
+      sizes: { gross: "groß", klein: "klein" },
+      sections: {
+        suppen: "Suppen",
+        vorspeisen: "Vorspeisen",
+        zwischendurch: "Für Zwischendurch",
+        schnitzel: "Schnitzel",
+        spezialitaeten: "Spezialitäten",
+        fisch: "Fisch",
+        vegetarisch: "Vegetarisch",
+        kinder: "Für die kleinen Gäste",
+        dessert: "Dessert",
+      },
+      dishes: {
+        rinderkraftbruehe: "mit Einlage",
+        senfsueppchen: "mit Croutons",
+        "tomate-mozzarella": "mit Basilikum und Brot",
+        camembert: "auf Salatnest",
+        salatteller: "mit Brot",
+        "strammer-max": "mit rohem Eifler Schinken und Spiegeleiern",
+        bratkartoffeln: "mit Speck & Spiegelei",
+        champignonrahmschnitzel: "mit Pommes frites",
+        "schnitzel-vulkan": "mit gebratenen Speckscheiben und mit Käse überbacken, mit Pommes frites",
+        zwiebelschnitzel: "mit Zwiebeln, Pommes frites und Kräuterbutter",
+        medaillons: "auf Champignonrahmsauce, mit Kartoffelkroketten",
+        tafelspitz: "mit Gemüsestreifen und Salzkartoffeln",
+        rumpsteak: "mit Kartoffelrösti und Speckbohnen",
+        haehnchenbrust: "auf Champignonrahmsauce, Bandnudeln mit Gemüse",
+        zanderfilet: "mit Senfsauce, Salzkartoffeln",
+        forelle: "mit Salzkartoffeln",
+        serviettenknoedel: "auf Champignonrahmsauce",
+        kartoffelroesti: "mit Apfel-Zwiebel Ragout und gemischtem Salat (vegan)",
+        sorbet: "im Winzersekt",
+        "gemischtes-eis": "(Vanille-, Erdbeer- und Schokoladeneis)",
+        "vanille-gruetze": "mit Roter Grütze und Sahne",
+        "vanille-schoko": "mit Schokoladensauce und Sahne",
+        apfelstrudel: "mit 1 Kugel Vanilleeis und Sahne",
+      },
+      extras: {
+        beilagensalat: "Gerne servieren wir Ihnen einen Beilagensalat zu allen Gerichten.",
+        bratkartoffeln: "Statt Pommes frites servieren wir Ihnen gerne Bratkartoffeln.",
+      },
+    },
     faqEyebrow: "Gut zu wissen",
     faqH2: "Häufige Fragen zum Restaurant",
     faq: [
@@ -197,6 +445,81 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     spreadCta: "Discuss your enquiry",
     linkRooms: "Staying over and dining here in the evening? Our rooms at the Landhaus",
     linkPackages: "See our gourmet packages with half board",
+    menu: {
+      eyebrow: "À la carte",
+      h2: "Our menu",
+      intro:
+        "Our regular menu — plus a changing three-course menu of the day every evening and seasonal dishes such as game in autumn and asparagus in spring. We serve à la carte from Thursday to Sunday.",
+      origin:
+        "We work with an ecological mindset and source our produce mainly from the region: the meat from the butchers in Gillenfeld and on the Moselle, the trout from the Vulkan-Forellen fish farm in Kradenbach, poultry and eggs from the Janshen poultry farm in Ellscheid.",
+      pdfLabel: "Download the menu as a PDF",
+      pdfMeta: "PDF · 1.2 MB · 6 pages · as of September 2026",
+      additivesHint: "The numbers after each dish refer to the additives listed below the menu.",
+      additivesSr: "Additives: ",
+      additivesTitle: "Additives",
+      additives: {
+        "1": "colourings",
+        "2": "preservatives",
+        "3": "antioxidants",
+        "4": "flavour enhancers",
+        "5": "sulphur dioxide",
+        "6": "blackened",
+        "7": "waxed",
+        "8": "with phosphate",
+        "9": "starch",
+        "10": "milk protein",
+        "11": "sweeteners",
+        "12": "with sugar and sweeteners",
+        "16": "contains quinine",
+        "17": "contains caffeine",
+        "20": "iodised salt",
+      },
+      panierNote:
+        "As we make most of our breadcrumbs ourselves, they may contain grains or traces of nuts.",
+      priceNote: "All prices in euros, including VAT.",
+      surcharge: "plus",
+      sizes: { gross: "large", klein: "small" },
+      sections: {
+        suppen: "Soups",
+        vorspeisen: "Starters",
+        zwischendurch: "Light bites",
+        schnitzel: "Schnitzel",
+        spezialitaeten: "Specialities",
+        fisch: "Fish",
+        vegetarisch: "Vegetarian",
+        kinder: "For our little guests",
+        dessert: "Dessert",
+      },
+      dishes: {
+        rinderkraftbruehe: "beef consommé with garnish",
+        senfsueppchen: "Eifel mustard soup with croutons",
+        "tomate-mozzarella": "with basil and bread",
+        camembert: "baked camembert on a bed of salad",
+        salatteller: "large mixed salad platter with bread",
+        "strammer-max": "with raw Eifel ham and fried eggs",
+        bratkartoffeln: "pan-fried potatoes with bacon & fried egg",
+        champignonrahmschnitzel: "schnitzel in a creamy mushroom sauce, with chips",
+        "schnitzel-vulkan": "with fried bacon slices, gratinated with cheese, with chips",
+        zwiebelschnitzel: "with onions, chips and herb butter",
+        medaillons: "pork fillet medallions on a creamy mushroom sauce, with potato croquettes",
+        tafelspitz: "boiled beef with horseradish sauce, vegetable strips and boiled potatoes",
+        rumpsteak: "with fried onions and herb butter, potato rösti and beans in bacon",
+        haehnchenbrust: "pan-fried chicken breast on a creamy mushroom sauce, ribbon pasta with vegetables",
+        zanderfilet: "crisply fried pikeperch fillet with mustard sauce, boiled potatoes",
+        forelle: "trout from Kradenbach, meunière style, with boiled potatoes",
+        serviettenknoedel: "home-made napkin dumplings on a creamy mushroom sauce",
+        kartoffelroesti: "Eifel potato rösti with apple and onion ragout and mixed salad (vegan)",
+        sorbet: "blackcurrant sorbet in sparkling wine",
+        "gemischtes-eis": "(vanilla, strawberry and chocolate ice cream)",
+        "vanille-gruetze": "with red berry compote and cream",
+        "vanille-schoko": "with chocolate sauce and cream",
+        apfelstrudel: "with one scoop of vanilla ice cream and cream",
+      },
+      extras: {
+        beilagensalat: "We are happy to serve a side salad with any of these dishes.",
+        bratkartoffeln: "We will gladly serve pan-fried potatoes instead of chips.",
+      },
+    },
     faqEyebrow: "Good to know",
     faqH2: "Frequently asked about the restaurant",
     faq: [
@@ -278,6 +601,81 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     spreadCta: "Discuter de votre demande",
     linkRooms: "Séjourner et dîner ici le soir ? Nos chambres au Landhaus",
     linkPackages: "Voir nos forfaits gourmands en demi-pension",
+    menu: {
+      eyebrow: "À la carte",
+      h2: "Notre carte",
+      intro:
+        "Notre carte fixe — à laquelle s'ajoutent chaque soir un menu du jour trois plats qui change et des plats de saison comme le gibier en automne et les asperges au printemps. Nous servons à la carte du jeudi au dimanche.",
+      origin:
+        "Nous travaillons dans un esprit écologique et nous approvisionnons principalement dans la région : la viande auprès des boucheries de Gillenfeld et de la Moselle, les truites de la pisciculture Vulkan-Forellen à Kradenbach, la volaille et les œufs de la ferme avicole Janshen à Ellscheid.",
+      pdfLabel: "Télécharger la carte en PDF",
+      pdfMeta: "PDF · 1,2 Mo · 6 pages · à jour de septembre 2026",
+      additivesHint: "Les chiffres après chaque plat renvoient aux additifs indiqués sous la carte.",
+      additivesSr: "Additifs : ",
+      additivesTitle: "Additifs",
+      additives: {
+        "1": "colorants",
+        "2": "conservateurs",
+        "3": "antioxydants",
+        "4": "exhausteurs de goût",
+        "5": "dioxyde de soufre",
+        "6": "noirci",
+        "7": "ciré",
+        "8": "avec phosphate",
+        "9": "amidon",
+        "10": "protéines de lait",
+        "11": "édulcorants",
+        "12": "avec sucre et édulcorants",
+        "16": "contient de la quinine",
+        "17": "contient de la caféine",
+        "20": "sel iodé",
+      },
+      panierNote:
+        "Comme nous fabriquons nous-mêmes la majeure partie de notre chapelure, elle peut contenir des céréales ou des fruits à coque.",
+      priceNote: "Tous les prix en euros, TVA comprise.",
+      surcharge: "en sus",
+      sizes: { gross: "grande", klein: "petite" },
+      sections: {
+        suppen: "Potages",
+        vorspeisen: "Entrées",
+        zwischendurch: "Petites faims",
+        schnitzel: "Escalopes",
+        spezialitaeten: "Spécialités",
+        fisch: "Poissons",
+        vegetarisch: "Végétarien",
+        kinder: "Pour les petits convives",
+        dessert: "Desserts",
+      },
+      dishes: {
+        rinderkraftbruehe: "consommé de bœuf avec garniture",
+        senfsueppchen: "velouté à la moutarde de l'Eifel avec croûtons",
+        "tomate-mozzarella": "avec basilic et pain",
+        camembert: "camembert pané sur nid de salade",
+        salatteller: "grande assiette de salades variées avec pain",
+        "strammer-max": "avec jambon cru de l'Eifel et œufs au plat",
+        bratkartoffeln: "pommes de terre sautées avec lard et œuf au plat",
+        champignonrahmschnitzel: "escalope à la crème de champignons, avec frites",
+        "schnitzel-vulkan": "avec tranches de lard poêlées, gratinée au fromage, avec frites",
+        zwiebelschnitzel: "avec oignons, frites et beurre aux herbes",
+        medaillons: "médaillons de filet de porc sur sauce crémeuse aux champignons, avec croquettes de pommes de terre",
+        tafelspitz: "bœuf bouilli, sauce au raifort, julienne de légumes et pommes de terre à l'eau",
+        rumpsteak: "avec oignons frits et beurre aux herbes, rösti de pommes de terre et haricots au lard",
+        haehnchenbrust: "blanc de poulet poêlé sur sauce crémeuse aux champignons, tagliatelles aux légumes",
+        zanderfilet: "filet de sandre croustillant, sauce moutarde, pommes de terre à l'eau",
+        forelle: "truite de Kradenbach à la meunière, avec pommes de terre à l'eau",
+        serviettenknoedel: "quenelles maison sur sauce crémeuse aux champignons",
+        kartoffelroesti: "rösti de pommes de terre de l'Eifel, ragoût pomme-oignon et salade mixte (végane)",
+        sorbet: "sorbet de cassis au crémant",
+        "gemischtes-eis": "(glaces vanille, fraise et chocolat)",
+        "vanille-gruetze": "avec compote de fruits rouges et crème chantilly",
+        "vanille-schoko": "avec sauce au chocolat et crème chantilly",
+        apfelstrudel: "avec 1 boule de glace vanille et crème chantilly",
+      },
+      extras: {
+        beilagensalat: "Nous servons volontiers une petite salade d'accompagnement avec chacun de ces plats.",
+        bratkartoffeln: "Nous remplaçons volontiers les frites par des pommes de terre sautées.",
+      },
+    },
     faqEyebrow: "Bon à savoir",
     faqH2: "Questions fréquentes sur le restaurant",
     faq: [
@@ -359,6 +757,81 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     spreadCta: "Aanvraag bespreken",
     linkRooms: "Overnachten en hier 's avonds dineren? Onze kamers in het Landhaus",
     linkPackages: "Bekijk onze genietersarrangementen met halfpension",
+    menu: {
+      eyebrow: "À la carte",
+      h2: "Onze menukaart",
+      intro:
+        "Onze vaste kaart — daarnaast elke avond een wisselend driegangen-dagmenu en seizoensgerechten zoals wild in de herfst en asperges in het voorjaar. À la carte serveren wij van donderdag tot en met zondag.",
+      origin:
+        "Wij werken ecologisch bewust en betrekken onze producten hoofdzakelijk uit de regio: het vlees van de slagerijen in Gillenfeld en aan de Moezel, de forellen van de Vulkan-Forellen in Kradenbach, gevogelte en eieren van pluimveebedrijf Janshen in Ellscheid.",
+      pdfLabel: "Menukaart als pdf downloaden",
+      pdfMeta: "PDF · 1,2 MB · 6 pagina's · stand september 2026",
+      additivesHint: "De cijfers achter de gerechten verwijzen naar de additieven onder de kaart.",
+      additivesSr: "Additieven: ",
+      additivesTitle: "Additieven",
+      additives: {
+        "1": "kleurstoffen",
+        "2": "conserveermiddelen",
+        "3": "antioxidanten",
+        "4": "smaakversterkers",
+        "5": "zwaveldioxide",
+        "6": "gezwart",
+        "7": "gewaxt",
+        "8": "met fosfaat",
+        "9": "zetmeel",
+        "10": "melkeiwit",
+        "11": "zoetstoffen",
+        "12": "met suikersoort en zoetstof",
+        "16": "bevat kinine",
+        "17": "bevat cafeïne",
+        "20": "jodiumzout",
+      },
+      panierNote:
+        "Omdat wij ons paneermeel grotendeels zelf maken, kan het granen- of notenbestanddelen bevatten.",
+      priceNote: "Alle prijzen in euro's, inclusief btw.",
+      surcharge: "meerprijs",
+      sizes: { gross: "groot", klein: "klein" },
+      sections: {
+        suppen: "Soepen",
+        vorspeisen: "Voorgerechten",
+        zwischendurch: "Voor tussendoor",
+        schnitzel: "Schnitzels",
+        spezialitaeten: "Specialiteiten",
+        fisch: "Vis",
+        vegetarisch: "Vegetarisch",
+        kinder: "Voor de kleine gasten",
+        dessert: "Dessert",
+      },
+      dishes: {
+        rinderkraftbruehe: "runderbouillon met garnituur",
+        senfsueppchen: "Eifeler mosterdsoepje met croutons",
+        "tomate-mozzarella": "met basilicum en brood",
+        camembert: "gebakken camembert op een bedje van salade",
+        salatteller: "grote gemengde saladeschotel met brood",
+        "strammer-max": "met rauwe Eifeler ham en spiegeleieren",
+        bratkartoffeln: "gebakken aardappelen met spek & spiegelei",
+        champignonrahmschnitzel: "schnitzel met champignonroomsaus, met friet",
+        "schnitzel-vulkan": "met gebakken spekplakjes, gegratineerd met kaas, met friet",
+        zwiebelschnitzel: "met uien, friet en kruidenboter",
+        medaillons: "medaillons van varkenshaas op champignonroomsaus, met aardappelkroketten",
+        tafelspitz: "gekookt rundvlees met mierikswortelsaus, groentereepjes en gekookte aardappelen",
+        rumpsteak: "met gebakken uien en kruidenboter, aardappelrösti en spekboontjes",
+        haehnchenbrust: "gebakken kipfilet op champignonroomsaus, lintpasta met groenten",
+        zanderfilet: "krokant gebakken snoekbaarsfilet met mosterdsaus, gekookte aardappelen",
+        forelle: "forel uit Kradenbach op meunière-wijze, met gekookte aardappelen",
+        serviettenknoedel: "huisgemaakte servetknoedels op champignonroomsaus",
+        kartoffelroesti: "Eifeler aardappelrösti met appel-uienragout en gemengde salade (vegan)",
+        sorbet: "sorbet van zwarte bessen in mousserende wijn",
+        "gemischtes-eis": "(vanille-, aardbeien- en chocolade-ijs)",
+        "vanille-gruetze": "met rode grutten en slagroom",
+        "vanille-schoko": "met chocoladesaus en slagroom",
+        apfelstrudel: "met 1 bolletje vanille-ijs en slagroom",
+      },
+      extras: {
+        beilagensalat: "Bij al deze gerechten serveren wij graag een bijgerecht-salade.",
+        bratkartoffeln: "In plaats van friet serveren wij u graag gebakken aardappelen.",
+      },
+    },
     faqEyebrow: "Goed om te weten",
     faqH2: "Veelgestelde vragen over het restaurant",
     faq: [
