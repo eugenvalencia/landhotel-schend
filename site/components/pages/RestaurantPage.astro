@@ -260,7 +260,7 @@ const restaurantSchema = {
                       <Fragment>{" "}<a
                         href="#zusatzstoffe"
                         class="whitespace-nowrap font-sans text-xs text-muted-foreground underline decoration-dotted underline-offset-2 hover:text-secondary focus-visible:text-secondary transition-colors"
-                      ><span class="sr-only">{c.menu.additivesSr}</span>{d.additives}</a></Fragment>
+                      ><span class="sr-only">{c.menu.additivesSr}</span>({d.additives})</a></Fragment>
                     )}
                   </p>
                   {c.menu.dishes[d.key] && (
@@ -299,10 +299,11 @@ const restaurantSchema = {
         <h3 class="font-display text-lg leading-snug mb-3">{c.menu.additivesTitle}</h3>
         <p class="text-xs md:text-sm text-muted-foreground leading-relaxed">
           {ADDITIVE_NUMBERS.map((n, i) => (
-            <Fragment>{i > 0 && ", "}<span class="whitespace-nowrap"><span class="tabular-nums">{n}</span> {c.menu.additives[n]}</span></Fragment>
+            <Fragment>{i > 0 && ", "}<span class="whitespace-nowrap"><span class="tabular-nums">({n})</span> {c.menu.additives[n]}</span></Fragment>
           ))}
         </p>
         <p class="text-xs md:text-sm text-muted-foreground leading-relaxed text-pretty mt-3">{c.menu.panierNote}</p>
+        <p class="text-xs md:text-sm text-muted-foreground leading-relaxed text-pretty mt-3">{c.menu.allergenNote}</p>
         <p class="text-xs text-muted-foreground leading-relaxed mt-3">{c.menu.priceNote}</p>
       </div>
     </div>

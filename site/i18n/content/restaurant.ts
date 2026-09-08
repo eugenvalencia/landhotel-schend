@@ -161,6 +161,13 @@ export interface RestaurantMenuText {
   /** Nummer → Bezeichnung. Die Nummern kommen aus ADDITIVE_NUMBERS, nie von hier. */
   additives: Record<string, string>;
   panierNote: string;
+  /**
+   * Allergen-Auskunft. Die Karte deklariert Zusatzstoffe, aber nicht die
+   * 14 Hauptallergene — ohne diesen Satz stuende nirgends, wo Gaeste danach
+   * fragen koennen. Die Auskunftspflicht selbst liegt beim Haus, nicht bei
+   * der Website; der Satz nennt nur den Weg dorthin.
+   */
+  allergenNote: string;
   priceNote: string;
   /** Wort vor einem Abschnitts-Zuschlag ("zzgl."). */
   surcharge: string;
@@ -320,6 +327,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
       },
       panierNote:
         "Da wir unser Paniermehl zum größten Teil selbst herstellen, könnten Körner bzw. Nussanteile beinhaltet sein.",
+      allergenNote:
+        "Angaben zu Allergenen und Unverträglichkeiten erhalten Sie gerne bei unserem Service-Team — sprechen Sie uns einfach an.",
       priceNote: "Alle Preise in Euro, inklusive Mehrwertsteuer.",
       surcharge: "zzgl.",
       sizes: { gross: "groß", klein: "klein" },
@@ -476,6 +485,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
       },
       panierNote:
         "As we make most of our breadcrumbs ourselves, they may contain grains or traces of nuts.",
+      allergenNote:
+        "For information on allergens and intolerances, please ask our service team — we are happy to help.",
       priceNote: "All prices in euros, including VAT.",
       surcharge: "plus",
       sizes: { gross: "large", klein: "small" },
@@ -632,6 +643,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
       },
       panierNote:
         "Comme nous fabriquons nous-mêmes la majeure partie de notre chapelure, elle peut contenir des céréales ou des fruits à coque.",
+      allergenNote:
+        "Pour toute information sur les allergènes et les intolérances, adressez-vous à notre équipe — nous vous renseignons volontiers.",
       priceNote: "Tous les prix en euros, TVA comprise.",
       surcharge: "en sus",
       sizes: { gross: "grande", klein: "petite" },
@@ -788,6 +801,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
       },
       panierNote:
         "Omdat wij ons paneermeel grotendeels zelf maken, kan het granen- of notenbestanddelen bevatten.",
+      allergenNote:
+        "Voor informatie over allergenen en intoleranties kunt u terecht bij ons serviceteam — vraag het ons gerust.",
       priceNote: "Alle prijzen in euro's, inclusief btw.",
       surcharge: "meerprijs",
       sizes: { gross: "groot", klein: "klein" },
