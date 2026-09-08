@@ -11,7 +11,9 @@
     "check": "astro check",
     "optimize:images": "node scripts/optimize-images.mjs",
     "images:webp": "node scripts/gen-webp-dims.mjs",
-    "astro": "astro"
+    "astro": "astro",
+    "pruefe:sitemap": "node scripts/sitemap-gegen-noindex.mjs",
+    "pruefe:sitemap:selbsttest": "node scripts/sitemap-gegen-noindex.mjs --selbsttest"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

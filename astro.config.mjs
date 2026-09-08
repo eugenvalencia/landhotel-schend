@@ -134,11 +134,16 @@ export default defineConfig({
   // @astrojs/react bleibt installiert, wird aber erst in Stufe 3 (Booking-Island)
   // als Integration registriert — sonst landet die ungenutzte React-Runtime als
   // Orphan-Bundle im Build (Zero-JS-Default, DR-029).
-  // noindex-Rechtsseiten (Impressum/Datenschutz/AGB) gehören NICHT in den Sitemap —
-  // sonst widersprüchliches Signal (eingereicht, aber per Meta noindex).
+  // noindex-Seiten gehören NICHT in den Sitemap — sonst widersprüchliches Signal
+  // (eingereicht, aber per Meta noindex). Am 08.09.2026 gemessen: die Sitemap führte
+  // 76 URLs, davon trugen 8 ein noindex — /anfrage/ und /bildnachweis/ in allen vier
+  // Sprachen. Genau die meldete die Search Console als "Durch noindex ausgeschlossen".
+  // ⚠ Diese Liste altert gegen das, was sie prüft: kommt eine neue noindex-Seite dazu
+  //   und wird hier vergessen, entsteht der Widerspruch neu und niemand merkt es.
+  //   Der Wächter dagegen ist scripts/sitemap-gegen-noindex.mjs.
   integrations: [
     sitemap({
-      filter: (page) => !/\/(impressum|datenschutz|agb)\/?$/.test(page),
+      filter: (page) => !/\/(impressum|datenschutz|agb|anfrage|bildnachweis)\/?$/.test(page),
       // lastmod aus dem Git-Datum der Inhaltsquelle — siehe Erklärung oben.
       serialize: (eintrag) => {
         const d = lastmodFuer(eintrag.url);
