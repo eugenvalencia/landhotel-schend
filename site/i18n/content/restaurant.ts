@@ -303,8 +303,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
         "Unsere feste Karte — dazu an jedem Abend ein wechselndes 3-Gänge-Tagesmenü und Saisonales wie Wild im Herbst und Spargel im Frühjahr. À la carte servieren wir von Donnerstag bis Sonntag.",
       origin:
         "Wir arbeiten ökologisch orientiert und beziehen unsere Waren hauptsächlich aus der Region: das Fleisch von den Metzgereien in Gillenfeld und von der Mosel, die Forellen von den Vulkan-Forellen in Kradenbach, Geflügel und Eier vom Geflügelhof Janshen in Ellscheid.",
-      pdfLabel: "Speisekarte als PDF herunterladen",
-      pdfMeta: "PDF · 1,2 MB · 6 Seiten · Stand September 2026",
+      pdfLabel: "Speisekarte als PDF ansehen",
+      pdfMeta: "PDF · 1,2 MB · 6 Seiten · öffnet in neuem Tab · Stand September 2026",
       additivesHint: "Die Ziffern hinter den Gerichten verweisen auf die Zusatzstoffe unter der Karte.",
       additivesSr: "Zusatzstoffe: ",
       additivesTitle: "Zusatzstoffe",
@@ -461,8 +461,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
         "Our regular menu — plus a changing three-course menu of the day every evening and seasonal dishes such as game in autumn and asparagus in spring. We serve à la carte from Thursday to Sunday.",
       origin:
         "We work with an ecological mindset and source our produce mainly from the region: the meat from the butchers in Gillenfeld and on the Moselle, the trout from the Vulkan-Forellen fish farm in Kradenbach, poultry and eggs from the Janshen poultry farm in Ellscheid.",
-      pdfLabel: "Download the menu as a PDF",
-      pdfMeta: "PDF · 1.2 MB · 6 pages · as of September 2026",
+      pdfLabel: "View the menu as a PDF",
+      pdfMeta: "PDF · 1.2 MB · 6 pages · opens in a new tab · as of September 2026",
       additivesHint: "The numbers after each dish refer to the additives listed below the menu.",
       additivesSr: "Additives: ",
       additivesTitle: "Additives",
@@ -619,8 +619,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
         "Notre carte fixe — à laquelle s'ajoutent chaque soir un menu du jour trois plats qui change et des plats de saison comme le gibier en automne et les asperges au printemps. Nous servons à la carte du jeudi au dimanche.",
       origin:
         "Nous travaillons dans un esprit écologique et nous approvisionnons principalement dans la région : la viande auprès des boucheries de Gillenfeld et de la Moselle, les truites de la pisciculture Vulkan-Forellen à Kradenbach, la volaille et les œufs de la ferme avicole Janshen à Ellscheid.",
-      pdfLabel: "Télécharger la carte en PDF",
-      pdfMeta: "PDF · 1,2 Mo · 6 pages · à jour de septembre 2026",
+      pdfLabel: "Voir la carte en PDF",
+      pdfMeta: "PDF · 1,2 Mo · 6 pages · s'ouvre dans un nouvel onglet · à jour de septembre 2026",
       additivesHint: "Les chiffres après chaque plat renvoient aux additifs indiqués sous la carte.",
       additivesSr: "Additifs : ",
       additivesTitle: "Additifs",
@@ -777,8 +777,8 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
         "Onze vaste kaart — daarnaast elke avond een wisselend driegangen-dagmenu en seizoensgerechten zoals wild in de herfst en asperges in het voorjaar. À la carte serveren wij van donderdag tot en met zondag.",
       origin:
         "Wij werken ecologisch bewust en betrekken onze producten hoofdzakelijk uit de regio: het vlees van de slagerijen in Gillenfeld en aan de Moezel, de forellen van de Vulkan-Forellen in Kradenbach, gevogelte en eieren van pluimveebedrijf Janshen in Ellscheid.",
-      pdfLabel: "Menukaart als pdf downloaden",
-      pdfMeta: "PDF · 1,2 MB · 6 pagina's · stand september 2026",
+      pdfLabel: "Menukaart als pdf bekijken",
+      pdfMeta: "PDF · 1,2 MB · 6 pagina's · opent in een nieuw tabblad · stand september 2026",
       additivesHint: "De cijfers achter de gerechten verwijzen naar de additieven onder de kaart.",
       additivesSr: "Additieven: ",
       additivesTitle: "Additieven",

@@ -235,9 +235,16 @@ const restaurantSchema = {
       <p class="text-foreground/85 leading-relaxed text-pretty text-center mb-4">{c.menu.intro}</p>
       <p class="text-sm text-muted-foreground leading-relaxed text-pretty text-center">{c.menu.origin}</p>
 
+      {/* ⚠ KEIN `download`-Attribut. Es stand hier bis zum 08.09.2026 und war
+          falsch: es erzwingt das Herunterladen, statt das PDF zu zeigen. Ein
+          Gast, der kurz in die Karte schauen will, bekam damit eine Datei in
+          den Ordner gelegt — auf manchen Geraeten sogar ohne .pdf-Endung im
+          Namen, die sich dann gar nicht oeffnen liess (Founder-Befund).
+          Jetzt oeffnet der Verweis das PDF im Betrachter; herunterladen kann
+          es von dort immer noch jeder, der will. */}
       <div class="mt-8 flex flex-col items-center gap-1">
-        <a href={MENU_PDF} download class="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-secondary hover:text-foreground transition-colors underline underline-offset-4 decoration-secondary/40">
-          <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+        <a href={MENU_PDF} target="_blank" rel="noopener" class="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-secondary hover:text-foreground transition-colors underline underline-offset-4 decoration-secondary/40">
+          <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
           {c.menu.pdfLabel}
         </a>
         <span class="text-xs text-muted-foreground tabular-nums">{c.menu.pdfMeta}</span>
