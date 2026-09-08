@@ -147,7 +147,6 @@ export const MENU_SECTIONS: MenuSection[] = [
 
 /** Übersetzbarer Teil der Karte — Überschriften, Beschreibungen, Fußnoten. */
 export interface RestaurantMenuText {
-  eyebrow: string;
   h2: string;
   intro: string;
   /** Regionale Lieferanten (Seite 1 des PDF) — steht sonst nirgends auf der Site. */
@@ -297,7 +296,6 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     linkRooms: "Übernachten und am Abend hier essen? Unsere Zimmer im Landhaus",
     linkPackages: "Genießer-Pakete mit Halbpension ansehen",
     menu: {
-      eyebrow: "À la carte",
       h2: "Unsere Speisekarte",
       intro:
         "Unsere feste Karte — dazu an jedem Abend ein wechselndes 3-Gänge-Tagesmenü und Saisonales wie Wild im Herbst und Spargel im Frühjahr. À la carte servieren wir von Donnerstag bis Sonntag.",
@@ -455,7 +453,6 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     linkRooms: "Staying over and dining here in the evening? Our rooms at the Landhaus",
     linkPackages: "See our gourmet packages with half board",
     menu: {
-      eyebrow: "À la carte",
       h2: "Our menu",
       intro:
         "Our regular menu — plus a changing three-course menu of the day every evening and seasonal dishes such as game in autumn and asparagus in spring. We serve à la carte from Thursday to Sunday.",
@@ -613,7 +610,6 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     linkRooms: "Séjourner et dîner ici le soir ? Nos chambres au Landhaus",
     linkPackages: "Voir nos forfaits gourmands en demi-pension",
     menu: {
-      eyebrow: "À la carte",
       h2: "Notre carte",
       intro:
         "Notre carte fixe — à laquelle s'ajoutent chaque soir un menu du jour trois plats qui change et des plats de saison comme le gibier en automne et les asperges au printemps. Nous servons à la carte du jeudi au dimanche.",
@@ -771,7 +767,6 @@ export const restaurantContent: Record<Locale, RestaurantContent> = {
     linkRooms: "Overnachten en hier 's avonds dineren? Onze kamers in het Landhaus",
     linkPackages: "Bekijk onze genietersarrangementen met halfpension",
     menu: {
-      eyebrow: "À la carte",
       h2: "Onze menukaart",
       intro:
         "Onze vaste kaart — daarnaast elke avond een wisselend driegangen-dagmenu en seizoensgerechten zoals wild in de herfst en asperges in het voorjaar. À la carte serveren wij van donderdag tot en met zondag.",
