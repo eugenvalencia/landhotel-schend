@@ -74,7 +74,7 @@ export const regionContent: Record<Locale, RegionContent> = {
         img: IMG.eifelsteig,
         alt: "Wanderin an einem Eifelmaar in der Vulkaneifel bei Immerath",
         title: "Wandern auf dem Eifelsteig",
-        text: "Der Premium-Wanderweg Eifelsteig (300 km von Aachen nach Trier) führt nahe am Hotel vorbei — wir liegen auf der Etappenstrecke Daun ↔ Manderscheid. Dazu der Maar-Pfad und unzählige Rundwege ab Immerath. Wanderkarten und persönliche Tourenempfehlungen stellen wir kostenlos.",
+        text: "Der Premium-Wanderweg Eifelsteig (313 km von Aachen nach Trier) führt nahe am Hotel vorbei — wir liegen auf der Etappenstrecke Daun ↔ Manderscheid. Dazu der Maar-Pfad und unzählige Rundwege ab Immerath. Wanderkarten und persönliche Tourenempfehlungen stellen wir kostenlos.",
       },
       {
         img: IMG.maare,
@@ -160,7 +160,7 @@ export const regionContent: Record<Locale, RegionContent> = {
         img: IMG.eifelsteig,
         alt: "Hiker at an Eifel maar in the Volcanic Eifel near Immerath",
         title: "Hiking the Eifelsteig",
-        text: "The premium Eifelsteig trail (300 km from Aachen to Trier) runs close to the hotel — we sit on the Daun ↔ Manderscheid stage. Add the Maar trail and countless circular walks starting in Immerath. We provide hiking maps and personal route tips free of charge.",
+        text: "The premium Eifelsteig trail (313 km from Aachen to Trier) runs close to the hotel — we sit on the Daun ↔ Manderscheid stage. Add the Maar trail and countless circular walks starting in Immerath. We provide hiking maps and personal route tips free of charge.",
       },
       {
         img: IMG.maare,
@@ -246,7 +246,7 @@ export const regionContent: Record<Locale, RegionContent> = {
         img: IMG.eifelsteig,
         alt: "Randonneuse au bord d'un maar de l'Eifel volcanique près d'Immerath",
         title: "Randonner sur l'Eifelsteig",
-        text: "Le sentier de randonnée premium Eifelsteig (300 km d'Aix-la-Chapelle à Trèves) passe tout près de l'hôtel — nous sommes sur l'étape Daun ↔ Manderscheid. S'y ajoutent le sentier des maars et d'innombrables boucles au départ d'Immerath. Nous fournissons gratuitement des cartes de randonnée et des conseils d'itinéraires personnalisés.",
+        text: "Le sentier de randonnée premium Eifelsteig (313 km d'Aix-la-Chapelle à Trèves) passe tout près de l'hôtel — nous sommes sur l'étape Daun ↔ Manderscheid. S'y ajoutent le sentier des maars et d'innombrables boucles au départ d'Immerath. Nous fournissons gratuitement des cartes de randonnée et des conseils d'itinéraires personnalisés.",
       },
       {
         img: IMG.maare,
@@ -332,7 +332,7 @@ export const regionContent: Record<Locale, RegionContent> = {
         img: IMG.eifelsteig,
         alt: "Wandelaarster bij een Eifelmaar in de Vulkaneifel nabij Immerath",
         title: "Wandelen op de Eifelsteig",
-        text: "Het premium wandelpad Eifelsteig (300 km van Aken naar Trier) loopt vlak langs het hotel — wij liggen op de etappe Daun ↔ Manderscheid. Daarbij komen het maren-pad en talloze rondwandelingen vanuit Immerath. Wandelkaarten en persoonlijke routetips bieden wij kosteloos aan.",
+        text: "Het premium wandelpad Eifelsteig (313 km van Aken naar Trier) loopt vlak langs het hotel — wij liggen op de etappe Daun ↔ Manderscheid. Daarbij komen het maren-pad en talloze rondwandelingen vanuit Immerath. Wandelkaarten en persoonlijke routetips bieden wij kosteloos aan.",
       },
       {
         img: IMG.maare,
