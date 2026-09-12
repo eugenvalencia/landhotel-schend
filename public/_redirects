@@ -18,16 +18,46 @@
 # WICHTIG: die echte /galerie-Seite (+ /en/galerie) VOR dem /g*-Splat schuetzen,
 # sonst reisst der Splat sie mit. trailingSlash: "always".
 /galerie          /galerie/      301
-/galerie/*        /galerie/      200
+# 301 statt 200: mit 200 lieferte /galerie/beliebig/tief/ dieselbe Seite unter
+# unbegrenzt vielen Adressen aus (gemessen 13.09.: HTTP 200, 187.519 B, gleicher
+# Inhalt). Nur das Canonical hielt das zusammen. Eine Weiterleitung raeumt die
+# Dubletten weg, statt sie zu verwalten.
+/galerie/*        /galerie/      301
 /en/galerie       /en/galerie/   301
-/en/galerie/*     /en/galerie/   200
+/en/galerie/*     /en/galerie/   301
 # ⚠ VOR dem /en/g*-Splat: die erste passende Regel gewinnt. Steht das hier
 #   darunter, faengt /en/g* das Wort "gastronomie" ab und die Regel greift nie.
 #   Genau die Falle, vor der oben schon /galerie geschuetzt wird.
 /en/gastronomie   /en/restaurant/   301
 /en/gastronomie/* /en/restaurant/   301
-/g*               /              301
-/en/g*            /en/           301
+# ⚠⚠ KEIN /g*-Splat mehr (13.09.2026). Er verschluckte JEDE Adresse, die mit "g"
+#    beginnt: /garten, /gutschein, /geschenkgutschein, /gruppenreisen und sogar
+#    /gibtsnicht.html gaben 301 auf die Startseite statt 404 — gemessen, alle fuenf.
+#    Damit war die 404-Seite auf oberster Ebene unerreichbar, und jede kuenftige
+#    Seite mit "g" haette erst davor geschuetzt werden muessen. Die Falle hatte
+#    oben schon zweimal zugeschlagen (/galerie, /gastronomie).
+#    Die alten Framer-Slugs hiessen gNN — also Ziffer hinter dem g. Dieselbe
+#    Technik wie unten bei /u0*: genau treffen statt breit fangen.
+/g0*              /              301
+/g1*              /              301
+/g2*              /              301
+/g3*              /              301
+/g4*              /              301
+/g5*              /              301
+/g6*              /              301
+/g7*              /              301
+/g8*              /              301
+/g9*              /              301
+/en/g0*           /en/           301
+/en/g1*           /en/           301
+/en/g2*           /en/           301
+/en/g3*           /en/           301
+/en/g4*           /en/           301
+/en/g5*           /en/           301
+/en/g6*           /en/           301
+/en/g7*           /en/           301
+/en/g8*           /en/           301
+/en/g9*           /en/           301
 /page             /              301
 /page/*           /              301
 

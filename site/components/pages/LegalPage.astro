@@ -18,6 +18,12 @@ interface Props {
 }
 const { lang, canonicalPath, deHref, title, description, heading, bodyHtml, noindex = true } = Astro.props;
 
+// Schraegstrich hier erzwingen statt an elf Aufrufstellen: die uebergeben rohe
+// Zeichenketten ("/agb"), und die Seite liegt unter "/agb/". Ohne das zeigten
+// 11 interne Links auf eine 308-Weiterleitung. Gleiche Wurzel wie beim
+// Canonical im Layout.
+const deZiel = deHref === "/" || deHref.endsWith("/") ? deHref : `${deHref}/`;
+
 // Hinweis: maßgeblich ist die deutsche Fassung (Übersetzung = Lesehilfe).
 const NOTE: Record<Exclude<Locale, "de">, { text: string; linkText: string }> = {
   en: { text: "This is a convenience translation. The legally binding version is the", linkText: "German original" },
@@ -37,7 +43,7 @@ const note = NOTE[lang as Exclude<Locale, "de">];
 >
   {note && (
     <div class="mb-8 rounded-md border border-border bg-muted/30 px-4 py-3 text-sm text-muted-foreground">
-      {note.text} <a href={deHref} class="text-secondary underline hover:no-underline">{note.linkText}</a>.
+      {note.text} <a href={deZiel} class="text-secondary underline hover:no-underline">{note.linkText}</a>.
     </div>
   )}
   <Fragment set:html={bodyHtml} />

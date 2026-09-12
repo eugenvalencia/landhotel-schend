@@ -224,7 +224,12 @@ const pflichtHint: Record<Locale, string> = {
     width: 100%;
     background: transparent;
     border: 0;
-    border-bottom: 1px solid hsl(var(--border));
+    /* WCAG 2.1 AA 1.4.11: Die Unterlinie ist das EINZIGE, was das Feld als
+       Feld erkennbar macht — also ein Bedienelement-Umriss, der 3:1 braucht.
+       --border lag bei 1,37:1 (hell) bzw. 1,47:1 (dunkel). Gerechnet nach
+       WCAG-Luminanz ergibt --foreground / 0.6 rund 4:1 auf Grund UND Karte,
+       in beiden Themen. */
+    border-bottom: 1px solid hsl(var(--foreground) / 0.6);
     padding: 0.55rem 0.1rem;
     color: hsl(var(--foreground));
     font-size: 1rem;
@@ -232,7 +237,10 @@ const pflichtHint: Record<Locale, string> = {
     transition: border-color 0.2s ease;
   }
   .anf-field > textarea {
-    border: 1px solid hsl(var(--border));
+    /* Eigene Regel: das Textfeld hat einen RUNDUM-Rahmen und ueberschreibt
+       damit die Unterlinie oben. Ohne denselben Wert blieb es als einziges
+       Feld bei 1,38:1 — im Browser gemessen, nicht gerechnet. */
+    border: 1px solid hsl(var(--foreground) / 0.6);
     border-radius: 0.375rem;
     padding: 0.7rem 0.8rem;
     resize: vertical;

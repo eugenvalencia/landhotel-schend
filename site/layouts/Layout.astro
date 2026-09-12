@@ -60,6 +60,9 @@ const {
   description,
   canonicalPath,
   ogImage = "/fotos/hotelfront-mit-rosen-landhaus-schend-vulkaneifel.jpg",
+  // og:type kennt nur ein festes Vokabular (website, article, book, profile,
+  // music.*, video.*). "hotel" gehört NICHT dazu — Facebook fällt still auf
+  // "website" zurück. Die Hotel-Semantik trägt ohnehin das JSON-LD.
   ogType = "website",
   noindex = false,
   lang = "de",
@@ -70,7 +73,17 @@ const fullTitle = title
   ? `${title} | ${SITE_NAME}`
   : `${SITE_NAME} – 3-Sterne-Superior Hotel in der Vulkaneifel`;
 
-const canonical = `${ORIGIN}${canonicalPath}`;
+// Schraegstrich hier erzwingen, nicht an jeder Aufrufstelle. Fuenf Seiten
+// (agb, impressum, datenschutz, barrierefreiheit, bildnachweis) uebergaben eine
+// feste Zeichenkette ohne Schraegstrich und zeigten damit auf eine 308-Weiter-
+// leitung — waehrend die Sitemap dieselbe Seite MIT Schraegstrich fuehrte.
+// astro trailingSlash: "always"; Fragment und Suchteil bleiben unberuehrt.
+const kanonischerPfad = (() => {
+  const [pfad, rest = ""] = canonicalPath.split(/(?=[?#])/, 2);
+  if (pfad === "/" || pfad.endsWith("/")) return canonicalPath;
+  return `${pfad}/${rest}`;
+})();
+const canonical = `${ORIGIN}${kanonischerPfad}`;
 const ogImageAbs = ogImage.startsWith("http") ? ogImage : `${ORIGIN}${ogImage}`;
 const robots = noindex
   ? "noindex, nofollow"
