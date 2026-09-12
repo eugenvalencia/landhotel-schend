@@ -3,6 +3,8 @@
 // Lesespalte + Eyebrow + H1. Inhalt kommt über den Default-Slot, optionales
 // JSON-LD über <slot name="head" />.
 import Layout from "./Layout.astro";
+import { t } from "../i18n/ui";
+import { type Locale } from "../i18n";
 
 interface Props {
   title: string;
@@ -12,15 +14,34 @@ interface Props {
   eyebrow?: string;
   heading: string;
   localized?: boolean;
+  /**
+   * ⚠⚠ REICHT `lang` AN DAS LAYOUT DURCH — gemessen am 12.09.2026:
+   * Diese Hülle nahm `lang` gar nicht entgegen. Die übersetzten Rechtstexte
+   * (LegalPage → TextPage → Layout) verloren die Sprache damit auf halbem Weg
+   * und fielen auf den Layout-Standard "de" zurück. Folge auf zwölf Seiten
+   * (/en|/fr|/nl × impressum, datenschutz, agb, barrierefreiheit):
+   * `<html lang="de">` über niederländischem Text, dazu Navigation, Fußzeile,
+   * Sprungmarke und Cookie-Banner komplett auf Deutsch. Ausgerechnet die
+   * Barrierefreiheitserklärung wurde so vom Screenreader deutsch ausgesprochen.
+   * Nur die /nl/barrierefreiheit/ hatte in 90 Tagen 38 Einblendungen.
+   */
+  lang?: Locale;
 }
 
-const { title, description, canonicalPath, noindex = false, eyebrow = "Rechtliches", heading, localized = true } = Astro.props;
+const {
+  title, description, canonicalPath, noindex = false, eyebrow, heading,
+  localized = true, lang = "de",
+} = Astro.props;
+
+// Rubrik übersetzt statt fest deutsch — ein hart gesetztes "Rechtliches" stand
+// vorher auch über den englischen, französischen und niederländischen Texten.
+const eyebrowText = eyebrow ?? t("legal_eyebrow", lang);
 ---
 
-<Layout title={title} description={description} canonicalPath={canonicalPath} noindex={noindex} localized={localized}>
+<Layout title={title} description={description} canonicalPath={canonicalPath} noindex={noindex} localized={localized} lang={lang}>
   <slot name="head" slot="head" />
   <div class="container mx-auto px-4 pt-12 md:pt-16 pb-20 max-w-3xl">
-    <p class="eyebrow mb-4">{eyebrow}</p>
+    <p class="eyebrow mb-4">{eyebrowText}</p>
     <h1 class="font-display text-4xl md:text-5xl mb-12 text-balance leading-[1.05]">{heading}</h1>
     <div class="space-y-10 text-foreground/90 leading-relaxed [&_h2]:font-display [&_h2]:text-xl [&_h2]:md:text-2xl [&_h2]:mb-3 [&_h3]:font-semibold [&_h3]:mt-4 [&_h3]:mb-1 [&_a]:text-secondary [&_a:hover]:underline [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mt-2 [&_ul]:space-y-1">
       <slot />

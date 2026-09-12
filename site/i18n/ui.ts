@@ -97,6 +97,9 @@ export const UI = {
   // — Allgemein —
   skip_to_content: { de: "Zum Inhalt springen", en: "Skip to content", fr: "Aller au contenu", nl: "Naar de inhoud" },
   section_nav_aria: { de: "Abschnitts-Navigation", en: "Section navigation", fr: "Navigation par sections", nl: "Sectienavigatie" },
+  // Rubrik über der H1 auf Rechtstext-Seiten. Stand bis 12.09.2026 fest als
+  // deutsches "Rechtliches" in TextPage — auch auf /nl, /en und /fr.
+  legal_eyebrow: { de: "Rechtliches", en: "Legal", fr: "Mentions légales", nl: "Juridisch" },
 } satisfies Record<string, L>;
 
 export type UIKey = keyof typeof UI;
