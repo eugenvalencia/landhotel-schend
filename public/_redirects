@@ -18,13 +18,16 @@
 # WICHTIG: die echte /galerie-Seite (+ /en/galerie) VOR dem /g*-Splat schuetzen,
 # sonst reisst der Splat sie mit. trailingSlash: "always".
 /galerie          /galerie/      301
-# 301 statt 200: mit 200 lieferte /galerie/beliebig/tief/ dieselbe Seite unter
-# unbegrenzt vielen Adressen aus (gemessen 13.09.: HTTP 200, 187.519 B, gleicher
-# Inhalt). Nur das Canonical hielt das zusammen. Eine Weiterleitung raeumt die
-# Dubletten weg, statt sie zu verwalten.
-/galerie/*        /galerie/      301
+# ⛔⛔ HIER MUSS 200 STEHEN, NICHT 301. Am 13.09.2026 habe ich das auf 301
+#    geaendert, um die Dubletten wegzuraeumen (/galerie/beliebig/tief/ lieferte
+#    mit 200 dieselbe Seite unter unbegrenzt vielen Adressen aus). Ergebnis war
+#    eine ENDLOSSCHLEIFE: der Splat "*" trifft auch die leere Reststrecke, also
+#    /galerie/ selbst -> /galerie/ -> ... Live gemessen: 50 Weiterleitungen,
+#    die Galerie war tot. Nach 8 Minuten zurueckgenommen.
+#    Die Dubletten sind das kleinere Uebel und werden vom Canonical gehalten.
+/galerie/*        /galerie/      200
 /en/galerie       /en/galerie/   301
-/en/galerie/*     /en/galerie/   301
+/en/galerie/*     /en/galerie/   200
 # ⚠ VOR dem /en/g*-Splat: die erste passende Regel gewinnt. Steht das hier
 #   darunter, faengt /en/g* das Wort "gastronomie" ab und die Regel greift nie.
 #   Genau die Falle, vor der oben schon /galerie geschuetzt wird.
