@@ -1,0 +1,182 @@
+---
+// Nieuwe pagina (13.09.2026), Nederlandstalig — enige taalversie voorlopig,
+// geen Duitse tegenhanger live. Rijtijden: eigen routeberekening (OSRM) vanaf
+// Hauptstraße 9, 54552 Immerath, stand 13.09.2026. Betaalwijzen: uit de eigen,
+// al gepubliceerde AGB (site/pages/agb.astro, § 3 lid 4). Zie
+// docs/schend-dauerseiten-entwurf.md.
+import TextPage from "../../layouts/TextPage.astro";
+import { ORIGIN } from "../../lib/site";
+import { breadcrumbLd } from "../../lib/schema";
+
+const URL = `${ORIGIN}/nl/vakantie-vulkaaneifel/`;
+const breadcrumb = breadcrumbLd(ORIGIN, "nl", [{ name: "Home", path: "/" }, { name: "Vakantie voor gasten uit Nederland en België", path: "/vakantie-vulkaaneifel" }]);
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${URL}#faq`,
+  url: URL,
+  mainEntity: [
+    { q: "Heb je een milieusticker (Umweltplakette) nodig voor de rit naar de Vulkaneifel?", a: "Nee, niet voor de route zelf — milieuzones bestaan in Duitsland alleen in enkele grotere steden, niet in het landelijke Rijnland-Palts. Rijd je via een grote stad met milieuzone, dan geldt daar wel de stickerplicht." },
+    { q: "Hoe wordt er in het Landhaus Schend betaald?", a: "Contant, met EC-kaart of creditcard, ter plaatse bij aankomst of vertrek. Online vooruitbetalen is niet nodig." },
+    { q: "Is reserveren bij het Landhaus Schend hetzelfde als boeken?", a: "Nee. Er is geen boekingsstraat — u stuurt een vrijblijvende aanvraag en het huis bevestigt persoonlijk." },
+  ].map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+};
+---
+
+<TextPage
+  title="Vulkaneifel — vakantie voor gasten uit Nederland en België"
+  description="Aankomst, afstanden, landschap en praktische zaken voor Nederlandse en Belgische gasten in de Vulkaneifel — korte rit, weinig drukte, heuvels in plaats van vlak land."
+  canonicalPath="/vakantie-vulkaaneifel"
+  localized={false}
+  lang="nl"
+  eyebrow="Vakantie"
+  heading="Vulkaneifel: vakantie voor gasten uit Nederland en België"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+  <section>
+    <h2>Dichtbij genoeg voor een lang weekend</h2>
+    <p>
+      De Vulkaneifel ligt voor gasten uit Nederland en België gunstig: dichtbij genoeg om op
+      vrijdagmiddag te vertrekken en voor het avondeten aan te komen — en ver genoeg weg om het
+      landschap heel anders te laten aanvoelen dan thuis. Een deel van onze gasten komt al
+      jarenlang uit deze twee landen, en dat is geen toeval: heuvels, bos en rust waar het
+      thuisland vooral vlak en dichtbevolkt is.
+    </p>
+  </section>
+
+  <section>
+    <h2>Met de auto</h2>
+    <p>
+      De reis gaat via de snelweg en de laatste kilometers over landwegen. Voor personenauto's
+      bestaat in Duitsland geen algemene tolplicht (Vignette). Immerath ligt bewust buiten de
+      hoofdroutes — dat is precies de reden waarom het hier rustig is, en tegelijk de reden
+      waarom de laatste twintig minuten langer duren dan het navigatiesysteem belooft.
+    </p>
+    <p>
+      Een milieusticker (Umweltplakette) is voor de rit naar Immerath zelf niet nodig: Duitsland
+      kent zulke milieuzones alleen in een beperkt aantal grotere steden — volgens de
+      officiële lijst van het Umweltbundesamt zo'n 36 zones, vooral in de grote centra zoals
+      Berlijn, Keulen of Frankfurt (stand 13.09.2026). Op het platteland van Rijnland-Palts en
+      dus ook in de Vulkaneifel bestaat geen enkele zone. Rijdt u toevallig via een van die
+      grote steden, dan geldt daar wél de stickerplicht — check dat voor de zekerheid zelf voor uw
+      exacte route, want die keuze maakt u, niet wij.
+    </p>
+    <p>
+      Op ons erf staan gratis parkeerplaatsen; een reservering daarvoor is niet nodig.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat hier anders is</h2>
+    <p>
+      De Vulkaneifel is heuvelachtig, bebost en dunbevolkt. Wie uit een vlak en dichtbevolkt
+      land komt, merkt vooral drie verschillen. Het is <strong>stil</strong> — 's nachts hoort u
+      niets dan wind. Het is <strong>donker</strong> — bij heldere hemel ziet u de Melkweg, iets
+      wat in grote delen van Nederland en België door lichtvervuiling niet meer lukt. En het gaat
+      voortdurend <strong>op en neer</strong>, wat bij het wandelen aangenaam is en bij het
+      fietsen een keuze over het vervoermiddel afdwingt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat u hier doet</h2>
+    <p>
+      Wandelen rond de maren — de ronde, met een passer getekende kratermeren die deze streek
+      uniek maken. Met de fiets over de oude spoorlijn naar beneden, richting de Moezel. Een dag
+      in Cochem aan de Moezel of in Trier, de oudste stad van Duitsland. En avonden waarop niets
+      gebeurt — voor veel gasten juist de eigenlijke reden om te komen.
+    </p>
+    <p>
+      Uitgebreider staat dit op onze eigen pagina's over
+      <a href="/ausflugsziele-vulkaneifel/">uitstapjes in de Vulkaneifel</a>, over
+      <a href="/wandern-maare-vulkaneifel/">wandelen rond de maren</a> en over de
+      <a href="/maare-mosel-radweg/">Maare-Mosel-Radweg</a> — deze drie pagina's staan voorlopig
+      alleen in het Duits, maar de kaartjes en afstanden zijn ook zonder taalkennis goed te
+      volgen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Praktisch</h2>
+    <p>
+      <strong>Taal.</strong> Aan de receptie wordt Duits gesproken. Schrijf uw aanvraag gerust in
+      het Nederlands of Frans — wij lezen hem, en antwoorden zo goed als wij kunnen; voor een
+      vlotte afhandeling raden we aan de belangrijkste data en wensen ook in het Duits of Engels
+      te noemen. De website zelf is er in het Duits, Engels, Frans en Nederlands.
+    </p>
+    <p>
+      <strong>Betalen.</strong> Er wordt contant, met EC-kaart of met creditcard betaald, ter
+      plaatse bij aankomst of vertrek. Online vooruitbetalen, een aanbetaling of het doorgeven
+      van kaartgegevens via de website zijn niet nodig en gebeuren niet.
+    </p>
+    <p>
+      <strong>Feestdagen.</strong> De Duitse feestdagen zijn niet dezelfde als de Nederlandse en
+      Belgische. Op zon- en feestdagen is in de regio bijna alles gesloten — winkels, veel
+      musea, vaak ook tankstations met een winkel. Plan inkopen dus vooraf in.
+    </p>
+    <p>
+      <strong>Huisdieren.</strong> Honden zijn welkom, tegen een vergoeding van 15 € per dag; we
+      vragen alleen om het hoofdgedeelte van het restaurant vrij te houden.
+    </p>
+    <p>
+      <strong>Wanneer is het huis gesloten?</strong> Dat verschilt per jaar en staat op het
+      moment van schrijven niet vast genoeg om het hier als datum te noemen. Vraag er bij uw
+      aanvraag gewoon naar — dan krijgt u een actueel antwoord in plaats van een verouderde
+      datum op deze pagina.
+    </p>
+  </section>
+
+  <section>
+    <h2>Voor wie dit iets is — en voor wie niet</h2>
+    <p>
+      Wie op zoek is naar rust, wandelen, fietsen over een oude spoorlijn en avonden zonder
+      programma, zit hier goed. Wie een levendige badplaats met uitgaansleven verwacht, zoekt
+      beter verder: het dorp Immerath is klein, en het avondprogramma bestaat uit een goed diner
+      en een stille nacht, niet uit een animatieteam. Voor gezinnen met kinderen werkt vooral de
+      combinatie van korte wandelingen rond het Immerather Maar en een ritje naar het wildpark
+      bij Daun goed — lange etappes door het bos zijn voor kinderen minder geschikt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wanneer komen</h2>
+    <p>
+      Voorjaar en herfst hebben hier de beste verhouding tussen weer en rust. In de zomer is het
+      bij de zwemmeren druk, in het bos niet. De winter is stil en vochtig, en iets voor wie
+      precies dát zoekt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat neem je mee</h2>
+    <p>
+      De Vulkaneifel is een heuvellandschap met een wisselvallig klimaat: neem sowieso een
+      regenjas mee, ook als de weersvoorspelling voor uw reisdatum droog weer belooft. Stevige
+      wandelschoenen zijn voor de meeste routes voldoende; echte bergschoenen zijn nergens
+      nodig. Voor wie wil fietsen: op ons erf staat gratis plek om de fiets neer te zetten, en
+      wandelkaarten van de omgeving liggen bij ons gratis klaar aan de receptie — die hoeft u dus
+      niet zelf mee te brengen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pakketten</h2>
+    <p>
+      Wij hebben geen boekingsstraat, wel een aantal vaste arrangementen met halfpension en
+      ontbijt — onder meer voor wandelaars en fietsers. Een overzicht staat op onze
+      <a href="/pakete/">pakketten-pagina</a> (voorlopig alleen in het Duits; de prijzen en
+      inhoud van elk pakket spreken grotendeels voor zich).
+    </p>
+  </section>
+
+  <section>
+    <h2>Vraag het gewoon</h2>
+    <p>
+      Schrijf ons in het Nederlands, Duits, Engels of Frans wat u van plan bent. Wij antwoorden
+      persoonlijk. <a href="/anfrage/">Vrijblijvend aanvragen</a> of bel
+      <a href="tel:+496573306">+49 6573 306</a>.
+    </p>
+  </section>
+</TextPage>

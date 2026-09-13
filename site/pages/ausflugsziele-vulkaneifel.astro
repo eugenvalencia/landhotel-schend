@@ -1,0 +1,198 @@
+---
+// Neue Dauerseite (13.09.2026, Auftrag Eugen/Tatjana-Entwurf): Ausflugsziele
+// in der Vulkaneifel, sortiert nach Fahrzeit ab dem Haus. Nur Deutsch —
+// EN/FR/NL folgen nach Freigabe der deutschen Fassung.
+// Fahrzeiten: eigene Routenberechnung (OSRM/OpenStreetMap) ab Hauptstraße 9,
+// 54552 Immerath, Stand 13.09.2026 — siehe
+// docs/schend-dauerseiten-entwurf.md, Abschnitt „Was recherchiert wurde".
+import TextPage from "../layouts/TextPage.astro";
+import { ORIGIN } from "../lib/site";
+import { breadcrumbLd, homeCrumb } from "../lib/schema";
+
+const URL = `${ORIGIN}/ausflugsziele-vulkaneifel/`;
+const breadcrumb = breadcrumbLd(ORIGIN, "de", [homeCrumb("de"), { name: "Ausflugsziele in der Vulkaneifel", path: "/ausflugsziele-vulkaneifel" }]);
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${URL}#faq`,
+  url: URL,
+  mainEntity: [
+    { q: "Wie weit ist es von Immerath zu den Dauner Maaren?", a: "Rund 15 Fahrminuten. Die drei Dauner Maare liegen oberhalb von Daun, das von Immerath aus etwa 18 Kilometer entfernt ist." },
+    { q: "Wie lange braucht man von Immerath nach Cochem an der Mosel?", a: "Rund 25 Fahrminuten für die reine Fahrstrecke von etwa 25 Kilometern." },
+    { q: "Ist die Vulkaneifel auch bei Regen ein lohnendes Ziel?", a: "Ja. Museen wie das Vulkanhaus Strohn oder das Maarmuseum Manderscheid, dazu die überdachten Altstadtwege in Trier, tragen auch verregnete Tage." },
+  ].map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+};
+---
+
+<TextPage
+  title="Ausflugsziele Vulkaneifel — Ziele mit Fahrzeit ab Immerath"
+  description="Maare, Museen, Burgen und die Mosel: Ausflugsziele in der Vulkaneifel, sortiert nach Fahrzeit ab Immerath — mit Hinweisen für Regentage und für Tage mit Kindern."
+  canonicalPath="/ausflugsziele-vulkaneifel"
+  localized={false}
+  eyebrow="Die Region"
+  heading="Ausflugsziele in der Vulkaneifel"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+  <section>
+    <p>
+      Die meisten Landschaften in Deutschland sind Millionen Jahre alt und sehen auch so aus:
+      abgeschliffen, ruhig, ohne Kanten. Die Vulkaneifel nicht. Hier ist die Erde geologisch
+      zuletzt aufgebrochen, und was übrig blieb, sind die Maare — kreisrunde Seen in
+      Explosionstrichtern, die bis heute aussehen, als hätte jemand sie mit dem Zirkel gezogen.
+      Wer zum ersten Mal an einem steht, hält meistens kurz an, weil das Bild nicht ganz stimmig
+      wirkt: ein See, der zu rund ist, um natürlich zu sein — und es doch ist.
+    </p>
+    <p>
+      Diese Seite sammelt Ziele rund um Immerath, sortiert danach, wie lange die Fahrt dorthin
+      dauert. Sie richtet sich an Gäste, die vor der Anreise wissen wollen, ob eine Woche hier
+      genug Programm hergibt. Die Antwort vorweg: ja — und die meisten Gäste fahren am Ende
+      weniger, als sie geplant hatten, weil das Laufen schon vor der Haustür anfängt und der
+      Tag damit anders vergeht als gedacht.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ohne Auto: was von Immerath aus geht</h2>
+    <p>
+      Das <strong>Immerather Maar</strong> liegt am Ortsrand und ist vom Haus aus in wenigen
+      Gehminuten erreichbar — ein kleiner, stiller See, deutlich ruhiger als die bekannten
+      Dauner Maare. An vielen Vormittagen im Jahr trifft man dort niemanden. Ein Weg führt am
+      Ufer entlang, ohne dass man dafür ins Auto steigen muss.
+    </p>
+    <p>
+      Ab dem Ort führen außerdem mehrere markierte Wege in die umliegenden Felder und Wälder.
+      Wer mehr Zeit hat, findet ausführliche Vorschläge dazu auf unserer eigenen Seite zum
+      <a href="/wandern-maare-vulkaneifel/">Wandern rund um die Maare</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bis etwa 30 Minuten mit dem Auto</h2>
+    <ul>
+      <li>
+        <strong>Die Dauner Maare</strong> — Gemündener, Weinfelder und Schalkenmehrener Maar
+        liegen dicht beieinander oberhalb von Daun, mit dem Aussichtsturm auf dem Mäuseberg als
+        bekanntestem Punkt der Runde. Fahrzeit ab Immerath: rund 15 Minuten.
+      </li>
+      <li>
+        <strong>Das Pulvermaar</strong> bei Gillenfeld ist das tiefste Maar der Region und im
+        Sommer ein Badesee mit Liegewiese; ein Weg führt am Ufer entlang. Fahrzeit: rund
+        5 Minuten — das nächste Auto-Ziel überhaupt.
+      </li>
+      <li>
+        <strong>Das Vulkanhaus Strohn</strong> zeigt anschaulich, was hier unter dem Boden
+        passiert ist, unter anderem an einer großen Lavabombe vor dem Haus. Klein, aber auch bei
+        schlechtem Wetter ein lohnendes Ziel. Fahrzeit: rund 8 Minuten. Aktuelle Öffnungszeiten
+        stehen auf der eigenen Seite des Hauses — die ändern sich mit der Saison, und ein
+        Blick vorher spart eine unnötige Fahrt.
+      </li>
+      <li>
+        <strong>Manderscheid mit den beiden Burgen</strong> — Oberburg und Niederburg stehen
+        sich über dem Liesertal gegenüber, dazu das Maarmuseum im Ort. Fahrzeit: rund
+        15 Minuten.
+      </li>
+      <li>
+        <strong>Der Wildpark Daun</strong> ist ein Wildgehege, durch das man mit dem eigenen
+        Auto fährt — für Familien mit kleinen Kindern bei unklarem Wetter oft der sicherste
+        Plan. Fahrzeit: rund 21 Minuten.
+      </li>
+      <li>
+        <strong>Der Nürburgring</strong> ist in rund 30 Fahrminuten erreichbar. Auch ohne
+        eigenes Fahrzeug auf der Strecke lohnt sich der Blick von den Tribünen.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Bis etwa eine Stunde</h2>
+    <ul>
+      <li>
+        <strong>Cochem an der Mosel</strong> mit der Reichsburg über dem Fluss ist der
+        klassische Tagesausflug: hinunter ins Moseltal, durch die Altstadt, hinauf zur Burg.
+        Fahrzeit ab Immerath: rund 25 Minuten für die reine Fahrstrecke von etwa
+        25 Kilometern.
+      </li>
+      <li>
+        <strong>Trier</strong> — die älteste Stadt Deutschlands, mit Porta Nigra, Amphitheater
+        und Kaiserthermen. Ein voller Tag, kein halber. Fahrzeit: rund 45 Minuten.
+      </li>
+      <li>
+        <strong>Bernkastel-Kues</strong> an der Mosel, Fachwerk und Weinberge. Fahrzeit: rund
+        35 Minuten.
+      </li>
+      <li>
+        <strong>Die Gerolsteiner Dolomiten</strong> — Kalkfelsen mitten in der Eifel, mit
+        Wanderwegen darüber und einem Aussichtspunkt, der aussieht wie aus einem anderen
+        Gebirge. Fahrzeit: rund 30 Minuten.
+      </li>
+      <li>
+        <strong>Luxemburg-Stadt</strong> liegt mit etwa 100 Kilometern und gut einer Stunde
+        Fahrzeit noch in Tagesreichweite, wenn man früh losfährt.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Wenn es regnet</h2>
+    <p>
+      In der Eifel regnet es — das ist keine Warnung, sondern der Grund, warum die Wiesen so
+      grün sind. Für solche Tage eignen sich das Vulkanhaus Strohn, das Maarmuseum in
+      Manderscheid, die Altstadt von Trier mit ihren überdachten Wegen und das
+      <strong>Schulmuseum in Immerath</strong> direkt im Ort. Und wenn draußen gar nichts geht,
+      ist ein Nachmittag im Haus mit Buch und Kaminzimmer auch kein schlechter Tag.
+    </p>
+  </section>
+
+  <section>
+    <h2>Mit Kindern</h2>
+    <p>
+      Kinder finden Maare schnell langweilig, wenn man ihnen nur erklärt, dass sie rund sind.
+      Was hingegen zuverlässig funktioniert: der Wildpark Daun, weil man Tiere aus dem Auto
+      sieht; das Pulvermaar im Sommer, weil man dort baden darf; die Lavabombe in Strohn, weil
+      sie groß und schwer erklärbar ist; und die Burgen in Manderscheid, weil man auf sie
+      hochklettern kann. Eine dreistündige Wanderung funktioniert mit Kindern selten — zwei
+      Kilometer mit einem klaren Ziel am Ende dagegen fast immer.
+    </p>
+  </section>
+
+  <section>
+    <h2>Eine Woche, ein Vorschlag pro Tag</h2>
+    <p>
+      Montag: ankommen, das Immerather Maar zu Fuß erkunden. Dienstag: die Dauner Maare, große
+      Runde. Mittwoch: Cochem und die Mosel. Donnerstag: eine kurze Runde am Vormittag,
+      nachmittags das Vulkanhaus Strohn. Freitag: Manderscheid mit den Burgen. Samstag: Trier.
+      Sonntag: der Tag, an dem man merkt, dass man nicht alles geschafft hat — und schon
+      überlegt, wann man wiederkommt.
+    </p>
+    <p>
+      Wer die Woche vor allem zum Wandern nutzen will, findet in unserem Angebot
+      „<a href="/pakete/eifler-wandertage/">Genussvolle Eifler Wandertage</a>" einen fertigen
+      Rahmen dafür — mit Halbpension, Frühstück und Proviant für den Wandertag. Alle
+      Übernachtungspakete stehen zusammen auf der <a href="/pakete/">Pakete-Übersicht</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Für wen sich das lohnt — und für wen nicht</h2>
+    <p>
+      Wer einen Standort sucht, von dem aus in 30 Fahrminuten drei völlig verschiedene
+      Landschaften erreichbar sind — Vulkanmaare, Moseltal und Nürburgring —, ist hier richtig.
+      Wer dagegen jeden Tag ein neues Erlebnisbad oder einen Freizeitpark braucht, wird in der
+      Vulkaneifel enttäuscht: Das Angebot hier ist Natur, Geologie und kleine Museen, keine
+      Erlebnisgastronomie im großen Stil. Wir sagen das lieber vorher, als dass jemand mit
+      falschen Erwartungen anreist.
+    </p>
+  </section>
+
+  <section>
+    <h2>Fragen Sie uns</h2>
+    <p>
+      Wir wohnen hier. Wenn Sie uns sagen, was Sie vorhaben und wie das Wetter aussieht, sagen
+      wir Ihnen, was sich lohnt und was Sie sich sparen können. Für Ihren Aufenthalt:
+      <a href="/anfrage/">unverbindlich anfragen</a> oder anrufen unter
+      <a href="tel:+496573306">+49 6573 306</a>.
+    </p>
+  </section>
+</TextPage>

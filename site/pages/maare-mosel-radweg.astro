@@ -1,0 +1,167 @@
+---
+// Neue Dauerseite (13.09.2026). Nur Deutsch — EN/FR/NL folgen nach Freigabe.
+// Länge/Route: geopark-vulkaneifel.de + gesundland-vulkaneifel.de (Stand
+// 13.09.2026); Stationen: de.wikipedia.org/wiki/Maare-Mosel-Radweg; RadBus:
+// radbusse.de. Details siehe docs/schend-dauerseiten-entwurf.md.
+import TextPage from "../layouts/TextPage.astro";
+import { ORIGIN } from "../lib/site";
+import { breadcrumbLd, homeCrumb } from "../lib/schema";
+
+const URL = `${ORIGIN}/maare-mosel-radweg/`;
+const breadcrumb = breadcrumbLd(ORIGIN, "de", [homeCrumb("de"), { name: "Der Maare-Mosel-Radweg", path: "/maare-mosel-radweg" }]);
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${URL}#faq`,
+  url: URL,
+  mainEntity: [
+    { q: "Wie lang ist der Maare-Mosel-Radweg?", a: "58,5 Kilometer, von Daun bis Bernkastel-Kues (Quelle: Geopark und GesundLand Vulkaneifel)." },
+    { q: "Wo beginnt der Maare-Mosel-Radweg?", a: "Am Bahnhof in Daun — nicht in Immerath. Von Immerath aus sind es rund 18 Kilometer beziehungsweise 15 Fahrminuten bis zum Startpunkt." },
+    { q: "Kann man mit dem Fahrrad zurück nach Daun kommen?", a: "Ja, mit dem RadBus Maare-Mosel-Express (Linie 555), der zwischen Daun, Wittlich und Bernkastel-Kues verkehrt und Fahrräder mitnimmt." },
+  ].map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+};
+---
+
+<TextPage
+  title="Maare-Mosel-Radweg — Verlauf, Etappen und Einkehr in der Eifel"
+  description="Der Maare-Mosel-Radweg führt von Daun hinunter an die Mosel — über eine alte Bahntrasse, durch Tunnel und über Viadukte. Verlauf, Etappen, Anreise und eine ruhige Unterkunft in der Vulkaneifel."
+  canonicalPath="/maare-mosel-radweg"
+  localized={false}
+  eyebrow="Radfahren"
+  heading="Der Maare-Mosel-Radweg"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+  <section>
+    <h2>Ein Radweg, der einmal eine Bahnstrecke war</h2>
+    <p>
+      Der Maare-Mosel-Radweg folgt über weite Strecken der Trasse einer stillgelegten
+      Eisenbahnlinie. Das hat eine Folge, die man beim Fahren sofort spürt: Eisenbahnen
+      vertragen keine steilen Rampen. Wo eine Straße in der Eifel hoch und wieder hinunter
+      geht, hält die alte Trasse die Höhe — durch einen Tunnel hindurch oder über ein Viadukt
+      hinweg. Deshalb ist dieser Weg auch für Leute machbar, die sich eine Mittelgebirgstour
+      sonst nicht zutrauen würden.
+    </p>
+    <p>
+      Der Weg ist <strong>58,5 Kilometer</strong> lang und führt von Daun bis Bernkastel-Kues
+      (Quelle: Geopark Vulkaneifel und GesundLand Vulkaneifel, Stand 13.09.2026). Unterwegs
+      liegen mehrere Tunnel — darunter der rund 560 Meter lange, beleuchtete
+      „Großes Schlitzohr", benannt nach einer Fledermausart, die sich darin angesiedelt hat —
+      sowie einzelne Viadukte, etwa in Daun und bei Pleiner. Zu saisonalen Sperrungen der
+      Tunnel liegt uns nichts vor; nach allem, was wir finden konnten, sind sie ganzjährig
+      beleuchtet und begehbar.
+    </p>
+  </section>
+
+  <section>
+    <h2>Verlauf</h2>
+    <p>
+      Der Weg beginnt am <strong>Bahnhof in Daun</strong> und führt über Mehren, Schalkenmehren
+      und Gillenfeld, weiter über Wittlich bis an die Mosel nach Bernkastel-Kues (Quelle:
+      Wikipedia-Artikel zum Maare-Mosel-Radweg, mit den amtlichen Stationsnamen der ehemaligen
+      Bahnstrecke). Die Richtung ist für die meisten klar: von der Eifel abwärts an den Fluss.
+      Umgekehrt geht es auch, ist aber die deutlich sportlichere Variante.
+    </p>
+    <p>
+      Wichtig, weil es oft falsch verstanden wird: <strong>Der Radweg beginnt in Daun, nicht in
+      Immerath.</strong> Wer bei uns wohnt, fährt die Strecke bis zum Einstieg zunächst mit dem
+      Auto oder auf Nebenwegen mit dem Rad. Die Entfernung von Immerath zum Startpunkt in Daun
+      beträgt rund 18 Kilometer beziehungsweise etwa 15 Fahrminuten (eigene
+      Routenberechnung ab Hauptstraße 9, Stand 13.09.2026).
+    </p>
+  </section>
+
+  <section>
+    <h2>Etappen</h2>
+    <p>
+      Viele fahren die Strecke an einem Tag ab und lassen sich zurückbringen — sportlich, aber
+      kein Kunststück, weil es überwiegend abwärts geht. Wer aufteilen möchte, bietet sich
+      <strong>Wittlich</strong> als Zwischenstation an: Der Ort liegt etwa auf zwei Dritteln der
+      Strecke, hat einen eigenen Bahnhof und ausreichend Übernachtungsmöglichkeiten für alle,
+      die den Rest am folgenden Tag fahren wollen. Eine feste Kilometeraufteilung für einzelne
+      Tagesetappen können wir hier nicht seriös nennen, ohne sie erfunden zu haben — wer genauer
+      planen möchte, findet Etappenvorschläge auf den offiziellen Seiten des Geoparks und von
+      GesundLand Vulkaneifel.
+    </p>
+  </section>
+
+  <section>
+    <h2>Zurückkommen: mit dem RadBus</h2>
+    <p>
+      Die klassische Frage lautet: Wie komme ich zurück nach Daun? Eine Antwort ist der
+      <strong>RadBus Maare-Mosel-Express (Linie 555)</strong>, der zwischen Daun, Wittlich und
+      Bernkastel-Kues verkehrt — nach den Angaben des Betreiberportals radbusse.de im
+      Zwei-Stunden-Takt zwischen 8 und 18 Uhr, mit Platz für 17 Fahrräder, E-Bikes
+      eingeschlossen (Stand 13.09.2026). Aktuelle Fahrpläne, Preise für die Fahrradmitnahme und
+      eine mögliche Reservierung finden Sie direkt bei radbusse.de — diese Angaben ändern sich
+      erfahrungsgemäß von Saison zu Saison, deshalb nennen wir hier bewusst keine feste Zahl.
+    </p>
+  </section>
+
+  <section>
+    <h2>Für wen sich das lohnt — und für wen nicht</h2>
+    <p>
+      Weil die Strecke einer alten Bahntrasse folgt, steigt sie kaum an — das macht sie zu einer
+      der wenigen Radtouren in einem Mittelgebirge, die auch für ungeübte Fahrer, Familien mit
+      Kindern und Gäste mit einfachen Rädern ohne Motor gut machbar sind. Wer stattdessen
+      sportliche Anstiege und technisch anspruchsvolle Trails sucht, ist hier fehl am Platz —
+      dafür bietet die übrige Vulkaneifel mit ihren Hügeln und Feldwegen genug andere Strecken.
+      Wer die Tunnel meiden möchte, etwa aus Platzangst, sollte das vorher bedenken: Auf der
+      Trasse führt kein durchgehender Weg außen herum.
+    </p>
+    <p>
+      Was Sie mitnehmen sollten: eine Jacke für die kühlen Minuten in den Tunneln, auch an
+      warmen Tagen; Licht am Rad, selbst wenn Sie nur tagsüber fahren, weil es in den längeren
+      Tunneln spürbar dunkler ist als draußen; und, wenn Sie die Rückfahrt mit dem RadBus planen,
+      Kleingeld oder eine geladene Karte für die Fahrradmitnahme. Wer die Strecke als Rundtour
+      angehen will, statt sich zurückfahren zu lassen, sollte einplanen, dass die Rückfahrt
+      bergauf über die Trasse selbst deutlich mehr Kraft kostet als die Hinfahrt talwärts.
+    </p>
+  </section>
+
+  <section>
+    <h2>Mit dem E-Bike</h2>
+    <p>
+      Die Strecke ist auch ohne Motor gut fahrbar, weil sie kaum steigt. Mit E-Bike wird die
+      Rückfahrt bergauf zur echten Option, statt zur Ausnahme. Ob und wo Sie Ihr E-Bike bei uns
+      laden können, klären wir am einfachsten direkt bei Ihrer Anfrage — je nach Zimmer und
+      Ankunftszeit sagen wir Ihnen dann verbindlich, was möglich ist.
+    </p>
+  </section>
+
+  <section>
+    <h2>Unterwegs einkehren</h2>
+    <p>
+      Die Strecke führt durch mehrere Orte mit Bahnhofscharakter — ehemalige Haltepunkte, an
+      denen heute Cafés, Bäckereien oder kleine Gasthöfe liegen. Eine feste Liste mit
+      Öffnungszeiten wollen wir hier nicht führen, weil solche Angaben schnell veralten und
+      gerade an einem Wochentag im Nebensaison-Monat nicht mehr stimmen. Wer sicher unterwegs
+      versorgt sein möchte, nimmt am besten trotzdem etwas zu essen und zu trinken mit — die
+      Streckenabschnitte zwischen den größeren Orten sind teils mehrere Kilometer lang, ohne
+      dass unterwegs eine Einkehrmöglichkeit sicher offen ist.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wo Sie schlafen</h2>
+    <p>
+      Das Landhaus Schend liegt in Immerath, zwischen dem Radweg und den Maaren. Wer eine ruhige
+      Basis sucht, statt jeden Abend das Quartier zu wechseln, fährt die Tagesabschnitte von
+      hier aus an und kommt abends zurück. Es gibt ein Frühstücksbuffet, ein Abendessen aus der
+      Eifeler Landküche und einen Hof zum Abstellen der Räder.
+    </p>
+    <p>
+      Genau für diese Kombination gibt es unser Angebot
+      „<a href="/pakete/rad-erlebnisse/">Eifler Rad-Erlebnisse</a>" — drei Nächte mit
+      Halbpension, Frühstück und Proviant für den Radlertag, dazu bei Bedarf eine Rücken- oder
+      Fußmassage. Alle Übernachtungspakete stehen zusammen auf der
+      <a href="/pakete/">Pakete-Übersicht</a>.
+    </p>
+    <p>
+      Schreiben Sie uns, was Sie vorhaben — wir sagen Ihnen ehrlich, ob das von hier aus gut
+      geht. <a href="/anfrage/">Unverbindlich anfragen</a> oder
+      <a href="tel:+496573306">+49 6573 306</a>.
+    </p>
+  </section>
+</TextPage>

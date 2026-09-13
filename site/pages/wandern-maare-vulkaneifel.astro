@@ -1,0 +1,184 @@
+---
+// Neue Dauerseite (13.09.2026). Nur Deutsch — EN/FR/NL folgen nach Freigabe.
+// Maare-Pfad: eifelsteig.de (offizieller Betreiber), Stand 13.09.2026.
+// Gehzeit Immerather Maar: eigene Routenberechnung. Details siehe
+// docs/schend-dauerseiten-entwurf.md.
+import TextPage from "../layouts/TextPage.astro";
+import { ORIGIN } from "../lib/site";
+import { breadcrumbLd, homeCrumb } from "../lib/schema";
+
+const URL = `${ORIGIN}/wandern-maare-vulkaneifel/`;
+const breadcrumb = breadcrumbLd(ORIGIN, "de", [homeCrumb("de"), { name: "Wandern rund um die Maare", path: "/wandern-maare-vulkaneifel" }]);
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${URL}#faq`,
+  url: URL,
+  mainEntity: [
+    { q: "Wie heißt der Weitwanderweg, der die Maare verbindet?", a: "Maare-Pfad — mit e in der Mitte, so führt ihn der Eifelsteig als Betreiber. Er ist rund 34,7 Kilometer lang und in zwei Etappen aufgeteilt." },
+    { q: "Führt der Maare-Pfad am Immerather Maar vorbei?", a: "Ja, nach der offiziellen Streckenbeschreibung des Eifelsteigs liegt das Immerather Maar auf der Route zwischen Gillenfeld und Strotzbüsch." },
+    { q: "Ist die Runde am Immerather Maar auch für kurze Spaziergänge geeignet?", a: "Ja — sie ist die kürzeste Runde direkt ab dem Haus und braucht keine Anfahrt." },
+  ].map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+};
+---
+
+<TextPage
+  title="Wandern in der Vulkaneifel — Touren rund um die Maare"
+  description="Wanderungen rund um die Maare der Vulkaneifel: die kurze Runde ab Immerath, der Maare-Pfad, Touren mit Kindern und mit Hund — mit belegten Angaben statt geschätzter Zahlen."
+  canonicalPath="/wandern-maare-vulkaneifel"
+  localized={false}
+  eyebrow="Wandern"
+  heading="Wandern rund um die Maare"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+  <section>
+    <h2>Ein Maar ist kein Kratersee im üblichen Sinn</h2>
+    <p>
+      Ein Vulkan, wie man ihn sich vorstellt, baut einen Berg auf. Ein Maar tut das Gegenteil:
+      Aufsteigendes Magma trifft auf Grundwasser, das Wasser verdampft schlagartig, und die
+      Explosion sprengt einen Trichter in den Boden. Was bleibt, ist ein Loch, das sich mit
+      Wasser füllt, und ein flacher Wall aus dem ausgeworfenen Material ringsherum. Deshalb
+      sehen Maare aus wie mit dem Zirkel gezogen, und deshalb liegen sie meist tiefer als die
+      Landschaft um sie herum, statt höher zu ragen wie ein Krater.
+    </p>
+    <p>
+      Wer hier wandert, läuft über ein Feld solcher Trichter. Manche sind noch Seen, viele sind
+      längst zu Mooren und Wiesen geworden — man erkennt sie an der auffälligen Rundung im
+      Gelände, auch wenn kein Wasser mehr darin steht.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die kurze Runde: das Immerather Maar</h2>
+    <p>
+      Das nächste Maar liegt am Ortsrand von Immerath, in Sichtweite des Hauses — rund 1,4
+      Kilometer beziehungsweise etwa 6 Gehminuten vom Haus entfernt (eigene Routenberechnung,
+      Stand 13.09.2026). Ein Weg führt am Wasser entlang. Zu genauer Rundweglänge und
+      Wegbeschaffenheit (befestigt oder nicht, geeignet für Kinderwagen oder nicht) liegt uns
+      keine amtliche Angabe vor, die wir mit Sicherheit belegen könnten — fragen Sie bei
+      Ankunft an der Rezeption, dort bekommen Sie eine ehrliche, tagesaktuelle Einschätzung je
+      nach Witterung.
+    </p>
+    <p>
+      Diese Runde ist die, die wir Gästen am häufigsten empfehlen, die spät angekommen sind und
+      vor dem Abendessen noch einmal hinaus wollen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die große Runde: die Dauner Maare</h2>
+    <p>
+      Oberhalb von Daun liegen drei Maare nah beieinander: Gemündener, Weinfelder und
+      Schalkenmehrener Maar. Ein Rundweg verbindet alle drei, mit dem Aussichtsturm auf dem
+      Mäuseberg als bekanntestem Punkt — von dort oben sieht man die Trichter im Zusammenhang,
+      und erst dann versteht man wirklich, was hier passiert ist. Die Fahrzeit ab Immerath zum
+      Startpunkt beträgt rund 15 Minuten.
+    </p>
+    <p>
+      Es ist eine Tagestour, kein Nachmittagsspaziergang — die verlässlichen Angaben dazu
+      schwanken je nach gewählter Variante zwischen den offiziellen Wanderportalen so stark,
+      dass wir hier bewusst keine einzelne Kilometerzahl nennen. Nehmen Sie in jedem Fall etwas
+      zu trinken mit; unterwegs gibt es nicht durchgehend Gelegenheit einzukehren.
+    </p>
+  </section>
+
+  <section>
+    <h2>Der Maare-Pfad</h2>
+    <p>
+      Der <strong>Maare-Pfad</strong> — so die Schreibweise des Eifelsteigs als offiziellem
+      Betreiber, mit e in der Mitte — ist der Weitwanderweg, der mehrere Maare der Region
+      verbindet. Er ist <strong>rund 34,7 Kilometer</strong> lang und in zwei Etappen aufgeteilt:
+      Schalkenmehren bis Gillenfeld (15,1 Kilometer) und Gillenfeld bis Strotzbüsch
+      (15,9 Kilometer). Nach der Streckenbeschreibung des Eifelsteigs führt er zwischen
+      Gillenfeld und Strotzbüsch auch am <strong>Immerather Maar</strong> vorbei (Quelle:
+      eifelsteig.de, Stand 13.09.2026) — das heißt: Wer hier wohnt, kann ein Stück dieser
+      Etappe laufen, ohne vorher irgendwohin zu fahren.
+    </p>
+    <p>
+      Beide Etappen sind mit 5,5 beziehungsweise 7 Stunden als Tagestouren ausgelegt, keine
+      Halbtagesspaziergänge. Wer weniger Zeit hat, geht ab dem Immerather Maar ein Stück auf dem
+      markierten Weg in Richtung Pulvermaar und wieder zurück — so bekommt man einen Eindruck
+      vom Pfad, ohne eine ganze Etappe einplanen zu müssen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Mit Kindern</h2>
+    <p>
+      Kinder wandern gern, solange ein Ziel in Sicht ist. Was hier gut funktioniert: eine Runde
+      um ein Maar, weil das Wasser die ganze Zeit da ist und sich ständig verändert; ein
+      Aussichtsturm, weil man hochdarf; ein Picknickplatz, weil es dort etwas gibt. Was schlecht
+      funktioniert: vier Stunden durch den Wald mit der Aussicht erst ganz am Ende. Die Runde am
+      Immerather Maar ist die Strecke, die wir Familien mit kleinen Kindern zuerst nennen, weil
+      sie kurz ist und direkt am Haus beginnt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Mit Hund</h2>
+    <p>
+      Hunde sind bei uns im Haus willkommen — gegen eine Gebühr von 15 € pro Tag; nur den
+      Hauptbereich des Restaurants bitten wir auszunehmen.
+    </p>
+    <p>
+      Für unterwegs gilt: Die Dauner Maare liegen in einem ausgewiesenen Naturschutzgebiet
+      (Quelle: Rechtsverordnung über das Naturschutzgebiet „Dauner Maare", Landkreis Daun,
+      naturschutz.rlp.de). In deutschen Naturschutzgebieten gehört ein Hund grundsätzlich an die
+      Leine, unabhängig davon, ob ein Schild extra darauf hinweist — das ist nicht nur eine
+      Formalie, sondern schützt Brut- und Weidetiere. Wo Vieh steht, gilt dasselbe ohnehin ohne
+      Diskussion.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die Jahreszeiten</h2>
+    <p>
+      Im <strong>Frühjahr</strong> ist das Gras kurz und die Sicht weit; man sieht die Form der
+      Trichter am besten, bevor das Laub kommt — in dieser Zeit fällt in Immerath außerdem die
+      Ginsterblüte, das „Eifelgold", ins Auge, dazu passt unser Angebot
+      „<a href="/pakete/eifelgold-weissdornhecken/">Eifelgold und Weißdornhecken</a>". Im
+      <strong>Sommer</strong> ist es an den Maaren mit Badebetrieb voll, an den anderen nicht.
+      Der <strong>Herbst</strong> ist die Zeit, in der die meisten Gäste wiederkommen —
+      Buchenwald, Nebel über dem Wasser am Morgen, und nachmittags eine Klarheit, die es sonst
+      nicht gibt; dazu passt unser herbstliches Angebot
+      „<a href="/pakete/bunt-sind-schon-die-waelder/">Bunt sind schon die Wälder</a>". Im
+      <strong>Winter</strong> sind die Wege ruhig und oft matschig; feste Schuhe sind dann keine
+      Empfehlung, sondern Voraussetzung.
+    </p>
+  </section>
+
+  <section>
+    <h2>Für wen sich das lohnt — und für wen nicht</h2>
+    <p>
+      Wer flache, breit ausgebaute Rundwege ohne Höhenmeter sucht, findet die auch hier — vor
+      allem direkt am Immerather Maar. Wer dagegen eine anspruchsvolle Gebirgstour mit
+      Kletterpassagen erwartet, ist in der Vulkaneifel falsch: Die Höhenunterschiede sind
+      moderat, die Wege überwiegend gut ausgeschildert, die Herausforderung liegt eher in der
+      Länge einzelner Etappen als in der Steilheit. Genau das macht die Region auch für
+      Familien und für Gäste geeignet, die nicht regelmäßig wandern, aber trotzdem mehr wollen
+      als einen kurzen Spaziergang.
+    </p>
+  </section>
+
+  <section>
+    <h2>Karten und Ausrüstung</h2>
+    <p>
+      Wanderkarten für die Umgebung liegen bei uns aus und kosten nichts. Wir sagen Ihnen auch,
+      welche Runde nach Regen noch Freude macht und welche besser trocken bleibt. Feste Schuhe
+      reichen für fast alles hier; Bergausrüstung braucht niemand.
+    </p>
+    <p>
+      Wer eine ganze Woche vor allem zum Wandern nutzen möchte, findet in unserem Angebot
+      „<a href="/pakete/eifler-wandertage/">Genussvolle Eifler Wandertage</a>" einen fertigen
+      Rahmen — mit Halbpension, Frühstück und Proviant für den Wandertag. Alle Pakete stehen
+      zusammen auf der <a href="/pakete/">Pakete-Übersicht</a>.
+    </p>
+    <p>
+      Nach dem Wandertag gibt es bei uns Abendessen aus der Eifeler Landküche.
+      <a href="/anfrage/">Unverbindlich anfragen</a> oder
+      <a href="tel:+496573306">+49 6573 306</a>.
+    </p>
+  </section>
+</TextPage>

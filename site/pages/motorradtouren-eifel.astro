@@ -1,0 +1,181 @@
+---
+// Neue Dauerseite (13.09.2026). Nur Deutsch — EN/FR/NL folgen nach Freigabe.
+// Streckenlängen der vier Rundtouren: eigene Routenberechnung (OSRM) ab
+// Hauptstraße 9, Immerath, reine Fahrstrecke ohne Umwege, Stand 13.09.2026 —
+// siehe docs/schend-dauerseiten-entwurf.md.
+import TextPage from "../layouts/TextPage.astro";
+import { ORIGIN } from "../lib/site";
+import { breadcrumbLd, homeCrumb } from "../lib/schema";
+
+const URL = `${ORIGIN}/motorradtouren-eifel/`;
+const breadcrumb = breadcrumbLd(ORIGIN, "de", [homeCrumb("de"), { name: "Motorradtouren in der Eifel", path: "/motorradtouren-eifel" }]);
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${URL}#faq`,
+  url: URL,
+  mainEntity: [
+    { q: "Gibt es Motorrad-Stellplätze am Landhaus Schend?", a: "Ja, kostenlose Stellplätze im Hof. Eine abschließbare Garage gibt es nicht." },
+    { q: "Wie weit ist es vom Landhaus Schend zum Nürburgring?", a: "Rund 30 Fahrminuten." },
+    { q: "Gibt es ein Motorrad-Pauschalangebot?", a: "Kein eigenes Motorrad-Paket, aber das flexible Angebot »Zimmer ohne Paket« mit freier Zeitraumwahl passt gut zu Fahrern, die sich nicht auf feste Tage festlegen wollen." },
+  ].map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+};
+---
+
+<TextPage
+  title="Motorradtouren in der Eifel — Strecken ab der Vulkaneifel"
+  description="Kurvige Strecken durch die Vulkaneifel, an die Mosel und rund um den Nürburgring — mit einer ruhigen Unterkunft mit Stellplätzen im Hof als Ausgangspunkt."
+  canonicalPath="/motorradtouren-eifel"
+  localized={false}
+  eyebrow="Motorrad"
+  heading="Motorradtouren in der Eifel"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+  <section>
+    <h2>Warum hier gefahren wird</h2>
+    <p>
+      Die Eifel ist kein Ziel, sondern eine Strecke. Wer hierherkommt, kommt wegen der
+      Straßen: wenig Verkehr, lange Kurvenfolgen, Kuppen, aus denen sich das Tal öffnet, und
+      selten der gerade Abschnitt, auf dem man einschläft. Dazu ein Straßennetz, das man in vier
+      Tagen nicht ausgefahren hat — und mit dem Nürburgring, den Mosel-Serpentinen und der
+      Hocheifel drei völlig unterschiedliche Landschaften in Tagesreichweite.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ein ruhiger Ausgangspunkt</h2>
+    <p>
+      Das Landhaus Schend liegt in Immerath, mitten in diesem Straßennetz. Wir haben
+      <strong>kostenlose Stellplätze für Motorräder im Hof</strong>. Eine abschließbare Garage
+      haben wir nicht — das sagen wir lieber vorher, als dass es bei der Ankunft Enttäuschung
+      gibt.
+    </p>
+    <p>
+      Das Haus ist ein Hotel mit Restaurant, kein Motorradtreff. Das heißt: Sie können hier
+      morgens losfahren und abends in Ruhe essen — aber die abendliche Runde auf dem Hof mit
+      laufenden Motoren passt nicht zu einem Haus, in dem auch Gäste schlafen, die wegen der
+      Stille gekommen sind. Die meisten Fahrer wissen das selbst; wir schreiben es trotzdem hin,
+      damit beide Seiten wissen, woran sie sind. Zu Wasserschlauch, Kettenpflege oder dem
+      Trocknen nasser Kleidung sagen wir Ihnen am ehrlichsten direkt bei der Anfrage zu, was am
+      Haus tatsächlich möglich ist — pauschal zusagen wollen wir hier nichts, was wir nicht
+      halten können.
+    </p>
+  </section>
+
+  <section>
+    <h2>Vier Tagestouren ab Immerath</h2>
+    <p>
+      Die folgenden vier Runden sind als reine Fahrstrecke berechnet (Start und Ziel Immerath,
+      kürzeste Straßenverbindung, ohne touristische Umwege) — wer die Kurven wirklich auskostet,
+      braucht spürbar länger als die reine Fahrzeit unten. Wer eine Strecke selbst gefahren ist
+      und uns eine bessere Variante nennen kann, darf uns das gern bei der Anfrage mitteilen —
+      wir ergänzen die Seite dann gern.
+    </p>
+    <ul>
+      <li>
+        <strong>Die Maar-Runde</strong> — über Gillenfeld und Daun nach Manderscheid und
+        zurück. Rund 55 Kilometer, reine Fahrzeit etwa 55 Minuten. Die kurze Tour für den
+        Anreisetag oder für den Nachmittag nach einem verregneten Vormittag.
+      </li>
+      <li>
+        <strong>Hinunter an die Mosel</strong> — über Wittlich nach Bernkastel-Kues und zurück.
+        Rund 75 Kilometer, reine Fahrzeit etwa 80 Minuten. Enge Serpentinen an den Hängen; im
+        Sommer am Fluss mehr Verkehr, oben kaum.
+      </li>
+      <li>
+        <strong>Richtung Nürburgring und Hohe Acht</strong> — nordwärts durch die Hocheifel,
+        über die Hohe Acht, den mit 746 Metern höchsten Punkt der Eifel, und zurück. Rund
+        95 Kilometer, reine Fahrzeit etwa 2 Stunden.
+      </li>
+      <li>
+        <strong>Richtung Gerolstein und Kyllburg</strong> — westwärts zu den Gerolsteiner
+        Dolomiten und weiter nach Kyllburg, auf dem Rückweg über kleinere Straßen. Rund
+        125 Kilometer, reine Fahrzeit etwa 1 Stunde 45 Minuten.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Nürburgring</h2>
+    <p>
+      Der Nürburgring ist in rund 30 Fahrminuten erreichbar. Ob Touristenfahrten stattfinden und
+      was sie kosten, wechselt von Tag zu Tag — das steht auf der Seite des Rings selbst, und
+      wir verweisen bewusst dorthin, statt hier eine Zahl hinzuschreiben, die nächste Woche
+      nicht mehr stimmt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was hier gilt</h2>
+    <p><strong>Wild.</strong> In der Dämmerung stehen Rehe auf der Straße, besonders an
+      Waldrändern, und zwar zuverlässig. Wer zwischen Sonnenuntergang und Dunkelheit unterwegs
+      ist, fährt hier langsamer, als die Strecke hergeben würde.</p>
+    <p><strong>Nässe.</strong> Nach Regen bleibt es unter den Bäumen lange feucht, und in der
+      Vulkaneifel liegt oft Laub oder Erde von Feldwegen auf der Fahrbahn.</p>
+    <p><strong>Lärm.</strong> In einzelnen Eifelorten gibt es Beschwerden über Motorradlärm, und
+      an manchen Strecken hat das zu Beschränkungen geführt. Ob das aktuell gerade in unserer
+      unmittelbaren Umgebung der Fall ist, können wir hier nicht verlässlich für jede Saison neu
+      pflegen — achten Sie deshalb unterwegs auf die Beschilderung, sie gilt in jedem Fall vor
+      jeder Angabe auf dieser Seite.</p>
+  </section>
+
+  <section>
+    <h2>Für wen sich das lohnt — und für wen nicht</h2>
+    <p>
+      Wer enge Kurvenfolgen, wenig Verkehr und Straßen ohne Tempolimit-Dschungel sucht, findet
+      das hier zuverlässig. Wer dagegen Autobahn-Anschluss direkt vor der Tür oder eine Szene
+      mit Bikertreffen und Livemusik erwartet, ist bei uns falsch — das Haus ist ein
+      Familienbetrieb mit Restaurant, kein Eventort. Auch technisch anspruchsvolle
+      Passstraßen mit großen Höhenunterschieden, wie sie die Alpen bieten, gibt es in der Eifel
+      nicht; die Herausforderung liegt hier in der Kurvendichte, nicht im Gefälle.
+    </p>
+    <p>
+      Zur Ausrüstung: Regenkleidung gehört auch bei gutem Wetterbericht ins Gepäck, weil sich
+      das Wetter in Mittelgebirgen schnell ändert. Für die Abendtemperaturen — auch im Sommer
+      oft merklich kühler als am Tag — lohnt sich eine zusätzliche Schicht unter der
+      Kombi. Wer in Gruppen unterwegs ist, sollte bei der Anfrage die Gruppengröße nennen, damit
+      wir genügend Stellplätze im Hof einplanen können.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die beste Zeit</h2>
+    <p>
+      Wie im übrigen Mittelgebirge ist die Fahrsaison hier grob von April bis Oktober am
+      verlässlichsten trocken und warm genug; die genauen Erfahrungswerte unserer eigenen Gäste
+      haben wir bisher nicht systematisch ausgewertet, deshalb bleibt es an dieser Stelle bei
+      dieser allgemeinen Einordnung statt einer erfundenen Monatsangabe.
+    </p>
+  </section>
+
+  <section>
+    <h2>Anreise und erster Tag</h2>
+    <p>
+      Wer von weiter weg anreist, sollte den ersten Tag nicht zu voll planen: Die letzten
+      Kilometer nach Immerath führen über schmale Landstraßen, die nach einer langen
+      Autobahnetappe eine andere Aufmerksamkeit verlangen als die Anfahrt selbst. Viele Gäste
+      nutzen den Ankunftstag für die kurze Maar-Runde, statt gleich am ersten Nachmittag die
+      weiteste Tour zu fahren — so bleibt Zeit, sich an die engeren Kurvenradien und die
+      wechselnde Fahrbahnbreite zu gewöhnen, bevor es auf die anspruchsvolleren Strecken
+      Richtung Nürburgring oder Gerolstein geht.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ankommen, essen, schlafen</h2>
+    <p>
+      Nach dem Fahrtag gibt es bei uns Abendessen aus der Eifeler Landküche und ein Zimmer, in
+      dem es still ist. Ein eigenes Motorrad-Pauschalangebot haben wir nicht — wer sich nicht
+      auf feste Tage festlegen will, ist mit unserem Angebot
+      „<a href="/pakete/zimmer-ohne-paket/">Zimmer ohne Paket</a>" gut bedient: freie
+      Zeitraumwahl, großes Frühstücksbuffet inklusive, Halbpension auf Wunsch. Alle Angebote
+      stehen zusammen auf der <a href="/pakete/">Pakete-Übersicht</a>.
+    </p>
+    <p>
+      <a href="/anfrage/">Unverbindlich anfragen</a> oder
+      <a href="tel:+496573306">+49 6573 306</a>.
+    </p>
+  </section>
+</TextPage>

@@ -89,6 +89,13 @@ const QUELLE = [
   [/\/faq\/?$/, ["site/i18n/content/faq.ts", "site/components/pages/FaqPage.astro"]],
   [/\/bildnachweis\/?$/, ["site/components/pages/BildnachweisPage.astro"]],
   [/\/barrierefreiheit\/?$/, ["site/i18n/content/legal"]],
+  // Fünf neue Dauerseiten (13.09.2026, Ausflüge/Radweg/Wandern/Motorrad/NL) —
+  // je eine eigene Datei ohne separates Content-Modul.
+  [/\/ausflugsziele-vulkaneifel\/?$/, ["site/pages/ausflugsziele-vulkaneifel.astro"]],
+  [/\/maare-mosel-radweg\/?$/, ["site/pages/maare-mosel-radweg.astro"]],
+  [/\/wandern-maare-vulkaneifel\/?$/, ["site/pages/wandern-maare-vulkaneifel.astro"]],
+  [/\/motorradtouren-eifel\/?$/, ["site/pages/motorradtouren-eifel.astro"]],
+  [/\/nl\/vakantie-vulkaaneifel\/?$/, ["site/pages/nl/vakantie-vulkaaneifel.astro"]],
 ];
 
 /** Neuestes Datum aller Quellen einer Seite — die Seite ist so aktuell wie ihr jüngster Teil. */
