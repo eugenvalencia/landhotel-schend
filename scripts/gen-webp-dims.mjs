@@ -82,6 +82,7 @@ const RESPONSIVE_SRCS = [
   "/region/radweg-maare-mosel.jpg",
   "/region/wandern-weinfelder-maar.jpg",
   "/region/burg-manderscheid.jpg",
+  "/region/motorradtouren-kelberg.jpg",
 ];
 // Breitenleiter. ⚠ Die Lücke 640 → 1024 war bis 21.08.2026 der teuerste Posten
 // unter „Bildübermittlung verbessern": ein Telefon mit 412 CSS-px und Pixeldichte
