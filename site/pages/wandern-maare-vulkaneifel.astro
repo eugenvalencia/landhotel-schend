@@ -29,6 +29,9 @@ const faqSchema = {
   localized={false}
   eyebrow="Wandern"
   heading="Wandern rund um die Maare"
+  heroImg="/region/wandern-weinfelder-maar.jpg"
+  heroAlt="Das Weinfelder Maar vom Uferweg aus, davor eine blühende Wiese mit einzelnen Bäumen"
+  heroCredit={{ autor: "1971markus", lizenz: "CC BY-SA 4.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/4.0", quelle: "https://commons.wikimedia.org/wiki/File:Geopark_Vulkaneifel_Weinfelder_Maar_1.jpg" }}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
@@ -179,6 +182,12 @@ const faqSchema = {
       Nach dem Wandertag gibt es bei uns Abendessen aus der Eifeler Landküche.
       <a href="/anfrage/">Unverbindlich anfragen</a> oder
       <a href="tel:+496573306">+49 6573 306</a>.
+    </p>
+  </section>
+  <section>
+    <p>
+      Was die Gegend außerhalb der Wanderwege hergibt — Maare, Museen, Burgen und die Mosel —
+      steht auf unserer Seite zur <a href="/urlaubsregion/">Urlaubsregion Vulkaneifel</a>.
     </p>
   </section>
 </TextPage>

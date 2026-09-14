@@ -47,6 +47,54 @@ const faqSchema = {
   })),
 };
 
+// ── Ausflüge & Touren: die eigenen Dauerseiten anbinden ────────────────────
+// ⚠ Gemessen am 14.09.2026: Die fünf Dauerseiten waren live und vollständig,
+// standen aber NUR im Fußbereich. Google fand sie, ein Gast praktisch nicht —
+// Eugen selbst fand sie nicht. Verlinkt ist nicht angebunden. Sie hängen jetzt
+// hier, unter dem Punkt „Urlaubsregion" der Hauptnavigation.
+// Nur DE und NL: die Seiten gibt es nicht auf Englisch oder Französisch, ein
+// Verweis von dort liefe über das Locale-Präfix ins Leere.
+interface Tour { href: string; img: string; alt: string; title: string; text: string }
+const TOUREN: Partial<Record<Locale, { h2: string; intro: string; items: Tour[] }>> = {
+  de: {
+    h2: "Ausflüge & Touren",
+    intro: "Vier eigene Seiten mit Fahrzeiten, Strecken und Wegen ab dem Haus — geschrieben für Gäste, die vor der Anreise wissen wollen, was eine Woche hier hergibt.",
+    items: [
+      { href: "/ausflugsziele-vulkaneifel/", img: "/region/ausflugsziele-gemuendener-maar.jpg",
+        alt: "Luftbild des Gemündener Maars bei Daun",
+        title: "Ausflugsziele in der Vulkaneifel",
+        text: "Maare, Museen, Burgen und die Mosel — sortiert nach Fahrzeit ab Immerath, mit Hinweisen für Regentage." },
+      { href: "/wandern-maare-vulkaneifel/", img: "/region/wandern-weinfelder-maar.jpg",
+        alt: "Das Weinfelder Maar vom Uferweg aus",
+        title: "Wandern rund um die Maare",
+        text: "Die kurze Runde ab Immerath, der Maare-Pfad, Touren mit Kindern und mit Hund." },
+      { href: "/maare-mosel-radweg/", img: "/region/radweg-maare-mosel.jpg",
+        alt: "Der Maare-Mosel-Radweg auf der alten Bahntrasse",
+        title: "Der Maare-Mosel-Radweg",
+        text: "Von Daun hinunter an die Mosel — über eine alte Bahntrasse, durch Tunnel und über Viadukte." },
+      // ⚠ Kein fremdes Streckenfoto: Wikimedia hat für diese Gegend keine brauchbare
+      // kurvige Landstraße, und ein Motiv von anderswo wäre auf einer Hotelseite eine
+      // stille Falschaussage. Bis Tatjana ein echtes Foto einer Ausfahrt liefert, steht
+      // hier das Haus an der Straße — mit den Stellplätzen im Hof, dem Argument der Seite.
+      { href: "/motorradtouren-eifel/", img: "/fotos/strassenansicht-landhaus-schend-vulkaneifel.jpg",
+        alt: "Das Landhaus Schend an der Straße in Immerath, davor der gepflasterte Hof",
+        title: "Motorradtouren in der Eifel",
+        text: "Kurvige Strecken durch die Vulkaneifel, an die Mosel und rund um den Nürburgring — ab einem Haus mit Stellplätzen im Hof." },
+    ],
+  },
+  nl: {
+    h2: "Uitstapjes & routes",
+    intro: "Een eigen pagina voor gasten uit Nederland en België: aankomst, afstanden en het landschap, met de burchten van Manderscheid vlakbij.",
+    items: [
+      { href: "/nl/vakantie-vulkaaneifel/", img: "/region/burg-manderscheid.jpg",
+        alt: "De beide burchtruïnes van Manderscheid boven het Liesertal",
+        title: "Vakantie in de Vulkaneifel",
+        text: "Korte rit, weinig drukte, heuvels in plaats van vlak land — praktische zaken op een rij." },
+    ],
+  },
+};
+const touren = TOUREN[lang];
+
 // Hub-Spoke: hubLine mit lokalisierten Ankern (Platzhalter {restaurant}/{pakete}/{galerie}).
 const hubParts = c.hubLine.split(/(\{restaurant\}|\{pakete\}|\{galerie\})/);
 const hubLinks: Record<string, { href: string; label: string }> = {
@@ -101,6 +149,34 @@ const hubLinks: Record<string, { href: string; label: string }> = {
       ))}
     </div>
   </section>
+
+  <!-- Ausflüge & Touren: eigene Dauerseiten (nur DE/NL) -->
+  {touren && (
+    <section class="container mx-auto px-4 pb-4 md:pb-8">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="font-display text-2xl md:text-3xl">{touren.h2}</h2>
+        <p class="text-muted-foreground mt-3 max-w-2xl leading-relaxed text-pretty">{touren.intro}</p>
+        <div class="mt-8 grid sm:grid-cols-2 gap-6">
+          {touren.items.map((tour, i) => (
+            <a
+              href={tour.href}
+              class="group block rounded-md overflow-hidden border border-border bg-card shadow-card transition-colors hover:border-secondary focus-visible:border-secondary"
+              data-reveal
+              style={`--reveal-delay:${(i % 2) * 0.1}s`}
+            >
+              <div class="aspect-[16/10] overflow-hidden">
+                <Pic src={tour.img} alt={tour.alt} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" loading="lazy" decoding="async" sizes="(min-width: 640px) 50vw, 100vw" />
+              </div>
+              <div class="p-6">
+                <h3 class="font-display text-xl group-hover:text-secondary transition-colors">{tour.title}</h3>
+                <p class="text-sm text-muted-foreground mt-2 leading-relaxed text-pretty">{tour.text}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- Ausflüge + Distanzen -->
   <section class="bg-muted/20 border-y border-border/50">

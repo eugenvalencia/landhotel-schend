@@ -31,6 +31,9 @@ const faqSchema = {
   localized={false}
   eyebrow="Die Region"
   heading="Ausflugsziele in der Vulkaneifel"
+  heroImg="/region/ausflugsziele-gemuendener-maar.jpg"
+  heroAlt="Luftbild des Gemündener Maars bei Daun: ein kreisrunder See in einem bewaldeten Explosionstrichter"
+  heroCredit={{ autor: "Wolkenkratzer", lizenz: "CC BY-SA 4.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/4.0", quelle: "https://commons.wikimedia.org/wiki/File:Dauner_Maare,_Gem%C3%BCndener_Maar.jpg" }}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
@@ -193,6 +196,13 @@ const faqSchema = {
       wir Ihnen, was sich lohnt und was Sie sich sparen können. Für Ihren Aufenthalt:
       <a href="/anfrage/">unverbindlich anfragen</a> oder anrufen unter
       <a href="tel:+496573306">+49 6573 306</a>.
+    </p>
+  </section>
+  <section>
+    <p>
+      Einen zusammenhängenden Überblick über die Gegend — Landschaft, Entfernungen zu den
+      größeren Orten und die häufigsten Fragen zur Anreise — gibt unsere Seite zur
+      <a href="/urlaubsregion/">Urlaubsregion Vulkaneifel</a>.
     </p>
   </section>
 </TextPage>

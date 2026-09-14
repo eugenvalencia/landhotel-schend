@@ -76,6 +76,12 @@ const RESPONSIVE_SRCS = [
   "/fotos/landhaus-schend-zeichnung-innenhof-historisch.jpg",
   "/fotos/festtafel-am-fenster-mit-gartenblick-landhaus-schend-vulkaneifel.jpg",
   "/fotos/hotelfront-mit-rosen-landhaus-schend-vulkaneifel.jpg",
+  // Kopfbilder der vier Dauerseiten (Ausfluege/Touren) — Lesespalte max-w-3xl,
+  // also bis 768 CSS-px; die Leiter liefert 640/768 statt des vollen 1280er Bildes.
+  "/region/ausflugsziele-gemuendener-maar.jpg",
+  "/region/radweg-maare-mosel.jpg",
+  "/region/wandern-weinfelder-maar.jpg",
+  "/region/burg-manderscheid.jpg",
 ];
 // Breitenleiter. ⚠ Die Lücke 640 → 1024 war bis 21.08.2026 der teuerste Posten
 // unter „Bildübermittlung verbessern": ein Telefon mit 412 CSS-px und Pixeldichte

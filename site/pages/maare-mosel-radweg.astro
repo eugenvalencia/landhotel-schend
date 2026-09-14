@@ -29,6 +29,9 @@ const faqSchema = {
   localized={false}
   eyebrow="Radfahren"
   heading="Der Maare-Mosel-Radweg"
+  heroImg="/region/radweg-maare-mosel.jpg"
+  heroAlt="Der asphaltierte Maare-Mosel-Radweg auf der alten Bahntrasse, eine Radfahrerin in der Ferne"
+  heroCredit={{ autor: "Hoebele", lizenz: "CC BY-SA 4.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/4.0", quelle: "https://commons.wikimedia.org/wiki/File:Maare-Mosel-Radweg.jpg" }}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
@@ -162,6 +165,13 @@ const faqSchema = {
       Schreiben Sie uns, was Sie vorhaben — wir sagen Ihnen ehrlich, ob das von hier aus gut
       geht. <a href="/anfrage/">Unverbindlich anfragen</a> oder
       <a href="tel:+496573306">+49 6573 306</a>.
+    </p>
+  </section>
+  <section>
+    <p>
+      Wer nicht nur radeln will: Entfernungen, Landschaft und die übrigen Ziele der Gegend
+      stehen gesammelt auf unserer Seite zur
+      <a href="/urlaubsregion/">Urlaubsregion Vulkaneifel</a>.
     </p>
   </section>
 </TextPage>
