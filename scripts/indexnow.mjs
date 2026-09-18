@@ -85,13 +85,51 @@ function geaenderteUrls() {
     for (const [datei, pfad] of REGEL) {
       if (datei.test(d)) urls.filter((u) => pfad.test(new URL(u).pathname)).forEach((u) => treffer.add(u));
     }
+
+    // ⚠⚠ AUFFANGREGEL (18.09.2026). Die Liste oben kannte die fünf Dauerseiten
+    // vom 13.09. nicht — `ausflugsziele-vulkaneifel.astro` und die vier anderen
+    // fielen durch JEDE Regel. Ihre Änderungen wurden also nie gemeldet, ohne
+    // dass irgendwo ein Fehler erschien: das Skript sagte brav „nichts zu
+    // melden". Eine Liste, die jede neue Seite von Hand nachgetragen bekommen
+    // muss, ist eine Liste, die irgendwann falsch ist.
+    // Deshalb: eine Seitendatei unter `site/pages/…` speist die Adresse, die
+    // ihrem Pfad entspricht — das gilt auch für jede Seite, die es noch nicht
+    // gibt. `[[methode-pruefer-umdrehen-statt-abschalten]]`
+    const seite = d.match(/^site\/pages\/(.+)\.astro$/);
+    if (seite) {
+      const pfad = `/${seite[1].replace(/\/?index$/, "")}`.replace(/\/+$/, "");
+      urls.filter((u) => new URL(u).pathname.replace(/\/+$/, "") === pfad).forEach((u) => treffer.add(u));
+    }
     // Layout, Kopf-/Fußbereich oder globales CSS betreffen alles.
     if (/Layout\.astro|SiteHeader|SiteFooter|global\.css/.test(d)) urls.forEach((u) => treffer.add(u));
   }
   return [...treffer];
 }
 
-const urls = ALLE ? alleUrls() : geaenderteUrls();
+/**
+ * Ausdrücklich genannte Adressen — für den Nachtrag, wenn etwas durchgerutscht
+ * ist. `--seiten /a/,/b/` oder mit vollem Namen. Ohne diesen Weg bliebe nur
+ * `--alle`, und das gilt bei jedem Lauf als Spam.
+ */
+function genannteUrls() {
+  const i = process.argv.indexOf("--seiten");
+  if (i < 0 || !process.argv[i + 1]) return [];
+  const bekannt = alleUrls();
+  const gewuenscht = process.argv[i + 1].split(",").map((s) => s.trim()).filter(Boolean)
+    .map((s) => (s.startsWith("http") ? s : `https://${HOST}${s.startsWith("/") ? "" : "/"}${s}`));
+  const fehlt = gewuenscht.filter((u) => !bekannt.includes(u));
+  if (fehlt.length) {
+    // ⚠ Eine Adresse, die nicht in der Sitemap steht, existiert für die
+    // Suchmaschine nicht. Sie trotzdem zu melden sähe nach Erfolg aus.
+    console.error(`${F.rot}✗ Nicht in der Sitemap, daher nicht gemeldet:${F.aus}`);
+    for (const u of fehlt) console.error(`   ${u}`);
+    process.exit(1);
+  }
+  return gewuenscht;
+}
+
+const genannt = genannteUrls();
+const urls = genannt.length ? genannt : ALLE ? alleUrls() : geaenderteUrls();
 
 if (!urls.length) {
   console.log(`${F.grau}IndexNow: keine inhaltlich betroffenen Seiten im letzten Commit — nichts zu melden.${F.aus}`);
