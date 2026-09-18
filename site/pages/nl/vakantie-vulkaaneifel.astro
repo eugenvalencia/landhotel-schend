@@ -9,6 +9,10 @@ import { ORIGIN } from "../../lib/site";
 import { breadcrumbLd } from "../../lib/schema";
 
 const URL = `${ORIGIN}/nl/vakantie-vulkaaneifel/`;
+// ⚠ Die beiden Pfade sehen absichtlich verschieden aus: `breadcrumbLd` setzt
+// das Sprachpraefix selbst (daher hier OHNE `/nl`), `canonicalPath` nicht
+// (daher dort MIT). Wer beide angleicht, bekommt `/nl/nl/…` oder ein
+// Canonical auf eine 404 — beides am 18.09.2026 gemessen.
 const breadcrumb = breadcrumbLd(ORIGIN, "nl", [{ name: "Home", path: "/" }, { name: "Vakantie voor gasten uit Nederland en België", path: "/vakantie-vulkaaneifel" }]);
 const faqSchema = {
   "@context": "https://schema.org",
@@ -26,7 +30,7 @@ const faqSchema = {
 <TextPage
   title="Vulkaneifel — vakantie voor gasten uit Nederland en België"
   description="Aankomst, afstanden, landschap en praktische zaken voor Nederlandse en Belgische gasten in de Vulkaneifel — korte rit, weinig drukte, heuvels in plaats van vlak land."
-  canonicalPath="/vakantie-vulkaaneifel"
+  canonicalPath="/nl/vakantie-vulkaaneifel"
   localized={false}
   lang="nl"
   eyebrow="Vakantie"
