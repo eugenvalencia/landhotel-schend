@@ -741,6 +741,24 @@ html.dark.a11y-high-contrast {
   --muted-foreground: 38 40% 88%;
   --border: 38 40% 75%;
 }
+/* ⚠⚠ LINKS IM FLIESSTEXT DAUERHAFT UNTERSTREICHEN — nicht nur im High-Contrast.
+   Gemessen am 19.09.2026 über alle 73 Seiten (axe, WCAG 1.4.1 »link-in-text-block«):
+   32 Links standen mitten im Text und hoben sich NUR durch ihre Farbe ab —
+   gemessener Unterschied zum umgebenden Text 2,03:1, verlangt sind 3:1. Wer
+   rot-grün-blind ist oder auf einem entspiegelten Handy liest, sieht dort keinen
+   Link. Betroffen war ausgerechnet die BARRIEREFREIHEITSERKLÄRUNG selbst, in
+   drei Sprachen, dazu die fünf Ausflugs-Seiten.
+   ⚠ Bewusst nur `a` OHNE eigene Klasse: Knöpfe, Navigation, Kartenflächen und
+   `nav-underline` tragen alle eine Klasse und bleiben unangetastet — für sie gilt
+   die Regel auch nicht, sie stehen nicht IM Text. Pauschales Unterstreichen hätte
+   das Design zerlegt, ohne jemandem zu helfen. */
+main p > a:not([class]),
+main li > a:not([class]),
+main dd > a:not([class]) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* Links + Buttons bekommen Unterstreichung im High-Contrast (zusätzliches Signal neben Farbe) */
 html.a11y-high-contrast a:not([class*="no-underline"]):not(.schend-mark) {
   text-decoration: underline;

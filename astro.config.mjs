@@ -150,7 +150,15 @@ export default defineConfig({
   //   Der Wächter dagegen ist scripts/sitemap-gegen-noindex.mjs.
   integrations: [
     sitemap({
-      filter: (page) => !/\/(impressum|datenschutz|agb|anfrage|bildnachweis)\/?$/.test(page),
+      // ⚠ `anfrage` ist am 19.09.2026 aus dieser Liste GEFALLEN: Die Seite trug
+      //   `noindex`, weil sie aus Überschrift + Formular bestand. Seit heute
+      //   steht eigenständiger Lesetext darauf (Ablauf, Preise, Anreise, Storno,
+      //   Hund/Kinder/Gruppen + sechs häufige Fragen), das `noindex` ist raus —
+      //   also gehört sie in die Sitemap. Wäre sie hier stehen geblieben, wäre
+      //   sie indexierbar, aber nirgends angemeldet.
+      //   ⭐ Die beiden Angaben hängen zusammen und müssen ZUSAMMEN gepflegt
+      //   werden — dafür gibt es scripts/sitemap-gegen-noindex.mjs.
+      filter: (page) => !/\/(impressum|datenschutz|agb|bildnachweis)\/?$/.test(page),
       // lastmod aus dem Git-Datum der Inhaltsquelle — siehe Erklärung oben.
       serialize: (eintrag) => {
         const d = lastmodFuer(eintrag.url);

@@ -31,7 +31,6 @@ const pflichtHint: Record<Locale, string> = {
   description={c.metaDescription}
   canonicalPath={localizedPath("/anfrage", lang)}
   lang={lang}
-  noindex={true}
 >
   <section class="container mx-auto px-4 pt-12 md:pt-16 pb-16 md:pb-24">
     <div class="max-w-3xl mx-auto">
@@ -202,6 +201,49 @@ const pflichtHint: Record<Locale, string> = {
         <!-- Status -->
         <div id="anf-status" role="status" aria-live="polite" hidden class="rounded-md px-4 py-4 text-sm"></div>
       </form>
+
+      <!-- ── Lesetext unter dem Formular ──
+        *
+        * ⚠ WARUM ER UNTER DEM FORMULAR STEHT (19.09.2026): Wer hierher kommt,
+        *   will anfragen. Text davor kostet Abschlüsse. Wer noch zögert, liest
+        *   weiter — und findet genau die Antworten, wegen derer er sonst zum
+        *   Telefon greift oder die Seite verlässt.
+        * ⚠ Bis heute trug diese Seite `noindex`: Überschrift + Formular ist
+        *   für Google keine eigenständige Seite. Erst dieser Text trägt sie.
+        * ⛔ Jede Aussage ist belegt (AGB, FAQ, Zimmer, Datenschutz). Wer hier
+        *   etwas ändert, ändert eine Zusage an einen Gast, der danach seine
+        *   Reise plant — Quelle prüfen, nicht schätzen. -->
+      <div class="mt-20 border-t border-border pt-14" data-reveal>
+        <div class="space-y-10">
+          {c.infoBloecke.map((b) => (
+            <section>
+              <h2 class="font-display text-2xl md:text-[1.75rem] leading-snug text-balance">{b.h2}</h2>
+              <p class="mt-3 text-foreground/85 leading-relaxed text-pretty">{b.text}</p>
+            </section>
+          ))}
+        </div>
+
+        <!-- Häufige Fragen — als <details>, damit die Seite nicht zur Textwand
+             wird. ⚠ `open` beim ersten Eintrag ist Absicht: ein Akkordeon, das
+             komplett zu ist, sieht aus wie eine leere Liste.
+             ⚠ Der Inhalt geschlossener Einträge steht trotzdem im HTML und wird
+             ausgeliefert — nur die OFFENE Antwort ist sichtbar, gezählt wird im
+             gebauten <main>. -->
+        <div class="mt-16">
+          <h2 class="font-display text-2xl md:text-[1.75rem] leading-snug">{c.faqTitel}</h2>
+          <div class="mt-6 divide-y divide-border border-t border-b border-border">
+            {c.faq.map((f, i) => (
+              <details class="group py-4" open={i === 0}>
+                <summary class="flex cursor-pointer items-start justify-between gap-4 list-none font-medium leading-snug min-h-11">
+                  <span>{f.q}</span>
+                  <span aria-hidden="true" class="mt-0.5 shrink-0 text-secondary transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <p class="mt-3 text-foreground/85 leading-relaxed text-pretty">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </Layout>
