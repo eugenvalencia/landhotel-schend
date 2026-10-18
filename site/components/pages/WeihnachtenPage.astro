@@ -81,6 +81,10 @@ const eventSchema = {
   "@id": `${URL}#weihnachtsfeier`,
   name: "Weihnachtsfeier im Landhotel Schend",
   startDate: WEIHNACHTSFEIER.datumIso,
+  // Google bemaengelt ein fehlendes endDate. Es ist ein Tagestermin — das
+  // Enddatum ist also belegt und keine Erfindung. Eine Uhrzeit steht
+  // weiterhin NIRGENDS, die kennen wir nicht.
+  endDate: WEIHNACHTSFEIER.datumIso,
   eventStatus: "https://schema.org/EventScheduled",
   eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
   description:

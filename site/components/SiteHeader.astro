@@ -13,6 +13,8 @@ import {
   type Locale,
 } from "../i18n";
 import { t } from "../i18n/ui";
+import Funkeln from "./Funkeln.astro";
+import { HERO_EINSTIEG } from "../lib/weihnachten";
 
 interface Props {
   lang?: Locale;
@@ -62,7 +64,25 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
   id="site-header"
   class="fixed top-0 inset-x-0 z-50 bg-background border-b border-transparent transition-all duration-500 ease-out"
 >
-  <div class="container mx-auto px-4 flex items-center justify-between gap-4 h-16 md:h-20">
+  {/* Weihnachtsfunken in der Kopfleiste (Eugen, 18.10.2026).
+
+      ⚠ Bewusst wenige und bewusst dunkleres Gold (#b8863a statt #e8c37a):
+      die Leiste ist hell, der Hero dunkel. Derselbe helle Goldton, der dort
+      leuchtet, wäre hier ein kaum sichtbarer blasser Fleck.
+
+      ⚠ Und bewusst nur über der LOGO-Hälfte (bis 46 % Breite, siehe
+      `absolute inset-y-0 left-0 w-[46%]`): über den Menüpunkten würde ein
+      blinkender Stern beim Zielen stören. Das ist die Leiste, mit der man
+      die Seite bedient — Zierde darf dort nichts kosten.
+
+      Verschwindet mit demselben Schalter wie das Band im Hero: steht
+      HERO_EINSTIEG in lib/weihnachten.ts auf "aus", ist auch hier Schluss. */}
+  {HERO_EINSTIEG !== "aus" && (
+    <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 w-[46%] overflow-hidden">
+      <Funkeln anzahl={7} verteilung="flaeche" takt={7} farbe="#b8863a" />
+    </div>
+  )}
+  <div class="relative container mx-auto px-4 flex items-center justify-between gap-4 h-16 md:h-20">
     <!-- Brand -->
     <!-- `min-h-11` = 44 px. Der Logo-Link war 36 px hoch — dieselbe Stelle, die
          am 31.07.2026 auf acht anderen Kundenseiten nachgezogen wurde; Schend
