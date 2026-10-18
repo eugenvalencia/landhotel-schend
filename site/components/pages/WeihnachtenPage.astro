@@ -27,11 +27,11 @@ const URL = `${ORIGIN}${PFAD}/`;
 // hochgerechnet werden und wäre sichtbar weich.
 const FOTO_HERO = "/fotos/weihnachtsstimmung-im-schnee-landhaus-schend.jpg";
 const FOTO_HERO_ALT =
-  "Weihnachtlich geschmückte Tanne im Schnee vor dem beleuchteten Eingang des Landhotels Schend in der Abenddämmerung";
+  "Weihnachtlich geschmückte Tanne im Schnee vor dem beleuchteten Eingang des Landhauses Schend in der Abenddämmerung";
 
 const FOTO_SAAL = "/fotos/festtafel-mit-kerzen-und-blumen-landhaus-schend.jpg";
 const FOTO_SAAL_ALT =
-  "Lange Festtafel im Saal des Landhotels Schend, weiß eingedeckt mit Kerzen, Blumen und gefalteten Servietten";
+  "Lange Festtafel im Saal des Landhauses Schend, weiß eingedeckt mit Kerzen, Blumen und gefalteten Servietten";
 
 // Hausgold. Derselbe Ton wie der Bewertungsstern im Hero der Startseite —
 // die Marken-Variable --secondary bleibt unberührt, sie ist für hellen Grund
@@ -79,7 +79,7 @@ const eventSchema = {
   "@context": "https://schema.org",
   "@type": "FoodEvent",
   "@id": `${URL}#weihnachtsfeier`,
-  name: "Weihnachtsfeier im Landhotel Schend",
+  name: "Weihnachtsfeier im Landhaus Schend",
   startDate: WEIHNACHTSFEIER.datumIso,
   // Google bemaengelt ein fehlendes endDate. Es ist ein Tagestermin — das
   // Enddatum ist also belegt und keine Erfindung. Eine Uhrzeit steht
@@ -88,7 +88,7 @@ const eventSchema = {
   eventStatus: "https://schema.org/EventScheduled",
   eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
   description:
-    "Weihnachtsmenüs im Landhotel Schend in Immerath (Vulkaneifel) am 26. Dezember 2026 — vier Hauptgänge zur Wahl, dazu Festtagssuppe, Salat vom Buffet und Dessertteller. Nur nach vorheriger Reservierung.",
+    "Weihnachtsmenüs im Landhaus Schend in Immerath (Vulkaneifel) am 26. Dezember 2026 — vier Hauptgänge zur Wahl, dazu Festtagssuppe, Salat vom Buffet und Dessertteller. Nur nach vorheriger Reservierung.",
   image: [`${ORIGIN}${FOTO_HERO}`],
   url: URL,
   inLanguage: "de",
@@ -123,7 +123,7 @@ const faqSchema = {
   url: URL,
   mainEntity: [
     {
-      q: "Wann ist die Weihnachtsfeier im Landhotel Schend?",
+      q: "Wann ist die Weihnachtsfeier im Landhaus Schend?",
       a: "Am Samstag, dem 26. Dezember 2026. Ein Platz ist nur nach vorheriger Reservierung möglich — telefonisch unter +49 6573 306.",
     },
     {
@@ -225,12 +225,12 @@ const faqSchema = {
             </span>
             <span
               class="text-[11px] font-medium uppercase tracking-[0.24em] md:text-xs"
-              style={`color:${GOLD}`}>Weihnachten im Landhotel</span
+              style={`color:${GOLD}`}>Weihnachten im Landhaus</span
             >
             <span class="hidden h-px w-10 sm:block lg:hidden" style={`background:${GOLD}99`}></span>
           </div>
 
-          {/* ⚠ Auf 390 px gemessen: bei 2,5 rem lief „im Landhotel Schend"
+          {/* ⚠ Auf 390 px gemessen: bei 2,5 rem lief „im Landhaus Schend"
               über den rechten Rand hinaus — die Zeile ist länger als
               „Weihnachtsgenuss", an dem man die Größe sonst abschätzt.
               2 rem trägt die Zeile vollständig. */}
@@ -238,7 +238,7 @@ const faqSchema = {
             class="headline-reveal font-display text-balance text-[2rem] leading-[1.02] text-white [hyphens:auto] sm:text-5xl sm:leading-[0.98] md:text-6xl lg:text-[4.25rem]"
             lang="de"
           >
-            Weihnachtsgenuss im Landhotel Schend
+            Weihnachtsgenuss im Landhaus Schend
           </h1>
 
           <p
@@ -409,15 +409,6 @@ const faqSchema = {
 
         <p class="mt-6 text-sm leading-relaxed text-muted-foreground">
           Landhaus Schend, Hotel&nbsp;-&nbsp;Restaurant · Hauptstraße 9 · 54552 Immerath
-          <span class="mt-1 block">
-            Lieber schreiben? Über das
-            <a
-              href="/anfrage/"
-              class="underline decoration-secondary/40 underline-offset-4 transition-colors hover:text-secondary"
-              >Anfrageformular</a
-            >
-            erreichen Sie uns ebenfalls — wir melden uns dann zurück.
-          </span>
         </p>
       </div>
     </div>
@@ -468,13 +459,6 @@ const faqSchema = {
               class="inline-flex min-h-[56px] items-center justify-center gap-3 whitespace-nowrap rounded-sm bg-secondary px-8 py-4 text-xs font-medium uppercase tracking-[0.18em] text-secondary-foreground transition-colors duration-300 hover:bg-foreground sm:text-sm"
             >
               Termin besprechen
-            </a>
-            <a
-              href="/anfrage/"
-              class="inline-flex min-h-[56px] items-center justify-center gap-2 whitespace-nowrap rounded-sm border border-border px-8 py-4 text-xs font-medium uppercase tracking-[0.18em] transition-colors duration-300 hover:border-secondary hover:text-secondary sm:text-sm"
-            >
-              Anfrage schreiben
-              <span aria-hidden="true">→</span>
             </a>
           </div>
         </div>
