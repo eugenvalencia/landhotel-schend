@@ -14,6 +14,8 @@ import { t } from "../../i18n/ui";
 import { homeContent } from "../../i18n/content/home";
 import { findRoomFor, zimmerChrome } from "../../i18n/content/zimmer";
 import { paketeFor } from "../../i18n/content/pakete";
+import { HERO_EINSTIEG, WEIHNACHTSFEIER } from "../../lib/weihnachten";
+import Funkeln from "../Funkeln.astro";
 
 interface Props {
   lang?: Locale;
@@ -22,6 +24,15 @@ const { lang = DEFAULT_LOCALE } = Astro.props;
 const c = homeContent[lang];
 const pakete = paketeFor(lang);
 const altSuffix = zimmerChrome[lang].altSuffix;
+
+// Weihnachts-Einstieg im Hero (Auftrag Eugen, 18.10.2026).
+// ⚠ NUR auf der deutschen Startseite: /weihnachten/ gibt es vorerst nur auf
+// Deutsch. Ein Gast, der auf der niederländischen Startseite klickt, landete
+// sonst in einer fremden Sprache. Form + An/Aus stehen in lib/weihnachten.ts.
+const zeigeWeihnacht = lang === "de" && HERO_EINSTIEG !== "aus";
+// Hausgold — derselbe Ton wie der Bewertungsstern eine Zeile tiefer.
+const WEIHNACHT_GOLD = "#e8c37a";
+
 
 const HERO_VIDEO = "/hero/schend-hero.mp4";
 // WebM liegt bereits im Repo (872 KB) und wird bislang GAR NICHT verlinkt —
@@ -292,6 +303,40 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
         <span class="hidden sm:inline text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="21" data-count-mount="1" data-count-delay="1000" data-count-dur="1200">21</span> {c.statRooms}</span>
       </div>
       </div>
+      {/* Weihnachts-Einstieg: schmales Goldband über den Knöpfen. Steht für sich
+          allein und kostet auf dem Handy nur eine Zeile, die Telefonnummer
+          bleibt damit im Bild. */}
+      {zeigeWeihnacht && (
+        <a
+          href="/weihnachten/"
+          class="weihnacht-glanz magnetic group mb-5 inline-flex min-h-11 flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full px-5 py-2 text-center text-white transition-colors duration-300 hover:bg-white/10"
+          style={`border:1px solid ${WEIHNACHT_GOLD}80; background:rgba(0,0,0,0.42)`}
+        >
+          {/* Funken rund um das Band. Anzahl ist die einzige Stellschraube —
+              Orte, Groessen und Startzeiten rechnet die Komponente. */}
+          <Funkeln anzahl={32} verteilung="rand" farbe={WEIHNACHT_GOLD} />
+          {/* Glocken und Datum bilden EINE Gruppe. Als eigenes Flex-Kind
+              rutschten die Glocken bei 390 px in eine Zeile fuer sich und
+              sahen dort wie drei verirrte Punkte aus. Die mittlere ist eine
+              Spur groesser, sonst wirkt die Reihe wie ein Zaun.
+              ⚠ fill={WEIHNACHT_GOLD} OHNE Anfuehrungszeichen — mit
+              Anfuehrungszeichen stand die Zeichenkette selbst im Attribut. */}
+          <span class="inline-flex items-center gap-2">
+            <span aria-hidden="true" class="flex shrink-0 items-start gap-[3px]">
+              <svg aria-hidden="true" class="weihnacht-glocke shrink-0" width="12" height="15" viewBox="0 0 16 20" fill={WEIHNACHT_GOLD}><circle cx="8" cy="1.5" r="1" /><path d="M8 2.6c3.3 0 4.9 2.5 4.9 5.4 0 2.8.7 4.6 1.8 5.9H1.3c1.1-1.3 1.8-3.1 1.8-5.9 0-2.9 1.6-5.4 4.9-5.4Z" /><circle cx="8" cy="16.3" r="1.6" /></svg>
+              <svg aria-hidden="true" class="weihnacht-glocke weihnacht-glocke-2 shrink-0" width="15" height="19" viewBox="0 0 16 20" fill={WEIHNACHT_GOLD}><circle cx="8" cy="1.5" r="1" /><path d="M8 2.6c3.3 0 4.9 2.5 4.9 5.4 0 2.8.7 4.6 1.8 5.9H1.3c1.1-1.3 1.8-3.1 1.8-5.9 0-2.9 1.6-5.4 4.9-5.4Z" /><circle cx="8" cy="16.3" r="1.6" /></svg>
+              <svg aria-hidden="true" class="weihnacht-glocke weihnacht-glocke-3 shrink-0" width="12" height="15" viewBox="0 0 16 20" fill={WEIHNACHT_GOLD}><circle cx="8" cy="1.5" r="1" /><path d="M8 2.6c3.3 0 4.9 2.5 4.9 5.4 0 2.8.7 4.6 1.8 5.9H1.3c1.1-1.3 1.8-3.1 1.8-5.9 0-2.9 1.6-5.4 4.9-5.4Z" /><circle cx="8" cy="16.3" r="1.6" /></svg>
+            </span>
+            <span class="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.08em] sm:text-xs sm:tracking-[0.16em]" style={`color:${WEIHNACHT_GOLD}`}>
+              Weihnachten bei uns am <span class="tabular-nums">{WEIHNACHTSFEIER.datumZiffern}</span>
+            </span>
+          </span>
+          <span class="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.08em] sm:text-xs sm:tracking-[0.16em]">
+            Info ansehen
+            <span class="ml-1 inline-block transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
+          </span>
+        </a>
+      )}
       <div class="flex flex-col items-center gap-5">
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
           <a href={localizedPath("/anfrage", lang)} class="magnetic glow-border group inline-flex items-center justify-center gap-3 px-9 py-4 min-h-[56px] bg-white text-zinc-900 text-xs sm:text-sm font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300 shadow-sm">

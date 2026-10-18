@@ -1,0 +1,500 @@
+---
+// Weihnachtsseite (Auftrag Eugen, 18.10.2026). Nur Deutsch — wie die
+// Dauerseiten: `localized={false}`, also kein hreflang und kein toter
+// Sprachlink. EN/FR/NL folgen erst, wenn die deutsche Fassung freigegeben ist.
+//
+// Inhalt kommt vollständig aus site/lib/weihnachten.ts (= der gedruckten
+// Karte). Hier steht NUR Gestaltung. Zwei Quellen für dieselbe Karte würden
+// auseinanderlaufen; dann stünde im JSON-LD ein anderer Preis als auf der Seite.
+import Layout from "../../layouts/Layout.astro";
+import Pic from "../Pic.astro";
+import Funkeln from "../Funkeln.astro";
+import { ORIGIN } from "../../lib/site";
+import { breadcrumbLd, homeCrumb } from "../../lib/schema";
+import {
+  WEIHNACHTSFEIER,
+  WEIHNACHTSKARTE,
+  WEIHNACHTS_INTRO,
+} from "../../lib/weihnachten";
+
+const PFAD = "/weihnachten";
+const URL = `${ORIGIN}${PFAD}/`;
+
+// Das einzige echte Weihnachtsfoto des Hauses: Tanne im Schnee vor dem
+// beleuchteten Eingang (liegt seit der Galerie im Bestand, 797 × 1080).
+// ⚠ Hochformat und nur 797 px breit — deshalb steht es im Rahmen neben dem
+// Text und NICHT vollflächig hinter ihm. Vollflächig müsste es auf 1920 px
+// hochgerechnet werden und wäre sichtbar weich.
+const FOTO_HERO = "/fotos/weihnachtsstimmung-im-schnee-landhaus-schend.jpg";
+const FOTO_HERO_ALT =
+  "Weihnachtlich geschmückte Tanne im Schnee vor dem beleuchteten Eingang des Landhotels Schend in der Abenddämmerung";
+
+const FOTO_SAAL = "/fotos/festtafel-mit-kerzen-und-blumen-landhaus-schend.jpg";
+const FOTO_SAAL_ALT =
+  "Lange Festtafel im Saal des Landhotels Schend, weiß eingedeckt mit Kerzen, Blumen und gefalteten Servietten";
+
+// Hausgold. Derselbe Ton wie der Bewertungsstern im Hero der Startseite —
+// die Marken-Variable --secondary bleibt unberührt, sie ist für hellen Grund
+// gedacht und käme auf dem dunklen Abschnitt hier nicht über 4,5:1.
+const GOLD = "#e8c37a";
+
+const TEL = "+49 6573 306";
+const TEL_HREF = "tel:+496573306";
+
+const breadcrumb = breadcrumbLd(ORIGIN, "de", [
+  homeCrumb("de"),
+  { name: "Weihnachten", path: PFAD },
+]);
+
+// schema.org/Menu aus DENSELBEN Daten wie die sichtbare Karte.
+const menueSchema = {
+  "@type": "Menu",
+  "@id": `${URL}#weihnachtskarte`,
+  url: `${URL}#weihnachtskarte`,
+  name: "Weihnachtskarte 2026",
+  inLanguage: "de",
+  hasMenuSection: WEIHNACHTSKARTE.map((a) => ({
+    "@type": "MenuSection",
+    name: a.titel,
+    hasMenuItem: a.gaenge.map((g) => ({
+      "@type": "MenuItem",
+      name: g.name,
+      ...(g.beschreibung ? { description: g.beschreibung } : {}),
+      offers: {
+        "@type": "Offer",
+        price: g.preis,
+        priceCurrency: "EUR",
+        // Endpreis inkl. MwSt. — so steht es auch sichtbar unter der Karte.
+        valueAddedTaxIncluded: true,
+      },
+    })),
+  })),
+};
+
+// Der Termin selbst als Event. ⚠ Bewusst OHNE Uhrzeit und OHNE `offers`:
+// Die Uhrzeit ist uns nicht genannt worden, und ein Angebot mit Kaufknopf
+// würde eine Buchungsstrecke vortäuschen, die es hier nicht gibt — die Seite
+// nimmt Anfragen und Anrufe entgegen, mehr nicht.
+const eventSchema = {
+  "@context": "https://schema.org",
+  "@type": "FoodEvent",
+  "@id": `${URL}#weihnachtsfeier`,
+  name: "Weihnachtsfeier im Landhotel Schend",
+  startDate: WEIHNACHTSFEIER.datumIso,
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  description:
+    "Weihnachtsmenüs im Landhotel Schend in Immerath (Vulkaneifel) am 26. Dezember 2026 — vier Hauptgänge zur Wahl, dazu Festtagssuppe, Salat vom Buffet und Dessertteller. Nur nach vorheriger Reservierung.",
+  image: [`${ORIGIN}${FOTO_HERO}`],
+  url: URL,
+  inLanguage: "de",
+  isAccessibleForFree: false,
+  location: {
+    "@type": "Restaurant",
+    "@id": "https://landhaus-schend.de/restaurant/#restaurant",
+    name: "Landhaus Restaurant & Terrasse",
+    telephone: "+49-6573-306",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Hauptstraße 9",
+      addressLocality: "Immerath",
+      addressRegion: "Rheinland-Pfalz",
+      postalCode: "54552",
+      addressCountry: "DE",
+    },
+    hasMenu: menueSchema,
+  },
+  organizer: {
+    "@type": "Hotel",
+    "@id": "https://landhaus-schend.de/#hotel",
+    name: "Landhaus Schend",
+    url: `${ORIGIN}/`,
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${URL}#faq`,
+  url: URL,
+  mainEntity: [
+    {
+      q: "Wann ist die Weihnachtsfeier im Landhotel Schend?",
+      a: "Am Samstag, dem 26. Dezember 2026. Ein Platz ist nur nach vorheriger Reservierung möglich — telefonisch unter +49 6573 306.",
+    },
+    {
+      q: "Was kosten die Weihnachtsmenüs?",
+      a: "Die vier Hauptgänge kosten 15,50 € (vegetarisch), 19,50 € (Hähnchenschnitzel), 24,50 € (Rinderroulade) und 26,00 € (Zanderfilet). Festtagssuppe 7,00 €, Salat vom Buffet 5,00 €, weihnachtlicher Dessertteller 8,50 €. Jeder Gang lässt sich einzeln wählen; alle Preise sind Endpreise inklusive Mehrwertsteuer.",
+    },
+    {
+      q: "Gibt es ein vegetarisches Weihnachtsmenü?",
+      a: "Ja. Menü 1 ist vegetarisch: gebackener Camembert auf Apfelrotkohl mit Rosmarinkartoffeln und Preiselbeeren für 15,50 €.",
+    },
+    {
+      q: "Kann unsere Firma die Weihnachtsfeier an einem anderen Termin machen?",
+      a: "Ja. Für Firmen-Weihnachtsfeiern vereinbaren wir Termine nach Absprache. Der Festsaal fasst bis zu 70 Gäste. Anfragen telefonisch unter +49 6573 306.",
+    },
+  ].map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+---
+
+<Layout
+  title="Weihnachtsmenü & Weihnachtsfeier am 26.12.2026"
+  description="Weihnachtsgenuss in der Vulkaneifel: vier Weihnachtsmenüs von 15,50 € bis 26,00 €, dazu Festtagssuppe und Dessertteller — am 26. Dezember 2026 im Landhaus Schend, nur mit Reservierung. Firmenfeiern auch an anderen Terminen."
+  canonicalPath={PFAD}
+  ogImage={FOTO_HERO}
+  localized={false}
+  lang="de"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(eventSchema)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+  {/*
+    HERO — eigener dunkler Abschnitt, unabhängig vom Hell/Dunkel-Umschalter
+    der Seite. Grund: Der Weihnachtston lebt vom dunklen Grund, und die
+    Kontraste sind dann in BEIDEN Modi dieselben, statt in einem zu kippen.
+  */}
+  <section
+    class="relative overflow-hidden"
+    style="background:
+      radial-gradient(ellipse 70% 60% at 78% 28%, rgba(232,195,122,0.14) 0%, transparent 62%),
+      linear-gradient(168deg, #101a16 0%, #0b120f 48%, #131a18 100%)"
+  >
+    {/* Feiner Lichtstaub statt Schneeflocken-Animation: ruhig, kein Flackern,
+        kostet kein JavaScript und stört `prefers-reduced-motion` nicht. */}
+    <div
+      aria-hidden="true"
+      class="absolute inset-0 opacity-[0.5] pointer-events-none"
+      style="background-image:
+        radial-gradient(1.5px 1.5px at 18% 22%, rgba(255,255,255,0.35), transparent),
+        radial-gradient(1.5px 1.5px at 62% 12%, rgba(255,255,255,0.28), transparent),
+        radial-gradient(1.5px 1.5px at 84% 46%, rgba(255,255,255,0.22), transparent),
+        radial-gradient(1.5px 1.5px at 34% 72%, rgba(255,255,255,0.20), transparent),
+        radial-gradient(1.5px 1.5px at 9% 58%, rgba(255,255,255,0.18), transparent)"
+    >
+    </div>
+
+    {/* Funken ueber die ganze Hero-Flaeche (Eugen, 18.10.2026). Sie liegen
+        unter dem Inhalt (z-0 gegen z-10) und fangen keine Klicks ab. */}
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 z-0">
+      <Funkeln anzahl={60} verteilung="flaeche" takt={6} farbe={GOLD} />
+    </div>
+
+    <div class="container relative z-10 mx-auto px-4 py-16 md:py-24 lg:py-28">
+      <div class="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.05fr_0.9fr] lg:gap-16">
+        {/* Foto: auf dem Handy zuerst (es ist der Anlass), ab lg rechts. */}
+        {/* ⚠ KEIN data-reveal: Das Foto ist hier das LCP-Element. Ein
+            Einblend-Effekt startet es mit opacity 0 und schiebt genau die
+            Messung nach hinten, die über die Tempo-Note entscheidet. */}
+        <div class="order-1 lg:order-2">
+          <div
+            class="relative mx-auto max-w-[23rem] rounded-lg p-2 sm:max-w-[26rem] lg:max-w-[27rem] lg:ml-auto lg:mr-0"
+            style={`border:1px solid ${GOLD}33`}
+          >
+            <Pic
+              src={FOTO_HERO}
+              alt={FOTO_HERO_ALT}
+              class="aspect-[4/5] w-full rounded-md object-cover shadow-[0_18px_50px_-18px_rgba(0,0,0,0.85)]"
+              fetchpriority="high"
+              decoding="async"
+              sizes="(min-width: 1024px) 42vw, 90vw"
+            />
+          </div>
+        </div>
+
+        <div class="order-2 text-center lg:order-1 lg:text-left">
+          {/* Zierstriche erst ab sm: auf 390 px brach die Zeile hinter der
+              Glocke um, und der rechte Strich stand allein in Zeile zwei. */}
+          <div class="mb-6 flex items-center justify-center gap-3 lg:justify-start">
+            <span class="hidden h-px w-10 sm:block" style={`background:${GOLD}99`}></span>
+            {/* Drei laeutende Glocken wie im Band auf der Startseite —
+                dasselbe Motiv wie auf der gedruckten Karte. */}
+            <span aria-hidden="true" class="flex shrink-0 items-start gap-[3px]">
+              <svg aria-hidden="true" class="weihnacht-glocke shrink-0" width="12" height="15" viewBox="0 0 16 20" fill={GOLD}><circle cx="8" cy="1.5" r="1" /><path d="M8 2.6c3.3 0 4.9 2.5 4.9 5.4 0 2.8.7 4.6 1.8 5.9H1.3c1.1-1.3 1.8-3.1 1.8-5.9 0-2.9 1.6-5.4 4.9-5.4Z" /><circle cx="8" cy="16.3" r="1.6" /></svg>
+              <svg aria-hidden="true" class="weihnacht-glocke weihnacht-glocke-2 shrink-0" width="15" height="19" viewBox="0 0 16 20" fill={GOLD}><circle cx="8" cy="1.5" r="1" /><path d="M8 2.6c3.3 0 4.9 2.5 4.9 5.4 0 2.8.7 4.6 1.8 5.9H1.3c1.1-1.3 1.8-3.1 1.8-5.9 0-2.9 1.6-5.4 4.9-5.4Z" /><circle cx="8" cy="16.3" r="1.6" /></svg>
+              <svg aria-hidden="true" class="weihnacht-glocke weihnacht-glocke-3 shrink-0" width="12" height="15" viewBox="0 0 16 20" fill={GOLD}><circle cx="8" cy="1.5" r="1" /><path d="M8 2.6c3.3 0 4.9 2.5 4.9 5.4 0 2.8.7 4.6 1.8 5.9H1.3c1.1-1.3 1.8-3.1 1.8-5.9 0-2.9 1.6-5.4 4.9-5.4Z" /><circle cx="8" cy="16.3" r="1.6" /></svg>
+            </span>
+            <span
+              class="text-[11px] font-medium uppercase tracking-[0.24em] md:text-xs"
+              style={`color:${GOLD}`}>Weihnachten im Landhotel</span
+            >
+            <span class="hidden h-px w-10 sm:block lg:hidden" style={`background:${GOLD}99`}></span>
+          </div>
+
+          {/* ⚠ Auf 390 px gemessen: bei 2,5 rem lief „im Landhotel Schend"
+              über den rechten Rand hinaus — die Zeile ist länger als
+              „Weihnachtsgenuss", an dem man die Größe sonst abschätzt.
+              2 rem trägt die Zeile vollständig. */}
+          <h1
+            class="headline-reveal font-display text-balance text-[2rem] leading-[1.02] text-white [hyphens:auto] sm:text-5xl sm:leading-[0.98] md:text-6xl lg:text-[4.25rem]"
+            lang="de"
+          >
+            Weihnachtsgenuss im Landhotel Schend
+          </h1>
+
+          <p
+            class="font-display-italic mx-auto mt-7 max-w-xl text-balance text-lg leading-snug text-white/90 md:text-2xl lg:mx-0"
+          >
+            {WEIHNACHTS_INTRO}
+          </p>
+
+          {/* Termin als eigene Marke, nicht als Nebensatz: Datum und
+              Reservierungspflicht sind die beiden Angaben, wegen derer die
+              Seite überhaupt gelesen wird. */}
+          <div class="mt-9 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 lg:justify-start">
+            <span
+              class="inline-flex min-h-11 items-center gap-2.5 rounded-sm px-4 py-2 text-sm font-medium tracking-wide text-white"
+              style={`border:1px solid ${GOLD}66; background:${GOLD}1a`}
+            >
+              <svg class="h-4 w-4 shrink-0" style={`color:${GOLD}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
+              </svg>
+              <time datetime={WEIHNACHTSFEIER.datumIso}>{WEIHNACHTSFEIER.datumLang}</time>
+            </span>
+            <span class="text-sm text-white/80">nur nach vorheriger Reservierung</span>
+          </div>
+
+          <div class="mt-9 flex flex-col items-center gap-3 lg:items-start">
+            <a
+              href={TEL_HREF}
+              class="magnetic inline-flex min-h-[56px] items-center justify-center gap-3 whitespace-nowrap rounded-sm px-8 py-4 text-xs font-medium uppercase tracking-[0.18em] text-zinc-900 transition-colors duration-300 hover:brightness-110 sm:text-sm"
+              style={`background:${GOLD}`}
+            >
+              <svg class="h-4 w-4 shrink-0 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z" />
+              </svg>
+              Tisch reservieren
+            </a>
+          </div>
+
+          <a
+            href={TEL_HREF}
+            class="mt-5 inline-flex min-h-11 items-center text-sm tracking-wide text-white/85 transition-colors hover:text-white"
+          >
+            Oder direkt anrufen: <span class="ml-1 font-medium tabular-nums">{TEL}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/*
+    DIE KARTE — Doppelrahmen wie auf der gedruckten Weihnachtskarte des
+    Hauses. Kein Zierrat darüber hinaus: die Karte selbst ist der Inhalt.
+  */}
+  <section id="weihnachtskarte" class="bg-gradient-to-b from-background via-muted/20 to-background">
+    <div class="container mx-auto px-4 py-16 md:py-24">
+      <div class="mx-auto max-w-3xl">
+        <div class="text-center" data-reveal>
+          {/* Ilexzweig von der gedruckten Karte — einmal, mittig, gross genug
+              zum Erkennen. Am Fotorand (36 px) las er sich als Bildfehler. */}
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            class="mx-auto mb-5 h-10 w-10 text-secondary"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.1"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 14.2C9.6 13.1 4.8 11.2 3.4 6.4c4.6.8 7.5 3.7 8.6 7.8Z" />
+            <path d="M12 14.2c2.4-1.1 7.2-3 8.6-7.8-4.6.8-7.5 3.7-8.6 7.8Z" />
+            <path d="M12 14.2v1.1" />
+            <circle cx="10.4" cy="17.2" r="1.2" />
+            <circle cx="13.6" cy="17.2" r="1.2" />
+            <circle cx="12" cy="19.9" r="1.2" />
+          </svg>
+          <p class="text-[11px] font-medium uppercase tracking-[0.24em] text-secondary md:text-xs">
+            Die Karte
+          </p>
+          <h2 class="font-display mt-4 text-balance text-3xl leading-tight md:text-4xl">
+            Unsere Weihnachtskarte
+          </h2>
+          <p class="mx-auto mt-5 max-w-xl text-pretty leading-relaxed text-foreground/85">
+            Jeder Gang lässt sich einzeln wählen — Suppe, Salat, Hauptgang und
+            Dessert stellen Sie sich zusammen, wie Sie mögen.
+          </p>
+        </div>
+
+        {/* ⚠ Auf der hellen Karte NUR die vier Ecken. Funken ueber einer
+            Preisliste machen sie unruhig und billig — der dunkle Hero traegt
+            sie, dieses Papier nicht. relative, damit die Ecken an DIESEM
+            Rahmen haengen. */}
+        <div
+          class="shadow-card relative mt-12 rounded-lg border border-secondary/30 bg-background p-2.5 md:mt-14"
+          data-reveal
+        >
+          <Funkeln anzahl={4} verteilung="ecken" takt={7} farbe="#c99a3e" />
+          <div class="rounded-md border border-secondary/20 px-5 py-10 sm:px-9 md:px-14 md:py-14">
+            {WEIHNACHTSKARTE.map((abschnitt, i) => (
+              <section class={i > 0 ? "mt-14" : ""}>
+                <h3 class="font-display text-center text-2xl leading-tight md:text-3xl">
+                  {abschnitt.titel}
+                </h3>
+                <div class="hairline mb-8 mt-4"></div>
+                <ul class="space-y-7">
+                  {abschnitt.gaenge.map((g) => (
+                    /* Gericht links (darf umbrechen), Preis rechts (bricht nie
+                       um): min-w-0 + flex-1 am Namen, shrink-0 am Preis.
+                       Bei 390 px bleibt der Preis so am Gang. */
+                    <li class="flex items-baseline gap-4">
+                      <div class="min-w-0 flex-1">
+                        <p class="font-display text-lg leading-snug md:text-xl">{g.name}</p>
+                        {g.beschreibung && (
+                          <p class="mt-1.5 text-pretty text-sm leading-relaxed text-muted-foreground">
+                            {g.beschreibung}
+                          </p>
+                        )}
+                      </div>
+                      <p class="font-display shrink-0 whitespace-nowrap text-right text-lg tabular-nums text-secondary md:text-xl">
+                        <data value={g.preis}>{g.preisText}</data>
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+
+            {/* Pflichtangaben. Sie stehen EINMAL unter der ganzen Karte —
+                nicht unter jedem Abschnitt, das liest sonst niemand mehr.
+                · Endpreise: Preisangabenverordnung.
+                · Allergene/Zusatzstoffe: LMIV-Auskunft über das Personal. */}
+            <div class="mt-14 space-y-2 border-t border-border/60 pt-6 text-center">
+              <p class="text-xs leading-relaxed text-muted-foreground">
+                Alle Preise sind Endpreise in Euro und enthalten die gesetzliche
+                Mehrwertsteuer.
+              </p>
+              <p class="text-xs leading-relaxed text-muted-foreground">
+                Angaben zu Allergenen und Zusatzstoffen erhalten Sie gern bei
+                unserem Servicepersonal.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* RESERVIERUNG */}
+  <section class="border-y border-border/60 bg-muted/30">
+    <div class="container mx-auto px-4 py-16 md:py-20">
+      <div class="mx-auto max-w-2xl text-center" data-reveal>
+        <p class="text-[11px] font-medium uppercase tracking-[0.24em] text-secondary md:text-xs">
+          Reservierung
+        </p>
+        <h2 class="font-display mt-4 text-balance text-3xl leading-tight md:text-4xl">
+          Am 26. Dezember nur mit Reservierung
+        </h2>
+        <p class="mx-auto mt-5 max-w-xl text-pretty leading-relaxed text-foreground/85">
+          Rufen Sie uns an — am Telefon stimmen wir Uhrzeit, Tischgröße und
+          Menüwahl in einem Zug mit Ihnen ab. Das geht schneller als jedes
+          Formular, und Sie wissen sofort, ob der Tisch steht.
+        </p>
+
+        <a
+          href={TEL_HREF}
+          class="font-display mt-8 inline-flex min-h-[64px] items-center justify-center gap-3 rounded-sm bg-secondary px-9 py-4 text-xl text-secondary-foreground tabular-nums transition-colors duration-300 hover:bg-foreground md:text-2xl"
+        >
+          <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z" />
+          </svg>
+          {TEL}
+        </a>
+
+        <p class="mt-6 text-sm leading-relaxed text-muted-foreground">
+          Landhaus Schend, Hotel&nbsp;-&nbsp;Restaurant · Hauptstraße 9 · 54552 Immerath
+          <span class="mt-1 block">
+            Lieber schreiben? Über das
+            <a
+              href="/anfrage/"
+              class="underline decoration-secondary/40 underline-offset-4 transition-colors hover:text-secondary"
+              >Anfrageformular</a
+            >
+            erreichen Sie uns ebenfalls — wir melden uns dann zurück.
+          </span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* FIRMEN-WEIHNACHTSFEIER — eigener Block, andere Termine. */}
+  <section class="bg-background">
+    <div class="container mx-auto px-4 py-16 md:py-24">
+      <div class="mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-2 md:gap-14">
+        <div data-reveal>
+          <Pic
+            src={FOTO_SAAL}
+            alt={FOTO_SAAL_ALT}
+            loading="lazy"
+            decoding="async"
+            class="shadow-card aspect-[4/5] w-full rounded-lg object-cover"
+            sizes="(min-width: 768px) 46vw, 92vw"
+          />
+        </div>
+        <div data-reveal style="--reveal-delay:0.08s">
+          <p class="text-[11px] font-medium uppercase tracking-[0.24em] text-secondary md:text-xs">
+            Für Firmen
+          </p>
+          <h2 class="font-display mt-4 text-balance text-3xl leading-tight md:text-4xl">
+            Ihre Firmen-Weihnachtsfeier an Ihrem Wunschtermin
+          </h2>
+          <p class="mt-5 text-pretty leading-relaxed text-foreground/85">
+            Der 26. Dezember passt nicht in den Dienstplan? Für Firmenfeiern
+            vereinbaren wir Termine nach Absprache — auch vor den Feiertagen
+            und im Januar.
+          </p>
+          <ul class="mt-7 space-y-3.5">
+            {[
+              "Festsaal für bis zu 70 Gäste",
+              "Weihnachtsmenüs von der Karte oder nach Absprache",
+              "Kostenfreie Parkplätze direkt am Haus",
+              "21 Zimmer im Haus — wer mag, bleibt über Nacht",
+            ].map((punkt) => (
+              <li class="flex items-start gap-3">
+                <svg class="mt-0.5 h-5 w-5 shrink-0 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m5 12 4.5 4.5L19 7" />
+                </svg>
+                <span class="text-pretty leading-relaxed">{punkt}</span>
+              </li>
+            ))}
+          </ul>
+          <div class="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+            <a
+              href={TEL_HREF}
+              class="inline-flex min-h-[56px] items-center justify-center gap-3 whitespace-nowrap rounded-sm bg-secondary px-8 py-4 text-xs font-medium uppercase tracking-[0.18em] text-secondary-foreground transition-colors duration-300 hover:bg-foreground sm:text-sm"
+            >
+              Termin besprechen
+            </a>
+            <a
+              href="/anfrage/"
+              class="inline-flex min-h-[56px] items-center justify-center gap-2 whitespace-nowrap rounded-sm border border-border px-8 py-4 text-xs font-medium uppercase tracking-[0.18em] transition-colors duration-300 hover:border-secondary hover:text-secondary sm:text-sm"
+            >
+              Anfrage schreiben
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Hub-Spoke: Rückwege zu den thematisch nächsten Seiten. */}
+  <section class="border-t border-border/60 bg-muted/20">
+    <div class="container mx-auto px-4 py-10">
+      <p class="text-center text-sm text-muted-foreground">
+        Mehr aus dem Haus:
+        <a href="/restaurant/" class="inline-flex min-h-11 items-center underline decoration-secondary/40 underline-offset-4 transition-colors hover:text-secondary">Restaurant &amp; Öffnungszeiten</a>
+        ·
+        <a href="/zimmer/" class="inline-flex min-h-11 items-center underline decoration-secondary/40 underline-offset-4 transition-colors hover:text-secondary">Zimmer</a>
+        ·
+        <a href="/pakete/" class="inline-flex min-h-11 items-center underline decoration-secondary/40 underline-offset-4 transition-colors hover:text-secondary">Pakete</a>
+      </p>
+    </div>
+  </section>
+</Layout>

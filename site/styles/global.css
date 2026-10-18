@@ -446,6 +446,112 @@
     .glow-border::before { animation: none; opacity: 0.5; }
   }
 
+  /* ------------------------------------------------------------------
+     Weihnachts-Band im Hero (Eugen, 18.10.2026: „leuchtet auf und
+     funkelt am Rand").
+
+     Eigene Klasse statt .glow-border, obwohl die Mechanik dieselbe ist:
+     .glow-border faerbt mit --secondary, und das ist ein dunkles
+     Goldbraun (38 52% 34%) — auf dem dunklen Hero-Video praktisch
+     unsichtbar. Die Marken-Variable bleibt dafuer unangetastet.
+
+     Drei Lagen, bewusst alle langsam: ein Licht laeuft in 7 s einmal um
+     den Rand, der Schein atmet in 4,5 s, und zwei Funken blitzen
+     versetzt alle 5 s kurz auf. Nichts blinkt im Sekundentakt — das
+     wirkt billig und ist fuer lichtempfindliche Gaeste eine Zumutung.
+     Der A11y-Schalter der Seite (html.a11y-reduced-motion) und
+     prefers-reduced-motion stellen alles still.
+     ------------------------------------------------------------------ */
+  .weihnacht-glanz {
+    position: relative;
+    isolation: isolate;
+    animation: weihnacht-atem 4.5s ease-in-out infinite;
+  }
+  .weihnacht-glanz::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(
+      from var(--glow-angle),
+      transparent 0deg,
+      rgba(255, 246, 222, 0.95) 26deg,
+      rgba(232, 195, 122, 0.6) 68deg,
+      transparent 128deg,
+      transparent 232deg,
+      rgba(232, 195, 122, 0.8) 292deg,
+      transparent 342deg
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    animation: glow-rotate 7s linear infinite;
+    z-index: -1;
+  }
+  @keyframes weihnacht-atem {
+    0%, 100% { box-shadow: 0 0 16px -5px rgba(232, 195, 122, 0.35); }
+    50%      { box-shadow: 0 0 28px -2px rgba(232, 195, 122, 0.7); }
+  }
+  /* Funken am Rand: Sterne, die nur kurz aufblitzen. Ein Funke ist knapp
+     0,6 s zu sehen und die uebrigen 4,4 s gar nicht. Fuenf Stueck mit je
+     einer Sekunde Versatz ergeben zusammen ein Funkeln im Sekundentakt,
+     bei dem nie zwei gleichzeitig brennen — das waere Lichterketten-Kitsch.
+     Die Verzoegerung setzt jeder Funke selbst (inline im Markup). */
+  @keyframes weihnacht-funke {
+    0%, 14%, 100% { opacity: 0; transform: scale(0.5) rotate(-20deg); }
+    5%            { opacity: 1; transform: scale(1) rotate(16deg); }
+    10%           { opacity: 0.3; transform: scale(0.72) rotate(30deg); }
+  }
+  .weihnacht-funke {
+    transform-origin: center;
+    animation: weihnacht-funke 5s ease-in-out infinite;
+  }
+
+  /* Drei kleine Glocken (Eugen, 18.10.2026) — dasselbe Motiv wie auf der
+     gedruckten Weihnachtskarte des Hauses.
+
+     Sie laeuten nur in den ersten anderthalb Sekunden eines 6-Sekunden-
+     Takts und haengen danach still. Der Takt ist bewusst derselbe wie bei
+     den Funken, aber zeitlich versetzt: so ist nie beides gleichzeitig in
+     Bewegung. Der Ausschlag liegt bei 11 Grad — genug, dass man es sieht,
+     zu wenig, um vom Text abzulenken.
+
+     transform-origin oben: eine Glocke dreht sich am Aufhaenger, nicht um
+     ihre Mitte. Um die Mitte gedreht sieht sie aus, als wuerde sie kippen. */
+  /* Dauergelaeut (Eugen, 18.10.2026: „die glocken mussen staendigt
+     wackeln"). Vorher laeuteten sie nur in den ersten anderthalb Sekunden
+     eines 6-Sekunden-Takts und hingen dann still.
+
+     ease-in-out gibt die Pendelbewegung: am Umkehrpunkt langsam, in der
+     Mitte schnell — so schwingt eine Glocke wirklich. Der Ausschlag liegt
+     bei 7 Grad. Bei Dauerbewegung ist mehr zu viel: das Auge springt dann
+     staendig dorthin und liest den Text daneben nicht mehr.
+
+     Die drei haengen um je 0,11 s versetzt, damit es nach einem Gelaeut
+     aussieht und nicht nach einem Bauteil, das wackelt. */
+  @keyframes weihnacht-laeuten {
+    0%, 100% { transform: rotate(-7deg); }
+    50%      { transform: rotate(7deg); }
+  }
+  .weihnacht-glocke {
+    transform-origin: 50% 8%;
+    animation: weihnacht-laeuten 1.45s ease-in-out infinite;
+    will-change: transform;
+  }
+  .weihnacht-glocke-2 { animation-delay: 0.11s; }
+  .weihnacht-glocke-3 { animation-delay: 0.22s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .weihnacht-glanz,
+    .weihnacht-glanz::before,
+    .weihnacht-funke,
+    .weihnacht-glocke { animation: none; }
+    .weihnacht-glanz::before { opacity: 0.65; }
+    .weihnacht-funke { opacity: 0.8; }
+  }
+
   /* Spotlight on Cards — hover-only sanfter radial-gradient
      Setzt mouse position via --mx/--my CSS-Variablen (vom JS-Hook gesetzt) */
   .spotlight {

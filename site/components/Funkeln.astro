@@ -1,0 +1,111 @@
+---
+// <Funkeln> — goldene Funken, die versetzt kurz aufblitzen.
+//
+// Eine Stelle für alle: das Band im Hero der Startseite, der Hero der
+// Weihnachtsseite und die Ecken der Menükarte benutzen dieselbe Komponente.
+// Vorher stand die Liste zweimal im Markup, und schon beim ersten „mach mehr
+// davon" wäre sie auseinandergelaufen.
+//
+// Die Bewegung selbst steht in styles/global.css (.weihnacht-funke). Hier
+// werden nur Ort, Größe und Verzögerung gerechnet.
+//
+// ⚠ Keine Zufallszahlen. Der Bau muss bei gleichem Stand dieselbe Datei
+// erzeugen, sonst rauscht jeder Vergleich zwischen zwei Ständen. Die
+// Streuung kommt aus festen Folgen.
+
+interface Props {
+  /** Wie viele Funken. */
+  anzahl?: number;
+  /**
+   * "rand"    — rund um die Kante des Elternelements (schmale Bänder, Rahmen)
+   * "flaeche" — über die ganze Fläche verteilt (große dunkle Abschnitte)
+   * "ecken"   — nur die vier Ecken (zurückhaltend, für helle Flächen)
+   */
+  verteilung?: "rand" | "flaeche" | "ecken";
+  /** Sekunden für einen vollen Umlauf. Länger = seltener blitzt es. */
+  takt?: number;
+  /** Farbe der Funken. */
+  farbe?: string;
+}
+
+const {
+  anzahl = 20,
+  verteilung = "rand",
+  takt = 5,
+  farbe = "#e8c37a",
+} = Astro.props;
+
+// Groesse und Startzeit kommen aus dem goldenen Schnitt statt aus zwei
+// festen Listen. Grund: die Listen hatten 20 Eintraege, und ab dem 21.
+// Funken wiederholten sie sich — bei 40 Funken blitzten immer zwei exakt
+// gleichzeitig. Die Folge frac(i * 0,6180339887) streut dagegen fuer JEDE
+// Anzahl gleichmaessig und bleibt dabei vollstaendig berechenbar: derselbe
+// Bau erzeugt dieselbe Datei, kein Zufall im Spiel.
+const PHI = 0.6180339887;
+const PSI = 0.7548776662;
+const frac = (x: number) => x - Math.floor(x);
+/** 6 bis 15 px, ohne dass sich eine Reihe gleich grosser Sterne bildet. */
+const groesse = (i: number) => 6 + Math.round(frac((i + 1) * PSI) * 9);
+/** Startzeit irgendwo im Takt. */
+const startzeit = (i: number) => frac((i + 1) * PHI);
+
+/** Orte als fertige CSS-Angaben. Waagerecht in Prozent (die Breite ändert
+ *  sich stark zwischen Handy und Rechner), senkrecht je nach Verteilung. */
+function orte(n: number): string[] {
+  if (verteilung === "ecken") {
+    return [
+      "left:-7px; top:-7px",
+      "right:-7px; top:-7px",
+      "left:-7px; bottom:-7px",
+      "right:-7px; bottom:-7px",
+    ].slice(0, n);
+  }
+  if (verteilung === "flaeche") {
+    // Zwei verschränkte Raster, damit keine sichtbaren Reihen entstehen:
+    // die ungeraden Funken sitzen eine halbe Spalte und eine halbe Zeile
+    // versetzt zu den geraden.
+    const spalten = Math.ceil(Math.sqrt(n * 1.6));
+    return Array.from({ length: n }, (_, i) => {
+      const sp = i % spalten;
+      const ze = Math.floor(i / spalten);
+      const versetzt = ze % 2 === 1;
+      const x = ((sp + (versetzt ? 0.5 : 0)) / spalten) * 94 + 3;
+      const y = (ze * 17 + (sp % 3) * 5 + 4) % 92;
+      return `left:${x.toFixed(1)}%; top:${y.toFixed(1)}%`;
+    });
+  }
+  // "rand": oben und unten tragen je zwei Fünftel, die kurzen Seiten je eins.
+  const obenUnten = Math.max(1, Math.round((n * 2) / 5));
+  const seiten = Math.max(1, Math.round(n / 10));
+  const liste: string[] = [];
+  for (let k = 0; k < obenUnten; k++)
+    liste.push(`left:${(5 + (k * 90) / Math.max(1, obenUnten - 1)).toFixed(1)}%; top:${-9 + (k % 3) * 3}px`);
+  for (let k = 0; k < obenUnten; k++)
+    liste.push(`left:${(9 + (k * 86) / Math.max(1, obenUnten - 1)).toFixed(1)}%; bottom:${-9 + ((k + 1) % 3) * 3}px`);
+  for (let k = 0; k < seiten; k++)
+    liste.push(`left:${-9 + (k % 2) * 5}px; top:${(18 + (k * 60) / Math.max(1, seiten)).toFixed(0)}%`);
+  for (let k = 0; k < seiten; k++)
+    liste.push(`right:${-9 + ((k + 1) % 2) * 5}px; top:${(16 + (k * 62) / Math.max(1, seiten)).toFixed(0)}%`);
+  return liste.slice(0, n);
+}
+
+const funken = orte(anzahl).map((ort, i) => ({
+  ort,
+  gr: groesse(i),
+  verzug: (startzeit(i) * takt).toFixed(2),
+}));
+---
+
+{/* aria-hidden: für Vorleseprogramme ist das nichts. pointer-events-none:
+    sie dürfen keinen Klick abfangen, der dem Knopf darunter gilt. */}
+{funken.map((f) => (
+  <svg
+    aria-hidden="true"
+    class="weihnacht-funke pointer-events-none absolute"
+    style={`${f.ort}; width:${f.gr}px; height:${f.gr}px; animation-delay:${f.verzug}s; animation-duration:${takt}s`}
+    viewBox="0 0 24 24"
+    fill={farbe}
+  >
+    <path d="M12 0.5 13.9 9.4 22.8 11.3 13.9 13.2 12 22.1 10.1 13.2 1.2 11.3 10.1 9.4Z" />
+  </svg>
+))}
