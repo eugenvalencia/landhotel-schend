@@ -3,6 +3,7 @@
 // Skips files that are already small enough.
 import sharp from "sharp";
 import { readdir, stat, readFile, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { join, extname } from "node:path";
 
 const MAX_WIDTH = 1920;
@@ -49,8 +50,14 @@ async function processFile(path) {
     out = await pipeline.jpeg({ quality: JPEG_QUALITY, mozjpeg: true, progressive: true }).toBuffer();
   }
 
-  if (out.length >= before) {
-    console.log(`  keep ${path} (already optimal)`);
+  // ⚠⚠ 19.10.2026: Vorher stand hier `out.length >= before` — geschrieben wurde
+  // also auch, wenn der neue Stand 200 Byte kleiner war. Beim ersten echten Lauf
+  // bekamen so 20 Fotos ein zweites q78 übergebügelt für "−0 KB, −0%": reiner
+  // Qualitätsverlust ohne Gegenwert. JPEG ist verlustbehaftet, jeder Durchgang
+  // kostet. Unter MIN_GAIN bleibt die Datei, wie sie ist.
+  const MIN_GAIN = 0.03;
+  if (out.length >= before * (1 - MIN_GAIN)) {
+    console.log(`  keep ${path} (${(before / 1024).toFixed(0)} KB — weniger als ${MIN_GAIN * 100} % Gewinn)`);
     return;
   }
 
@@ -67,6 +74,16 @@ async function main() {
   let totalAfter = 0;
 
   for (const dir of TARGETS) {
+    // ⚠⚠ 19.10.2026: Hier starb der ganze Lauf. `src/assets` gibt es seit dem
+    // Umbau auf `site/` nicht mehr — `readdir` warf ENOENT auf dem ERSTEN Ziel,
+    // und `public/` kam nie dran. Deshalb lagen in `public/` 86 Bilder über
+    // 300 KB (38,8 MB), obwohl dieses Werkzeug genau dagegen gebaut ist.
+    // Ein Lauf, der am fehlenden Ordner stirbt, sieht im Protokoll aus wie ein
+    // Lauf. Fehlende Ziele werden jetzt benannt und übersprungen.
+    if (!existsSync(dir)) {
+      console.log(`\nSkip ${dir} — Ordner gibt es nicht (kein Fehler, nur nichts zu tun).`);
+      continue;
+    }
     console.log(`\nScanning ${dir}…`);
     const files = await walk(dir);
     for (const f of files) {

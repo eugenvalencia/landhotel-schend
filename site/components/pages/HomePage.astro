@@ -526,7 +526,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
         {pakete.map((p, i) => (
           <a href={localizedPath(`/pakete/${p.slug}`, lang)} class="group block" data-reveal style={`--reveal-delay:${(i % 3) * 0.08}s`}>
             <div class="spotlight tilt-card relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
-              <Pic src={p.cover} alt={p.title} loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" />
+              <Pic src={p.cover} alt={p.title} loading="lazy" decoding="async" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" />
               {p.price && (
                 <div class="absolute top-3 right-3 px-3 py-1.5 bg-background/95 backdrop-blur-sm rounded-sm shadow-md border border-foreground/10">
                   <span class="text-[10px] font-medium tracking-[0.15em] uppercase text-foreground/60">{c.paketBadgeLabel}</span>
@@ -569,7 +569,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
              Die Hoehe kommt jetzt vom Raster (md:h-[33rem] / md:h-full),
              nicht mehr vom Bild - die doppelte md:h-64 + md:h-[33rem] ist weg. -->
         {REGION_SRC.map((src, i) => (
-          <Pic src={src} alt={c.mosaicAlts[i]} loading="lazy" decoding="async" class:list={["w-full h-48 md:h-full object-cover rounded-md shadow-card", REGION_CLS[i]]} />
+          <Pic src={src} alt={c.mosaicAlts[i]} loading="lazy" decoding="async" sizes="50vw" class:list={["w-full h-48 md:h-full object-cover rounded-md shadow-card", REGION_CLS[i]]} />
         ))}
       </div>
       <div class="max-w-prose mx-auto space-y-12" data-reveal>

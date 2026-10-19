@@ -97,9 +97,34 @@ const RESPONSIVE_SRCS = [
 // (Speisesaal 117,5 statt 87,7 KiB). Beide Sprossen kosten nur Dateien im Build,
 // keinen Bildpunkt Qualität — die Auflösung passt danach besser zum Gerät.
 const LADDER = [640, 768, 1024, 1280, 1536, 1920];
+
+// ⚠⚠ 19.10.2026: Die Liste oben war von Hand gepflegt — und deshalb lueckenhaft.
+// Gemessen: 22 von 166 Quellbildern hatten eine Leiter. Die fuenf Kacheln des
+// Region-Mosaiks auf der Startseite (`/region/eifel-1…5.jpg`) standen NICHT
+// drin, also lud jeder Besucher dort das Vollbild: zusammen 2,2 MB fuer fuenf
+// Kacheln, die auf dem Rechner je ~320 px breit sind. Dasselbe in der Galerie.
+// Eine Leiter kostet nur Dateien im Build, keinen Bildpunkt Qualitaet — es gibt
+// keinen Grund, sie einem grossen Foto zu verweigern. Darum jetzt: jedes Bild
+// breiter als LEITER_AB bekommt eine; die Liste oben bleibt als Zusatz fuer die
+// Ausnahmen darunter (z. B. paket-b-2 mit 580 px).
+const LEITER_AB = 1024;
+const autoLeiter = [];
+for (const rel of IMG_DIRS) {
+  const dirAuto = path.join(ROOT, rel);
+  if (!fs.existsSync(dirAuto)) continue;
+  for (const f of fs.readdirSync(dirAuto)) {
+    if (!RASTER.test(f)) continue;
+    let mAuto;
+    try { mAuto = await sharp(path.join(dirAuto, f)).metadata(); } catch { continue; }
+    if ((mAuto.width ?? 0) > LEITER_AB) autoLeiter.push("/" + rel.replace(/^public\//, "") + "/" + f);
+  }
+}
+const ALLE_RESPONSIVE = [...new Set([...RESPONSIVE_SRCS, ...autoLeiter])];
+console.log(`Leiter fuer ${ALLE_RESPONSIVE.length} Bilder (${RESPONSIVE_SRCS.length} von Hand, ${autoLeiter.length} ueber ${LEITER_AB} px breit)`);
+
 const respWidths = {};
 let respMade = 0;
-for (const url of RESPONSIVE_SRCS) {
+for (const url of ALLE_RESPONSIVE) {
   const src = path.join(ROOT, "public", url);
   if (!fs.existsSync(src)) { console.warn("responsive: fehlt", url); continue; }
   let meta;

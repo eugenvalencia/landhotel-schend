@@ -138,7 +138,7 @@ const hubLinks: Record<string, { href: string; label: string }> = {
       {c.highlights.map((h, i) => (
         <article class="spotlight rounded-md overflow-hidden border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${(i % 2) * 0.1}s`}>
           <div class="aspect-[16/10] overflow-hidden">
-            <Pic src={h.img} alt={h.alt} class="w-full h-full object-cover" loading="lazy" decoding="async" />
+            <Pic src={h.img} alt={h.alt} sizes="(min-width: 768px) 50vw, 100vw" class="w-full h-full object-cover" loading="lazy" decoding="async" />
           </div>
           <div class="p-6">
             <h2 class="font-display text-2xl">{h.title}</h2>

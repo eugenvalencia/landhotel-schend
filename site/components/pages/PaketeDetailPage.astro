@@ -115,7 +115,7 @@ const productSchema = lowPrice
     <div class="grid grid-cols-3 gap-3 mt-10">
       {paket.gallery.map((src, i) => (
         <div class="aspect-[4/3] overflow-hidden rounded-md" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
-          <Pic src={src} alt={i === 0 && paket.coverAlt ? paket.coverAlt : `${stripQ(paket.title)} — ${c.impressionLabel} ${i + 1}`} class="w-full h-full object-cover" loading="lazy" decoding="async" />
+          <Pic src={src} alt={i === 0 && paket.coverAlt ? paket.coverAlt : `${stripQ(paket.title)} — ${c.impressionLabel} ${i + 1}`} sizes="33vw" class="w-full h-full object-cover" loading="lazy" decoding="async" />
         </div>
       ))}
     </div>

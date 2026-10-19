@@ -132,7 +132,7 @@ const otherSlug = room.slug === "doppelzimmer" ? "familienzimmer" : "doppelzimme
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
           {room.gallery.map((src, i) => (
             <div class="aspect-[4/3] overflow-hidden rounded-md" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
-              <Pic src={src} alt={altFor(src, i)} data-lightbox="zimmer" class="w-full h-full object-cover" loading="lazy" decoding="async" />
+              <Pic src={src} alt={altFor(src, i)} data-lightbox="zimmer" data-lb-full={src} sizes="(min-width: 768px) 33vw, 50vw" class="w-full h-full object-cover" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>

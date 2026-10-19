@@ -77,7 +77,7 @@ const paketeList = itemListLd(pakete.map((p) => {
       {pakete.map((p, i) => (
         <a href={localizedPath(`/pakete/${p.slug}`, lang)} class="spotlight group flex flex-col rounded-md overflow-hidden border border-border bg-card shadow-card hover:shadow-elevated transition-shadow" data-reveal style={`--reveal-delay:${(i % 3) * 0.08}s`}>
           <div class="aspect-[4/3] overflow-hidden">
-            <Pic src={p.cover} alt={p.coverAlt ?? p.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
+            <Pic src={p.cover} alt={p.coverAlt ?? p.title} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
           </div>
           <div class="flex flex-col flex-1 p-6">
             <h2 class="font-display text-2xl leading-snug group-hover:text-secondary transition-colors text-balance">{p.title}</h2>
