@@ -3,9 +3,8 @@
 // Dauerseiten: `localized={false}`, also kein hreflang und kein toter
 // Sprachlink. EN/FR/NL folgen erst, wenn die deutsche Fassung freigegeben ist.
 //
-// Inhalt kommt vollständig aus site/lib/weihnachten.ts (= der gedruckten
-// Karte). Hier steht NUR Gestaltung. Zwei Quellen für dieselbe Karte würden
-// auseinanderlaufen; dann stünde im JSON-LD ein anderer Preis als auf der Seite.
+// Die Speisekarte ist seit 24.10.2026 entfernt (Wunsch Karin: Menüauswahl
+// vor Ort). Die Daten liegen weiter in site/lib/weihnachten.ts.
 import Layout from "../../layouts/Layout.astro";
 import Pic from "../Pic.astro";
 import Funkeln from "../Funkeln.astro";
@@ -13,7 +12,6 @@ import { ORIGIN } from "../../lib/site";
 import { breadcrumbLd, homeCrumb } from "../../lib/schema";
 import {
   WEIHNACHTSFEIER,
-  WEIHNACHTSKARTE,
   WEIHNACHTS_INTRO,
 } from "../../lib/weihnachten";
 
@@ -46,31 +44,6 @@ const breadcrumb = breadcrumbLd(ORIGIN, "de", [
   { name: "Weihnachten", path: PFAD },
 ]);
 
-// schema.org/Menu aus DENSELBEN Daten wie die sichtbare Karte.
-const menueSchema = {
-  "@type": "Menu",
-  "@id": `${URL}#weihnachtskarte`,
-  url: `${URL}#weihnachtskarte`,
-  name: "Weihnachtskarte 2026",
-  inLanguage: "de",
-  hasMenuSection: WEIHNACHTSKARTE.map((a) => ({
-    "@type": "MenuSection",
-    name: a.titel,
-    hasMenuItem: a.gaenge.map((g) => ({
-      "@type": "MenuItem",
-      name: g.name,
-      ...(g.beschreibung ? { description: g.beschreibung } : {}),
-      offers: {
-        "@type": "Offer",
-        price: g.preis,
-        priceCurrency: "EUR",
-        // Endpreis inkl. MwSt. — so steht es auch sichtbar unter der Karte.
-        valueAddedTaxIncluded: true,
-      },
-    })),
-  })),
-};
-
 // Der Termin selbst als Event. ⚠ Bewusst OHNE Uhrzeit und OHNE `offers`:
 // Die Uhrzeit ist uns nicht genannt worden, und ein Angebot mit Kaufknopf
 // würde eine Buchungsstrecke vortäuschen, die es hier nicht gibt — die Seite
@@ -88,7 +61,7 @@ const eventSchema = {
   eventStatus: "https://schema.org/EventScheduled",
   eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
   description:
-    "Weihnachtsmenüs im Landhaus Schend in Immerath (Vulkaneifel) am 26. Dezember 2026 — vier Hauptgänge zur Wahl, dazu Festtagssuppe, Salat vom Buffet und Dessertteller. Nur nach vorheriger Reservierung.",
+    "Weihnachtsgenuss im Landhaus Schend in Immerath (Vulkaneifel) am 26. Dezember 2026. Das Menü wählen Sie vor Ort. Nur nach vorheriger Reservierung.",
   image: [`${ORIGIN}${FOTO_HERO}`],
   url: URL,
   inLanguage: "de",
@@ -106,7 +79,6 @@ const eventSchema = {
       postalCode: "54552",
       addressCountry: "DE",
     },
-    hasMenu: menueSchema,
   },
   organizer: {
     "@type": "Hotel",
@@ -127,12 +99,8 @@ const faqSchema = {
       a: "Am Samstag, dem 26. Dezember 2026. Ein Platz ist nur nach vorheriger Reservierung möglich — telefonisch unter +49 6573 306.",
     },
     {
-      q: "Was kosten die Weihnachtsmenüs?",
-      a: "Die vier Hauptgänge kosten 15,50 € (vegetarisch), 19,50 € (Hähnchenschnitzel), 24,50 € (Rinderroulade) und 26,00 € (Zanderfilet). Festtagssuppe 7,00 €, Salat vom Buffet 5,00 €, weihnachtlicher Dessertteller 8,50 €. Jeder Gang lässt sich einzeln wählen; alle Preise sind Endpreise inklusive Mehrwertsteuer.",
-    },
-    {
-      q: "Gibt es ein vegetarisches Weihnachtsmenü?",
-      a: "Ja. Menü 1 ist vegetarisch: gebackener Camembert auf Apfelrotkohl mit Rosmarinkartoffeln und Preiselbeeren für 15,50 €.",
+      q: "Muss ich das Weihnachtsmenü vorher auswählen?",
+      a: "Nein. Bei der Reservierung stimmen wir nur Uhrzeit und Tischgröße ab. Ihr Menü wählen Sie am 26. Dezember bei uns vor Ort.",
     },
     {
       q: "Kann unsere Firma die Weihnachtsfeier an einem anderen Termin machen?",
@@ -148,7 +116,7 @@ const faqSchema = {
 
 <Layout
   title="Weihnachtsmenü & Weihnachtsfeier am 26.12.2026"
-  description="Weihnachtsgenuss in der Vulkaneifel: vier Weihnachtsmenüs von 15,50 € bis 26,00 €, dazu Festtagssuppe und Dessertteller — am 26. Dezember 2026 im Landhaus Schend, nur mit Reservierung. Firmenfeiern auch an anderen Terminen."
+  description="Weihnachtsgenuss in der Vulkaneifel: am 26. Dezember 2026 im Landhaus Schend, nur mit Reservierung — Ihr Menü wählen Sie vor Ort. Firmenfeiern auch an anderen Terminen."
   canonicalPath={PFAD}
   ogImage={FOTO_HERO}
   localized={false}
@@ -283,104 +251,6 @@ const faqSchema = {
     </div>
   </section>
 
-  {/*
-    DIE KARTE — Doppelrahmen wie auf der gedruckten Weihnachtskarte des
-    Hauses. Kein Zierrat darüber hinaus: die Karte selbst ist der Inhalt.
-  */}
-  <section id="weihnachtskarte" class="bg-gradient-to-b from-background via-muted/20 to-background">
-    <div class="container mx-auto px-4 py-16 md:py-24">
-      <div class="mx-auto max-w-3xl">
-        <div class="text-center" data-reveal>
-          {/* Ilexzweig von der gedruckten Karte — einmal, mittig, gross genug
-              zum Erkennen. Am Fotorand (36 px) las er sich als Bildfehler. */}
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            class="mx-auto mb-5 h-10 w-10 text-secondary"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.1"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M12 14.2C9.6 13.1 4.8 11.2 3.4 6.4c4.6.8 7.5 3.7 8.6 7.8Z" />
-            <path d="M12 14.2c2.4-1.1 7.2-3 8.6-7.8-4.6.8-7.5 3.7-8.6 7.8Z" />
-            <path d="M12 14.2v1.1" />
-            <circle cx="10.4" cy="17.2" r="1.2" />
-            <circle cx="13.6" cy="17.2" r="1.2" />
-            <circle cx="12" cy="19.9" r="1.2" />
-          </svg>
-          <p class="text-[11px] font-medium uppercase tracking-[0.24em] text-secondary md:text-xs">
-            Die Karte
-          </p>
-          <h2 class="font-display mt-4 text-balance text-3xl leading-tight md:text-4xl">
-            Unsere Weihnachtskarte
-          </h2>
-          <p class="mx-auto mt-5 max-w-xl text-pretty leading-relaxed text-foreground/85">
-            Jeder Gang lässt sich einzeln wählen — Suppe, Salat, Hauptgang und
-            Dessert stellen Sie sich zusammen, wie Sie mögen.
-          </p>
-        </div>
-
-        {/* ⚠ Auf der hellen Karte NUR die vier Ecken. Funken ueber einer
-            Preisliste machen sie unruhig und billig — der dunkle Hero traegt
-            sie, dieses Papier nicht. relative, damit die Ecken an DIESEM
-            Rahmen haengen. */}
-        <div
-          class="shadow-card relative mt-12 rounded-lg border border-secondary/30 bg-background p-2.5 md:mt-14"
-          data-reveal
-        >
-          <Funkeln anzahl={4} verteilung="ecken" takt={7} farbe="#c99a3e" />
-          <div class="rounded-md border border-secondary/20 px-5 py-10 sm:px-9 md:px-14 md:py-14">
-            {WEIHNACHTSKARTE.map((abschnitt, i) => (
-              <section class={i > 0 ? "mt-14" : ""}>
-                <h3 class="font-display text-center text-2xl leading-tight md:text-3xl">
-                  {abschnitt.titel}
-                </h3>
-                <div class="hairline mb-8 mt-4"></div>
-                <ul class="space-y-7">
-                  {abschnitt.gaenge.map((g) => (
-                    /* Gericht links (darf umbrechen), Preis rechts (bricht nie
-                       um): min-w-0 + flex-1 am Namen, shrink-0 am Preis.
-                       Bei 390 px bleibt der Preis so am Gang. */
-                    <li class="flex items-baseline gap-4">
-                      <div class="min-w-0 flex-1">
-                        <p class="font-display text-lg leading-snug md:text-xl">{g.name}</p>
-                        {g.beschreibung && (
-                          <p class="mt-1.5 text-pretty text-sm leading-relaxed text-muted-foreground">
-                            {g.beschreibung}
-                          </p>
-                        )}
-                      </div>
-                      <p class="font-display shrink-0 whitespace-nowrap text-right text-lg tabular-nums text-secondary md:text-xl">
-                        <data value={g.preis}>{g.preisText}</data>
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            ))}
-
-            {/* Pflichtangaben. Sie stehen EINMAL unter der ganzen Karte —
-                nicht unter jedem Abschnitt, das liest sonst niemand mehr.
-                · Endpreise: Preisangabenverordnung.
-                · Allergene/Zusatzstoffe: LMIV-Auskunft über das Personal. */}
-            <div class="mt-14 space-y-2 border-t border-border/60 pt-6 text-center">
-              <p class="text-xs leading-relaxed text-muted-foreground">
-                Alle Preise sind Endpreise in Euro und enthalten die gesetzliche
-                Mehrwertsteuer.
-              </p>
-              <p class="text-xs leading-relaxed text-muted-foreground">
-                Angaben zu Allergenen und Zusatzstoffen erhalten Sie gern bei
-                unserem Servicepersonal.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   {/* RESERVIERUNG */}
   <section class="border-y border-border/60 bg-muted/30">
     <div class="container mx-auto px-4 py-16 md:py-20">
@@ -442,7 +312,7 @@ const faqSchema = {
           <ul class="mt-7 space-y-3.5">
             {[
               "Festsaal für bis zu 70 Gäste",
-              "Weihnachtsmenüs von der Karte oder nach Absprache",
+              "Weihnachtsmenü nach Absprache",
               "Kostenfreie Parkplätze direkt am Haus",
             ].map((punkt) => (
               <li class="flex items-start gap-3">
