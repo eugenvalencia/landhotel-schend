@@ -225,6 +225,9 @@ const STORAGE_KEY = "schend_consent_v1";
       var h = el.hidden ? "" : el.offsetHeight + 32 + "px";
       document.documentElement.style.scrollPaddingBottom = h;
       document.documentElement.style.paddingBottom = h;
+      // Der schwebende Knopf »Anzeige & Komfort« ist fest und liegt unter dem Hinweis — solange nicht per Tab erreichbar.
+      var hilfe = document.getElementById("a11y-toggle");
+      if (hilfe) hilfe.inert = !el.hidden;
     }
     window.addEventListener("resize", abstand);
 
