@@ -1,6 +1,6 @@
 # B — Landhaus Schend (Pilot-Kunde, LIVE)
 
-**Astro 6 SSG.** Eine statische Kundenseite, live unter `landhaus-schend.de`.
+**Astro 7 SSG.** Eine statische Kundenseite, live unter `landhaus-schend.de`.
 
 ## ⛔ IMPORTANT — Es gibt hier KEINE Buchungen
 

@@ -207,17 +207,23 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
   // Zustellrate der Domain — und dann landet die nächste echte Antwort an
   // einen Gast im Junk-Ordner.
   //
-  // Die kurzen, beschrifteten Felder (Anreise, Zimmerwunsch, Personen)
-  // bleiben: Sie sind der Zweck einer Bestätigung, tragen keinen frei
-  // wählbaren Fließtext und werden nirgends zu einem klickbaren Link.
+  // Nur Werte, die der Server selbst gegen feste Listen geprüft oder in Zahlen
+  // gewandelt hat, gehen in die Gast-Mail: Personen (Zahl), Zimmerwunsch
+  // (ALLOWED_KATEGORIEN), Anzahl Zimmer (ALLOWED_ZIMMER), Extras (feste Texte
+  // aus Ja/Nein-Feldern), Daten nur im Format JJJJ-MM-TT. Name, Adresse, Telefon,
+  // E-Mail, Paket und Nachricht sind freier Text und bleiben draußen — auch die
+  // Anrede ohne Namen. Die vollständige Fassung geht an das Hotel.
+  const istDatum = (d: string) => /^\d{4}-\d{2}-\d{2}$/.test(d);
+  const GAST_FELDER = new Set(["Personen", "Zimmerwunsch", "Anzahl Zimmer", "Extras"]);
   const guestRows = rows.filter(
-    ([k]) => k !== "Datenschutz akzeptiert" && k !== "Name" && k !== "Nachricht",
+    ([k, v]) =>
+      GAST_FELDER.has(k) || ((k === "Anreise" || k === "Abreise") && istDatum(v)),
   );
   const guestSubject = "Ihre Anfrage beim Landhaus Schend – wir haben sie erhalten";
   const guestHtml = `<div style="font-family:Georgia,'Times New Roman',serif;color:#2b2b2b;max-width:560px;line-height:1.6">
   <h2 style="font-family:Georgia,serif;color:#9a7b3f;margin:0 0 2px">Landhaus Schend</h2>
   <p style="color:#9a7b3f;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;margin:0 0 18px">Hotel · Restaurant · Vulkaneifel</p>
-  <p>Guten Tag ${esc(name)},</p>
+  <p>Guten Tag,</p>
   <p>vielen Dank — Ihre Anfrage ist bei uns eingegangen. Wir melden uns persönlich bei Ihnen, sobald wir die Verfügbarkeit für Ihren Wunschzeitraum geprüft haben. Dies ist eine automatische Eingangsbestätigung – noch keine verbindliche Buchung.</p>
   <p style="margin:18px 0 6px;font-weight:bold;color:#9a7b3f">Ihre Angaben im Überblick</p>
   <table cellpadding="6" style="border-collapse:collapse;font-size:14px;width:100%;font-family:Arial,Helvetica,sans-serif">
@@ -232,7 +238,7 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
 </div>`;
   const guestText =
     `Landhaus Schend – Eingangsbestätigung Ihrer Anfrage\n\n` +
-    `Guten Tag ${name},\n\n` +
+    `Guten Tag,\n\n` +
     `vielen Dank — Ihre Anfrage ist bei uns eingegangen. Wir melden uns persönlich, sobald wir die Verfügbarkeit geprüft haben. ` +
     `Dies ist eine automatische Eingangsbestätigung – noch keine verbindliche Buchung.\n\n` +
     `Ihre Angaben:\n` +

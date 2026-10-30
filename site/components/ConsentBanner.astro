@@ -213,10 +213,26 @@ const STORAGE_KEY = "schend_consent_v1";
       window.gtag("config", GA4);
     }
 
+    /**
+     * WCAG 2.2 · 2.4.11 (30.10.2026): Das Banner fängt den Fokus nicht. Wer mit
+     * Tab weiterspringt, landete auf Links UNTER dem Banner (gemessen bis 53 je
+     * Seite). `scroll-padding-bottom` in Bannerhöhe lässt den Browser das
+     * fokussierte Element darüber stehen (W3C-Technik C43). Das gleiche Maß
+     * als `padding-bottom`, sonst bleiben die Fußzeilen-Links am Seitenende
+     * verdeckt — dort kann die Seite nicht weiter scrollen.
+     */
+    function abstand() {
+      var h = el.hidden ? "" : el.offsetHeight + 32 + "px";
+      document.documentElement.style.scrollPaddingBottom = h;
+      document.documentElement.style.paddingBottom = h;
+    }
+    window.addEventListener("resize", abstand);
+
     function zeigeBanner() {
       el.dataset.state = "asking";
       el.querySelector('[data-role="state"]').hidden = true;
       el.hidden = false;
+      abstand();
     }
 
     /** Einstellungen: zeigt die aktuelle Wahl, statt erneut zu fragen. */
@@ -226,6 +242,7 @@ const STORAGE_KEY = "schend_consent_v1";
       s.hidden = false;
       el.dataset.state = "settings";
       el.hidden = false;
+      abstand();
     }
 
     var STATE_ON = el.dataset.stateOn || "";
@@ -237,6 +254,7 @@ const STORAGE_KEY = "schend_consent_v1";
       var wahl = b.dataset.consent;
       try { localStorage.setItem(KEY, wahl); } catch (e) {}
       el.hidden = true;
+      abstand();
       if (wahl === "granted") { ladeClarity(); ladeGA4(); }
       // Bei Widerruf wird NICHT nachgeladen; wirksam ab dem nächsten Aufruf.
     });

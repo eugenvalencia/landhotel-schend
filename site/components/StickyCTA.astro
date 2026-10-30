@@ -85,7 +85,14 @@ const nurAnrufen = base.startsWith("/weihnachten");
       // Versteckt = komplett aus Tab-Reihenfolge + Screenreader (opacity:0 allein
       // bleibt fokussierbar). inert deckt Mobil-Leiste UND Desktop-Pille ab.
       (cta as HTMLElement & { inert: boolean }).inert = !show;
+      // WCAG 2.2 · 2.4.11: Solange der Cookie-Hinweis offen ist, liegt die
+      // Mobil-Leiste unsichtbar darunter — dann auch nicht per Tab erreichbar.
+      const banner = document.getElementById("consent-banner");
+      const bar = cta.querySelector<HTMLElement>(".sticky-bar");
+      if (bar) bar.inert = !!banner && !banner.hidden;
     };
+    // Nach der Wahl im Cookie-Hinweis die Leiste wieder freigeben.
+    document.getElementById("consent-banner")?.addEventListener("click", () => setTimeout(() => update(window.scrollY)));
     // Lenis feuert kein natives "scroll" — an die zentrale Brücke hängen
     // ([[lenis-no-native-scroll-event-gotcha]]), sonst bleibt die Pille stehen.
     if ((window as any).__onScroll) {

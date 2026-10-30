@@ -142,7 +142,7 @@ const grundKlartext = (ev: ResendEvent): string => {
       : b?.type === "Transient"
         ? "Ein vorübergehendes Problem beim Empfänger — der Server war voll oder nicht erreichbar."
         : "Der Grund ist unklar.";
-  return b?.message ? art + " Meldung des Empfängers: „" + b.message + "“" : art;
+  return b?.message ? art + " Meldung des Empfängers: „" + b.message.slice(0, 200) + "“" : art;
 };
 
 export const onRequestPost = async (context: { request: Request; env: Env }): Promise<Response> => {
