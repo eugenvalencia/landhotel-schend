@@ -9,17 +9,6 @@ import { breadcrumbLd, homeCrumb } from "../lib/schema";
 
 const URL = `${ORIGIN}/maare-mosel-radweg/`;
 const breadcrumb = breadcrumbLd(ORIGIN, "de", [homeCrumb("de"), { name: "Der Maare-Mosel-Radweg", path: "/maare-mosel-radweg" }]);
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": `${URL}#faq`,
-  url: URL,
-  mainEntity: [
-    { q: "Wie lang ist der Maare-Mosel-Radweg?", a: "58,5 Kilometer, von Daun bis Bernkastel-Kues (Quelle: Geopark und GesundLand Vulkaneifel)." },
-    { q: "Wo beginnt der Maare-Mosel-Radweg?", a: "Am Bahnhof in Daun — nicht in Immerath. Von Immerath aus sind es rund 18 Kilometer beziehungsweise 15 Fahrminuten bis zum Startpunkt." },
-    { q: "Kann man mit dem Fahrrad zurück nach Daun kommen?", a: "Ja, mit dem RadBus Maare-Mosel-Express (Linie 555), der zwischen Daun, Wittlich und Bernkastel-Kues verkehrt und Fahrräder mitnimmt." },
-  ].map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
-};
 ---
 
 <TextPage
@@ -34,7 +23,6 @@ const faqSchema = {
   heroCredit={{ autor: "Hoebele", lizenz: "CC BY-SA 4.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/4.0", quelle: "https://commons.wikimedia.org/wiki/File:Maare-Mosel-Radweg.jpg" }}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 
   <section>
     <h2>Ein Radweg, der einmal eine Bahnstrecke war</h2>

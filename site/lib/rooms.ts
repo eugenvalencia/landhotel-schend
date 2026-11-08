@@ -149,7 +149,6 @@ export function roomSchema(r: RoomType) {
       priceCurrency: "EUR",
       lowPrice: r.priceFrom,
       description: `${r.priceLabel}, inkl. Frühstücksbuffet`,
-      availability: "https://schema.org/InStock",
     },
   };
 }

@@ -116,38 +116,6 @@ const eventSchema = {
   },
 };
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": `${URL}#faq`,
-  url: URL,
-  mainEntity: [
-    {
-      q: "Wann ist die Weihnachtsfeier im Landhaus Schend?",
-      a: "Am Samstag, dem 26. Dezember 2026. Ein Platz ist nur nach vorheriger Reservierung möglich — telefonisch unter +49 6573 306.",
-    },
-    {
-      q: "Was kosten die Weihnachtsmenüs?",
-      a: "Die vier Hauptgänge kosten 15,50 € (vegetarisch), 19,50 € (Hähnchenschnitzel), 24,50 € (Rinderroulade) und 26,00 € (Zanderfilet). Festtagssuppe 7,00 €, Salat vom Buffet 5,00 €, weihnachtlicher Dessertteller 8,50 €. Jeder Gang lässt sich einzeln wählen; alle Preise sind Endpreise inklusive Mehrwertsteuer.",
-    },
-    {
-      q: "Muss ich das Weihnachtsmenü vorher auswählen?",
-      a: "Nein. Bei der Reservierung stimmen wir nur Uhrzeit und Tischgröße ab. Ihr Menü wählen Sie am 26. Dezember bei uns vor Ort.",
-    },
-    {
-      q: "Gibt es ein vegetarisches Weihnachtsmenü?",
-      a: "Ja. Menü 1 ist vegetarisch: gebackener Camembert auf Apfelrotkohl mit Rosmarinkartoffeln und Preiselbeeren für 15,50 €.",
-    },
-    {
-      q: "Kann unsere Firma die Weihnachtsfeier an einem anderen Termin machen?",
-      a: "Ja. Für Firmen-Weihnachtsfeiern vereinbaren wir Termine nach Absprache. Der Festsaal fasst bis zu 70 Gäste. Anfragen telefonisch unter +49 6573 306.",
-    },
-  ].map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
-  })),
-};
 ---
 
 <Layout
@@ -160,7 +128,6 @@ const faqSchema = {
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(eventSchema)} />
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 
   {/*
     HERO — eigener dunkler Abschnitt, unabhängig vom Hell/Dunkel-Umschalter

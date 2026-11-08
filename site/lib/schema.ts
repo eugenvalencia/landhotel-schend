@@ -45,7 +45,6 @@ export function fromOffer(
     "@type": "AggregateOffer",
     priceCurrency: "EUR",
     lowPrice: minPrice,
-    availability: "https://schema.org/InStock",
     ...(opts.url ? { url: opts.url } : {}),
     ...(opts.seller ? { seller: opts.seller } : {}),
     ...(opts.description ? { description: opts.description } : {}),

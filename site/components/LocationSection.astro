@@ -28,7 +28,7 @@ const APPLE_MAPS = `https://maps.apple.com/?q=${ENC}&ll=${LAT},${LNG}`;
       <p class="text-muted-foreground leading-relaxed">{c.subline}</p>
     </div>
 
-    <!-- Karte (DSGVO-2-Klick) -->
+    {/* Karte (DSGVO-2-Klick) */}
     <div class="border border-border/70 rounded-md overflow-hidden shadow-card mb-10" data-reveal>
       <div data-map-placeholder class="w-full h-[360px] md:h-[480px] flex flex-col items-center justify-center gap-4 bg-muted/40 px-6 text-center">
         <svg class="h-8 w-8 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
@@ -41,7 +41,7 @@ const APPLE_MAPS = `https://maps.apple.com/?q=${ENC}&ll=${LAT},${LNG}`;
       </div>
     </div>
 
-    <!-- Route-Aktionen -->
+    {/* Route-Aktionen */}
     <div class="flex flex-wrap items-center justify-center gap-3 mb-20 md:mb-24">
       <a href={ROUTE_URL} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center gap-2 px-7 py-3 rounded-sm border border-primary/40 text-xs font-medium uppercase tracking-[0.18em] hover:border-secondary hover:text-secondary transition-colors">
         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
@@ -51,12 +51,12 @@ const APPLE_MAPS = `https://maps.apple.com/?q=${ENC}&ll=${LAT},${LNG}`;
         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
         {c.appleMaps}
       </a>
-      <!-- Kein aria-label: es ersetzt den sichtbaren Text vollstaendig, und
+      {/* Kein aria-label: es ersetzt den sichtbaren Text vollstaendig, und
            dann heisst der Knopf anders als er aussieht. Wer ihn per Sprache
            bedient, sagt was er LIEST - und trifft nichts.
            WCAG 2.5.3 "Label in Name"; gemessen 20.08.2026 als
            label-content-name-mismatch. Der Zusatz steht deshalb sichtbar
-           im Knopf, nur eben nicht fuer das Auge. -->
+           im Knopf, nur eben nicht fuer das Auge. */}
       <button type="button" data-copy-coords data-copied={c.copied} class="inline-flex min-h-11 items-center gap-2 px-5 py-3 text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-primary transition-colors">
         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         <span data-coords>{LAT}, {LNG}</span>
@@ -64,7 +64,7 @@ const APPLE_MAPS = `https://maps.apple.com/?q=${ENC}&ll=${LAT},${LNG}`;
       </button>
     </div>
 
-    <!-- Adresse · Kontakt · Entfernungen -->
+    {/* Adresse · Kontakt · Entfernungen */}
     <div class="grid md:grid-cols-3 gap-px bg-border/50 mb-3 border border-border/50 rounded-md overflow-hidden shadow-card" data-reveal>
       <div class="bg-background p-8 md:p-10">
         <p class="eyebrow mb-5">{c.addrEyebrow}</p>
@@ -104,7 +104,7 @@ const APPLE_MAPS = `https://maps.apple.com/?q=${ENC}&ll=${LAT},${LNG}`;
       </div>
     </div>
 
-    <!-- Anreise: Auto · Bahn · Flugzeug -->
+    {/* Anreise: Auto · Bahn · Flugzeug */}
     <div class="grid md:grid-cols-3 gap-px bg-border/50 border border-border/50" data-reveal>
       <div class="bg-background p-8 md:p-10">
         <p class="eyebrow mb-5">{c.autoEyebrow}</p>

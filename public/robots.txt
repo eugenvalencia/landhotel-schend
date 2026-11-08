@@ -1,10 +1,6 @@
 # Allgemeine Crawl-Erlaubnis
 User-agent: *
 Allow: /
-Disallow: /dashboard
-Disallow: /login
-Disallow: /booking-confirmation
-Disallow: /confirmation/
 
 # Suchmaschinen
 User-agent: Googlebot

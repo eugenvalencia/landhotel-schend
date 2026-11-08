@@ -89,7 +89,7 @@ const otherSlug = room.slug === "doppelzimmer" ? "familienzimmer" : "doppelzimme
     <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
   )}
 
-  <!-- Hero -->
+  {/* Hero */}
   <section class="relative">
     <Pic src={room.gallery[0]} alt={`${room.type} ${c.altSuffix}`} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
     <div class="absolute inset-0 gradient-hero"></div>
@@ -106,7 +106,7 @@ const otherSlug = room.slug === "doppelzimmer" ? "familienzimmer" : "doppelzimme
   </section>
 
   <section class="container mx-auto px-4 py-16 md:py-20 max-w-3xl">
-    <!-- Eckdaten -->
+    {/* Eckdaten */}
     <div class="flex flex-wrap gap-x-8 gap-y-3 text-sm mb-8">
       <span class="inline-flex items-center gap-2"><span class="text-muted-foreground">{c.occupancyLabel}</span> <span class="font-medium">{c.occupancyUpTo} {room.maxPersons} {room.maxPersons === 1 ? c.personSg : c.personPl}</span></span>
       <span class="inline-flex items-center gap-2"><span class="text-muted-foreground">{c.bedLabel}</span> <span class="font-medium">{room.bed}</span></span>
@@ -169,7 +169,7 @@ const otherSlug = room.slug === "doppelzimmer" ? "familienzimmer" : "doppelzimme
     </div>
     <p class="text-sm text-muted-foreground mt-4">{c.commissionNote}</p>
 
-    <!-- Hub-Spoke: kontextuelle interne Links zu thematisch nahen Seiten -->
+    {/* Hub-Spoke: kontextuelle interne Links zu thematisch nahen Seiten */}
     <nav class="hairline mt-12 pt-8 flex flex-col gap-2.5 text-sm" aria-label={c.breadcrumbList}>
       <a href={localizedPath(`/zimmer/${otherSlug}`, lang)} class="inline-flex min-h-11 items-center gap-2 text-foreground/80 hover:text-secondary transition-colors">
         <span class="text-secondary">→</span>{c.linkOtherRoom[room.slug]}

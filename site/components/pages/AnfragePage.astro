@@ -34,20 +34,20 @@ const pflichtHint: Record<Locale, string> = {
 >
   <section class="container mx-auto px-4 pt-12 md:pt-16 pb-16 md:pb-24">
     <div class="max-w-3xl mx-auto">
-      <!-- Kopf -->
+      {/* Kopf */}
       <div class="text-center" data-reveal>
         <p class="eyebrow">{c.eyebrow}</p>
         <h1 class="font-display text-4xl md:text-5xl mt-3 text-balance leading-[1.05]">{c.h1}</h1>
         <p class="mt-5 text-foreground/85 leading-relaxed text-pretty max-w-xl mx-auto" set:html={c.introHtml} />
       </div>
 
-      <!-- Foto-Hinweis (gegen Reklamationen) -->
+      {/* Foto-Hinweis (gegen Reklamationen) */}
       <div class="mt-8 flex items-start gap-3 rounded-md border border-border bg-muted/30 px-4 py-3.5 text-sm text-foreground/80" data-reveal>
         <svg class="h-5 w-5 shrink-0 mt-0.5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
         <p set:html={c.fotoHinweisHtml} />
       </div>
 
-      <!-- Formular -->
+      {/* Formular */}
       <form
         id="anfrage-form" class="mt-10 space-y-8" novalidate data-reveal
         data-msg-sending={c.jsSending}
@@ -59,23 +59,23 @@ const pflichtHint: Record<Locale, string> = {
         data-msg-limit={c.jsRateLimited}
         data-msg-conn={c.jsConnFailed}
       >
-        <!-- Honeypot (Spam-Schutz, für Menschen unsichtbar) -->
+        {/* Honeypot (Spam-Schutz, für Menschen unsichtbar) */}
         <div aria-hidden="true" style="position:absolute;left:-9999px;height:0;overflow:hidden">
-          <label>{c.honeypotLabel} <input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
+          <label>{c.honeypotLabel} <input type="text" name="hp_zusatz_7" tabindex="-1" autocomplete="off" aria-hidden="true" /></label>
         </div>
 
-        <!-- Pflichtfeld-Legende (WCAG 3.3.2) -->
+        {/* Pflichtfeld-Legende (WCAG 3.3.2) */}
         <p class="-mt-4 text-xs text-muted-foreground">
           <span class="anf-req" aria-hidden="true">*</span> {pflichtHint[lang]}
         </p>
 
-        <!-- Name -->
+        {/* Name */}
         <div class="anf-field">
           <label for="name">{c.nameLabel}<span class="anf-req" aria-hidden="true">*</span></label>
           <input id="name" name="name" type="text" required autocomplete="name" maxlength="120" />
         </div>
 
-        <!-- Adresse -->
+        {/* Adresse */}
         <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
           <div class="anf-field">
             <label for="street">{c.streetLabel}<span class="anf-req" aria-hidden="true">*</span></label>
@@ -87,7 +87,7 @@ const pflichtHint: Record<Locale, string> = {
           </div>
         </div>
 
-        <!-- Kontakt -->
+        {/* Kontakt */}
         <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
           <div class="anf-field">
             <label for="email">{c.emailLabel}<span class="anf-req" aria-hidden="true">*</span></label>
@@ -99,7 +99,7 @@ const pflichtHint: Record<Locale, string> = {
           </div>
         </div>
 
-        <!-- Personen + Paket -->
+        {/* Personen + Paket */}
         <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
           <div class="anf-field">
             <label for="persons">{c.personsLabel}<span class="anf-req" aria-hidden="true">*</span></label>
@@ -115,7 +115,7 @@ const pflichtHint: Record<Locale, string> = {
           </div>
         </div>
 
-        <!-- Zimmer-Kategorien -->
+        {/* Zimmer-Kategorien */}
         <fieldset class="anf-field">
           <legend class="anf-legend">{c.roomsLegend} <span class="text-muted-foreground font-normal normal-case tracking-normal">{c.roomsMulti}</span></legend>
           <div class="mt-3 space-y-3">
@@ -141,7 +141,7 @@ const pflichtHint: Record<Locale, string> = {
           <p class="mt-3 text-xs text-muted-foreground">{c.halbpensionHint}</p>
         </fieldset>
 
-        <!-- Zeitraum -->
+        {/* Zeitraum */}
         <div class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
           <div class="anf-field">
             <label for="checkin">{c.checkinLabel}<span class="anf-req" aria-hidden="true">*</span></label>
@@ -153,17 +153,17 @@ const pflichtHint: Record<Locale, string> = {
           </div>
         </div>
 
-        <!-- Nachricht -->
+        {/* Nachricht */}
         <div class="anf-field">
           <label for="message">{c.messageLabel}</label>
           <textarea id="message" name="message" rows="4" maxlength="2000" placeholder={c.messagePlaceholder}></textarea>
         </div>
 
-        <!-- Optionen.
+        {/* Optionen.
              `min-h-11` = 44 px: die Zeile IST die Trefferfläche, nicht das
              20-px-Kästchen. Ohne das trifft ein Daumen bei 390 px daneben.
              Bewusst über die Zeilenhöhe gelöst und NICHT über negative Ränder —
-             die ließen die Nachbarzeilen überlappen. -->
+             die ließen die Nachbarzeilen überlappen. */}
         <div class="space-y-1">
           <label class="flex min-h-11 items-center gap-3 py-1 cursor-pointer text-foreground/90">
             <input type="checkbox" name="halbpension" class="anf-check" />
@@ -179,15 +179,15 @@ const pflichtHint: Record<Locale, string> = {
           </label>
         </div>
 
-        <!-- Datenschutz — PFLICHTFELD. Ohne dieses Häkchen lässt sich das
+        {/* Datenschutz — PFLICHTFELD. Ohne dieses Häkchen lässt sich das
              Formular nicht absenden; eine 26-px-Zeile war hier der teuerste
-             Treffer der ganzen Seite. -->
+             Treffer der ganzen Seite. */}
         <label class="flex min-h-11 items-start gap-3 py-1.5 cursor-pointer text-foreground/90">
           <input type="checkbox" name="datenschutz" class="anf-check mt-1" required />
           <span><a href={localizedPath("/datenschutz", lang)} class="underline hover:text-secondary" target="_blank" rel="noopener">{c.dsLinkText}</a> {c.dsAfter}<span class="anf-req" aria-hidden="true">*</span></span>
         </label>
 
-        <!-- Senden -->
+        {/* Senden */}
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
           <p class="text-xs text-muted-foreground max-w-sm">
             {c.bottomNote}
@@ -198,11 +198,11 @@ const pflichtHint: Record<Locale, string> = {
           </button>
         </div>
 
-        <!-- Status -->
+        {/* Status */}
         <div id="anf-status" role="status" aria-live="polite" hidden class="rounded-md px-4 py-4 text-sm"></div>
       </form>
 
-      <!-- ── Lesetext unter dem Formular ──
+      {/* ── Lesetext unter dem Formular ──
         *
         * ⚠ WARUM ER UNTER DEM FORMULAR STEHT (19.09.2026): Wer hierher kommt,
         *   will anfragen. Text davor kostet Abschlüsse. Wer noch zögert, liest
@@ -212,7 +212,7 @@ const pflichtHint: Record<Locale, string> = {
         *   für Google keine eigenständige Seite. Erst dieser Text trägt sie.
         * ⛔ Jede Aussage ist belegt (AGB, FAQ, Zimmer, Datenschutz). Wer hier
         *   etwas ändert, ändert eine Zusage an einen Gast, der danach seine
-        *   Reise plant — Quelle prüfen, nicht schätzen. -->
+        *   Reise plant — Quelle prüfen, nicht schätzen. */}
       <div class="mt-20 border-t border-border pt-14" data-reveal>
         <div class="space-y-10">
           {c.infoBloecke.map((b) => (
@@ -223,12 +223,12 @@ const pflichtHint: Record<Locale, string> = {
           ))}
         </div>
 
-        <!-- Häufige Fragen — als <details>, damit die Seite nicht zur Textwand
+        {/* Häufige Fragen — als <details>, damit die Seite nicht zur Textwand
              wird. ⚠ `open` beim ersten Eintrag ist Absicht: ein Akkordeon, das
              komplett zu ist, sieht aus wie eine leere Liste.
              ⚠ Der Inhalt geschlossener Einträge steht trotzdem im HTML und wird
              ausgeliefert — nur die OFFENE Antwort ist sichtbar, gezählt wird im
-             gebauten <main>. -->
+             gebauten <main>. */}
         <div class="mt-16">
           <h2 class="font-display text-2xl md:text-[1.75rem] leading-snug">{c.faqTitel}</h2>
           <div class="mt-6 divide-y divide-border border-t border-b border-border">
@@ -417,7 +417,7 @@ const pflichtHint: Record<Locale, string> = {
       e.preventDefault();
 
       // Spam-Honeypot: ausgefüllt = Bot → still abbrechen.
-      const honey = (form.elements.namedItem("company") as HTMLInputElement)?.value;
+      const honey = (form.elements.namedItem("hp_zusatz_7") as HTMLInputElement)?.value;
       if (honey) return;
 
       // Pflichtfelder + mind. eine Kategorie. Autofill-tolerant: vom Browser
@@ -469,7 +469,7 @@ const pflichtHint: Record<Locale, string> = {
         kinderbett: checked("kinderbett"),
         hund: checked("hund"),
         datenschutz: checked("datenschutz"),
-        company: honey, // Honeypot serverseitig nochmal geprüft
+        hp_zusatz_7: honey, // Honeypot serverseitig nochmal geprüft
         gestartet,      // Zeitfalle serverseitig geprüft
       };
 

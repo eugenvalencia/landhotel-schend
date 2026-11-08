@@ -83,10 +83,10 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
     </div>
   )}
   <div class="relative container mx-auto px-4 flex items-center justify-between gap-4 h-16 md:h-20">
-    <!-- Brand -->
-    <!-- `min-h-11` = 44 px. Der Logo-Link war 36 px hoch — dieselbe Stelle, die
+    {/* Brand */}
+    {/* `min-h-11` = 44 px. Der Logo-Link war 36 px hoch — dieselbe Stelle, die
          am 31.07.2026 auf acht anderen Kundenseiten nachgezogen wurde; Schend
-         war als Astro-Seite nicht dabei. -->
+         war als Astro-Seite nicht dabei. */}
     <a href={localizedPath("/", lang)} class="group flex min-h-11 items-center gap-3 min-w-0" aria-label={t("brand_home_aria", lang)}>
       <span
         role="img"
@@ -104,7 +104,7 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
     </a>
 
     <div class="flex items-center gap-4 lg:gap-5">
-      <!-- Desktop-Nav — erst ab xl (1280px), sonst kollidieren die 7 Punkte + Controls mit dem Logo -->
+      {/* Desktop-Nav — erst ab xl (1280px), sonst kollidieren die 7 Punkte + Controls mit dem Logo */}
       <nav class="hidden xl:flex items-center gap-0.5" aria-label={t("nav_main_aria", lang)}>
         {NAV_ITEMS.map((item) => (
           <a
@@ -119,13 +119,13 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
           </a>
         ))}
 
-        <!-- Hell/Dunkel -->
+        {/* Hell/Dunkel */}
         <button type="button" data-theme-toggle aria-label={t("theme_toggle", lang)} class="ml-1.5 p-2 rounded-md text-primary hover:text-secondary hover:bg-muted transition-colors">
           <svg data-theme-moon class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
           <svg data-theme-sun class="h-4 w-4 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
         </button>
 
-        <!-- Sprache -->
+        {/* Sprache */}
         <details class="lang-dd relative">
           <summary class="list-none cursor-pointer inline-flex items-center gap-1.5 px-2 py-1.5 text-xs font-semibold text-primary hover:text-secondary transition-colors" aria-label={t("lang_label", lang)}>
             <span class={flagCls} set:html={FLAGS[lang]} />
@@ -159,7 +159,7 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
         </a>
       </nav>
 
-      <!-- Tablet + kleines Desktop (md–xl): Telefon sichtbar -->
+      {/* Tablet + kleines Desktop (md–xl): Telefon sichtbar */}
       <a
         href={HOTEL.phoneHref}
         class="hidden md:inline-flex xl:hidden items-center gap-1.5 px-3 py-1.5 rounded-full border border-secondary/40 text-xs font-semibold text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all"
@@ -169,7 +169,7 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
         06573 306
       </a>
 
-      <!-- Mobile-Toggle -->
+      {/* Mobile-Toggle */}
       <button
         type="button"
         data-menu-toggle
@@ -186,7 +186,7 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
     </div>
   </div>
 
-  <!-- Mobile-Menü (bis xl) -->
+  {/* Mobile-Menü (bis xl) */}
   <div id="mobile-menu" hidden class="xl:hidden border-t bg-background animate-fade-up max-h-[calc(100dvh-4rem)] md:max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain">
     <div class="container mx-auto px-4 py-4 flex flex-col gap-1">
       <a
@@ -212,7 +212,7 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
         </a>
       ))}
 
-      <!-- Hell/Dunkel + Sprache (mobil) -->
+      {/* Hell/Dunkel + Sprache (mobil) */}
       <div class="flex items-center justify-between gap-3 px-4 py-3 mt-2 border-t border-border">
         <button type="button" data-theme-toggle aria-label={t("theme_toggle", lang)} class="inline-flex items-center gap-2 min-h-11 py-2 -my-2 text-sm font-medium text-primary hover:text-secondary transition-colors">
           <svg data-theme-moon class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
@@ -239,7 +239,7 @@ const flagCls = "inline-block w-5 h-3.5 rounded-[2px] overflow-hidden ring-1 rin
     </div>
   </div>
 </header>
-<!-- Spacer, damit der fixe Header den Seiteninhalt nicht überlappt -->
+{/* Spacer, damit der fixe Header den Seiteninhalt nicht überlappt */}
 <div aria-hidden="true" class="h-16 md:h-20"></div>
 
 <script>

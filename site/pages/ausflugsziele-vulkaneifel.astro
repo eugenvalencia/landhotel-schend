@@ -11,17 +11,6 @@ import { breadcrumbLd, homeCrumb } from "../lib/schema";
 
 const URL = `${ORIGIN}/ausflugsziele-vulkaneifel/`;
 const breadcrumb = breadcrumbLd(ORIGIN, "de", [homeCrumb("de"), { name: "Ausflugsziele in der Vulkaneifel", path: "/ausflugsziele-vulkaneifel" }]);
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": `${URL}#faq`,
-  url: URL,
-  mainEntity: [
-    { q: "Wie weit ist es von Immerath zu den Dauner Maaren?", a: "Rund 15 Fahrminuten. Die drei Dauner Maare liegen oberhalb von Daun, das von Immerath aus etwa 18 Kilometer entfernt ist." },
-    { q: "Wie lange braucht man von Immerath nach Cochem an der Mosel?", a: "Rund 25 Fahrminuten für die reine Fahrstrecke von etwa 25 Kilometern." },
-    { q: "Ist die Vulkaneifel auch bei Regen ein lohnendes Ziel?", a: "Ja. Museen wie das Vulkanhaus Strohn oder das Maarmuseum Manderscheid, dazu die überdachten Altstadtwege in Trier, tragen auch verregnete Tage." },
-  ].map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
-};
 ---
 
 <TextPage
@@ -36,7 +25,6 @@ const faqSchema = {
   heroCredit={{ autor: "Wolkenkratzer", lizenz: "CC BY-SA 4.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/4.0", quelle: "https://commons.wikimedia.org/wiki/File:Dauner_Maare,_Gem%C3%BCndener_Maar.jpg" }}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 
   <section>
     <p>

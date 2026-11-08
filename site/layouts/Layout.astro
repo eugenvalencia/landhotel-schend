@@ -111,7 +111,7 @@ const ogLocaleAlternates = localized
     <meta name="author" content="Landhaus Schend" />
     <meta name="robots" content={robots} />
 
-    <!-- Default = hell; JS hält theme-color beim Umschalten synchron (SiteHeader). -->
+    {/* Default = hell; JS hält theme-color beim Umschalten synchron (SiteHeader). */}
     <meta name="theme-color" content="#f8f1e3" />
     <meta name="color-scheme" content="light dark" />
     <meta name="geo.region" content="DE-RP" />
@@ -199,12 +199,12 @@ const ogLocaleAlternates = localized
 
     <slot name="head" />
 
-    <!-- Marken-Splash: dunkler Vorhang beim ersten Betreten der Seite (deckt FOUC/
+    {/* Marken-Splash: dunkler Vorhang beim ersten Betreten der Seite (deckt FOUC/
          Flash zu), Schend-Marke + Wortmarke + 0→100 %-Zähler, dann Reveal.
          Erscheint NUR beim ersten Reinkommen ODER beim Aktualisieren (Reload) —
          bei interner Navigation zwischen Seiten übersprungen (Referrer = gleiche
          Domain). Entscheidung vor dem Paint, damit kein dunkler Deckel aufblitzt.
-         ?splash erzwingt ihn (zum Testen). -->
+         ?splash erzwingt ihn (zum Testen). */}
     <script is:inline>
       (function () {
         try {
@@ -338,13 +338,13 @@ const ogLocaleAlternates = localized
   </head>
 
   <body class="min-h-screen flex flex-col bg-background text-foreground">
-    <!-- Der Ladeschirm ist reine Dekoration: alles darin steht auch auf der
+    {/* Der Ladeschirm ist reine Dekoration: alles darin steht auch auf der
          Seite. Ohne aria-hidden prueft ein Pruefer den Schriftzug WAEHREND
          der Ueberblendung und rechnet ihn gegen den durchscheinenden Grund
          - am 20.08.2026 gemessen: 1,04:1. Ein Kontrast nahe 1:1 ist ein
          Warnsignal fuers Messverfahren, nicht fuer die Seite; die Schrift
          steht in Wahrheit mit rund 10:1 auf Dunkel. role="presentation"
-         allein genuegt nicht - das nimmt nur die Rolle, nicht die Kinder. -->
+         allein genuegt nicht - das nimmt nur die Rolle, nicht die Kinder. */}
     <div id="splash" role="presentation" aria-hidden="true">
       <span class="splash-stars" aria-hidden="true">
         <svg class="splash-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>

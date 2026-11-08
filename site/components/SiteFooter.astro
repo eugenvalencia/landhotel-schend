@@ -15,7 +15,7 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
 
 <footer class="bg-[hsl(220_22%_13%)] text-[hsl(38_30%_92%)] pb-[max(9rem,calc(env(safe-area-inset-bottom)+8.5rem))] md:pb-0" style="--secondary: 38 55% 60%;">
   <div class="container mx-auto px-4 py-20 md:py-24 grid gap-12 md:gap-16 md:grid-cols-12">
-    <!-- Brand -->
+    {/* Brand */}
     <div class="md:col-span-5">
       <div class="flex items-center gap-3">
         <span role="img" aria-label="Landhaus Schend Logo" class="schend-mark shrink-0 h-10 md:h-12 text-[hsl(38_30%_92%)]"></span>
@@ -29,9 +29,9 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
         {t("footer_tagline", lang)}
       </p>
 
-      <!-- Trust-Strip — portal-getrennt (UWG: kein vermischter Skalen-Durchschnitt).
+      {/* Trust-Strip — portal-getrennt (UWG: kein vermischter Skalen-Durchschnitt).
            Verifiziert Juli 2026: Booking.com 8,8/10 (277 Bew.), Tripadvisor 4,0/5 (25 Bew.).
-           Quellen: booking.com/reviews/de/hotel/landhaus-schend + Tripadvisor d2330477. -->
+           Quellen: booking.com/reviews/de/hotel/landhaus-schend + Tripadvisor d2330477. */}
       <div class="mt-6 inline-flex flex-wrap items-center gap-3 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/5">
         <span class="star-rail relative inline-flex gap-0.5" aria-hidden="true">
           {[1, 2, 3, 4].map(() => (
@@ -49,7 +49,7 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
         {t("footer_reviews_note", lang)}
       </p>
 
-      <!-- Social -->
+      {/* Social */}
       <div class="mt-6 flex items-center gap-3">
         <a href={SOCIAL.facebook} target="_blank" rel="noopener noreferrer" aria-label={t("footer_fb_aria", lang)} class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[hsl(38_30%_92%)]/20 hover:border-secondary hover:text-secondary transition-colors">
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
@@ -62,7 +62,7 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
       </div>
     </div>
 
-    <!-- Quick Links -->
+    {/* Quick Links */}
     <div class="md:col-span-3">
       <p class="text-[11px] font-medium tracking-[0.22em] uppercase text-secondary mb-5">{t("footer_quicklinks", lang)}</p>
       <ul class="space-y-3 text-sm">
@@ -74,7 +74,7 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
       </ul>
     </div>
 
-    <!-- Contact -->
+    {/* Contact */}
     <div class="md:col-span-4">
       <p class="text-[11px] font-medium tracking-[0.22em] uppercase text-secondary mb-5">{t("footer_contact", lang)}</p>
       <ul class="space-y-3 text-sm">
@@ -94,9 +94,9 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
     </div>
   </div>
 
-  <!-- Ausflüge & Touren — fünf neue Dauerseiten (13.09.2026). Nur Deutsch bislang,
+  {/* Ausflüge & Touren — fünf neue Dauerseiten (13.09.2026). Nur Deutsch bislang,
        deshalb hart verlinkt statt über localizedPath/t(); die NL-Seite bekommt
-       nur auf /nl/ selbst einen Eintrag. -->
+       nur auf /nl/ selbst einen Eintrag. */}
   <div class="border-t border-[hsl(38_30%_92%)]/12">
     <div class="container mx-auto px-4 py-6 flex flex-wrap items-center justify-center md:justify-start gap-x-5 gap-y-2 text-xs text-[hsl(38_30%_92%)]/65">
       <span class="tracking-[0.18em] uppercase text-[hsl(38_30%_92%)]/40">Ausflüge &amp; Touren</span>
@@ -110,7 +110,7 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
     </div>
   </div>
 
-  <!-- Bottom strip -->
+  {/* Bottom strip */}
   <div class="border-t border-[hsl(38_30%_92%)]/12">
     <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-[hsl(38_30%_92%)]/65">
       <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5 text-center sm:text-left">

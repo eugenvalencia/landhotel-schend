@@ -20,7 +20,7 @@ interface Payload {
   persons?: number; paket?: string; rooms?: Room[]; zimmer?: string;
   checkin?: string; checkout?: string; message?: string;
   halbpension?: boolean; kinderbett?: boolean; hund?: boolean;
-  datenschutz?: boolean; company?: string; gestartet?: string;
+  datenschutz?: boolean; hp_zusatz_7?: string; gestartet?: string;
 }
 
 // ── Bremse pro Absender ─────────────────────────────────────────────────────
@@ -92,7 +92,7 @@ export const onRequestPost = async (context: { request: Request; env: Env }): Pr
   }
 
   // Spam-Honeypot: ausgefüllt = Bot → "ok" vortäuschen, aber NICHT senden.
-  if (body.company && String(body.company).trim() !== "") return json({ ok: true });
+  if (body.hp_zusatz_7 && String(body.hp_zusatz_7).trim() !== "") return json({ ok: true });
 
   const now = Date.now();
 

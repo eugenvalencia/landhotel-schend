@@ -53,7 +53,7 @@ const faqSchema = {
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 
-  <!-- History — asymmetrischer Magazine-Spread -->
+  {/* History — asymmetrischer Magazine-Spread */}
   <section class="grid lg:grid-cols-12 items-stretch">
     <div class="lg:col-span-6">
       <div class="aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[680px] overflow-hidden shadow-elevated">
@@ -82,7 +82,7 @@ const faqSchema = {
     </div>
   </section>
 
-  <!-- Gastgeber — Familie Beimler (seit 2019) -->
+  {/* Gastgeber — Familie Beimler (seit 2019) */}
   <section class="container mx-auto px-4 py-16 md:py-20 border-t border-border/40">
     <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-10 md:gap-14 items-center">
       <div class="aspect-[4/3] overflow-hidden rounded-md shadow-card">
@@ -112,14 +112,14 @@ const faqSchema = {
     </div>
   </section>
 
-  <!-- Timeline — 1856 bis heute -->
+  {/* Timeline — 1856 bis heute */}
   <section class="tl-reveal container mx-auto px-4 py-16 md:py-24 border-t border-border/40">
     <div class="text-center mb-12 md:mb-16">
       <p class="eyebrow">{c.timelineEyebrow}</p>
       <h2 class="font-display text-2xl md:text-3xl lg:text-4xl mt-4 text-balance" set:html={c.timelineH2} />
     </div>
 
-    <!-- Desktop — horizontal -->
+    {/* Desktop — horizontal */}
     <div class="hidden md:block relative max-w-6xl mx-auto">
       <div aria-hidden="true" class="tl-line absolute left-0 right-0 top-1.5 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent"></div>
       <span aria-hidden="true" class="tl-glint"></span>
@@ -134,7 +134,7 @@ const faqSchema = {
       </ol>
     </div>
 
-    <!-- Mobile — vertikal -->
+    {/* Mobile — vertikal */}
     <div class="md:hidden max-w-md mx-auto">
       <ol class="relative border-l-2 border-secondary/30 ml-3 space-y-6 pl-6">
         {c.timeline.map((item, i) => (
@@ -148,7 +148,7 @@ const faqSchema = {
     </div>
   </section>
 
-  <!-- Philosophie -->
+  {/* Philosophie */}
   <section class="container mx-auto px-4 py-20 md:py-28">
     <div class="text-center mb-14 md:mb-20 max-w-3xl mx-auto">
       <p class="eyebrow">{c.philoEyebrow}</p>
@@ -169,7 +169,7 @@ const faqSchema = {
     </div>
   </section>
 
-  <!-- GEO-Q&A — kurze Fakten zum Haus (eigener Fokus, ergänzt /faq) -->
+  {/* GEO-Q&A — kurze Fakten zum Haus (eigener Fokus, ergänzt /faq) */}
   <section class="container mx-auto px-4 pb-20 md:pb-28">
     <div class="max-w-3xl mx-auto text-center mb-10 md:mb-14">
       <p class="eyebrow">{c.faqEyebrow}</p>

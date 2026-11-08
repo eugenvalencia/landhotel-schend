@@ -9,17 +9,6 @@ import { breadcrumbLd, homeCrumb } from "../lib/schema";
 
 const URL = `${ORIGIN}/motorradtouren-eifel/`;
 const breadcrumb = breadcrumbLd(ORIGIN, "de", [homeCrumb("de"), { name: "Motorradtouren in der Eifel", path: "/motorradtouren-eifel" }]);
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": `${URL}#faq`,
-  url: URL,
-  mainEntity: [
-    { q: "Gibt es Motorrad-Stellplätze am Landhaus Schend?", a: "Ja, kostenlose Stellplätze im Hof. Eine abschließbare Garage gibt es nicht." },
-    { q: "Wie weit ist es vom Landhaus Schend zum Nürburgring?", a: "Rund 30 Fahrminuten." },
-    { q: "Gibt es ein Motorrad-Pauschalangebot?", a: "Kein eigenes Motorrad-Paket, aber das flexible Angebot »Zimmer ohne Paket« mit freier Zeitraumwahl passt gut zu Fahrern, die sich nicht auf feste Tage festlegen wollen." },
-  ].map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
-};
 ---
 
 <TextPage
@@ -34,7 +23,6 @@ const faqSchema = {
   heroCredit={{ autor: "Walter Koch, Bildausschnitt", lizenz: "CC BY-SA 2.0 DE", lizenzUrl: "https://creativecommons.org/licenses/by-sa/2.0/de/deed.de", quelle: "https://commons.wikimedia.org/wiki/File:Kelberg_eifel.jpg" }}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 
   <section>
     <h2>Warum hier gefahren wird</h2>

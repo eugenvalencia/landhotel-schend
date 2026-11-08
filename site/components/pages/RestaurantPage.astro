@@ -100,7 +100,6 @@ const restaurantSchema = {
   // wechselnde 3-Gänge-Tagesmenü, das nicht im Voraus feststeht.
   hasMenu: menuSchema,
   sameAs: ["https://www.facebook.com/profile.php?id=100008296860156", "https://www.booking.com/hotel/de/landhaus-schend.html", "https://www.tripadvisor.com/Hotel_Review-g2298352-d2330477-Reviews-Landhaus_Schend-Immerath_Rhineland_Palatinate.html"],
-  potentialAction: { "@type": "ReserveAction", target: { "@type": "EntryPoint", urlTemplate: `${ORIGIN}${localizedPath("/anfrage", lang)}`, actionPlatform: ["https://schema.org/DesktopWebPlatform", "https://schema.org/MobileWebPlatform"] }, result: { "@type": "FoodEstablishmentReservation", name: "Tischreservierung" } },
   containedInPlace: { "@id": "https://landhaus-schend.de/#hotel" },
   priceRange: "€€",
   image: `https://landhaus-schend.de${SCHEND_RESTAURANT}`,
@@ -131,12 +130,12 @@ const restaurantSchema = {
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 
-  <!-- HERO -->
+  {/* HERO */}
   <section class="relative h-[60vh] min-h-[420px] max-h-[680px] overflow-hidden">
-    <!-- Vollflächiges Hero-Foto (object-cover wie der Startseiten-Hero), dezenter Ken-Burns-Zoom.
+    {/* Vollflächiges Hero-Foto (object-cover wie der Startseiten-Hero), dezenter Ken-Burns-Zoom.
          Früher: object-contain + verwischte Kopie desselben Bildes als Ränder-Füller — ergab eine
          „Briefmarke im Rahmen" (Letterbox) UND lud dasselbe 377-KB-Foto doppelt als LCP. Jetzt
-         randvoll, ein einziges Bild. -->
+         randvoll, ein einziges Bild. */}
     <Pic src="/fotos/gedeckter-tisch-mit-schnitzelteller-und-wein-landhaus-schend.jpg" alt={c.heroAlt} class="absolute inset-0 w-full h-full object-cover object-center hero-ken-burns" fetchpriority="high" decoding="async" />
     <div aria-hidden="true" class="absolute inset-0 bg-black/30"></div>
     {/*
@@ -167,7 +166,7 @@ const restaurantSchema = {
     </div>
   </section>
 
-  <!-- Tagesgäste-Banner -->
+  {/* Tagesgäste-Banner */}
   <section class="animate-pulse-banner border-y border-border/60">
     <div class="container mx-auto px-4 py-5 md:py-6 text-center">
       <span class="inline-flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
@@ -177,7 +176,7 @@ const restaurantSchema = {
     </div>
   </section>
 
-  <!-- Drei Spalten -->
+  {/* Drei Spalten */}
   <section class="container mx-auto px-4 py-16 md:py-24">
     <div class="grid md:grid-cols-2 gap-px bg-border/50 max-w-5xl mx-auto border border-border/40 rounded-md overflow-hidden shadow-card">
       {/* Öffnungszeiten — Übernachtungsgäste */}
@@ -212,7 +211,7 @@ const restaurantSchema = {
     </div>
   </section>
 
-  <!-- Food-Marquee -->
+  {/* Food-Marquee */}
   <section class="overflow-hidden border-y border-border/60 py-6 bg-muted/20">
     <div class="flex w-max animate-marquee">
       {Array.from({ length: 2 }).flatMap(() =>
@@ -223,11 +222,11 @@ const restaurantSchema = {
     </div>
   </section>
 
-  <!-- SPEISEKARTE — echter HTML-Text, kein eingebettetes PDF.
+  {/* SPEISEKARTE — echter HTML-Text, kein eingebettetes PDF.
        Struktur, Gerichtnamen, Zusatzstoff-Nummern und Preise kommen aus
        MENU_SECTIONS (einmal für alle vier Sprachen), die Überschriften,
        Beschreibungen und Fußnoten aus c.menu. Fußnoten stehen EINMAL unter der
-       Karte; im PDF wiederholen sie sich auf jeder Seite. -->
+       Karte; im PDF wiederholen sie sich auf jeder Seite. */}
   <section class="container mx-auto px-4 py-16 md:py-24" id="speisekarte">
     <div class="max-w-3xl mx-auto">
       <h2 class="font-display text-3xl md:text-4xl mb-6 text-center text-balance leading-tight">{c.menu.h2}</h2>
@@ -299,8 +298,8 @@ const restaurantSchema = {
         </section>
       ))}
 
-      <!-- Fußnoten: einmal unter der ganzen Karte. Die Ziffern an den Gerichten
-           verlinken hierher (#zusatzstoffe). -->
+      {/* Fußnoten: einmal unter der ganzen Karte. Die Ziffern an den Gerichten
+           verlinken hierher (#zusatzstoffe). */}
       <div id="zusatzstoffe" class="mt-16 border-t border-border/60 pt-8 scroll-mt-28">
         <h3 class="font-display text-lg leading-snug mb-3">{c.menu.additivesTitle}</h3>
         <p class="text-xs md:text-sm text-muted-foreground leading-relaxed">
@@ -315,7 +314,7 @@ const restaurantSchema = {
     </div>
   </section>
 
-  <!-- Kontakt / Anfahrt -->
+  {/* Kontakt / Anfahrt */}
   <section class="container mx-auto px-4 py-16 md:py-24">
     <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 md:gap-16">
       <div data-reveal>
@@ -361,7 +360,7 @@ const restaurantSchema = {
     </div>
   </section>
 
-  <!-- Feiern-Spread -->
+  {/* Feiern-Spread */}
   <section class="grid lg:grid-cols-12 items-stretch bg-muted/30">
     <div class="lg:col-span-6">
       <div class="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[480px] overflow-hidden">
@@ -374,8 +373,8 @@ const restaurantSchema = {
       <p class="text-foreground/85 leading-relaxed max-w-prose mb-6">
         {c.spreadText}
       </p>
-      <!-- Anrufen UND E-Mail nebeneinander: wer abends nicht telefonieren mag,
-           kann die Feier-Anfrage trotzdem hier abschließen (mailto als Zweitweg). -->
+      {/* Anrufen UND E-Mail nebeneinander: wer abends nicht telefonieren mag,
+           kann die Feier-Anfrage trotzdem hier abschließen (mailto als Zweitweg). */}
       <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 self-start">
         <a href="tel:+496573306" class="inline-flex items-center justify-center gap-3 px-7 py-3.5 min-h-[52px] bg-primary text-primary-foreground rounded-sm text-xs sm:text-sm font-medium tracking-[0.2em] uppercase hover:bg-secondary hover:text-secondary-foreground transition-colors">
           {c.spreadCta}
@@ -384,7 +383,7 @@ const restaurantSchema = {
           E-Mail
         </a>
       </div>
-      <!-- Hub-Spoke: kontextuelle Anker zu Zimmern (Halbpension) und Paketen. -->
+      {/* Hub-Spoke: kontextuelle Anker zu Zimmern (Halbpension) und Paketen. */}
       <p class="mt-7 flex flex-col gap-2 text-sm text-muted-foreground self-start">
         <a href={localizedPath("/zimmer", lang)} class="inline-flex items-center gap-2 text-secondary hover:text-foreground transition-colors underline underline-offset-4 decoration-secondary/40">
           {c.linkRooms} →
@@ -396,7 +395,7 @@ const restaurantSchema = {
     </div>
   </section>
 
-  <!-- GEO-FAQ — andere Formulierung/Fokus als die /faq-Seite -->
+  {/* GEO-FAQ — andere Formulierung/Fokus als die /faq-Seite */}
   <section class="container mx-auto px-4 py-16 md:py-24">
     <div class="max-w-3xl mx-auto">
       <p class="eyebrow text-center">{c.faqEyebrow}</p>

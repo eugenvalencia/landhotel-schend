@@ -67,7 +67,7 @@ const productSchema = lowPrice
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
   {productSchema && <script type="application/ld+json" slot="head" set:html={JSON.stringify(productSchema)} />}
 
-  <!-- Hero -->
+  {/* Hero */}
   <section class="relative">
     <Pic src={paket.cover} alt={paket.coverAlt ?? paket.title} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
     <div class="absolute inset-0 gradient-hero"></div>
@@ -111,7 +111,7 @@ const productSchema = lowPrice
       </>
     )}
 
-    <!-- Galerie -->
+    {/* Galerie */}
     <div class="grid grid-cols-3 gap-3 mt-10">
       {paket.gallery.map((src, i) => (
         <div class="aspect-[4/3] overflow-hidden rounded-md" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
@@ -120,7 +120,7 @@ const productSchema = lowPrice
       ))}
     </div>
 
-    <!-- Hub-Spoke: thematisch nahe Seiten -->
+    {/* Hub-Spoke: thematisch nahe Seiten */}
     <div class="hairline my-10"></div>
     <h2 class="font-display text-xl md:text-2xl mb-4">{c.relatedH2}</h2>
     <ul class="space-y-2.5">
@@ -144,7 +144,7 @@ const productSchema = lowPrice
       </li>
     </ul>
 
-    <!-- CTA -->
+    {/* CTA */}
     <div class="mt-12 flex flex-wrap gap-3">
       <a href={localizedPath("/anfrage", lang)} class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">
         {c.ctaInquire}

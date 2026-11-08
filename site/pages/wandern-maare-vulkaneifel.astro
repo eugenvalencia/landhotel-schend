@@ -9,17 +9,6 @@ import { breadcrumbLd, homeCrumb } from "../lib/schema";
 
 const URL = `${ORIGIN}/wandern-maare-vulkaneifel/`;
 const breadcrumb = breadcrumbLd(ORIGIN, "de", [homeCrumb("de"), { name: "Wandern rund um die Maare", path: "/wandern-maare-vulkaneifel" }]);
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": `${URL}#faq`,
-  url: URL,
-  mainEntity: [
-    { q: "Wie heißt der Weitwanderweg, der die Maare verbindet?", a: "Maare-Pfad — mit e in der Mitte, so führt ihn der Eifelsteig als Betreiber. Er ist rund 34,7 Kilometer lang und in zwei Etappen aufgeteilt." },
-    { q: "Führt der Maare-Pfad am Immerather Maar vorbei?", a: "Ja, nach der offiziellen Streckenbeschreibung des Eifelsteigs liegt das Immerather Maar auf der Route zwischen Gillenfeld und Strotzbüsch." },
-    { q: "Ist die Runde am Immerather Maar auch für kurze Spaziergänge geeignet?", a: "Ja — sie ist die kürzeste Runde direkt ab dem Haus und braucht keine Anfahrt." },
-  ].map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
-};
 ---
 
 <TextPage
@@ -34,7 +23,6 @@ const faqSchema = {
   heroCredit={{ autor: "1971markus", lizenz: "CC BY-SA 4.0", lizenzUrl: "https://creativecommons.org/licenses/by-sa/4.0", quelle: "https://commons.wikimedia.org/wiki/File:Geopark_Vulkaneifel_Weinfelder_Maar_1.jpg" }}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumb)} />
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 
   <section>
     <h2>Ein Maar ist kein Kratersee im üblichen Sinn</h2>

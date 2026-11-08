@@ -259,7 +259,22 @@ const STORAGE_KEY = "schend_consent_v1";
       el.hidden = true;
       abstand();
       if (wahl === "granted") { ladeClarity(); ladeGA4(); }
-      // Bei Widerruf wird NICHT nachgeladen; wirksam ab dem nächsten Aufruf.
+      if (wahl === "denied") {
+        // Widerruf wirkt sofort: Mess-Skripte laufen schon, also Cookies löschen und neu laden (ohne Skripte).
+        var lief = geladen || ga4Geladen;
+        try { if (window.clarity) window.clarity("stop"); } catch (e) {}
+        try { if (window.gtag) window.gtag("consent", "update", { analytics_storage: "denied", ad_storage: "denied" }); } catch (e) {}
+        var host = location.hostname.split(".");
+        var doms = ["", location.hostname, "." + location.hostname, "." + host.slice(-2).join(".")];
+        document.cookie.split(";").forEach(function (c) {
+          var n = c.split("=")[0].trim();
+          if (!/^(_ga|_gid|_gat|_clck|_clsk|CLID|ANONCHK|MR|MUID|SM|SRM_B)/.test(n)) return;
+          doms.forEach(function (d) {
+            document.cookie = n + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/" + (d ? "; domain=" + d : "");
+          });
+        });
+        if (lief) location.reload();
+      }
     });
 
     // Fußzeilen-Link: Widerruf so leicht wie die Zustimmung (Art. 7 Abs. 3 DSGVO).
