@@ -54,7 +54,7 @@ const lb = (key: keyof typeof LB): string => LB[key][lang] ?? LB[key].de;
   <button data-lb-next type="button" aria-label={lb("next")} class="lb-btn absolute right-2 md:right-5 top-1/2 -translate-y-1/2 z-20">
     <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
   </button>
-  <div data-lb-count class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 text-[11px] tracking-[0.22em] uppercase text-[hsl(38_30%_92%)]/70 tabular-nums"></div>
+  <div data-lb-count class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 text-xs tracking-wide text-[hsl(38_30%_92%)]/70 tabular-nums"></div>
 </div>
 
 <style>

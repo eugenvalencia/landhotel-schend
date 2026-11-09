@@ -242,10 +242,9 @@
   /* Small-caps eyebrow label — section labels above headlines */
   .eyebrow {
     font-family: "Inter", sans-serif;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     font-weight: 500;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
+    letter-spacing: 0.04em;
     color: hsl(var(--secondary));
   }
 
@@ -319,7 +318,7 @@
     to { transform: translateX(-50%); }
   }
   .animate-marquee {
-    animation: marquee-x 55s linear infinite;
+    animation: marquee-x 110s linear infinite;
   }
   .animate-marquee:hover {
     animation-play-state: paused;
@@ -414,36 +413,6 @@
   }
   @keyframes glow-rotate {
     to { --glow-angle: 360deg; }
-  }
-  .glow-border {
-    position: relative;
-    isolation: isolate;
-  }
-  .glow-border::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: inherit;
-    padding: 2px;
-    background: conic-gradient(
-      from var(--glow-angle),
-      transparent 0deg,
-      hsl(var(--secondary)) 60deg,
-      transparent 120deg,
-      transparent 240deg,
-      hsl(var(--secondary) / 0.8) 300deg,
-      transparent 360deg
-    );
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    animation: glow-rotate 4s linear infinite;
-    z-index: -1;
-    opacity: 0.85;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .glow-border::before { animation: none; opacity: 0.5; }
   }
 
   /* ------------------------------------------------------------------
@@ -559,6 +528,7 @@
     overflow: hidden;
   }
   .spotlight::after {
+    display: none; /* Lichtkegel entfernt (unslop 09.11.) */
     content: "";
     position: absolute;
     inset: 0;
@@ -674,12 +644,7 @@
      CSS-Variablen --tilt-x/--tilt-y werden vom JS-Handler gesetzt (siehe
      handleSpotlightTilt). Touch-Geräte und reduced-motion overriden auf 0.
      transform-style: preserve-3d und perspective gehen auf den Parent. */
-  .tilt-card {
-    transform-style: preserve-3d;
-    transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform;
-  }
+  .tilt-card { transform: none !important; transition: none; }
   @media (hover: none), (prefers-reduced-motion: reduce) {
     .tilt-card { transform: none !important; transition: none; }
   }
@@ -743,7 +708,7 @@
     pointer-events: none;
   }
   .tl-reveal.visible .tl-glint {
-    animation: tl-glint-travel 4.6s ease-in-out 1.25s infinite;
+    animation: tl-glint-travel 4.6s ease-in-out 1.25s 1;
   }
   @keyframes tl-glint-travel {
     0%   { left: 0;    opacity: 0; transform: translateX(0); }
@@ -767,7 +732,7 @@
     pointer-events: none;
   }
   .tl-reveal.visible .tl-glint-v {
-    animation: tl-glint-travel-v 5s ease-in-out 0.6s infinite;
+    animation: tl-glint-travel-v 5s ease-in-out 0.6s 1;
   }
   @keyframes tl-glint-travel-v {
     0%   { top: 0;    opacity: 0; transform: translateY(0); }
@@ -810,7 +775,6 @@
     30%  { opacity: 1; }
     100% { transform: translateY(380%);  opacity: 0; }
   }
-  .scroll-cue-travel { animation: scroll-cue-travel 2.2s ease-in-out infinite; }
 
   @media (prefers-reduced-motion: reduce) {
     .headline-reveal { animation: none; clip-path: none; opacity: 1; transform: none; }

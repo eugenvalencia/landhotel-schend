@@ -242,7 +242,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
     <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
       <div class="flex items-center gap-4 mb-10 md:mb-14">
         <span class="block h-px w-12 md:w-20 bg-white/65"></span>
-        <span class="text-[11px] md:text-xs font-medium tracking-[0.24em] uppercase text-white/90" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">{c.heroBadge}</span>
+        <span class="text-xs md:text-sm font-medium tracking-wide text-white/90" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">{c.heroBadge}</span>
         <span class="block h-px w-12 md:w-20 bg-white/65"></span>
       </div>
       <h1 class="headline-reveal font-display text-balance text-white text-[2.5rem] sm:text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] mb-7 md:mb-9 max-w-4xl" style="text-shadow:0 2px 14px rgba(0,0,0,0.55)">
@@ -328,36 +328,31 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
       <div class="relative mb-10 md:mb-12">
         <span aria-hidden="true" class="absolute -inset-x-6 -inset-y-3 -z-10 rounded-full" style="background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.22) 60%, transparent 100%)"></span>
       <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-white" style="text-shadow:0 1px 3px rgba(0,0,0,0.85), 0 2px 10px rgba(0,0,0,0.6)">
-        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span style="color:#e8c37a">★</span> {c.statTripadvisor}</span>
+        <span class="text-xs tracking-wide font-medium"><span style="color:#e8c37a">★</span> {c.statTripadvisor}</span>
         <span class="text-white/40" aria-hidden="true">·</span>
-        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="8.8" data-count-decimals="1" data-count-mount="1" data-count-delay="600" data-count-dur="1400">8,8</span> {c.statBooking}</span>
+        <span class="text-xs tracking-wide font-medium"><span data-count-to="8.8" data-count-decimals="1" data-count-mount="1" data-count-delay="600" data-count-dur="1400">8,8</span> {c.statBooking}</span>
         <span class="text-white/40" aria-hidden="true">·</span>
-        <span class="text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="170" data-count-mount="1" data-count-delay="800" data-count-dur="1600">170</span> {c.statTradition}</span>
+        <span class="text-xs tracking-wide font-medium"><span data-count-to="170" data-count-mount="1" data-count-delay="800" data-count-dur="1600">170</span> {c.statTradition}</span>
         <span class="text-white/40 hidden sm:inline" aria-hidden="true">·</span>
-        <span class="hidden sm:inline text-xs tracking-[0.12em] uppercase font-medium"><span data-count-to="21" data-count-mount="1" data-count-delay="1000" data-count-dur="1200">21</span> {c.statRooms}</span>
+        <span class="hidden sm:inline text-xs tracking-wide font-medium"><span data-count-to="21" data-count-mount="1" data-count-delay="1000" data-count-dur="1200">21</span> {c.statRooms}</span>
       </div>
       </div>
       <div class="flex flex-col items-center gap-5">
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
-          <a href={localizedPath("/anfrage", lang)} class="magnetic glow-border group inline-flex items-center justify-center gap-3 px-9 py-4 min-h-[56px] bg-white text-zinc-900 text-xs sm:text-sm font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300 shadow-sm">
+          <a href={localizedPath("/anfrage", lang)} class="magnetic group inline-flex items-center justify-center gap-3 px-9 py-4 min-h-[56px] bg-white text-zinc-900 text-sm font-medium tracking-wide rounded-md hover:bg-secondary hover:text-secondary-foreground transition-colors duration-300 shadow-sm">
             <svg class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="m9 16 2 2 4-4"/></svg>
             {c.ctaInquire}
             <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </a>
-          <a href={localizedPath("/restaurant", lang)} class="magnetic group inline-flex items-center justify-center gap-3 px-9 py-4 min-h-[56px] border border-white/60 text-white text-xs sm:text-sm font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-white/10 hover:border-white transition-all duration-300" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">
+          <a href={localizedPath("/restaurant", lang)} class="magnetic group inline-flex items-center justify-center gap-3 px-9 py-4 min-h-[56px] border border-white/60 text-white text-sm font-medium tracking-wide rounded-md hover:bg-white/10 hover:border-white transition-all duration-300" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">
             <svg class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
             {c.ctaRestaurant}
-            <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </a>
         </div>
         <a href="tel:+496573306" class="inline-flex min-h-11 items-center text-white/85 text-sm tracking-wide hover:text-white transition-colors" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">{c.callPrefix} <span class="font-medium ml-1">+49 6573 306</span></a>
       </div>
     </div>
 
-    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 text-white/55">
-      <span class="text-[10px] tracking-[0.3em] uppercase">{c.scrollLabel}</span>
-      <span class="relative block h-10 w-px overflow-hidden bg-white/20"><span aria-hidden="true" class="scroll-cue-travel absolute inset-x-0 top-0 block h-3 bg-white/85"></span></span>
-    </div>
   </section>
 
   {/* USPs */}
@@ -390,16 +385,16 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
           const r = findRoomFor(base.slug, lang)!;
           return (
             <a href={localizedPath(`/zimmer/${base.slug}`, lang)} class="group block" data-reveal style={`--reveal-delay:${idx * 0.08}s`}>
-              <div class="spotlight tilt-card card-reveal aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
+              <div class="card-reveal aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
                 <Pic src={cardPhoto} alt={`${r.type} ${altSuffix}, Vulkaneifel`} class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" loading="lazy" decoding="async" sizes="(min-width: 640px) 440px, 92vw" />
                 <div class="card-caption">
-                  <p class="text-[10px] tracking-[0.2em] uppercase text-white/80 mb-1">{c.roomCardEyebrow}</p>
+                  <p class="text-xs tracking-wide text-white/80 mb-1">{c.roomCardEyebrow}</p>
                   <p class="font-display text-white text-lg leading-snug">{r.hint}</p>
                 </div>
               </div>
               <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4 mb-2">
                 <h3 class="font-display text-xl md:text-2xl group-hover:text-secondary transition-colors">{r.type}</h3>
-                <span class="text-xs font-medium tracking-[0.15em] uppercase text-secondary whitespace-nowrap">{r.priceLabel}</span>
+                <span class="text-xs font-medium tracking-wide text-secondary whitespace-nowrap">{r.priceLabel}</span>
               </div>
               <p class="text-sm text-muted-foreground leading-relaxed">{r.hint}</p>
             </a>
@@ -407,7 +402,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
         })}
       </div>
       <div class="text-center mt-16">
-        <a href={localizedPath("/zimmer", lang)} class="inline-flex items-center gap-2 px-9 py-4 rounded-sm border border-primary/40 uppercase tracking-[0.2em] text-xs font-medium hover:border-secondary hover:text-secondary transition-colors">{c.allRoomsCta} <span>→</span></a>
+        <a href={localizedPath("/zimmer", lang)} class="inline-flex items-center gap-2 px-9 py-4 rounded-md border border-primary/40 tracking-wide text-sm font-medium hover:border-secondary hover:text-secondary transition-colors">{c.allRoomsCta}</a>
       </div>
     </div>
   </section>
@@ -421,9 +416,8 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
           <h2 id="cta-strip-title" class="font-display text-2xl md:text-3xl text-balance leading-snug">{c.ctaStripTitle}</h2>
           <p class="text-sm text-muted-foreground mt-3 leading-relaxed text-pretty max-w-prose mx-auto md:mx-0">{c.ctaStripText}</p>
         </div>
-        <a href={localizedPath("/anfrage", lang)} class="shrink-0 inline-flex items-center justify-center gap-3 px-8 py-4 min-h-[52px] bg-primary text-primary-foreground rounded-sm text-xs sm:text-sm font-medium tracking-[0.2em] uppercase hover:bg-secondary hover:text-secondary-foreground transition-colors">
+        <a href={localizedPath("/anfrage", lang)} class="shrink-0 inline-flex items-center justify-center gap-3 px-8 py-4 min-h-[52px] bg-primary text-primary-foreground rounded-md text-sm font-medium tracking-wide hover:bg-secondary hover:text-secondary-foreground transition-colors">
           {c.ctaStripButton}
-          <span aria-hidden="true">→</span>
         </a>
       </div>
     </div>
@@ -465,7 +459,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
           </div>
           <p class="text-xs text-muted-foreground mt-3">{c.hoursNote}</p>
           <div class="mt-10 pt-6 border-t border-border/60">
-            <a href={localizedPath("/restaurant", lang)} class="group inline-flex min-h-11 items-center gap-2 text-xs font-medium tracking-[0.2em] uppercase text-secondary hover:text-foreground transition-colors">{c.fullRestLink} <span class="transition-transform duration-300 group-hover:translate-x-1">→</span></a>
+            <a href={localizedPath("/restaurant", lang)} class="group inline-flex min-h-11 items-center gap-2 text-xs font-medium tracking-wide text-secondary hover:text-foreground transition-colors">{c.fullRestLink}</a>
             <p class="text-xs text-muted-foreground mt-2">{c.fullRestSub}</p>
           </div>
         </div>
@@ -484,10 +478,10 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
       <div class="text-center mb-10 md:mb-12" data-reveal>        <h3 class="font-display text-2xl md:text-3xl text-balance">{c.kitchenH3}</h3>
       </div>
       <div class="grid sm:grid-cols-2 gap-px bg-border/50 max-w-3xl mx-auto" data-reveal>
-        <div class="bg-background p-6 md:p-8 flex flex-col"><p class="text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">{c.card1Eyebrow}</p><h4 class="font-display text-xl md:text-2xl mb-3 leading-tight">{c.card1H4}</h4><p class="text-sm text-muted-foreground leading-relaxed flex-1">{c.card1Text}</p><div class="hairline mt-6 mb-3"></div><p class="text-xs text-muted-foreground">{c.card1Note}</p></div>
-        <div class="bg-background p-6 md:p-8 flex flex-col"><p class="text-[11px] tracking-[0.22em] uppercase text-secondary mb-3 font-medium">{c.card2Eyebrow}</p><h4 class="font-display text-xl md:text-2xl mb-3 leading-tight">{c.card2H4}</h4><p class="text-sm text-muted-foreground leading-relaxed flex-1">{c.card2Text}</p><div class="hairline mt-6 mb-3"></div><p class="text-xs text-muted-foreground">{c.card2Note}</p></div>
+        <div class="bg-background p-6 md:p-8 flex flex-col"><p class="text-xs tracking-wide text-secondary mb-3 font-medium">{c.card1Eyebrow}</p><h4 class="font-display text-xl md:text-2xl mb-3 leading-tight">{c.card1H4}</h4><p class="text-sm text-muted-foreground leading-relaxed flex-1">{c.card1Text}</p><div class="hairline mt-6 mb-3"></div><p class="text-xs text-muted-foreground">{c.card1Note}</p></div>
+        <div class="bg-background p-6 md:p-8 flex flex-col"><p class="text-xs tracking-wide text-secondary mb-3 font-medium">{c.card2Eyebrow}</p><h4 class="font-display text-xl md:text-2xl mb-3 leading-tight">{c.card2H4}</h4><p class="text-sm text-muted-foreground leading-relaxed flex-1">{c.card2Text}</p><div class="hairline mt-6 mb-3"></div><p class="text-xs text-muted-foreground">{c.card2Note}</p></div>
       </div>
-      <div class="text-center mt-10"><a href="tel:+496573306" class="inline-flex items-center gap-3 px-7 py-3.5 min-h-[52px] bg-primary text-primary-foreground rounded-sm text-xs sm:text-sm font-medium tracking-[0.2em] uppercase hover:bg-secondary hover:text-secondary-foreground transition-colors">{c.reserveCta}</a></div>
+      <div class="text-center mt-10"><a href="tel:+496573306" class="inline-flex items-center gap-3 px-7 py-3.5 min-h-[52px] bg-primary text-primary-foreground rounded-md text-sm font-medium tracking-wide hover:bg-secondary hover:text-secondary-foreground transition-colors">{c.reserveCta}</a></div>
     </div>
 
     <div class="grid lg:grid-cols-12 items-stretch">
@@ -513,18 +507,18 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
         {pakete.map((p, i) => (
           <a href={localizedPath(`/pakete/${p.slug}`, lang)} class="group block" data-reveal style={`--reveal-delay:${(i % 3) * 0.08}s`}>
-            <div class="spotlight tilt-card relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
+            <div class="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden mb-5 rounded-md shadow-card group-hover:shadow-elevated transition-shadow duration-500">
               <Pic src={p.cover} alt={p.title} loading="lazy" decoding="async" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" class="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]" />
               {p.price && (
-                <div class="absolute top-3 right-3 px-3 py-1.5 bg-background/95 backdrop-blur-sm rounded-sm shadow-md border border-foreground/10">
-                  <span class="text-[10px] font-medium tracking-[0.15em] uppercase text-foreground/60">{c.paketBadgeLabel}</span>
+                <div class="absolute top-3 right-3 px-3 py-1.5 bg-background/95 backdrop-blur-sm rounded-md shadow-md border border-foreground/10">
+                  <span class="text-xs font-medium tracking-wide text-foreground/60">{c.paketBadgeLabel}</span>
                   <p class="font-display text-secondary text-base leading-tight">{stripPrefix(p.price)}</p>
                 </div>
               )}
             </div>
             <h3 class="font-display text-xl md:text-2xl mb-2 group-hover:text-secondary transition-colors text-balance">{p.title}</h3>
             {p.intro && <p class="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">{p.intro}</p>}
-            <span class="text-xs font-medium tracking-[0.2em] uppercase text-secondary inline-flex items-center gap-2 transition-all group-hover:gap-3">{c.mehrErfahren} <span>→</span></span>
+            <span class="text-xs font-medium tracking-wide text-secondary inline-flex items-center gap-2 transition-all group-hover:gap-3">{c.mehrErfahren}</span>
           </a>
         ))}
       </div>
@@ -614,7 +608,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
             <li class="tl-item flex flex-col items-center text-center" style={`--i:${i}`}>
               <span aria-hidden="true" class="block h-3 w-3 rounded-full bg-secondary ring-4 ring-background relative z-10"></span>
               <p class="font-display text-secondary text-xl lg:text-2xl mt-4 mb-2">{item.year}</p>
-              <p class="text-[10px] lg:text-[11px] text-muted-foreground leading-tight tracking-wide px-1">{item.event}</p>
+              <p class="text-xs text-muted-foreground leading-tight tracking-wide px-1">{item.event}</p>
             </li>
           ))}
         </ol>
@@ -667,7 +661,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
               ? <p class="font-display text-3xl text-secondary mt-1 tabular-nums">{p.score}</p>
               : <p class="font-display text-2xl text-secondary mt-2">{c.platformReviewsWord}</p>}
             <p class="text-xs text-foreground/70 mt-1">{c.platformLines[i]}</p>
-            <span class="text-[11px] tracking-[0.12em] uppercase text-secondary mt-3 inline-flex items-center gap-1 group-hover:gap-1.5 transition-all">{c.ansehen} <span aria-hidden="true">→</span></span>
+            <span class="text-xs tracking-wide text-secondary mt-3 inline-flex items-center gap-1 group-hover:gap-1.5 transition-all">{c.ansehen}</span>
           </a>
         ))}
       </div>
@@ -692,7 +686,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
           </details>
         ))}
       </div>
-      <div class="text-center mt-10"><a href={localizedPath("/faq", lang)} class="inline-flex items-center px-6 py-3 rounded-sm border border-border font-semibold tracking-wide hover:bg-muted transition-colors">{c.allFaqCta}</a></div>
+      <div class="text-center mt-10"><a href={localizedPath("/faq", lang)} class="inline-flex items-center px-6 py-3 rounded-md border border-border font-semibold tracking-wide hover:bg-muted transition-colors">{c.allFaqCta}</a></div>
     </div>
     <style>
       .faq-item summary::-webkit-details-marker { display: none; }
@@ -708,7 +702,7 @@ const dotIds = ["top", "rooms", "restaurant", "pakete", "reviews", "location"];
     {dotIds.map((id, i) => (
       <a href={`#${id}`} data-dot={id} aria-label={c.dotLabels[i]} class="dot-link group relative grid place-items-center w-8 h-8 lg:w-5 lg:h-5">
         <span class="dot block rounded-full w-2 h-2 lg:w-1.5 lg:h-1.5 bg-secondary/70 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out group-hover:bg-secondary group-hover:scale-110"></span>
-        <span class="absolute right-full mr-3 px-2.5 py-1 rounded-sm bg-foreground/95 text-background text-[10px] uppercase tracking-[0.18em] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-300 pointer-events-none">{c.dotLabels[i]}</span>
+        <span class="absolute right-full mr-3 px-2.5 py-1 rounded-md bg-foreground/95 text-background text-xs tracking-wide font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-300 pointer-events-none">{c.dotLabels[i]}</span>
       </a>
     ))}
   </nav>

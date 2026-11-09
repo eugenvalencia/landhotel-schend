@@ -55,7 +55,7 @@ const lists: Record<Locale, ZimmerLists> = {
     intro: [
       "Feel at home in our comfortable double rooms. If needed, the room can also be used by a single guest.",
       "Generous family rooms give children and parents alike room to breathe.",
-      "A feel-good atmosphere for families, couples and solo travellers. Spacious and modern, our 19 comfort rooms and 2 family rooms offer ideal conditions to relax. Many double rooms offer a view of the wonderful natural landscape from a balcony or terrace — and, after an extensive day out, the comforts of a well-appointed bathroom.",
+      "Our 19 comfort rooms and 2 family rooms are spacious and modern, for families, couples and solo travellers. Many double rooms have a balcony or terrace with a view of the countryside. And after a long day out, a comfortable bathroom is waiting.",
       "Wi-Fi is available, as are telephone and satellite TV or shower and WC. Our double and family rooms are all non-smoking and, on request, equipped with extra children's beds. Children up to 2 years stay free, up to 12 years at a 50 % discount, in their parents' room.",
     ],
     ausstattung: ["Non-smoking room", "Telephone, satellite TV", "Mostly balcony/terrace", "Shower/WC", "Wi-Fi", "Modern, comfortable furnishings"],
@@ -99,7 +99,7 @@ const lists: Record<Locale, ZimmerLists> = {
     intro: [
       "Sentez-vous comme chez vous dans nos chambres doubles confortables. Au besoin, la chambre peut aussi être occupée par une seule personne.",
       "De spacieuses chambres familiales offrent aux enfants comme aux parents de l'espace.",
-      "Une ambiance chaleureuse pour les familles, les couples et les voyageurs en solo. Spacieuses et modernes, nos 19 chambres confort et 2 chambres familiales offrent des conditions idéales pour se détendre. De nombreuses chambres doubles offrent, depuis le balcon ou la terrasse, la vue sur le magnifique paysage naturel — et, après une longue excursion, le confort d'une belle salle de bains.",
+      "Nos 19 chambres confort et 2 chambres familiales sont spacieuses et modernes, pour les familles, les couples et les voyageurs en solo. De nombreuses chambres doubles ont un balcon ou une terrasse avec vue sur la nature. Et après une longue excursion, une salle de bains confortable vous attend.",
       "Une connexion Wi-Fi est à votre disposition, tout comme le téléphone et la TV satellite ou la douche et les WC. Nos chambres doubles et familiales sont toutes non-fumeurs et, sur demande, équipées de lits d'enfant supplémentaires. Les enfants jusqu'à 2 ans logent gratuitement, jusqu'à 12 ans avec une réduction de 50 %, dans la chambre des parents.",
     ],
     ausstattung: ["Chambre non-fumeurs", "Téléphone, TV satellite", "Balcon/terrasse pour la plupart", "Douche/WC", "Wi-Fi", "Équipement moderne et confortable"],
@@ -143,7 +143,7 @@ const lists: Record<Locale, ZimmerLists> = {
     intro: [
       "Voel u thuis in onze comfortabele tweepersoonskamers. Indien gewenst kan de kamer ook door één persoon worden gebruikt.",
       "Ruime familiekamers bieden kinderen én ouders bewegingsvrijheid.",
-      "Een behaaglijke sfeer voor gezinnen, stellen en alleenreizigers. Ruim en modern ingericht bieden onze 19 comfort- en 2 familiekamers ideale omstandigheden om te ontspannen. Veel tweepersoonskamers bieden vanaf het balkon of terras uitzicht op het prachtige natuurlandschap — en na een uitgebreide excursie het comfort van een mooie badkamer.",
+      "Onze 19 comfort- en 2 familiekamers zijn ruim en modern ingericht, voor gezinnen, stellen en alleenreizigers. Veel tweepersoonskamers hebben een balkon of terras met uitzicht op de natuur. En na een lange excursie wacht een comfortabele badkamer.",
       "Een wifi-aansluiting staat net als telefoon en satelliet-tv of douche en wc tot uw beschikking. Onze tweepersoons- en familiekamers zijn allemaal rookvrij en op verzoek voorzien van extra kinderbedjes. Kinderen tot 2 jaar overnachten gratis, tot 12 jaar met 50 % korting, op de kamer van de ouders.",
     ],
     ausstattung: ["Rookvrije kamer", "Telefoon, satelliet-tv", "Merendeels balkon/terras", "Douche/wc", "Wifi", "Moderne, comfortabele inrichting"],

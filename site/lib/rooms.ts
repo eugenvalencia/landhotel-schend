@@ -23,7 +23,7 @@ export type RoomType = {
 export const ROOM_INTRO = [
   "Fühlen Sie sich wie zuhause in unseren komfortablen Doppelzimmern. Bei Bedarf kann das Zimmer auch als Einzelperson genutzt werden.",
   "Großzügige Familienzimmer bieten Kindern wie Eltern Freiraum.",
-  "Wohlfühl-Ambiente für Familien, Paare und Einzelreisende. Großzügig und modern eingerichtet bieten unsere 19 Komfort- und 2 Familienzimmer optimale Voraussetzungen, zu entspannen. Viele Doppelzimmer bieten von Balkon oder Terrasse aus den Blick in die wunderbare Naturlandschaft — und nach einer ausgiebigen Ausflugtour die Annehmlichkeiten eines komfortablen Bades.",
+  "Unsere 19 Komfort- und 2 Familienzimmer sind großzügig und modern eingerichtet, für Familien, Paare und Einzelreisende. Viele Doppelzimmer haben einen Balkon oder eine Terrasse mit Blick in die Natur. Und nach einer ausgiebigen Ausflugtour wartet ein komfortables Bad.",
   "Ein WLAN-Anschluss steht Ihnen ebenso zur Verfügung wie Telefon und Sat-TV oder Dusche und WC. Unsere Doppel- und Familienzimmer sind alle Nichtraucherzimmer und auf Wunsch ausgestattet mit zusätzlichen Kinderbetten. Bis 2 Jahre übernachten Kinder kostenlos, bis 12 Jahre um 50 % ermäßigt, im Elternzimmer.",
 ];
 

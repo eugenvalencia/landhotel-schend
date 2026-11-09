@@ -22,7 +22,7 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
         <p class="font-display text-3xl md:text-4xl leading-tight tracking-tight">Landhaus Schend</p>
       </div>
       <p class="text-[12px] md:text-sm tracking-[0.22em] uppercase text-secondary mt-2">{SITE_DESCRIPTOR}</p>
-      <p class="text-[11px] tracking-[0.22em] uppercase text-[hsl(38_30%_92%)]/55 mt-3">
+      <p class="text-xs tracking-wide text-[hsl(38_30%_92%)]/55 mt-3">
         Anno 1856 · Vulkaneifel
       </p>
       <p class="text-sm text-[hsl(38_30%_92%)]/75 mt-6 leading-relaxed max-w-md">
@@ -45,7 +45,7 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
           <span class="font-bold text-secondary">4,0/5</span> Tripadvisor (25)
         </span>
       </div>
-      <p class="mt-2 max-w-md text-[11px] leading-relaxed text-[hsl(38_30%_92%)]/50">
+      <p class="mt-2 max-w-md text-xs leading-relaxed text-[hsl(38_30%_92%)]/50">
         {t("footer_reviews_note", lang)}
       </p>
 
@@ -64,7 +64,7 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
 
     {/* Quick Links */}
     <div class="md:col-span-3">
-      <p class="text-[11px] font-medium tracking-[0.22em] uppercase text-secondary mb-5">{t("footer_quicklinks", lang)}</p>
+      <p class="text-xs font-medium tracking-wide text-secondary mb-5">{t("footer_quicklinks", lang)}</p>
       <ul class="space-y-3 text-sm">
         <li><a href={localizedPath("/", lang)} class="footer-link hover:text-secondary transition-colors">{t("nav_home", lang)}</a></li>
         <li><a href={localizedPath("/anfrage", lang)} class="footer-link hover:text-secondary transition-colors">{t("footer_ql_inquire", lang)}</a></li>
@@ -76,7 +76,7 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
 
     {/* Contact */}
     <div class="md:col-span-4">
-      <p class="text-[11px] font-medium tracking-[0.22em] uppercase text-secondary mb-5">{t("footer_contact", lang)}</p>
+      <p class="text-xs font-medium tracking-wide text-secondary mb-5">{t("footer_contact", lang)}</p>
       <ul class="space-y-3 text-sm">
         <li class="flex items-center gap-3">
           <svg class="h-3.5 w-3.5 shrink-0 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
@@ -116,7 +116,7 @@ const year = new Date().getFullYear(); // build-time, landet statisch im HTML
       <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5 text-center sm:text-left">
         <p>© {year} Landhaus Schend · www.landhaus-schend.de</p>
         <span class="hidden sm:inline text-[hsl(38_30%_92%)]/25">·</span>
-        <p class="text-[11px] tracking-wide text-[hsl(38_30%_92%)]/55">
+        <p class="text-xs tracking-wide text-[hsl(38_30%_92%)]/55">
           Powered by{" "}
           {/* 16.08.2026: von www. auf die kanonische Adresse umgestellt.
               www.conexadigital.eu antwortet mit 301 — der Verweis lief über
