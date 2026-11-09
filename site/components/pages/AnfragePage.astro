@@ -485,6 +485,8 @@ const pflichtHint: Record<Locale, string> = {
         const data = await res.json().catch(() => ({ ok: false }));
         if (data.ok) {
           form.reset();
+          // GA4-Schlüsselereignis (09.11.2026); gtag existiert nur nach Einwilligung.
+          (window as unknown as { gtag?: (...a: unknown[]) => void }).gtag?.("event", "generate_lead", { formular: "anfrage" });
           setStatus(MSG.success, true);
           statusEl.scrollIntoView({ behavior: "smooth", block: "center" });
         } else if (data.error === "validation") {
