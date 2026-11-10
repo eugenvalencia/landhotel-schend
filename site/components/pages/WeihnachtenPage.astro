@@ -195,7 +195,7 @@ const eventSchema = {
               <svg aria-hidden="true" class="weihnacht-glocke weihnacht-glocke-3 shrink-0" width="12" height="15" viewBox="0 0 16 20" fill={GOLD}><circle cx="8" cy="1.5" r="1" /><path d="M8 2.6c3.3 0 4.9 2.5 4.9 5.4 0 2.8.7 4.6 1.8 5.9H1.3c1.1-1.3 1.8-3.1 1.8-5.9 0-2.9 1.6-5.4 4.9-5.4Z" /><circle cx="8" cy="16.3" r="1.6" /></svg>
             </span>
             <span
-              class="text-[11px] font-medium uppercase tracking-[0.24em] md:text-xs"
+              class="text-xs font-medium tracking-wide md:text-xs"
               style={`color:${GOLD}`}>Weihnachten im Landhaus</span
             >
             <span class="hidden h-px w-10 sm:block lg:hidden" style={`background:${GOLD}99`}></span>
@@ -223,7 +223,7 @@ const eventSchema = {
               Seite überhaupt gelesen wird. */}
           <div class="mt-9 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 lg:justify-start">
             <span
-              class="inline-flex min-h-11 items-center gap-2.5 rounded-sm px-4 py-2 text-sm font-medium tracking-wide text-white"
+              class="inline-flex min-h-11 items-center gap-2.5 rounded-md px-4 py-2 text-sm font-medium tracking-wide text-white"
               style={`border:1px solid ${GOLD}66; background:${GOLD}1a`}
             >
               <svg class="h-4 w-4 shrink-0" style={`color:${GOLD}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -237,14 +237,14 @@ const eventSchema = {
           <div class="mt-9 flex flex-col items-center gap-3 lg:items-start">
             <a
               href={TEL_HREF}
-              class="magnetic inline-flex min-h-[56px] items-center justify-center gap-3 whitespace-nowrap rounded-sm px-8 py-3 text-zinc-900 transition-colors duration-300 hover:brightness-110"
+              class="magnetic inline-flex min-h-[56px] items-center justify-center gap-3 whitespace-nowrap rounded-md px-8 py-3 text-zinc-900 transition-colors duration-300 hover:brightness-110"
               style={`background:${GOLD}`}
             >
               <svg class="h-4 w-4 shrink-0 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z" />
               </svg>
               <span class="flex flex-col items-start leading-tight">
-                <span class="text-xs font-medium uppercase tracking-[0.18em] sm:text-sm">Tisch reservieren</span>
+                <span class="text-xs font-medium tracking-wide sm:text-sm">Tisch reservieren</span>
                 <span class="mt-0.5 text-sm font-semibold tabular-nums tracking-wide sm:text-base">{TEL}</span>
               </span>
             </a>
@@ -281,7 +281,7 @@ const eventSchema = {
             <circle cx="13.6" cy="17.2" r="1.2" />
             <circle cx="12" cy="19.9" r="1.2" />
           </svg>
-          <p class="text-[11px] font-medium uppercase tracking-[0.24em] text-secondary md:text-xs">
+          <p class="text-xs font-medium tracking-wide text-secondary md:text-xs">
             Die Karte
           </p>
           <h2 class="font-display mt-4 text-balance text-3xl leading-tight md:text-4xl">
@@ -357,7 +357,7 @@ const eventSchema = {
   <section class="border-y border-border/60 bg-muted/30">
     <div class="container mx-auto px-4 py-16 md:py-20">
       <div class="mx-auto max-w-2xl text-center" data-reveal>
-        <p class="text-[11px] font-medium uppercase tracking-[0.24em] text-secondary md:text-xs">
+        <p class="text-xs font-medium tracking-wide text-secondary md:text-xs">
           Reservierung
         </p>
         <h2 class="font-display mt-4 text-balance text-3xl leading-tight md:text-4xl">
@@ -371,7 +371,7 @@ const eventSchema = {
 
         <a
           href={TEL_HREF}
-          class="font-display mt-8 inline-flex min-h-[64px] items-center justify-center gap-3 rounded-sm bg-secondary px-9 py-4 text-xl text-secondary-foreground tabular-nums transition-colors duration-300 hover:bg-foreground md:text-2xl"
+          class="font-display mt-8 inline-flex min-h-[64px] items-center justify-center gap-3 rounded-md bg-secondary px-9 py-4 text-xl text-secondary-foreground tabular-nums transition-colors duration-300 hover:bg-foreground md:text-2xl"
         >
           <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z" />
@@ -401,7 +401,7 @@ const eventSchema = {
           />
         </div>
         <div data-reveal style="--reveal-delay:0.08s">
-          <p class="text-[11px] font-medium uppercase tracking-[0.24em] text-secondary md:text-xs">
+          <p class="text-xs font-medium tracking-wide text-secondary md:text-xs">
             Für Firmen
           </p>
           <h2 class="font-display mt-4 text-balance text-3xl leading-tight md:text-4xl">
@@ -428,7 +428,7 @@ const eventSchema = {
           <div class="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
             <a
               href={TEL_HREF}
-              class="inline-flex min-h-[56px] items-center justify-center gap-3 whitespace-nowrap rounded-sm bg-secondary px-8 py-4 text-xs font-medium uppercase tracking-[0.18em] text-secondary-foreground transition-colors duration-300 hover:bg-foreground sm:text-sm"
+              class="inline-flex min-h-[56px] items-center justify-center gap-3 whitespace-nowrap rounded-md bg-secondary px-8 py-4 text-xs font-medium tracking-wide text-secondary-foreground transition-colors duration-300 hover:bg-foreground sm:text-sm"
             >
               Termin besprechen
             </a>

@@ -149,7 +149,7 @@ const restaurantSchema = {
     <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 text-white">
       <div class="flex items-center gap-4 mb-7">
         <span class="block h-px w-12 md:w-20 bg-white/65"></span>
-        <span class="text-[11px] md:text-xs font-medium tracking-[0.24em] uppercase text-white/90" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">{c.heroBadge}</span>
+        <span class="text-xs md:text-xs font-medium tracking-wide text-white/90" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">{c.heroBadge}</span>
         <span class="block h-px w-12 md:w-20 bg-white/65"></span>
       </div>
       <h1 class="headline-reveal font-display text-balance text-[2.5rem] sm:text-5xl md:text-7xl leading-[0.95] mb-5 max-w-3xl" style="text-shadow:0 2px 14px rgba(0,0,0,0.55)">{c.heroH1}</h1>
@@ -158,10 +158,10 @@ const restaurantSchema = {
           der Startseite). */}
       <p class="font-display-italic text-balance text-white text-lg md:text-2xl max-w-xl leading-snug mb-8" style="text-shadow:0 1px 3px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.6)">{c.heroSubtitle}</p>
       <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
-        <a href="tel:+496573306" class="inline-flex items-center justify-center gap-3 px-9 py-4 min-h-[56px] bg-white text-zinc-900 text-xs sm:text-sm font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-secondary hover:text-secondary-foreground transition-colors">
+        <a href="tel:+496573306" class="inline-flex items-center justify-center gap-3 px-9 py-4 min-h-[56px] bg-white text-zinc-900 text-xs sm:text-sm font-medium tracking-wide rounded-md hover:bg-secondary hover:text-secondary-foreground transition-colors">
           {c.ctaReserve}
         </a>
-        <a href={localizedPath("/", lang)} class="inline-flex items-center justify-center gap-2 px-7 py-4 min-h-[56px] border border-white/60 text-white text-xs sm:text-sm font-medium tracking-[0.2em] uppercase rounded-sm hover:bg-white/10 transition-all" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">{c.ctaHotel}</a>
+        <a href={localizedPath("/", lang)} class="inline-flex items-center justify-center gap-2 px-7 py-4 min-h-[56px] border border-white/60 text-white text-xs sm:text-sm font-medium tracking-wide rounded-md hover:bg-white/10 transition-all" style="text-shadow:0 1px 4px rgba(0,0,0,0.5)">{c.ctaHotel}</a>
       </div>
     </div>
   </section>
@@ -350,7 +350,7 @@ const restaurantSchema = {
         <ul class="space-y-2 text-sm text-muted-foreground">
           {c.distances.map((d) => <li>{d}</li>)}
         </ul>
-        <p class="text-[11px] text-muted-foreground mt-2">{c.distancesNote}</p>
+        <p class="text-xs text-muted-foreground mt-2">{c.distancesNote}</p>
         <div class="mt-6">
           <a href="https://www.google.com/maps?q=Landhaus+Schend+Hauptstraße+9+54552+Immerath" target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-secondary hover:text-foreground transition-colors underline underline-offset-4 decoration-secondary/40">
             {c.mapsLink}
@@ -376,20 +376,20 @@ const restaurantSchema = {
       {/* Anrufen UND E-Mail nebeneinander: wer abends nicht telefonieren mag,
            kann die Feier-Anfrage trotzdem hier abschließen (mailto als Zweitweg). */}
       <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 self-start">
-        <a href="tel:+496573306" class="inline-flex items-center justify-center gap-3 px-7 py-3.5 min-h-[52px] bg-primary text-primary-foreground rounded-sm text-xs sm:text-sm font-medium tracking-[0.2em] uppercase hover:bg-secondary hover:text-secondary-foreground transition-colors">
+        <a href="tel:+496573306" class="inline-flex items-center justify-center gap-3 px-7 py-3.5 min-h-[52px] bg-primary text-primary-foreground rounded-md text-xs sm:text-sm font-medium tracking-wide hover:bg-secondary hover:text-secondary-foreground transition-colors">
           {c.spreadCta}
         </a>
-        <a href={`mailto:info@landhaus-schend.de?subject=${encodeURIComponent(c.spreadEyebrow)}`} class="inline-flex items-center justify-center gap-2 px-7 py-3.5 min-h-[52px] border border-foreground/25 text-foreground rounded-sm text-xs sm:text-sm font-medium tracking-[0.2em] uppercase hover:border-secondary hover:text-secondary transition-colors">
+        <a href={`mailto:info@landhaus-schend.de?subject=${encodeURIComponent(c.spreadEyebrow)}`} class="inline-flex items-center justify-center gap-2 px-7 py-3.5 min-h-[52px] border border-foreground/25 text-foreground rounded-md text-xs sm:text-sm font-medium tracking-wide hover:border-secondary hover:text-secondary transition-colors">
           E-Mail
         </a>
       </div>
       {/* Hub-Spoke: kontextuelle Anker zu Zimmern (Halbpension) und Paketen. */}
       <p class="mt-7 flex flex-col gap-2 text-sm text-muted-foreground self-start">
         <a href={localizedPath("/zimmer", lang)} class="inline-flex items-center gap-2 text-secondary hover:text-foreground transition-colors underline underline-offset-4 decoration-secondary/40">
-          {c.linkRooms} →
+          {c.linkRooms}
         </a>
         <a href={localizedPath("/pakete", lang)} class="inline-flex items-center gap-2 text-secondary hover:text-foreground transition-colors underline underline-offset-4 decoration-secondary/40">
-          {c.linkPackages} →
+          {c.linkPackages}
         </a>
       </p>
     </div>

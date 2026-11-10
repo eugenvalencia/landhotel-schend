@@ -136,7 +136,7 @@ const hubLinks: Record<string, { href: string; label: string }> = {
   <section class="container mx-auto px-4 py-16 md:py-24">
     <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
       {c.highlights.map((h, i) => (
-        <article class="spotlight rounded-md overflow-hidden border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${(i % 2) * 0.1}s`}>
+        <article class="rounded-md overflow-hidden border border-border bg-card shadow-card" data-reveal style={`--reveal-delay:${(i % 2) * 0.1}s`}>
           <div class="aspect-[16/10] overflow-hidden">
             <Pic src={h.img} alt={h.alt} sizes="(min-width: 768px) 50vw, 100vw" class="w-full h-full object-cover" loading="lazy" decoding="async" />
           </div>
@@ -202,7 +202,7 @@ const hubLinks: Record<string, { href: string; label: string }> = {
               </li>
             ))}
           </ul>
-          <p class="text-[11px] text-muted-foreground mt-3">{c.distanzNote}</p>
+          <p class="text-xs text-muted-foreground mt-3">{c.distanzNote}</p>
           <p class="text-sm text-muted-foreground mt-3">{c.addressLabel}: {REGION_ADDRESS}</p>
         </div>
       </div>
@@ -231,8 +231,8 @@ const hubLinks: Record<string, { href: string; label: string }> = {
       {c.ctaText}
     </p>
     <div class="mt-8 flex flex-wrap gap-3 justify-center">
-      <a href={localizedPath("/zimmer", lang)} class="inline-flex items-center px-6 py-3 rounded-sm border border-border font-semibold tracking-wide hover:bg-muted transition-colors">{c.ctaZimmer}</a>
-      <a href={localizedPath("/anfrage", lang)} class="inline-flex items-center px-6 py-3 rounded-sm bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">{c.ctaAnfrage}</a>
+      <a href={localizedPath("/zimmer", lang)} class="inline-flex items-center px-6 py-3 rounded-md border border-border font-semibold tracking-wide hover:bg-muted transition-colors">{c.ctaZimmer}</a>
+      <a href={localizedPath("/anfrage", lang)} class="inline-flex items-center px-6 py-3 rounded-md bg-secondary text-secondary-foreground font-semibold tracking-wide hover:bg-secondary/90 transition-colors">{c.ctaAnfrage}</a>
     </div>
   </section>
 </Layout>
